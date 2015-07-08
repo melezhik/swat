@@ -29,24 +29,24 @@ Simple Web Application Test Framework
 
 # Run tests
 
-    swat ./my-app 
+    swat http://127.0.0.1 ./my-app 
 
 # Advanced DSL
 
-## comments
+## Comments
 You may add comments with standard convetional way, using `#` approach
 
     # you may add any comments into your tests, with chunks prepended with #, as here
     HELLO WORLD # and here comment too
 
-## inline perl code
+## Inline perl code
 
 Everything started with `code:` would be treated as perl code to execute. For usefull test functions (skip,etc) follow Test::More documention
 
     code: skip('next test is skipped',1) # skip next check forever
     HELLO WORLD
 
-## using regexp
+## Using regexp
 
 Everything started with `regexp:` would be treated as perl regular expression
 
@@ -54,7 +54,43 @@ Everything started with `regexp:` would be treated as perl regular expression
     # this is is the exapmple of regexp check
     regexp: App Version Number: \d+\.\d+\.\d+
     
-# POST 
+# POST requests
+
+    # just use post.txt instead get.tx file
+    echo 200 OK >> my-app/hello/post.txt
+    echo 200 OK >> my-app/hello/world/post.txt
+
+
+# Swat settings
+
+One may set a proper envrionment variables to redefine swat settings:
+
+- clear_cache - set to 1 if you need to clear swt cache ( barely need ), default value is 0
+
+- debug - set to 1 if you want to see some debug information in output, default value is 0
+
+- curl_params - additional curl parameters to add to http requests, default value is ''
+
+    # example
+    # sets http headers
+    curl_params="-H 'Conent-Type: text/html'"
+
+- curl_connect_timeout - see curl documentation
+- curl_max_time - see curl documentation
+
+Swat  also checks files named project.ini in every directory and if exists apply settings from it.
+Project.ini file should be bash file with swat variables definitions:
+
+    # the content of project.ini file:
+    curl_params="-H 'Conent-Type: text/html'"
+    debug=1
+
+    # there are many project.ini files here
+    my-app/project.ini
+    my-app/hello/get.txt
+    my -app/hello-world/get.txt
+    my -app/hello-world/project.ini
+
 
 # Dependencies
 Just a few! :)
@@ -63,11 +99,3 @@ Just a few! :)
 - head
 - curl
 - perl
-
-
-# Environmental Variables
-- clear_cache - set to 1 if you need to clear swt cache ( barely need )
-- debug - set to 1 if you want to see some debug information in output
-- curl_params - additional curl parameters to add to http requests
-
-
