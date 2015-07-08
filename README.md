@@ -51,8 +51,8 @@ Everything started with `code:` would be treated as perl code to execute. For us
 Everything started with `regexp:` would be treated as perl regular expression
 
 
-    # this is is the exapmple of regexp check
-    regexp: App Version Number: \d+\.\d+\.\d+
+    # this is example of regexp check
+    regexp: App Version Number: (\d+\.\d+\.\d+)
     
 # POST requests
 
