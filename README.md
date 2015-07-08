@@ -1,6 +1,6 @@
 # DESCRIPTION
 
-SWAT is Simple Web Application Test (Framework)
+SWAT is Simple Web Application Test ( Framework )
 
 # Create tests
 
