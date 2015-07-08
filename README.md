@@ -27,7 +27,7 @@ SWAT is Simple Web Application Test ( Framework )
 # Advanced DSL
 
 ## Comments
-You may add comments with standard convetional way, using `#` approach
+You may add comments with lines starts with '#' symbol
 
     # you may add any comments into your tests, with chunks prepended with #, as here
     HELLO WORLD # and here comment too
@@ -83,11 +83,9 @@ Project.ini file should be bash file with swat variables definitions:
 
 
 # Dependencies
-Just a few! :)
-- bash
-- find
-- head
+Not many :)
 - curl
+- bash / find / head
 - perl
 
 # AUTHOR
