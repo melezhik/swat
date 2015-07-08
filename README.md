@@ -56,23 +56,19 @@ Everything started with `regexp:` would be treated as perl regular expression
 
 # Swat settings
 
-One may set a proper envrionment variables to redefine swat settings:
+## Environmental variables
+
+One may set a proper envrionment variables to define swat settings:
 
 - clear_cache - set to 1 if you need to clear swt cache ( barely need ), default value is 0
-
 - debug - set to 1 if you want to see some debug information in output, default value is 0
-
 - curl_params - additional curl parameters to add to http requests, default value is ""
-
-    
-    # example of swat settings
-    # sets http headers
-    curl_params="-H 'Conent-Type: text/html'"
-
 - curl_connect_timeout - see curl documentation
 - curl_max_time - see curl documentation
 
-Swat also checks files named project.ini in every directory and if exists apply settings from it.
+## Project.ini file
+
+Swat also checks files named project.ini in _every project directory_ and if exists apply settings from there.
 Project.ini file should be bash file with swat variables definitions:
 
     # the content of project.ini file:

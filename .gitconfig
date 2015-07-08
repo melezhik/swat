@@ -1,2 +1,0 @@
-[credential]
-    helper = cache --timeout 300000
