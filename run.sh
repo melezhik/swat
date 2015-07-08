@@ -23,7 +23,7 @@ session_file=~/.swat/.cache/$entity/session
 if [ $project ]; then
 
 
-    safe_project=`perl -MFile::Basename -e '$i=$ARGV[0]; s{\/$}[], chomp for $i;   $a=fileparse($i); chomp $a; print $a' $project`
+    safe_project=`perl -MFile::Basename -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print $i' $project`
 
     mkdir -p $safe_project
 
