@@ -1,13 +1,6 @@
-# SYNOPSIS
-SWAT - stands for  Simple Web Applications Tests.
-
-# AUTHOR
-[Aleksei Melezhik](mailto:melezhik@gmail.com)
-
-
 # DESCRIPTION
 
-Simple Web Application Test Framework
+SWAT is Simple Web Application Test (Framework)
 
 # Create tests
 
@@ -69,16 +62,17 @@ One may set a proper envrionment variables to redefine swat settings:
 
 - debug - set to 1 if you want to see some debug information in output, default value is 0
 
-- curl_params - additional curl parameters to add to http requests, default value is ''
+- curl_params - additional curl parameters to add to http requests, default value is ""
 
-    # example
+    
+    # example of swat settings
     # sets http headers
     curl_params="-H 'Conent-Type: text/html'"
 
 - curl_connect_timeout - see curl documentation
 - curl_max_time - see curl documentation
 
-Swat  also checks files named project.ini in every directory and if exists apply settings from it.
+Swat also checks files named project.ini in every directory and if exists apply settings from it.
 Project.ini file should be bash file with swat variables definitions:
 
     # the content of project.ini file:
@@ -99,3 +93,6 @@ Just a few! :)
 - head
 - curl
 - perl
+
+# AUTHOR
+[Aleksei Melezhik](mailto:melezhik@gmail.com)
