@@ -56,7 +56,7 @@ Everything started with `regexp:` would be treated as perl regular expression
     
 # POST requests
 
-    # just use post.txt instead get.tx file
+    # just use post.txt instead of get.txt file
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt
 
