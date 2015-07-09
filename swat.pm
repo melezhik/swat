@@ -48,26 +48,6 @@ sub hostname {
     return $a;
 }
 
-sub print_fmt {
-
-
-    select((select(),
-        $^ = "STDOUT_TOP",
-        $~ = "STDOUT",
-        $_==24,
-    )[0]);
-
-
-    while ( @ARGV > 0 ) {
-
-            $a = shift @ARGV; 
-            $b = shift @ARGV; 
-            write;
-    }
-}
-
-
-
 sub check_line {
  
     my $pattern = shift;
@@ -146,14 +126,6 @@ sub generate_asserts {
 
 }
 
-format STDOUT_TOP =
-.
-
-
-format STDOUT =
-  ~~  ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-  $a, $b 
-.
 
 
 1;

@@ -17,7 +17,7 @@ mkdir -p ~/.swat/.cache/$entity/
 session_file=~/.swat/.cache/$entity/session
 
 
-if [ $project ]; then
+if [ \( -d $project  \) -a  \(  -n  "${url}" \)  ] ; then
 
 
     safe_project=`perl -MFile::Basename -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print $i' $project`
@@ -33,20 +33,6 @@ if [ $project ]; then
     reports_dir=~/.swat/reports/$url/
     rm -rf $reports_dir
     mkdir -p $reports_dir
-
-
-    perl -Mswat -e print_fmt \
-    'time' `date +'%Y-%m-%d...%R:%S'` \
-     url $url \
-     'reports directory' $reports_dir \
-    'project safe path' $safe_project \
-    'prove flags' $prove_flags \
-    'debug' $debug \
-    'ignore http errors' $ignore_http_err \
-    'http try number'  $try_num \
-    'curl connect timeout'  $curl_connect_timeout \
-    'curl max time'  $curl_max_time \
-    'head bytes show' $head_bytes_show
 
     for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
@@ -94,14 +80,18 @@ if [ $project ]; then
 
     done;
 
-    echo
-    echo 'running tests ...'
-    echo
-
     prove -m -r $prove_flags $reports_dir;
 
+elif [ -n  "${url}"  ] ; then
+    echo "project directory parameter is not set or not exists"
+    echo "usage swat project URL"
+    exit 1
+
+elif [ -d $project ] ; then
+    echo "url parameter is not set"
+    echo "usage swat project URL"
 else
-    echo "cannot find project for $entity"
+    echo "usage swat project URL"
     exit 1
 fi
 
