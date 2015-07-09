@@ -1,10 +1,6 @@
-url=$1
-project=$2
+project=$1
+url=$2
 
-
-echo
-echo 'fetch project metadata ...'
-echo
 
 prove_flags=$3
 prove_flags=${prove_flags:='-v'}

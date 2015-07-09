@@ -45,7 +45,8 @@ Swat DSL consists of 2 parts. Routes ( or URIs ) and check patterns.
 
 ## Routes
 
-URI resolution is conventional based. It's taken as subtree path taken from project root directory. Let's say we have a project layout:
+URI resolution is conventional / file system based. It's calculated as subtree path against project root directory. 
+Let's say we have a project layout:
 
     example/my-app/    
     example/my-app/hello/    
