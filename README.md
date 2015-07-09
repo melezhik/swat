@@ -92,11 +92,11 @@ As you can see from tutorial above check patterns are  just text files describin
 
 
 ### Expected values
-This is most usable that one may define at check patterns files. _It's just s string should be returned_ when swat request a given URI. Here are examples:
+This is most usable entity that one may define at check patterns files. _It's just s string should be returned_ when swat request a given URI. Here are examples:
 
     200 OK
     Hello World
-    <h1><title>Hello World</title></h1>
+    <head><title>Hello World</title></head>
 
 
 
@@ -106,7 +106,7 @@ Comments are lines started with '#' symbol, they are for human not for swat whic
     # this http status is expected
     200 OK
     Hello World # this string should be in the response 
-    <h1><title>Hello World</title></h1> # and it should be html code 
+    <head><title>Hello World</title></head> # and it should be proper html code 
 
 
 ### Perl one-liners code
