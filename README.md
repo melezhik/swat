@@ -20,7 +20,7 @@ and nothing breaks on the road. So I need a **tool to run smoke tests_ against w
 
 ## Install swat
 
-    cpan swat
+    sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat/master swat
 
 Once swat is installed you have swat command line tool to run swat tests, but before do this you need to create them.
 

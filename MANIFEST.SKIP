@@ -4,3 +4,4 @@ blib
 \.old
 \.tar\.gz
 \.bak
+\.SKIP
