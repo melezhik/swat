@@ -162,7 +162,7 @@ another test / reporting systems, follow TAP documentation to get more on this.
 
 Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called `swat', this is usage info on it:
 
-    swat URL project_dir
+    swat project_dir URL
 
 - URL - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
 - project_dir - is a project root directory 
