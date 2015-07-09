@@ -73,7 +73,7 @@ Then check pattern come into play.
 
 ## Check patterns 
 
-As you can see from tutorial above check patterns are  just text files describing what you expect to return for given URI. 
+As you can see from tutorial above check patterns are  just text files describing what is expected to return when request a given URI. 
 Check patterns file parsed by swat line by line and there are 3 types of entities my occur here:
 
 - Expected Values
@@ -93,7 +93,7 @@ This is most usable that one may define at check patterns files. _It's just s st
 ### Comments
 Comments are lines started with '#' symbol, they are for human not for swat which ignore them when parse check pattern file. Here are examples.
 
-    # this http status should return
+    # this http status is expected
     200 OK
     Hello World # this string should be in the response 
     <h1><title>Hello World</title></h1> # and it should be html code 
@@ -129,10 +129,12 @@ Swat has some settings may redefined as _environmental variables_ and|or using s
 
 One may set a proper environment variables to adjust swat settings:
 
-- debug - set to 1 if you want to see some debug information in output, default value is 0
-- curl_params - additional curl parameters to add to http requests, default value is ""
-- curl_connect_timeout - see curl documentation
-- curl_max_time - see curl documentation
+- debug - set to 1 if you want to see some debug information in output, default value is `0`
+- curl_params - additional curl parameters being add to http requests, default value is `""`, follow curl documentation
+- curl_connect_timeout - follow curl documentation
+- curl_max_time - follow curl documentation
+- ignore_http_err - ignore http errors, if this paramets is off (set to `1`) _ error http codes_ will not result in test fails, usefull when one need to test something with response differ from  2**,3** http codes. Default value is `0`
+- try_num - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is `2`
 
 ## Swat.ini files
 
