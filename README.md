@@ -4,16 +4,16 @@ SWAT is Simple Web Application Test ( Tool )
 
 # WHY
 
-I know there are a lot of tests tools and frameworks, but let me  briefly tell _why_ I created swat.
+I know there are a lot of tests tool and frameworks, but let me  briefly tell _why_ I created swat.
 As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait while dev guys or QA team ensure that deploy if fine
-and nothing breaks on the road. So I need a tool to _run smoke tests_ against _web applications_. Not tool only, but way to _create such a tests
+and nothing breaks on the road. So I need a tool to _run smoke tests_ against _web applications_. Not tool only, but the way to _create such a tests
 from the scratch_ in way easy and fast enough. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
 
 - is easy to use and flexible tool to run smoke tests against web applications
 - it's [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible 
 - it has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand  
 ( which is true  for most cases )
-- it has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl oneliners calls )
+- it has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl one-liners calls )
 - it's it/devops/dev helper with low price mastering ( see my tutorial )
 - and yes ... it's fun :) 
 
@@ -53,7 +53,7 @@ Swat DSL consists of 2 parts. Routes ( or URIs ) and check patterns.
 
 ## Routes
 
-URI resolution is conventional / file system based. It's calculated as subtree path against project root directory. 
+URI resolution is conventional / file system based. It's calculated as sub-tree path against project root directory. 
 Let's say we have a project layout:
 
     example/my-app/    
@@ -79,7 +79,7 @@ Check patterns file parsed by swat line by line and there are 3 types of entitie
 
 - Expected Values
 - Comments
-- Perl oneliner code
+- Perl one-liners code
 
 
 ### Expected values
@@ -137,7 +137,7 @@ One may set a proper environment variables to adjust swat settings:
 
 ## Swat.ini files
 
-Swat also checks files named swat.ini in _every project subdirectory_ and if one exists apply settings from it.
+Swat also checks files named swat.ini in _every project sub-directory_ and if one exists apply settings from it.
 Swat.ini file should be bash file with swat variables definitions:
 
     # the content of swat.ini file:
@@ -164,7 +164,7 @@ Swat is shipped as cpan package , once it's installed ( see install section ) yo
 
     swat URL project_dir
 
-- URL - is base url for web application you run tests against, you need defined routes whcih will be requested against URL, see DSL section.
+- URL - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
 - project_dir - is a project root directory 
 
 # Swat Dependencies
@@ -175,7 +175,8 @@ Not that many :)
 # AUTHOR
 [Aleksei Melezhik](mailto:melezhik@gmail.com)
 
-# Thanks to the authors of:
+# Thanks 
+To the authors of ( see list ) without who swat would not appear to light 
 - perl
 - curl
 - TAP
