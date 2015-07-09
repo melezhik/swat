@@ -161,8 +161,8 @@ As I say there are many swat.ini files may exist at your project, the one presen
     my-app/swat.ini
     my-app/hello/get.txt
     my-app/hello/swat.ini 
-    my -app/hello-world/get.txt
-    my -app/hello-world/swat.ini
+    my-app/hello-world/get.txt
+    my-app/hello-world/swat.ini
 
 
 # TAP
