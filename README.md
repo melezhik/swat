@@ -2,6 +2,18 @@
 
 SWAT is Simple Web Application Test ( Tool )
 
+    $ swat examples/google/ google.ru
+    /home/vagrant/.swat/reports/google.ru/00.t ..
+    ok 1 - successfull reposnse from google.ru/
+    # data file: /home/vagrant/.swat/reports/google.ru///content
+    ok 2 - GET / returns 200 OK
+    ok 3 - GET / returns Google
+    1..3
+    ok
+    All tests successful.
+    Files=1, Tests=3, 11 wallclock secs ( 0.01 usr  0.00 sys +  0.01 cusr  0.00 csys =  0.02 CPU)
+    Result: PASS
+
 # WHY
 
 I know there are a lot of tests tool and frameworks, but let me  briefly tell _why_ I created swat.
