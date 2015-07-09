@@ -1,3 +1,5 @@
+#!/bin/bash
+
 project=$1
 url=$2
 
@@ -17,12 +19,10 @@ mkdir -p ~/.swat/.cache/$entity/
 session_file=~/.swat/.cache/$entity/session
 
 
-if [ \( -d $project  \) -a  \(  -n  "${url}" \)  ] ; then
+if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; then
 
 
     safe_project=`perl -MFile::Basename -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print $i' $project`
-
-    mkdir -p $safe_project
 
     echo "try_num=$try_num" > $session_file
     echo "ignore_http_err=$ignore_http_err" >> $session_file
@@ -82,14 +82,17 @@ if [ \( -d $project  \) -a  \(  -n  "${url}" \)  ] ; then
 
     prove -m -r $prove_flags $reports_dir;
 
-elif [ -n  "${url}"  ] ; then
-    echo "project directory parameter is not set or not exists"
-    echo "usage swat project URL"
-    exit 1
 
-elif [ -d $project ] ; then
+elif [ -z "${project}" ] ; then
+    echo "project directory parameter is not set"
+    echo "usage swat project URL"
+elif ! [ -d "${project}" ] ; then
+    echo "project directory does not exist"
+    echo "usage swat project URL"
+elif [ -z  "${url}"  ] ; then
     echo "url parameter is not set"
     echo "usage swat project URL"
+    exit 1
 else
     echo "usage swat project URL"
     exit 1
