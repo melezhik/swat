@@ -1,0 +1,8 @@
+Makefile.PL
+MANIFEST
+README
+README.md
+run.sh
+swat.pm
+t/swat.t
+lib/swat.pm
