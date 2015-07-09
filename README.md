@@ -11,8 +11,7 @@ from the scratch_ in way easy and fast enough. So this how I came up with the id
 
 - is easy to use and flexible tool to run smoke tests against web applications
 - it's [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible 
-- it has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand  
-( which is true  for most cases )
+- it has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
 - it has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl one-liners calls )
 - it's it/devops/dev helper with low price mastering ( see my tutorial )
 - and yes ... it's fun :) 
