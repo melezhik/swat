@@ -1,8 +1,24 @@
-# DESCRIPTION
+# SYNOPSIS
 
-SWAT is Simple Web Application Test ( Framework )
+SWAT is Simple Web Application Test ( Tool )
 
-# Create tests
+# WHY
+
+I know there are a lot of tests tools and frameworks, but let me  briefly tell _why_ I created swat.
+As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait while dev guys or QA team ensure that deploy if fine
+and nothing breaks on the road. So I need a tool to _run smoke tests_ against _web applications_. Not tool only, but way to _create such a tests
+from the scratch_ in way easy and fast enough. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
+
+- is easy to use and flexible tool to run smoke tests against web applications
+- it's curl impovered and TAP compatible 
+- it has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand 
+( which is true  for most cases )
+-it has a simple and yet powerfull DSL allow you to both run simple tests ( 200 OK ) or comlicated ones ( using curl api )
+- and yes ... it's fun (: 
+
+# Tutorial
+
+## Create tests
 
     mkdir  my-app/ # create a project directory to hold tests
 
@@ -20,11 +36,37 @@ SWAT is Simple Web Application Test ( Framework )
     echo 'This is hello' >> my-app/hello/get.txt
     echo 'This is hello world' >> my-app/hello/world/get.txt
 
-# Run tests
+## Run tests
 
-    swat http://127.0.0.1 ./my-app 
+    swat ./my-app http://127.0.0.1 
 
-# Advanced DSL
+# DSL
+Swat DSL consists of 2 parts. Routes ( or URIs ) and check patterns.
+
+## Routes
+
+URI resolution is conventional based. It's taken as subtree path taken from project root directory. Let's say we have a project layout 
+
+    exmaple/my-app/    
+    exmaple/my-app/hello/    
+    exmaple/my-app/hello/get.txt    
+    exmaple/my-app/hello/world/get.txt    
+
+When you give swat a run
+
+    swat exmaple/my-app 127.0.0.1 
+
+It just find all the directories holding get.txt files and resolve URI upon project root directory ( which is exmaple/my-app ):
+
+    GET hello/
+    GET hello/world
+
+Then check pattern come into play.
+
+## Check patterns 
+
+As you can see from tutorial above check patterns are  just text files describing what you expect to return for given URI. We 
+
 
 ## Comments
 You may add comments with lines starts with '#' symbol
