@@ -6,8 +6,7 @@ SWAT is Simple Web Application Test ( Tool )
 
 I know there are a lot of tests tool and frameworks, but let me  briefly tell _why_ I created swat.
 As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait while dev guys or QA team ensure that deploy if fine
-and nothing breaks on the road. So I need a tool to _ run smoke tests_ against web applications _. Not tool only, but the way to _ create such a tests
-from the scratch in way easy and fast enough _. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
+and nothing breaks on the road. So I need a **tool to run smoke tests_ against web applications**. Not tool only, but the way to **create such a tests from the scratch in way easy and fast enough**. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
 
 - is easy to use and flexible tool to run smoke tests against web applications
 - it's [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible 
