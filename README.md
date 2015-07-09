@@ -179,4 +179,4 @@ To the authors of ( see list ) without who swat would not appear to light
 - perl
 - curl
 - TAP
-- Test::MORE
+- Test::More
