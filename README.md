@@ -11,9 +11,9 @@ from the scratch_ in way easy and fast enough. So this how I came up with the id
 
 - is easy to use and flexible tool to run smoke tests against web applications
 - it's curl powered by and TAP compatible 
-- it has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand 
+- it has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand  
 ( which is true  for most cases )
--it has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api )
+- it has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api )
 - and yes ... it's fun (: 
 
 # Tutorial
@@ -82,7 +82,6 @@ This is most usable that one may define at check patterns files. _It's just s st
 
 
 
-
 ### Comments
 Comments are lines started with '#' symbol, they are for human not for swat which ignore them when parse check pattern file. Here are examples.
 
@@ -107,15 +106,14 @@ Everything started with `regexp:` would be treated as regular expression.
     # this is example of regexp check
     regexp: App Version Number: (\d+\.\d+\.\d+)
     
-# POST requests
-When talking about swat I always say about GET http request, but swat may send a POST http request just name your check patterns file  as post.txt instead of get.txt 
+# Post requests
+When talking about swat I always say about Get http request, but swat may send a Post http request just name your check patterns file  as post.txt instead of get.txt 
 
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt
 
 
 # Swat settings
-
 
 Swat has some settings may redefined as _environmental variables_ and|or using swat.ini files 
 
