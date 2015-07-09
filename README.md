@@ -158,7 +158,7 @@ As I say there are many swat.ini files may exist at your project, the one presen
 Swat produce output in [TAP](https://testanything.org/) format , that means you may use your favorite tap parsers to bring result to
 another test / reporting systems, follow TAP documentation to get more on this.
 
-# Command line too
+# Command line tool
 
 Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called `swat', this is usage info on it:
 
@@ -167,7 +167,7 @@ Swat is shipped as cpan package , once it's installed ( see install section ) yo
 - URL - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
 - project_dir - is a project root directory 
 
-# Swat Dependencies
+# Dependencies
 Not that many :)
 
 - perl / curl / bash / find  / head
