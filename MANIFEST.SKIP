@@ -2,3 +2,5 @@ examples
 .git
 blib
 \.old
+\.tar\.gz
+\.bak
