@@ -17,7 +17,7 @@ SWAT is Simple Web Application Test ( Tool )
 # WHY
 
 I know there are a lot of tests tool and frameworks, but let me  briefly tell _why_ I created swat.
-As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait while dev guys or QA team ensure that deploy is fine and nothing breaks on the road. So I need a **tool to run smoke tests_ against web applications**. Not tool only, but the way to **create such a tests from the scratch in way easy and fast enough**. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
+As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait while dev guys or QA team ensure that deploy is fine and nothing breaks on the road. So I need a **tool to run smoke tests against web applications**. Not tool only, but the way to **create such a tests from the scratch in way easy and fast enough**. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
 
 - is easy to use and flexible tool to run smoke tests against web applications
 - is [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible 
@@ -58,11 +58,12 @@ Once swat is installed you have swat command line tool to run swat tests, but be
     swat ./my-app http://127.0.0.1 
 
 # DSL
-Swat DSL consists of 2 parts. Routes ( or URIs ) and check patterns.
+Swat DSL consists of 2 parts. Routes and check patterns.
 
 ## Routes
+Routes are http resources a tested web application should has.
 
-URI resolution is conventional / file system based. It's calculated as sub-tree path against project root directory. 
+Swat utilize file system approach calculateing all existed routes as sub directories pathes in the project root directory. 
 Let's say we have a project layout:
 
     example/my-app/    
@@ -74,7 +75,7 @@ When you give swat a run
 
     swat example/my-app 127.0.0.1 
 
-It just find all the directories holding get.txt files and resolve URI upon project root directory ( which is example/my-app ):
+It just find all the directories holding get.txt files and "create" routes:
 
     GET hello/
     GET hello/world
@@ -83,8 +84,7 @@ Then check pattern come into play.
 
 ## Check patterns 
 
-As you can see from tutorial above check patterns are  just text files describing what is expected to return when request a given URI. 
-Check patterns file parsed by swat line by line and there are 3 types of entities my occur here:
+As you can see from tutorial above check patterns are  just text files describing what is expected to return when request a route. Check patterns file parsed by swat line by line and take an action depending on entity found. There are 3 types of entities may be found in check patterns file:
 
 - Expected Values
 - Comments
