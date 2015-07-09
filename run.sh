@@ -10,6 +10,7 @@ try_num=${try_num:=2}
 curl_connect_timeout=${curl_connect_timeout:=5}
 curl_max_time=${curl_max_time:=20}
 head_bytes_show=${head_bytes_show:=400}
+swat_ini_file=${swat_ini_file:='swat.ini'}
 
 mkdir -p ~/.swat/.cache/$entity/
 
@@ -27,7 +28,7 @@ if [ $project ]; then
     echo "ignore_http_err=$ignore_http_err" >> $session_file
     echo "curl_params=''" >> $session_file
 
-    test -f $safe_project/project.ini && source $safe_project/project.ini
+    test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
 
     reports_dir=~/.swat/reports/$url/
     rm -rf $reports_dir
@@ -52,8 +53,8 @@ if [ $project ]; then
         test_dir=`perl -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print $sp' $f`;
 
         test -f $session_file && source $session_file
-        test -f $safe_project/project.ini && source $safe_project/project.ini
-        test -f $test_dir/project.ini && source $test_dir/project.ini
+        test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
+        test -f $test_dir/$swat_ini_file && source $test_dir/$swat_ini_file
 
         path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $safe_project $f`;
         mkdir -p "${reports_dir}/${path}";
@@ -72,7 +73,6 @@ if [ $project ]; then
         echo >> $tfile
 
         echo "use Test::More q{no_plan};"  >> $tfile
-        echo "use constant deploy_env => q{$deploy_env};"  >> $tfile
         echo $\content_file = q{"${reports_dir}${path}/content};"  >> $tfile
         echo $\path = q{"${path}};"  >> $tfile
         echo $\http_meth = q{"${http_meth}};"  >> $tfile
