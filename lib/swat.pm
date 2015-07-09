@@ -1,4 +1,5 @@
 package swat;
+our $VERSION = v0.1.0;
 1;
 
 package main;
@@ -7,6 +8,7 @@ use Test::More;
 our $HTTP_RESPONSE;
 our ($curl_cmd, $content_file, $url, $path, $http_meth, $debug, $ignore_http_err, $try_num, $head_bytes_show, $deploy_env );
 our ($a, $b);
+
 $| = 1;
 
 sub execute_with_retry {
