@@ -1,8 +1,4 @@
 examples
-lib
-Makefile.PL
-MANIFEST
-README
-README.md
-t
-
+.git
+blib
+\.old
