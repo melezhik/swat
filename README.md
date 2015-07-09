@@ -63,8 +63,8 @@ Swat DSL consists of 2 parts. Routes and check patterns.
 ## Routes
 Routes are http resources a tested web application should has.
 
-Swat utilize file system approach calculateing all existed routes as sub directories pathes in the project root directory. 
-Let's say we have a project layout:
+Swat utilize file system data calculating all existed routes as sub directories pathes in the project root directory. 
+Let we have a following project layout:
 
     example/my-app/    
     example/my-app/hello/    
@@ -80,7 +80,7 @@ It just find all the directories holding get.txt files and "create" routes:
     GET hello/
     GET hello/world
 
-Then check pattern come into play.
+Then check patterns come into play.
 
 ## Check patterns 
 
