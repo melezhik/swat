@@ -10,14 +10,22 @@ and nothing breaks on the road. So I need a tool to _run smoke tests_ against _w
 from the scratch_ in way easy and fast enough. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
 
 - is easy to use and flexible tool to run smoke tests against web applications
-- it's curl powered by and TAP compatible 
+- it's [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible 
 - it has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand  
 ( which is true  for most cases )
-- it has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api )
+- it has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl oneliners calls )
 - it's it/devops/dev helper with low price mastering ( see my tutorial )
 - and yes ... it's fun :) 
 
+
 # Tutorial
+
+## Install swat
+
+    cpan swat
+
+Once swat is installed you have swat command line tool to run swat tests, but before do this you need to create them.
+
 
 ## Create tests
 
@@ -71,7 +79,7 @@ Check patterns file parsed by swat line by line and there are 3 types of entitie
 
 - Expected Values
 - Comments
-- Perl inline code
+- Perl oneliner code
 
 
 ### Expected values
@@ -92,10 +100,10 @@ Comments are lines started with '#' symbol, they are for human not for swat whic
     <h1><title>Hello World</title></h1> # and it should be html code 
 
 
-### Inline perl code
+### Perl one-liners code
 
 Everything started with `code:` would be treated by swat as perl code to execute. 
-There are a lot of possibilities. Please follow [Test::More] documentation to get more info about useful function you may call here.
+There are a _lot of_ possibilities! Please follow [Test::More](search.cpan.org/perldoc/Test::More) documentation to get more info about useful function you may call here.
 
     code: skip('next test is skipped',1) # skip next check forever
     HELLO WORLD
@@ -145,6 +153,20 @@ As I say there are many swat.ini files may exist at your project, the one presen
     my -app/hello-world/swat.ini
 
 
+# TAP
+
+Swat produce output in [TAP](https://testanything.org/) format , that means you may use your favorite tap parsers to bring result to
+another test / reporting systems, follow TAP documentation to get more on this.
+
+# Command line too
+
+Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called `swat', this is usage info on it:
+
+    swat URL project_dir
+
+- URL - is base url for web application you run tests against, you need defined routes whcih will be requested against URL, see DSL section.
+- project_dir - is a project root directory 
+
 # Swat Dependencies
 Not that many :)
 
@@ -152,3 +174,9 @@ Not that many :)
 
 # AUTHOR
 [Aleksei Melezhik](mailto:melezhik@gmail.com)
+
+# Thanks to the authors of:
+- perl
+- curl
+- TAP
+- Test::MORE
