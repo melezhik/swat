@@ -6,8 +6,8 @@ SWAT is Simple Web Application Test ( Tool )
 
 I know there are a lot of tests tool and frameworks, but let me  briefly tell _why_ I created swat.
 As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait while dev guys or QA team ensure that deploy if fine
-and nothing breaks on the road. So I need a tool to _run smoke tests_ against _web applications_. Not tool only, but the way to _create such a tests
-from the scratch_ in way easy and fast enough. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
+and nothing breaks on the road. So I need a tool to _ run smoke tests_ against web applications _. Not tool only, but the way to _ create such a tests
+from the scratch in way easy and fast enough _. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
 
 - is easy to use and flexible tool to run smoke tests against web applications
 - it's [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible 
@@ -133,7 +133,7 @@ One may set a proper environment variables to adjust swat settings:
 - curl_params - additional curl parameters being add to http requests, default value is `""`, follow curl documentation
 - curl_connect_timeout - follow curl documentation
 - curl_max_time - follow curl documentation
-- ignore_http_err - ignore http errors, if this paramets is off (set to `1`) _ error http codes_ will not result in test fails, usefull when one need to test something with response differ from  2**,3** http codes. Default value is `0`
+- ignore_http_err - ignore http errors, if this paramets is off (set to `1`) returned  _error http codes_ will not result in test fails, usefull when one need to test something with response differ from  2\*\*,3\*\* http codes. Default value is `0`
 - try_num - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is `2`
 
 ## Swat.ini files
