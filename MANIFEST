@@ -1,4 +1,5 @@
 bin/swat
+CHANGELOG.md
 lib/swat.pm
 Makefile
 Makefile.PL
