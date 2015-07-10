@@ -17,15 +17,14 @@ SWAT is Simple Web Application Test ( Tool )
 # WHY
 
 I know there are a lot of tests tool and frameworks, but let me  briefly tell _why_ I created swat.
-As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait while dev guys or QA team ensure that deploy if fine
-and nothing breaks on the road. So I need a **tool to run smoke tests_ against web applications**. Not tool only, but the way to **create such a tests from the scratch in way easy and fast enough**. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
+As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait while dev guys or QA team ensure that deploy is fine and nothing breaks on the road. So I need a **tool to run smoke tests against web applications**. Not tool only, but the way to **create such a tests from the scratch in way easy and fast enough**. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
 
 - is easy to use and flexible tool to run smoke tests against web applications
-- it's [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible 
-- it has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
-- it has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl one-liners calls )
-- it's it/devops/dev helper with low price mastering ( see my tutorial )
-- and yes ... it's fun :) 
+- is [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible 
+- has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
+- has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl one-liners calls )
+- is daily it/devops/dev helper with low price mastering ( see my tutorial )
+- and yes ... swat is fun :) 
 
 
 # Tutorial
@@ -59,12 +58,13 @@ Once swat is installed you have swat command line tool to run swat tests, but be
     swat ./my-app http://127.0.0.1 
 
 # DSL
-Swat DSL consists of 2 parts. Routes ( or URIs ) and check patterns.
+Swat DSL consists of 2 parts. Routes and check patterns.
 
 ## Routes
+Routes are http resources a tested web application should has.
 
-URI resolution is conventional / file system based. It's calculated as sub-tree path against project root directory. 
-Let's say we have a project layout:
+Swat utilize file system data calculating all existed routes as sub directories pathes in the project root directory. 
+Let we have a following project layout:
 
     example/my-app/    
     example/my-app/hello/    
@@ -75,17 +75,16 @@ When you give swat a run
 
     swat example/my-app 127.0.0.1 
 
-It just find all the directories holding get.txt files and resolve URI upon project root directory ( which is example/my-app ):
+It just find all the directories holding get.txt files and "create" routes:
 
     GET hello/
     GET hello/world
 
-Then check pattern come into play.
+Then check patterns come into play.
 
 ## Check patterns 
 
-As you can see from tutorial above check patterns are  just text files describing what is expected to return when request a given URI. 
-Check patterns file parsed by swat line by line and there are 3 types of entities my occur here:
+As you can see from tutorial above check patterns are  just text files describing what is expected to return when request a route. Check patterns file parsed by swat line by line and take an action depending on entity found. There are 3 types of entities may be found in check patterns file:
 
 - Expected Values
 - Comments
@@ -93,11 +92,11 @@ Check patterns file parsed by swat line by line and there are 3 types of entitie
 
 
 ### Expected values
-This is most usable that one may define at check patterns files. _It's just s string should be returned_ when swat request a given URI. Here are examples:
+This is most usable entity that one may define at check patterns files. _It's just s string should be returned_ when swat request a given URI. Here are examples:
 
     200 OK
     Hello World
-    <h1><title>Hello World</title></h1>
+    <head><title>Hello World</title></head>
 
 
 
@@ -107,7 +106,7 @@ Comments are lines started with '#' symbol, they are for human not for swat whic
     # this http status is expected
     200 OK
     Hello World # this string should be in the response 
-    <h1><title>Hello World</title></h1> # and it should be html code 
+    <head><title>Hello World</title></head> # and it should be proper html code 
 
 
 ### Perl one-liners code
@@ -161,8 +160,8 @@ As I say there are many swat.ini files may exist at your project, the one presen
     my-app/swat.ini
     my-app/hello/get.txt
     my-app/hello/swat.ini 
-    my -app/hello-world/get.txt
-    my -app/hello-world/swat.ini
+    my-app/hello-world/get.txt
+    my-app/hello-world/swat.ini
 
 
 # TAP
