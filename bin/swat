@@ -9,7 +9,7 @@ prove_flags=${prove_flags:='-v'}
 debug=${debug:=0}
 ignore_http_err=${ignore_http_err:=0}
 try_num=${try_num:=2}
-curl_connect_timeout=${curl_connect_timeout:=5}
+curl_connect_timeout=${curl_connect_timeout:=20}
 curl_max_time=${curl_max_time:=20}
 head_bytes_show=${head_bytes_show:=400}
 swat_ini_file=${swat_ini_file:='swat.ini'}
