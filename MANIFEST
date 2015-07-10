@@ -1,5 +1,10 @@
 bin/swat
 CHANGELOG.md
+examples/google/get.txt
+examples/google/swat.ini
+examples/my-app/hello/get.txt
+examples/my-app/hello/world/get.txt
+examples/my-app/swat.ini
 lib/swat.pm
 Makefile
 Makefile.PL

@@ -84,17 +84,19 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
 
 
 elif [ -z "${project}" ] ; then
-    echo "project directory parameter is not set"
-    echo "usage swat project URL"
+    echo "error - project directory parameter is not set"
+    echo "usage: swat project URL"
+    exit 1
 elif ! [ -d "${project}" ] ; then
-    echo "project directory does not exist"
-    echo "usage swat project URL"
+    echo "error - project directory does not exist"
+    echo "usage: swat project URL"
+    exit 1
 elif [ -z  "${url}"  ] ; then
-    echo "url parameter is not set"
-    echo "usage swat project URL"
+    echo "error - url parameter is not set"
+    echo "usage: swat project URL"
     exit 1
 else
-    echo "usage swat project URL"
+    echo "usage: swat project URL"
     exit 1
 fi
 

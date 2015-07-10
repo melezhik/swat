@@ -31,7 +31,7 @@ As devops I update a dozens of web application weekly, sometimes I just have _no
 
 ## Install swat
 
-    sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat/master swat
+    sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
 Once swat is installed you have swat command line tool to run swat tests, but before do this you need to create them.
 
