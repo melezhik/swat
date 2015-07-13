@@ -180,7 +180,7 @@ Swat is shipped as cpan package , once it's installed ( see install section ) yo
 
 ## options
 As swat *uses prove utility* to run tests, all the swat options are passed as is to prove utility.
-Follow prove utility documentation for variety of values you may set here. 
+Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for variety of values you may set here. 
 Default value for options is  `-v`. Here is another examples:
 
 - `-q -s` -  run tests in randome and quite mode
@@ -200,3 +200,4 @@ To the authors of ( see list ) without who swat would not appear to light
 - curl
 - TAP
 - Test::More
+- prove
