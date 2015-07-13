@@ -4,7 +4,7 @@ SWAT is Simple Web Application Test ( Tool )
 
     $ swat examples/google/ google.ru
     /home/vagrant/.swat/reports/google.ru/00.t ..
-    ok 1 - successfull reposnse from google.ru/
+    ok 1 - successful response from google.ru/
     # data file: /home/vagrant/.swat/reports/google.ru///content
     ok 2 - GET / returns 200 OK
     ok 3 - GET / returns Google
@@ -63,7 +63,7 @@ Swat DSL consists of 2 parts. Routes and check patterns.
 ## Routes
 Routes are http resources a tested web application should has.
 
-Swat utilize file system data calculating all existed routes as sub directories pathes in the project root directory. 
+Swat utilize file system data calculating all existed routes as sub directories paths in the project root directory. 
 Let we have a following project layout:
 
     example/my-app/    
@@ -143,7 +143,7 @@ One may set a proper environment variables to adjust swat settings:
 - curl_params - additional curl parameters being add to http requests, default value is `""`, follow curl documentation
 - curl_connect_timeout - follow curl documentation
 - curl_max_time - follow curl documentation
-- ignore_http_err - ignore http errors, if this paramets is off (set to `1`) returned  _error http codes_ will not result in test fails, usefull when one need to test something with response differ from  2\*\*,3\*\* http codes. Default value is `0`
+- ignore_http_err - ignore http errors, if this parameters is off (set to `1`) returned  _error http codes_ will not result in test fails, useful when one need to test something with response differ from  2\*\*,3\*\* http codes. Default value is `0`
 - try_num - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is `2`
 
 ## Swat.ini files
@@ -173,10 +173,11 @@ another test / reporting systems, follow TAP documentation to get more on this.
 
 Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called `swat', this is usage info on it:
 
-    swat project_dir URL
+    swat project_dir URL <prove_options>
 
 - URL - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
 - project_dir - is a project root directory 
+- prove_options - one may pass supplimental options which will be processed by prove, default value for prove_option parameter is `-v'. For example to run tests in quite mode you may set prove_options to '-q', see prove utility documentation for variety of options you may pass. 
 
 # Dependencies
 Not that many :)

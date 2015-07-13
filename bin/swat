@@ -64,6 +64,7 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
 
         echo "use Test::More q{no_plan};"  >> $tfile
         echo $\content_file = q{"${reports_dir}${path}/content.${http_meth}.txt};"  >> $tfile
+        echo $\prove_flags = q{"${prove_flags}};"  >> $tfile
         echo $\path = q{"${path}};"  >> $tfile
         echo $\http_meth = q{"${http_meth}};"  >> $tfile
         echo $\url = q{"${url}};"  >> $tfile

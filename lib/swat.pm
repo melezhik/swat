@@ -1,12 +1,13 @@
 package swat;
-our $VERSION = v0.1.3;
+our $VERSION = v0.1.4;
 1;
 
 package main;
 use strict;
 use Test::More;
 our $HTTP_RESPONSE;
-our ($curl_cmd, $content_file, $url, $path, $http_meth, $debug, $ignore_http_err, $try_num, $head_bytes_show, $deploy_env );
+our ($curl_cmd, $content_file, $url, $path, $http_meth, $debug, $ignore_http_err, $try_num, $head_bytes_show );
+our ($prove_flags);
 our ($a, $b);
 
 $| = 1;
@@ -87,7 +88,16 @@ sub check_line {
 }
 
 
+sub header {
+
+    diag("start swat for $url/$path");
+    diag("prove flags $prove_flags | try num $try_num");
+
+}
+
 sub generate_asserts {
+
+    header();
 
     my $patterns_file = shift;
 

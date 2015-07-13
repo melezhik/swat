@@ -1,3 +1,9 @@
+# 0.1.4
+- fix typos in README
+- notion of prove options in README
+- add some extra info in swat output 
+
+
 # 0.1.3
 - fix for case when post and get check patterns files exist for the same route
 - typo fixes in lib/swat.pm help info 
