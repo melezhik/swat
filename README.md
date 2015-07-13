@@ -42,7 +42,7 @@ Once swat is installed you have swat command line tool to run swat tests, but be
 
     # define http URI application should response
 
-    mkdir -p my-app/hello # GET /hello-world 
+    mkdir -p my-app/hello # GET /hello
     mkdir -p my-app/hello/world # GET /hello-world 
 
     # define content the URIs should return
