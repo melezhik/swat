@@ -173,11 +173,18 @@ another test / reporting systems, follow TAP documentation to get more on this.
 
 Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called `swat', this is usage info on it:
 
-    swat project_dir URL <prove_options>
+    swat project_dir URL <options>
 
 - URL - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
-- project_dir - is a project root directory 
-- prove_options - one may pass supplimental options which will be processed by prove, default value for prove_option parameter is `-v'. For example to run tests in quite mode you may set prove_options to '-q', see prove utility documentation for variety of options you may pass. 
+- project_dir - is a project root directoy 
+
+## options
+As swat *uses prove utility* to run tests, all the swat options are passed as is to prove utility.
+Follow prove utility documentation for variety of values you may set here. 
+Default value for options is  `-v'. Here is another examples:
+
+- `-q -s' -  run tests in randome and quite mode
+ 
 
 # Dependencies
 Not that many :)

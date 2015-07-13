@@ -2,10 +2,12 @@
 
 project=$1
 url=$2
+shift;
+shift;
 
-
-prove_flags=$3
+prove_flags="$@"
 prove_flags=${prove_flags:='-v'}
+
 debug=${debug:=0}
 ignore_http_err=${ignore_http_err:=0}
 try_num=${try_num:=2}
@@ -64,7 +66,6 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
 
         echo "use Test::More q{no_plan};"  >> $tfile
         echo $\content_file = q{"${reports_dir}${path}/content.${http_meth}.txt};"  >> $tfile
-        echo $\prove_flags = q{"${prove_flags}};"  >> $tfile
         echo $\path = q{"${path}};"  >> $tfile
         echo $\http_meth = q{"${http_meth}};"  >> $tfile
         echo $\url = q{"${url}};"  >> $tfile
@@ -85,7 +86,7 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
 
     done;
 
-    prove -m -r $prove_flags $reports_dir;
+    prove -m -r $@ "$prove_flags" $reports_dir;
 
 
 elif [ -z "${project}" ] ; then

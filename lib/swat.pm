@@ -7,7 +7,6 @@ use strict;
 use Test::More;
 our $HTTP_RESPONSE;
 our ($curl_cmd, $content_file, $url, $path, $http_meth, $debug, $ignore_http_err, $try_num, $head_bytes_show );
-our ($prove_flags);
 our ($a, $b);
 
 $| = 1;
@@ -91,7 +90,7 @@ sub check_line {
 sub header {
 
     diag("start swat for $url/$path");
-    diag("prove flags $prove_flags | try num $try_num");
+    diag("try num $try_num");
 
 }
 
