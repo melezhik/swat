@@ -1,5 +1,5 @@
 package swat;
-our $VERSION = v0.1.2;
+our $VERSION = v0.1.3;
 1;
 
 package main;
@@ -37,7 +37,7 @@ sub make_http_request {
 
     diag `head -c $head_bytes_show $content_file` if $debug;
 
-    ok($st, "successfull reposnse from $url$path") unless $ignore_http_err;
+    ok($st, "successfull response from $http_meth $url$path") unless $ignore_http_err;
 
     diag "data file: $content_file";
 
