@@ -171,7 +171,7 @@ another test / reporting systems, follow TAP documentation to get more on this.
 
 # Command line tool
 
-Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called `swat', this is usage info on it:
+Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called `swat`, this is usage info on it:
 
     swat project_dir URL <options>
 
@@ -181,7 +181,7 @@ Swat is shipped as cpan package , once it's installed ( see install section ) yo
 ## options
 As swat *uses prove utility* to run tests, all the swat options are passed as is to prove utility.
 Follow prove utility documentation for variety of values you may set here. 
-Default value for options is  `-v'. Here is another examples:
+Default value for options is  `-v`. Here is another examples:
 
 - `-q -s' -  run tests in randome and quite mode
  
