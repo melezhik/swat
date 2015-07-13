@@ -1,6 +1,6 @@
 .git
 blib
 \.old
-\.tar\.gz
+\.tar
 \.bak
 \.SKIP
