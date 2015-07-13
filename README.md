@@ -183,7 +183,7 @@ As swat *uses prove utility* to run tests, all the swat options are passed as is
 Follow prove utility documentation for variety of values you may set here. 
 Default value for options is  `-v`. Here is another examples:
 
-- `-q -s' -  run tests in randome and quite mode
+- `-q -s` -  run tests in randome and quite mode
  
 
 # Dependencies
