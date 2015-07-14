@@ -53,9 +53,9 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
         http_meth=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
 
         if [ "$ignore_http_err" -eq '1' ]; then
-            curl_cmd="curl -X $http_meth --noproxy $url ${curl_params} -k  --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L  --stderr - http://$url$path"
+            curl_cmd="curl -X $http_meth --noproxy $url ${curl_params} -k  --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L  --stderr - $url$path"
         else
-            curl_cmd="curl -X $http_meth --noproxy $url ${curl_params} -k -f --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L  --stderr - http://$url$path"
+            curl_cmd="curl -X $http_meth --noproxy $url ${curl_params} -k -f --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L  --stderr - $url$path"
         fi
 
         if [ "$http_meth" = 'GET' ]; then

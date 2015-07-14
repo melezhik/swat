@@ -1,3 +1,6 @@
+# 0.1.6
+- does not add http:// for requested url 
+
 # 0.1.5
 - curl_params varibale now is respected 
 - small internal changes ( path to session file )

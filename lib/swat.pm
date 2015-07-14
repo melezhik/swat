@@ -1,5 +1,5 @@
 package swat;
-our $VERSION = v0.1.5;
+our $VERSION = v0.1.6;
 1;
 
 package main;
