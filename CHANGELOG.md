@@ -1,3 +1,8 @@
+# 0.1.5
+- curl_params varibale now is respected 
+- small internal changes ( path to session file )
+
+
 # 0.1.4
 - fix typos in README
 - notion of prove options in README

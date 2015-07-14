@@ -9,6 +9,7 @@ prove_flags="$@"
 prove_flags=${prove_flags:='-v'}
 
 debug=${debug:=0}
+curl_params=${curl_params:=''}
 ignore_http_err=${ignore_http_err:=0}
 try_num=${try_num:=2}
 curl_connect_timeout=${curl_connect_timeout:=20}
@@ -16,9 +17,11 @@ curl_max_time=${curl_max_time:=20}
 head_bytes_show=${head_bytes_show:=400}
 swat_ini_file=${swat_ini_file:='swat.ini'}
 
-mkdir -p ~/.swat/.cache/$entity/
 
-session_file=~/.swat/.cache/$entity/session
+rm -rf ~/.swat/.cache/$project/$url
+mkdir -p ~/.swat/.cache/$project/$url
+
+session_file=~/.swat/.cache/$project/$url/session
 
 
 if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; then
@@ -28,7 +31,7 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
 
     echo "try_num=$try_num" > $session_file
     echo "ignore_http_err=$ignore_http_err" >> $session_file
-    echo "curl_params=''" >> $session_file
+    echo "curl_params='$curl_params'" >> $session_file
 
     test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
 
