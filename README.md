@@ -132,6 +132,25 @@ When talking about swat I always say about Get http request, but swat may send a
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt
 
+You may use curl_params settings ( follow swat settings section for details ) to define post data, there are examples:
+
+
+- -d
+
+    # post data sending by html form submit 
+    # place this in swat.ini file or sets as env variable
+
+    curl_params='- d name=daniel -d skill=lousy'
+
+- --data-binary
+
+    # post data sending as is
+    # place this in swat.ini file or sets as env variable
+
+    curl_params=`echo -E "--data-binary
+    '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
+    curl_params="${curl_params} -H 'Content-Type: application/json'"
+
 
 # Swat settings
 
