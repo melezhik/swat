@@ -1,5 +1,5 @@
 package swat;
-our $VERSION = v0.1.6;
+our $VERSION = v0.1.7;
 1;
 
 package main;
@@ -90,8 +90,7 @@ sub check_line {
 sub header {
 
     diag("start swat for $url/$path");
-    diag("try num $try_num");
-
+    diag("try num $try_num | ignore http errors $ignore_http_err")
 }
 
 sub generate_asserts {
