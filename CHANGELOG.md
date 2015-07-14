@@ -1,5 +1,6 @@
 # 0.1.7
 - add some extra info in swat output 
+- update RM - post data requests
 
 # 0.1.6
 - does not add http:// for requested url 
