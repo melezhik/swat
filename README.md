@@ -135,15 +135,17 @@ When talking about swat I always say about Get http request, but swat may send a
 You may use curl_params settings ( follow swat settings section for details ) to define post data, there are examples:
 
 
-- `-d` Post data sending by html form submit. Place this in swat.ini file or sets as env variable:
+- `-d` - Post data sending by html form submit.
 
 ```
-    curl_params='- d name=daniel -d skill=lousy'
+    # Place this in swat.ini file or sets as env variable:
+    curl_params='-d name=daniel -d skill=lousy'
 ```
 
-- `--data-binary` Post data sending as is. Place this in swat.ini file or sets as env variable:
+- `--data-binary` - Post data sending as is.
 
 ```
+    ## Place this in swat.ini file or sets as env variable:
     curl_params=`echo -E "--data-binary
     '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
     curl_params="${curl_params} -H 'Content-Type: application/json'"
