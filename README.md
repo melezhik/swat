@@ -146,8 +146,7 @@ You may use curl_params settings ( follow swat settings section for details ) to
 
 ```
     # Place this in swat.ini file or sets as env variable:
-    curl_params=`echo -E "--data-binary
-    '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
+    curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
     curl_params="${curl_params} -H 'Content-Type: application/json'"
 ```
 
