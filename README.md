@@ -159,7 +159,7 @@ Swat comes with settings defined in two contexts:
 
 ## Environmental variables
 
-Defining a proper environment variables will provide swat settings, this is lowest priority level settings
+Defining a proper environment variables will provide swat settings.
 
 - debug - set to 1 if you want to see some debug information in output, default value is `0`
 - curl_params - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this
@@ -208,12 +208,12 @@ Here is the list of settings/contexts  in priority ascending order:
 
 Swat process settings in order. For every route found swat:
 - Clear all settings 
-- Apply settings from environmental variables if any given ( if any given )
+- Apply settings from environmental variables ( if any given )
 - Apply settings from swat.ini file in home directory ( if any given )
 - Apply settings from swat.ini file in project root directory ( if any given )
 - And finaly apply settings from swat.ini file in route directory ( if any given )
 
-
+# TAP 
 
 Swat produce output in [TAP](https://testanything.org/) format , that means you may use your favorite tap parsers to bring result to
 another test / reporting systems, follow TAP documentation to get more on this.
