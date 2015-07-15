@@ -159,7 +159,7 @@ Swat comes with settings defined in two contexts:
 
 ## Environmental variables
 
-Defining a proper environment variables will provide swat settings
+Defining a proper environment variables will provide swat settings, this is lowest priority level settings
 
 - debug - set to 1 if you want to see some debug information in output, default value is `0`
 - curl_params - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this
@@ -196,7 +196,7 @@ Thus swat.ini file should be bash file with swat variables definitions. Here is 
 
 ## Settings priority table
 
-Here is the list of priorities of settings by context/scope in ascending order
+Here is the list of settings/contexts  in priority ascending order:
 
 | context | location | priority  level |
 | --------| ----- | --------- |---- |
