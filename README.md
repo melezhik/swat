@@ -175,7 +175,7 @@ Swat checks files named `swat.ini` in the following directories
 - $prjoect\_root\_directory/swat.ini
 - $route_directory/swat.ini
 
-Here are examples of swat.ini files:
+Here are examples of locations of swat.ini files:
 
 ```    
     ~/swat.ini 
@@ -188,12 +188,22 @@ Here are examples of swat.ini files:
 
 Once file exists at ay location swat simply **bash source it** to apply settings
 
-So, swat.ini file should be bash file with swat variables definitions. Here is example:
+Thus swat.ini file should be bash file with swat variables definitions. Here is example:
 
     # the content of swat.ini file:
     curl_params="-H 'Content-Type: text/html'"
     debug=1
 
+## Settings priority table
+
+Here is the list of priorities of settings by context/scope in ascending order
+
+| context | location | priority  level |
+| --------| ----- | --------- |---- |
+| environmental variables | ---                     | 1 | 
+| swat.ini file           | ~/swat.ini              | 2 | 
+| swat.ini file           | project root directory  | 3 | 
+| swat.ini file           | route directory         | 4 | 
 
 # TAP
 
