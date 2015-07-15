@@ -1,6 +1,7 @@
 # 0.1.7
+- small fixes related swat settings 
 - add some extra info in swat output 
-- update RM - post data requests
+- a lot of impovements to documentation
 - add todo list
 
 # 0.1.6

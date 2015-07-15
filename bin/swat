@@ -21,7 +21,7 @@ swat_ini_file=${swat_ini_file:='swat.ini'}
 rm -rf ~/.swat/.cache/$project/$url
 mkdir -p ~/.swat/.cache/$project/$url
 
-session_file=~/.swat/.cache/$project/$url/session
+swat_environment_settings_file=~/.swat/.cache/$project/$url/swat_environment_settings.bash
 
 
 if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; then
@@ -29,9 +29,12 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
 
     safe_project=`perl -MFile::Basename -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print $i' $project`
 
-    echo "try_num=$try_num" > $session_file
-    echo "ignore_http_err=$ignore_http_err" >> $session_file
-    echo "curl_params='$curl_params'" >> $session_file
+    echo "debug=$debug" > $swat_environment_settings_file
+    echo "try_num=$try_num" > $swat_environment_settings_file
+    echo "ignore_http_err=$ignore_http_err" >> $swat_environment_settings_file
+    echo "curl_connect_timeout=$curl_connect_timeout" > $swat_environment_settings_file
+    echo "curl_max_time=$curl_max_time" > $swat_environment_settings_file
+    echo "curl_params='$curl_params'" >> $swat_environment_settings_file
 
     test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
 
@@ -43,7 +46,14 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
 
         test_dir=`perl -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print $sp' $f`;
 
-        test -f $session_file && source $session_file
+        unset $debug
+        unset $try_num
+        unset $ignore_http_err
+        unset $curl_connect_timeout
+        unset $curl_max_time
+        unset $curl_params
+
+        test -f $swat_environment_settings_file && source $swat_environment_settings_file
         test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
         test -f $test_dir/$swat_ini_file && source $test_dir/$swat_ini_file
 
