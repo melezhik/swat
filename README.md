@@ -152,7 +152,7 @@ You may use curl_params settings ( follow swat settings section for details ) to
 
 # Swat settings
 
-Swat comes with settings may be defined in two contexts:
+Swat comes with settings defined in two contexts:
 
 - environmental variables
 - swat.ini files
@@ -205,7 +205,15 @@ Here is the list of priorities of settings by context/scope in ascending order
 | swat.ini file           | project root directory  | 3 | 
 | swat.ini file           | route directory         | 4 | 
 
-# TAP
+
+Swat process settings in order. For every route found swat
+- Clear all settings 
+- Apply environmental variables if any given ( if given )
+- Apply swat.ini file in home directory ( if given )
+- Apply project root directory swat.ini file ( if given )
+- And finaly apply route directory swat.inif file ( if given )
+
+
 
 Swat produce output in [TAP](https://testanything.org/) format , that means you may use your favorite tap parsers to bring result to
 another test / reporting systems, follow TAP documentation to get more on this.
