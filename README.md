@@ -40,14 +40,14 @@ Once swat is installed you have swat command line tool to run swat tests, but be
 
 ## Create tests
 
-    mkdir  my-app/ # create a project directory to hold tests
+    mkdir  my-app/ # create a project root directory to hold tests
 
-    # define http URI application should response
+    # define http URIs application should response to
 
     mkdir -p my-app/hello # GET /hello
     mkdir -p my-app/hello/world # GET /hello/world 
 
-    # define content the URIs should return
+    # define the content the expected to return by requested URIs
 
     echo 200 OK >> my-app/hello/get.txt
     echo 200 OK >> my-app/hello/world/get.txt
@@ -86,7 +86,7 @@ Then check patterns come into play.
 
 ## Check patterns 
 
-As you can see from tutorial above check patterns are  just text files describing what is expected to return when request a route. Check patterns file parsed by swat line by line and take an action depending on entity found. There are 3 types of entities may be found in check patterns file:
+As you can see from tutorial above check patterns are  just text files describing **what** is expected to return when route requested. Check patterns file parsed by swat line by line and take an action depending on entity found. There are 3 types of entities may be found in check patterns file:
 
 - Expected Values
 - Comments
@@ -152,14 +152,17 @@ You may use curl_params settings ( follow swat settings section for details ) to
 
 # Swat settings
 
-Swat has some settings may redefined as _environmental variables_ and|or using swat.ini files 
+Swat comes with settings may be defined in two contexts:
+
+- environmental variables
+- swat.ini files
 
 ## Environmental variables
 
-One may set a proper environment variables to adjust swat settings:
+Defining a proper environment variables will provide swat settings
 
 - debug - set to 1 if you want to see some debug information in output, default value is `0`
-- curl_params - additional curl parameters being add to http requests, default value is `""`, follow curl documentation
+- curl_params - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this
 - curl_connect_timeout - follow curl documentation
 - curl_max_time - follow curl documentation
 - ignore_http_err - ignore http errors, if this parameters is off (set to `1`) returned  _error http codes_ will not result in test fails, useful when one need to test something with response differ from  2\*\*,3\*\* http codes. Default value is `0`
@@ -167,20 +170,29 @@ One may set a proper environment variables to adjust swat settings:
 
 ## Swat.ini files
 
-Swat also checks files named swat.ini in _every project sub-directory_ and if one exists apply settings from it.
-Swat.ini file should be bash file with swat variables definitions:
+Swat checks files named `swat.ini` in the following directories
+- ~/swat.ini
+- $prjoect\_root\_directory/swat.ini
+- $route_directory/swat.ini
+
+Here are examples of swat.ini files:
+
+```    
+    ~/swat.ini 
+    my-app/swat.ini # project_root based swat.ini file
+    my-app/hello/get.txt
+    my-app/hello/swat.ini # route based  swat.ini file ( route hello ) 
+    my-app/hello/world/get.txt
+    my-app/hello/world/swat.ini # route based  swat.ini file ( route hello/world ) 
+```
+
+Once file exists at ay location swat simply **bash source it** to apply settings
+
+So, swat.ini file should be bash file with swat variables definitions. Here is example:
 
     # the content of swat.ini file:
     curl_params="-H 'Content-Type: text/html'"
     debug=1
-
-As I say there are many swat.ini files may exist at your project, the one present at the deepest hierarchy level will override predecessors
-
-    my-app/swat.ini
-    my-app/hello/get.txt
-    my-app/hello/swat.ini 
-    my-app/hello-world/get.txt
-    my-app/hello-world/swat.ini
 
 
 # TAP
