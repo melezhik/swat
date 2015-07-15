@@ -178,12 +178,12 @@ Swat checks files named `swat.ini` in the following directories
 Here are examples of locations of swat.ini files:
 
 ```    
-    ~/swat.ini 
-    my-app/swat.ini # project_root based swat.ini file
+    ~/swat.ini # home directory swat.ini file
+    my-app/swat.ini # project_root directory swat.ini file
     my-app/hello/get.txt
-    my-app/hello/swat.ini # route based  swat.ini file ( route hello ) 
+    my-app/hello/swat.ini # route directory swat.ini file ( route hello ) 
     my-app/hello/world/get.txt
-    my-app/hello/world/swat.ini # route based  swat.ini file ( route hello/world ) 
+    my-app/hello/world/swat.ini # route directory swat.ini file ( route hello/world ) 
 ```
 
 Once file exists at ay location swat simply **bash source it** to apply settings
@@ -200,18 +200,18 @@ Here is the list of settings/contexts  in priority ascending order:
 
 | context | location | priority  level |
 | --------| ----- | --------- |---- |
-| environmental variables | ---                     | 1 | 
-| swat.ini file           | ~/swat.ini              | 2 | 
+| swat.ini file           | ~/swat.ini              | 1 | 
+| environmental variables | ---                     | 2 | 
 | swat.ini file           | project root directory  | 3 | 
 | swat.ini file           | route directory         | 4 | 
 
 
-Swat process settings in order. For every route found swat
+Swat process settings in order. For every route found swat:
 - Clear all settings 
-- Apply environmental variables if any given ( if given )
-- Apply swat.ini file in home directory ( if given )
-- Apply project root directory swat.ini file ( if given )
-- And finaly apply route directory swat.inif file ( if given )
+- Apply settings from environmental variables if any given ( if any given )
+- Apply settings from swat.ini file in home directory ( if any given )
+- Apply settings from swat.ini file in project root directory ( if any given )
+- And finaly apply settings from swat.ini file in route directory ( if any given )
 
 
 
