@@ -1,3 +1,6 @@
+# 0.1.10
+- CPAN compatible version ( minor fixes in Makefile.PL )
+
 # 0.1.9
 - Makefile.PL - does not require any specific version of perl 
 
