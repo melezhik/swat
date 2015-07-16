@@ -6,7 +6,7 @@ package main;
 use strict;
 use Test::More;
 our $HTTP_RESPONSE;
-our ($curl_cmd, $content_file, $url, $path, $http_meth, $debug, $ignore_http_err, $try_num, $head_bytes_show );
+our ($curl_cmd, $content_file, $url, $path, $http_meth, $debug, $ignore_http_err, $try_num, $debug_bytes );
 our ($a, $b);
 
 $| = 1;
@@ -35,7 +35,7 @@ sub make_http_request {
     $HTTP_RESPONSE.= $_ while <F>;
     close F;
 
-    diag `head -c $head_bytes_show $content_file` if $debug;
+    diag `head -c $debug_bytes $content_file` if $debug;
 
     ok($st, "successfull response from $http_meth $url$path") unless $ignore_http_err;
 
@@ -90,7 +90,7 @@ sub check_line {
 sub header {
 
     diag("start swat for $url/$path");
-    diag("try num $try_num | ignore http errors $ignore_http_err")
+    diag("debug $debug | try num $try_num | ignore http errors $ignore_http_err")
 }
 
 sub generate_asserts {

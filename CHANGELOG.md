@@ -1,4 +1,5 @@
 # 0.1.8
+- http port variable
 - update documentation 
 - improve examples
 
