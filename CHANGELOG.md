@@ -1,3 +1,8 @@
+# 0.1.8
+- update documentation 
+- improve examples
+
+
 # 0.1.7
 - small fixes related swat settings 
 - add some extra info in swat output 

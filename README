@@ -15,18 +15,18 @@ SWAT is Simple Web Application Test ( Tool )
     All tests successful.
     Files=1, Tests=3, 12 wallclock secs ( 0.00 usr  0.00 sys +  0.02 cusr  0.00 csys =  0.02 CPU)
     Result: PASS
-    
+
 # WHY
 
 I know there are a lot of tests tool and frameworks, but let me  briefly tell _why_ I created swat.
 As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait while dev guys or QA team ensure that deploy is fine and nothing breaks on the road. So I need a **tool to run smoke tests against web applications**. Not tool only, but the way to **create such a tests from the scratch in way easy and fast enough**. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
 
 - is easy to use and flexible tool to run smoke tests against web applications
-- is [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible 
+- is [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible
 - has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
 - has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl one-liners calls )
 - is daily it/devops/dev helper with low price mastering ( see my tutorial )
-- and yes ... swat is fun :) 
+- and yes ... swat is fun :)
 
 
 # Tutorial
@@ -45,7 +45,7 @@ Once swat is installed you have swat command line tool to run swat tests, but be
     # define http URIs application should response to
 
     mkdir -p my-app/hello # GET /hello
-    mkdir -p my-app/hello/world # GET /hello/world 
+    mkdir -p my-app/hello/world # GET /hello/world
 
     # define the content the expected to return by requested URIs
 
@@ -57,7 +57,7 @@ Once swat is installed you have swat command line tool to run swat tests, but be
 
 ## Run tests
 
-    swat ./my-app http://127.0.0.1 
+    swat ./my-app http://127.0.0.1
 
 # DSL
 Swat DSL consists of 2 parts. Routes and check patterns.
@@ -65,17 +65,17 @@ Swat DSL consists of 2 parts. Routes and check patterns.
 ## Routes
 Routes are http resources a tested web application should has.
 
-Swat utilize file system data calculating all existed routes as sub directories paths in the project root directory. 
+Swat utilize file system data calculating all existed routes as sub directories paths in the project root directory.
 Let we have a following project layout:
 
-    example/my-app/    
-    example/my-app/hello/    
-    example/my-app/hello/get.txt    
-    example/my-app/hello/world/get.txt    
+    example/my-app/
+    example/my-app/hello/
+    example/my-app/hello/get.txt
+    example/my-app/hello/world/get.txt
 
 When you give swat a run
 
-    swat example/my-app 127.0.0.1 
+    swat example/my-app 127.0.0.1
 
 It just find all the directories holding get.txt files and "create" routes:
 
@@ -84,7 +84,7 @@ It just find all the directories holding get.txt files and "create" routes:
 
 Then check patterns come into play.
 
-## Check patterns 
+## Check patterns
 
 As you can see from tutorial above check patterns are  just text files describing **what** is expected to return when route requested. Check patterns file parsed by swat line by line and take an action depending on entity found. There are 3 types of entities may be found in check patterns file:
 
@@ -107,13 +107,13 @@ Comments are lines started with '#' symbol, they are for human not for swat whic
 
     # this http status is expected
     200 OK
-    Hello World # this string should be in the response 
-    <head><title>Hello World</title></head> # and it should be proper html code 
+    Hello World # this string should be in the response
+    <head><title>Hello World</title></head> # and it should be proper html code
 
 
 ### Perl one-liners code
 
-Everything started with `code:` would be treated by swat as perl code to execute. 
+Everything started with `code:` would be treated by swat as perl code to execute.
 There are a _lot of_ possibilities! Please follow [Test::More](search.cpan.org/perldoc/Test::More) documentation to get more info about useful function you may call here.
 
     code: skip('next test is skipped',1) # skip next check forever
@@ -125,9 +125,9 @@ Everything started with `regexp:` would be treated as regular expression.
 
     # this is example of regexp check
     regexp: App Version Number: (\d+\.\d+\.\d+)
-    
+
 # Post requests
-When talking about swat I always say about Get http request, but swat may send a Post http request just name your check patterns file  as post.txt instead of get.txt 
+When talking about swat I always say about Get http request, but swat may send a Post http request just name your check patterns file  as post.txt instead of get.txt
 
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt
@@ -159,7 +159,7 @@ Swat comes with settings defined in two contexts:
 
 ## Environmental variables
 
-Defining a proper environment variables will provide swat settings, this is lowest priority level settings
+Defining a proper environment variables will provide swat settings.
 
 - debug - set to 1 if you want to see some debug information in output, default value is `0`
 - curl_params - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this
@@ -172,18 +172,18 @@ Defining a proper environment variables will provide swat settings, this is lowe
 
 Swat checks files named `swat.ini` in the following directories
 - ~/swat.ini
-- $prjoect\_root\_directory/swat.ini
+- $project\_root\_directory/swat.ini
 - $route_directory/swat.ini
 
 Here are examples of locations of swat.ini files:
 
-```    
-    ~/swat.ini 
-    my-app/swat.ini # project_root based swat.ini file
+```
+    ~/swat.ini # home directory swat.ini file
+    my-app/swat.ini # project_root directory swat.ini file
     my-app/hello/get.txt
-    my-app/hello/swat.ini # route based  swat.ini file ( route hello ) 
+    my-app/hello/swat.ini # route directory swat.ini file ( route hello )
     my-app/hello/world/get.txt
-    my-app/hello/world/swat.ini # route based  swat.ini file ( route hello/world ) 
+    my-app/hello/world/swat.ini # route directory swat.ini file ( route hello/world )
 ```
 
 Once file exists at ay location swat simply **bash source it** to apply settings
@@ -200,20 +200,20 @@ Here is the list of settings/contexts  in priority ascending order:
 
 | context | location | priority  level |
 | --------| ----- | --------- |---- |
-| environmental variables | ---                     | 1 | 
-| swat.ini file           | ~/swat.ini              | 2 | 
-| swat.ini file           | project root directory  | 3 | 
-| swat.ini file           | route directory         | 4 | 
+| swat.ini file           | ~/swat.ini              | 1 |
+| environmental variables | ---                     | 2 |
+| swat.ini file           | project root directory  | 3 |
+| swat.ini file           | route directory         | 4 |
 
 
-Swat process settings in order. For every route found swat
-- Clear all settings 
-- Apply environmental variables if any given ( if given )
-- Apply swat.ini file in home directory ( if given )
-- Apply project root directory swat.ini file ( if given )
-- And finaly apply route directory swat.inif file ( if given )
+Swat process settings in order. For every route found swat:
+- Clear all settings
+- Apply settings from environmental variables ( if any given )
+- Apply settings from swat.ini file in home directory ( if any given )
+- Apply settings from swat.ini file in project root directory ( if any given )
+- And finally apply settings from swat.ini file in route directory ( if any given )
 
-
+# TAP
 
 Swat produce output in [TAP](https://testanything.org/) format , that means you may use your favorite tap parsers to bring result to
 another test / reporting systems, follow TAP documentation to get more on this.
@@ -225,15 +225,22 @@ Swat is shipped as cpan package , once it's installed ( see install section ) yo
     swat project_dir URL <options>
 
 - URL - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
-- project_dir - is a project root directoy 
+- project_dir - is a project root directory
 
 ## options
 As swat *uses prove utility* to run tests, all the swat options are passed as is to prove utility.
-Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for variety of values you may set here. 
+Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for variety of values you may set here.
 Default value for options is  `-v`. Here is another examples:
 
-- `-q -s` -  run tests in randome and quite mode
- 
+- `-q -s` -  run tests in random and quite mode
+
+
+# Examples
+
+./examples directory contains examples of swat tests for different cases. Follow README.md files for details.
+
+
+
 
 # Dependencies
 Not that many :)
@@ -243,10 +250,11 @@ Not that many :)
 # AUTHOR
 [Aleksei Melezhik](mailto:melezhik@gmail.com)
 
-# Thanks 
-To the authors of ( see list ) without who swat would not appear to light 
+# Thanks
+To the authors of ( see list ) without who swat would not appear to light
 - perl
 - curl
 - TAP
 - Test::More
 - prove
+
