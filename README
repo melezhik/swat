@@ -162,11 +162,13 @@ Swat comes with settings defined in two contexts:
 Defining a proper environment variables will provide swat settings.
 
 - debug - set to 1 if you want to see some debug information in output, default value is `0`
+- debug_bytes - number of bytes of http response  to be dumped out when debug is on. default value is `500`
+- ignore_http_err - ignore http errors, if this parameters is off (set to `1`) returned  _error http codes_ will not result in test fails, useful when one need to test something with response differ from  2\*\*,3\*\* http codes. Default value is `0`
+- try_num - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is `2`
 - curl_params - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this
 - curl_connect_timeout - follow curl documentation
 - curl_max_time - follow curl documentation
-- ignore_http_err - ignore http errors, if this parameters is off (set to `1`) returned  _error http codes_ will not result in test fails, useful when one need to test something with response differ from  2\*\*,3\*\* http codes. Default value is `0`
-- try_num - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is `2`
+- port  - http port of tested host, default value is '80'
 
 ## Swat.ini files
 
