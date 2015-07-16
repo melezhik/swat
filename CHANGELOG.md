@@ -1,3 +1,6 @@
+# 0.1.9
+- Makefile.PL - does not require any specific version of perl 
+
 # 0.1.8
 - http port variable
 - update documentation 
