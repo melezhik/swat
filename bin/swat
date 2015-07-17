@@ -140,7 +140,7 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
             curl_cmd="$curl_cmd -f"
         fi
 
-        if [ -n "${port}" ]; then
+        if [ -n "${curl_params}" ]; then
            curl_cmd="$curl_cmd ${curl_params}"
         fi
 

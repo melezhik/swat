@@ -1,2 +1,0 @@
-- this is example of testing post requests using swat
-- usage: swat examples/ebcsolutions/ http://www.ebcsolutions.com/forms/dump.php
