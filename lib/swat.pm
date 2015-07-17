@@ -1,5 +1,5 @@
 package swat;
-our $VERSION = v0.1.12;
+our $VERSION = v0.1.13;
 1;
 
 package main;
@@ -97,13 +97,24 @@ sub generate_asserts {
 
     header();
 
-    my $patterns_file = shift;
+    my $filepath_or_array_ref = shift;
 
-    open my $fh, $patterns_file or die $!;
+    my @ents = ();
+
+    if ( ref($filepath_or_array_ref) eq 'ARRAY') {
+        @ents = @$filepath_or_array_ref
+    }else{
+        open my $fh, $filepath_or_array_ref or die $!;
+        while (my $l = <$fh>){
+            push @ents, $l
+        }
+        close $fh;
+    }
+
 
     my $comment;
 
-    while (my $l = <$fh>){
+    for my $l (@ents){
 
         chomp $l;
         
@@ -132,7 +143,6 @@ sub generate_asserts {
         }
     }
 
-    close $fh;
 
 }
 

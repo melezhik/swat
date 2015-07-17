@@ -33,11 +33,11 @@ As devops I update a dozens of web application weekly, sometimes I just have _no
 
 ## Install swat
 
-## developer release
+- developer release
 
     sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
-## stable release
+- stable release
 
     sudo cpan install swat
 
@@ -175,6 +175,7 @@ Defining a proper environment variables will provide swat settings.
 - curl_connect_timeout - follow curl documentation
 - curl_max_time - follow curl documentation
 - port  - http port of tested host, default value is '80'
+- noproxy  - asc curl do not use http proxy when  making requests, default value is `1`
 
 ## Swat.ini files
 

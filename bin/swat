@@ -54,6 +54,9 @@ if [ -n "${port}" ]; then
     echo "port=$port" >> $swat_environment_settings_file
 fi
 
+if [ -n "${noproxy}" ]; then
+    echo "noproxy=$noproxy" >> $swat_environment_settings_file
+fi
 
 # apply home directory swat settings
 test -f ~/$swat_ini_file && source ~/$swat_ini_file
@@ -69,6 +72,7 @@ ignore_http_err=${ignore_http_err:=0}
 try_num=${try_num:=2}
 curl_connect_timeout=${curl_connect_timeout:=20}
 curl_max_time=${curl_max_time:=20}
+noproxy=${noproxy:=1}
 
 
 # save `merged' result to session file
@@ -124,11 +128,23 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
             http_url=$url
         fi
 
-        if [ "$ignore_http_err" -eq '1' ]; then
-            curl_cmd="curl -X $http_meth --noproxy $http_url ${curl_params} -k  --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L  --stderr - $http_url$path"
+        if [ "$noproxy" -eq '1' ]; then
+            curl_cmd="curl -X $http_meth --noproxy $http_url"
         else
-            curl_cmd="curl -X $http_meth --noproxy $http_url ${curl_params} -k -f --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L  --stderr - $http_url$path"
+            curl_cmd="curl -X $http_meth"
         fi
+
+        curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L --stderr -"
+
+        if [ "$ignore_http_err" -eq '0' ]; then
+            curl_cmd="$curl_cmd -f"
+        fi
+
+        if [ -n "${port}" ]; then
+           curl_cmd="$curl_cmd ${curl_params}"
+        fi
+
+        curl_cmd="$curl_cmd $http_url$path"
 
         if [ "$http_meth" = 'GET' ]; then
             tfile="${reports_dir}/${path}/00.t"
