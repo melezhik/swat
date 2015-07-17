@@ -1,2 +1,2 @@
 - this is example of testing post requests using swat
-- usage: swat examples/post-request http://jsonplaceholder.typicode.com
+- usage: `swat examples/post-request http://jsonplaceholder.typicode.com`
