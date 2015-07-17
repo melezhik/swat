@@ -1,3 +1,6 @@
+# 0.1.12
+- Add pod documentation to lib/swat.pm
+
 # 0.1.11
 - Makefile.PL sets swat.pm version in provides hash to make it visible at CPAN
 

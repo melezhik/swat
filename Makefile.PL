@@ -19,7 +19,7 @@ WriteMakefile(
         provides => {
             'swat' => {
                 file => 'lib/swat.pm',
-                version => 'v0.1.11'
+                version => 'v0.1.12'
             },
         },
 },
