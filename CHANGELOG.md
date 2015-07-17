@@ -1,3 +1,6 @@
+# 0.1.11
+- Makefile.PL sets swat.pm version in provides hash to make it visible at CPAN
+
 # 0.1.10
 - CPAN compatible version ( minor fixes in Makefile.PL )
 

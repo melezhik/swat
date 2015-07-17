@@ -1,5 +1,5 @@
 package swat;
-our $VERSION = v0.1.10;
+our $VERSION = v0.1.11;
 1;
 
 package main;
@@ -139,5 +139,18 @@ sub generate_asserts {
 
 
 1;
+
+
+=head1 SYNOPIS
+
+
+SWAT is Simple Web Application Test ( Tool )
+
+Follow https://github.com/melezhik/swat
+
+
+=head1 AUTHOR
+
+Aleksei Melezhik - melezhik@gmail.com
 
 
