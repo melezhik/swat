@@ -95,9 +95,11 @@ sub header {
 
 sub generate_asserts {
 
-    header();
 
     my $filepath_or_array_ref = shift;
+    my $write_header = shift;
+
+    header() if $write_header;
 
     my @ents = ();
 
@@ -126,11 +128,17 @@ sub generate_asserts {
             next;
         }
 
-        if ($l=~/\s*code:\s+(.*)/){
+        if ($l=~/^\s*code:\s+(.*)/){
             undef $comment;
             my $code = $1;
-            eval $code;            
-        }elsif($l=~/\s*regexp:\s+(.*)/){
+            eval $code;
+        }elsif($l=~/^\s*generator:\s+(.*)/){
+            undef $comment;
+            my $code = $1;
+            my $arr_ref = eval $code;
+            generate_asserts($arr_ref,0);
+            
+        }elsif($l=~/^\s*regexp:\s+(.*)/){
             my $re=$1;
             my $message = $comment ? "[$comment] $http_meth $path returns data matching $re" : "$http_meth $path returns data matching $re";
             check_line($re, 'regexp', $message);

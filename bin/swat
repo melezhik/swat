@@ -171,7 +171,7 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
         echo >> $tfile
 
         echo "SKIP: {" >> $tfile
-        echo -e "\tgenerate_asserts(q{$f})" >> $tfile;
+        echo -e "\tgenerate_asserts(q{$f},1)" >> $tfile;
         echo >> $tfile
         echo "}" >> $tfile
 
