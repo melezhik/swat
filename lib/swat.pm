@@ -535,13 +535,13 @@ another test / reporting systems, follow TAP documentation to get more on this. 
     swat $project_root $host --formatter TAP::Formatter::JUnit
 
 
-See also prove settings section.
+See also L<"Prove settings"> section.
 
 =head1 Command line tool
 
 Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called C<swat>, this is usage info on it:
 
-    swat project_dir URL <prove options>
+    swat project_dir URL <prove settings>
 
 =over
 
@@ -558,7 +558,7 @@ B<project_dir> - is a project root directory
 =back
 
 
-=head2 Prove options
+=head2 Prove settings
 
 Swat utilize I<prove utility> to run tests, so all the swat options I<are passed as is to prove utility>.
 Follow L<prove|http://search.cpan.org/perldoc?prove> utility documentation for variety of values you may set here.
