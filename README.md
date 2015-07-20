@@ -236,7 +236,7 @@ Swat is shipped as cpan package, once it's installed ( see ["Install swat"](#ins
 
     swat project_dir URL <prove settings>
 
-- **URL** - is base url for web application you run tests against, you need defined routes which will be requested against URL, see <L/"DSL"> section.
+- **URL** - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
 - **project\_dir** - is a project root directory
 
 ## Prove settings
