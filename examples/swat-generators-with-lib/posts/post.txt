@@ -1,0 +1,2 @@
+code: use Foo;
+generator: Foo::my_list();
