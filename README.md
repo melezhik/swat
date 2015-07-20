@@ -28,21 +28,19 @@ As devops I update a dozens of web application weekly, sometimes I just have _no
 - is daily it/devops/dev helper with low price mastering ( see my tutorial )
 - and yes ... swat is fun :)
 
-
 # Tutorial
 
 ## Install swat
 
-- developer release
+### developer release
 
     sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
-- stable release
+### stable release
 
     sudo cpan install swat
 
 Once swat is installed you have swat command line tool to run swat tests, but before do this you need to create them.
-
 
 ## Create tests
 
@@ -66,12 +64,14 @@ Once swat is installed you have swat command line tool to run swat tests, but be
     swat ./my-app http://127.0.0.1
 
 # DSL
+
 Swat DSL consists of 2 parts. Routes and check patterns.
 
 ## Routes
+
 Routes are http resources a tested web application should has.
 
-Swat utilize file system data calculating all existed routes as sub directories paths in the project root directory.
+Swat utilize file system _representing_ all existed routes as sub directories paths in the project root directory.
 Let we have a following project layout:
 
     example/my-app/
@@ -83,7 +83,7 @@ When you give swat a run
 
     swat example/my-app 127.0.0.1
 
-It just find all the directories holding get.txt files and "create" routes:
+It will find all the directories holding get.txt files and "create" routes:
 
     GET hello/
     GET hello/world
@@ -98,17 +98,16 @@ As you can see from tutorial above check patterns are  just text files describin
 - Comments
 - Perl one-liners code
 
-
 ### Expected values
+
 This is most usable entity that one may define at check patterns files. _It's just s string should be returned_ when swat request a given URI. Here are examples:
 
     200 OK
     Hello World
     <head><title>Hello World</title></head>
 
-
-
 ### Comments
+
 Comments are lines started with '#' symbol, they are for human not for swat which ignore them when parse check pattern file. Here are examples.
 
     # this http status is expected
@@ -116,16 +115,16 @@ Comments are lines started with '#' symbol, they are for human not for swat whic
     Hello World # this string should be in the response
     <head><title>Hello World</title></head> # and it should be proper html code
 
-
 ### Perl one-liners code
 
 Everything started with `code:` would be treated by swat as perl code to execute.
-There are a _lot of_ possibilities! Please follow [Test::More](search.cpan.org/perldoc/Test::More) documentation to get more info about useful function you may call here.
+There are a _lot of possibilities_! Please follow [Test::More](https://metacpan.org/pod/search.cpan.org#perldoc-Test::More) documentation to get more info about useful function you may call here.
 
     code: skip('next test is skipped',1) # skip next check forever
     HELLO WORLD
 
 ### Using regexp
+
 Regexps are subtypes of expected values, with the only adjustment that you may use _perl regular expressions_ instead of plain strings checks.
 Everything started with `regexp:` would be treated as regular expression.
 
@@ -133,28 +132,24 @@ Everything started with `regexp:` would be treated as regular expression.
     regexp: App Version Number: (\d+\.\d+\.\d+)
 
 # Post requests
+
 When talking about swat I always say about Get http request, but swat may send a Post http request just name your check patterns file  as post.txt instead of get.txt
 
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt
 
-You may use curl_params settings ( follow swat settings section for details ) to define post data, there are examples:
-
+You may use curl\_params settings ( follow swat settings section for details ) to define post data, there are examples:
 
 - `-d` - Post data sending by html form submit.
 
-```
-    # Place this in swat.ini file or sets as env variable:
-    curl_params='-d name=daniel -d skill=lousy'
-```
+         # Place this in swat.ini file or sets as env variable:
+         curl_params='-d name=daniel -d skill=lousy'
 
 - `--data-binary` - Post data sending as is.
 
-```
-    # Place this in swat.ini file or sets as env variable:
-    curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
-    curl_params="${curl_params} -H 'Content-Type: application/json'"
-```
+         # Place this in swat.ini file or sets as env variable:
+         curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
+         curl_params="${curl_params} -H 'Content-Type: application/json'"
 
 # Swat settings
 
@@ -167,33 +162,30 @@ Swat comes with settings defined in two contexts:
 
 Defining a proper environment variables will provide swat settings.
 
-- debug - set to 1 if you want to see some debug information in output, default value is `0`
-- debug_bytes - number of bytes of http response  to be dumped out when debug is on. default value is `500`
-- ignore_http_err - ignore http errors, if this parameters is off (set to `1`) returned  _error http codes_ will not result in test fails, useful when one need to test something with response differ from  2\*\*,3\*\* http codes. Default value is `0`
-- try_num - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is `2`
-- curl_params - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this
-- curl_connect_timeout - follow curl documentation
-- curl_max_time - follow curl documentation
-- port  - http port of tested host, default value is '80'
-- noproxy  - ask curl do not use http proxy when  making requests, default value is `1`
+- `debug` - set to 1 if you want to see some debug information in output, default value is `0`
+- `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is `500`
+- `ignore_http_err` - ignore http errors, if this parameters is off (set to `1`) returned  _error http codes_ will not result in test fails, useful when one need to test something with response differ from  2\*\*,3\*\* http codes. Default value is `0`
+- `try_num` - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is `2`
+- `curl_params` - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this
+- `curl_connec_timeout` - follow curl documentation
+- `curl_max_time` - follow curl documentation
+- `port`  - http port of tested host, default value is '80'
 
 ## Swat.ini files
 
 Swat checks files named `swat.ini` in the following directories
-- ~/swat.ini
-- $project\_root\_directory/swat.ini
-- $route_directory/swat.ini
+\- ~/swat.ini
+\- $project\_root\_directory/swat.ini
+\- $route\_directory/swat.ini
 
 Here are examples of locations of swat.ini files:
 
-```
-    ~/swat.ini # home directory swat.ini file
-    my-app/swat.ini # project_root directory swat.ini file
-    my-app/hello/get.txt
-    my-app/hello/swat.ini # route directory swat.ini file ( route hello )
-    my-app/hello/world/get.txt
-    my-app/hello/world/swat.ini # route directory swat.ini file ( route hello/world )
-```
+     ~/swat.ini # home directory swat.ini file
+     my-app/swat.ini # project_root directory swat.ini file
+     my-app/hello/get.txt
+     my-app/hello/swat.ini # route directory swat.ini file ( route hello )
+     my-app/hello/world/get.txt
+     my-app/hello/world/swat.ini # route directory swat.ini file ( route hello/world )
 
 Once file exists at ay location swat simply **bash source it** to apply settings
 
@@ -207,15 +199,15 @@ Thus swat.ini file should be bash file with swat variables definitions. Here is 
 
 Here is the list of settings/contexts  in priority ascending order:
 
-| context | location | priority  level |
-| --------| ----- | --------- |---- |
-| swat.ini file           | ~/swat.ini              | 1 |
-| environmental variables | ---                     | 2 |
-| swat.ini file           | project root directory  | 3 |
-| swat.ini file           | route directory         | 4 |
-
+    | context                 | location                | priority  level |
+    | ------------------------|------------------------ | --------------- |
+    | swat.ini file           | ~/swat.ini              |               1 |
+    | environmental variables | ---                     |               2 |
+    | swat.ini file           | project root directory  |               3 |
+    | swat.ini file           | route directory         |               4 |
 
 Swat process settings in order. For every route found swat:
+
 - Clear all settings
 - Apply settings from environmental variables ( if any given )
 - Apply settings from swat.ini file in home directory ( if any given )
@@ -233,37 +225,41 @@ Swat is shipped as cpan package , once it's installed ( see install section ) yo
 
     swat project_dir URL <options>
 
-- URL - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
-- project_dir - is a project root directory
+- **URL** - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
+- **project\_dir** - is a project root directory
 
 ## options
-As swat *uses prove utility* to run tests, all the swat options are passed as is to prove utility.
+
+As swat _uses prove utility_ to run tests, all the swat options are passed as is to prove utility.
 Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for variety of values you may set here.
 Default value for options is  `-v`. Here is another examples:
 
 - `-q -s` -  run tests in random and quite mode
 
-
 # Examples
 
 ./examples directory contains examples of swat tests for different cases. Follow README.md files for details.
 
-
-
-
 # Dependencies
+
 Not that many :)
 
-- perl / curl / bash / find  / head
+- perl 
+- curl 
+- bash
+- find
+- head
 
 # AUTHOR
+
 [Aleksei Melezhik](mailto:melezhik@gmail.com)
 
 # Thanks
+
 To the authors of ( see list ) without who swat would not appear to light
+
 - perl
 - curl
 - TAP
 - Test::More
 - prove
-
