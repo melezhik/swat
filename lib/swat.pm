@@ -1,5 +1,5 @@
 package swat;
-our $VERSION = v0.1.14;
+our $VERSION = v0.1.15;
 1;
 
 package main;
@@ -380,6 +380,28 @@ C<--data-binary> - Post data sending as is.
      # Place this in swat.ini file or sets as env variable:
      curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
      curl_params="${curl_params} -H 'Content-Type: application/json'"
+
+
+=head1 Generators
+
+Swat entities generators is the way to I<create swat entities on the fly>. Technically specaking it's just a perl code which should return an array reference:
+
+
+    # Place this in swat pattern file
+    generator: map  { "$_\n" } qw{foo bar baz}
+
+The given code will generate 3 swat entities:
+
+    foo
+    bar
+    baz
+
+Of course there is no limit for you! Use any code you want with only requiments - the last line should return array reference. What about mysql database lookup
+to check return results with data base entries?
+
+    # Place this in swat pattern file
+    generator: use DBI; use DBD::mysql; $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", { Slice => {} } ); map { $_->{ename} }  @$emps
+
 
 
 =back
