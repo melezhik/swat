@@ -157,6 +157,25 @@ You may use curl\_params setting ( follow ["Swat settings"](#swat-settings) sect
          curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
          curl_params="${curl_params} -H 'Content-Type: application/json'"
 
+# Generators
+
+Swat entities generators is the way to _create swat entities on the fly_. Technically specaking it's just a perl code which should return an array reference:
+
+    # Place this in swat pattern file
+    generator: map  { "$_\n" } qw{foo bar baz}
+
+The given code will generate 3 swat entities:
+
+    foo
+    bar
+    baz
+
+Of course there is no limit for you! Use any code you want with only requiments - the last line should return array reference. What about mysql database lookup
+to check return results with data base entries?
+
+    # Place this in swat pattern file
+    generator: use DBI; use DBD::mysql; $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", { Slice => {} } ); map { $_->{ename} }  @$emps
+
 # Swat settings
 
 Swat comes with settings defined in two contexts:
