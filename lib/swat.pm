@@ -181,7 +181,12 @@ SWAT is Simple Web Application Test ( Tool )
 =head1 WHY
 
 I know there are a lot of tests tool and frameworks, but let me  briefly tell I<why> I created swat.
-As devops I update a dozens of web application weekly, sometimes I just have I<no time> sitting and wait while dev guys or QA team ensure that deploy is fine and nothing breaks on the road. So I need a B<tool to run smoke tests against web applications>. Not tool only, but the way to B<create such a tests from the scratch in way easy and fast enough>. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
+As devops I update a dozens of web application weekly, sometimes I just have I<no time> sitting and wait 
+while dev guys or QA team ensure that deploy is fine and nothing breaks on the road. 
+So I need a B<tool to run smoke tests against web applications>. 
+Not tool only, but the way to B<create such a tests from the scratch in way easy and fast enough>. 
+
+So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
 
 =over
 
@@ -194,21 +199,17 @@ is easy to use and flexible tool to run smoke tests against web applications
 
 is L<curl|http://curl.haxx.se/> powered and L<TAP|https://testanything.org/> compatible
 
-
 =item *
 
 has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
-
 
 =item *
 
 has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl one-liners calls )
 
-
 =item *
 
 is daily it/devops/dev helper with low price mastering ( see my tutorial )
-
 
 =item *
 
@@ -228,12 +229,11 @@ and yes ... swat is fun :)
 
     sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
-
 =head3 stable release
 
     sudo cpan install swat
 
-Once swat is installed you have swat command line tool to run swat tests, but before do this you need to create them.
+Once swat is installed you have B<swat> command line tool to run swat tests, but before do this you need to create them.
 
 
 =head2 Create tests
@@ -258,11 +258,9 @@ Once swat is installed you have swat command line tool to run swat tests, but be
 
     swat ./my-app http://127.0.0.1
 
-
 =head1 DSL
 
 Swat DSL consists of 2 parts. Routes and check patterns.
-
 
 =head2 Routes
 
@@ -314,7 +312,7 @@ Perl one-liners code
 
 =head3 Expected values
 
-This is most usable entity that one may define at check patterns files. I<It's just s string should be returned> when swat request a given URI. Here are examples:
+This is most usable entity that one may define at check patterns files. I<It's just a string should be returned> when swat request a given URI. Here are examples:
 
     200 OK
     Hello World
@@ -323,7 +321,7 @@ This is most usable entity that one may define at check patterns files. I<It's j
 
 =head3 Comments
 
-Comments are lines started with '#' symbol, they are for human not for swat which ignore them when parse check pattern file. Here are examples.
+Comments are lines started with '#' symbol, they are for humans not for swat which ignore comments when parse check pattern file. Here are examples.
 
     # this http status is expected
     200 OK
@@ -452,9 +450,22 @@ C<port>  - http port of tested host, default value is '80'
 =head2 Swat.ini files
 
 Swat checks files named C<swat.ini> in the following directories
-- ~/swat.ini
-- $project_root_directory/swat.ini
-- $route_directory/swat.ini
+
+=over
+
+=item *
+
+B<~/swat.ini>
+
+=item *
+
+B<$project_root_directory/swat.ini>
+
+=item *
+
+B<$route_directory/swat.ini>
+
+=back
 
 Here are examples of locations of swat.ini files:
 
@@ -467,7 +478,7 @@ Here are examples of locations of swat.ini files:
      my-app/hello/world/swat.ini # route directory swat.ini file ( route hello/world )
 
 
-Once file exists at ay location swat simply B<bash source it> to apply settings
+Once file exists at any location swat simply B<bash sources it> to apply settings.
 
 Thus swat.ini file should be bash file with swat variables definitions. Here is example:
 
@@ -488,7 +499,7 @@ Here is the list of settings/contexts  in priority ascending order:
     | swat.ini file           | route directory         |               4 |
 
 
-Swat process settings in order. For every route found swat:
+Swat processes settings I<in order>. For every route found swat:
 
 =over
 
@@ -519,14 +530,18 @@ And finally apply settings from swat.ini file in route directory ( if any given 
 =head1 TAP
 
 Swat produce output in L<TAP|https://testanything.org/> format , that means you may use your favorite tap parsers to bring result to
-another test / reporting systems, follow TAP documentation to get more on this.
+another test / reporting systems, follow TAP documentation to get more on this. Here is example for converting swat tests into JUNIT format
 
+    swat $project_root $host --formatter TAP::Formatter::JUnit
+
+
+See also prove settings section.
 
 =head1 Command line tool
 
 Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called C<swat>, this is usage info on it:
 
-    swat project_dir URL <options>
+    swat project_dir URL <prove options>
 
 =over
 
@@ -543,11 +558,11 @@ B<project_dir> - is a project root directory
 =back
 
 
-=head2 options
+=head2 Prove options
 
-As swat I<uses prove utility> to run tests, all the swat options are passed as is to prove utility.
+Swat utilize I<prove utility> to run tests, so all the swat options I<are passed as is to prove utility>.
 Follow L<prove|http://search.cpan.org/perldoc?prove> utility documentation for variety of values you may set here.
-Default value for options is  C<-v>. Here is another examples:
+Default value for prove options is  C<-v>. Here is another examples:
 
 =over
 

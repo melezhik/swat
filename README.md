@@ -19,7 +19,12 @@ SWAT is Simple Web Application Test ( Tool )
 # WHY
 
 I know there are a lot of tests tool and frameworks, but let me  briefly tell _why_ I created swat.
-As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait while dev guys or QA team ensure that deploy is fine and nothing breaks on the road. So I need a **tool to run smoke tests against web applications**. Not tool only, but the way to **create such a tests from the scratch in way easy and fast enough**. So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
+As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait 
+while dev guys or QA team ensure that deploy is fine and nothing breaks on the road. 
+So I need a **tool to run smoke tests against web applications**. 
+Not tool only, but the way to **create such a tests from the scratch in way easy and fast enough**. 
+
+So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
 
 - is easy to use and flexible tool to run smoke tests against web applications
 - is [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible
@@ -40,7 +45,7 @@ As devops I update a dozens of web application weekly, sometimes I just have _no
 
     sudo cpan install swat
 
-Once swat is installed you have swat command line tool to run swat tests, but before do this you need to create them.
+Once swat is installed you have **swat** command line tool to run swat tests, but before do this you need to create them.
 
 ## Create tests
 
@@ -100,7 +105,7 @@ As you can see from tutorial above check patterns are  just text files describin
 
 ### Expected values
 
-This is most usable entity that one may define at check patterns files. _It's just s string should be returned_ when swat request a given URI. Here are examples:
+This is most usable entity that one may define at check patterns files. _It's just a string should be returned_ when swat request a given URI. Here are examples:
 
     200 OK
     Hello World
@@ -108,7 +113,7 @@ This is most usable entity that one may define at check patterns files. _It's ju
 
 ### Comments
 
-Comments are lines started with '#' symbol, they are for human not for swat which ignore them when parse check pattern file. Here are examples.
+Comments are lines started with '#' symbol, they are for humans not for swat which ignore comments when parse check pattern file. Here are examples.
 
     # this http status is expected
     200 OK
@@ -174,9 +179,10 @@ Defining a proper environment variables will provide swat settings.
 ## Swat.ini files
 
 Swat checks files named `swat.ini` in the following directories
-\- ~/swat.ini
-\- $project\_root\_directory/swat.ini
-\- $route\_directory/swat.ini
+
+- **~/swat.ini**
+- **$project\_root\_directory/swat.ini**
+- **$route\_directory/swat.ini**
 
 Here are examples of locations of swat.ini files:
 
@@ -187,7 +193,7 @@ Here are examples of locations of swat.ini files:
      my-app/hello/world/get.txt
      my-app/hello/world/swat.ini # route directory swat.ini file ( route hello/world )
 
-Once file exists at ay location swat simply **bash source it** to apply settings
+Once file exists at any location swat simply **bash sources it** to apply settings.
 
 Thus swat.ini file should be bash file with swat variables definitions. Here is example:
 
@@ -206,7 +212,7 @@ Here is the list of settings/contexts  in priority ascending order:
     | swat.ini file           | project root directory  |               3 |
     | swat.ini file           | route directory         |               4 |
 
-Swat process settings in order. For every route found swat:
+Swat processes settings _in order_. For every route found swat:
 
 - Clear all settings
 - Apply settings from environmental variables ( if any given )
@@ -217,22 +223,26 @@ Swat process settings in order. For every route found swat:
 # TAP
 
 Swat produce output in [TAP](https://testanything.org/) format , that means you may use your favorite tap parsers to bring result to
-another test / reporting systems, follow TAP documentation to get more on this.
+another test / reporting systems, follow TAP documentation to get more on this. Here is example for converting swat tests into JUNIT format
+
+    swat $project_root $host --formatter TAP::Formatter::JUnit
+
+See also prove settings section.
 
 # Command line tool
 
 Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called `swat`, this is usage info on it:
 
-    swat project_dir URL <options>
+    swat project_dir URL <prove options>
 
 - **URL** - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
 - **project\_dir** - is a project root directory
 
-## options
+## Prove options
 
-As swat _uses prove utility_ to run tests, all the swat options are passed as is to prove utility.
+Swat utilize _prove utility_ to run tests, so all the swat options _are passed as is to prove utility_.
 Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for variety of values you may set here.
-Default value for options is  `-v`. Here is another examples:
+Default value for prove options is  `-v`. Here is another examples:
 
 - `-q -s` -  run tests in random and quite mode
 
