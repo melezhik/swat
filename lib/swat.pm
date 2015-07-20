@@ -201,6 +201,11 @@ is L<curl|http://curl.haxx.se/> powered and L<TAP|https://testanything.org/> com
 
 =item *
 
+leverages famous L<prove|http://search.cpan.org/perldoc?prove> utility
+
+
+=item *
+
 has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
 
 =item *
@@ -560,7 +565,7 @@ B<project_dir> - is a project root directory
 
 =head2 Prove settings
 
-Swat utilize I<prove utility> to run tests, so all the swat options I<are passed as is to prove utility>.
+Swat utilize L<prove utility|http://search.cpan.org/perldoc?prove> to run tests, so all the swat options I<are passed as is to prove utility>.
 Follow L<prove|http://search.cpan.org/perldoc?prove> utility documentation for variety of values you may set here.
 Default value for prove options is  C<-v>. Here is another examples:
 

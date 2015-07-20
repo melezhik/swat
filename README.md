@@ -28,6 +28,7 @@ So this how I came up with the idea of swat. If I was a marketing guy I'd say th
 
 - is easy to use and flexible tool to run smoke tests against web applications
 - is [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible
+- leverages famous [prove](http://search.cpan.org/perldoc?prove) utility
 - has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
 - has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl one-liners calls )
 - is daily it/devops/dev helper with low price mastering ( see my tutorial )
@@ -240,7 +241,7 @@ Swat is shipped as cpan package , once it's installed ( see install section ) yo
 
 ## Prove settings
 
-Swat utilize _prove utility_ to run tests, so all the swat options _are passed as is to prove utility_.
+Swat utilize [prove utility](http://search.cpan.org/perldoc?prove) to run tests, so all the swat options _are passed as is to prove utility_.
 Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for variety of values you may set here.
 Default value for prove options is  `-v`. Here is another examples:
 
