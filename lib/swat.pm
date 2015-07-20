@@ -1,5 +1,5 @@
 package swat;
-our $VERSION = v0.1.13;
+our $VERSION = v0.1.14;
 1;
 
 package main;
@@ -185,32 +185,32 @@ As devops I update a dozens of web application weekly, sometimes I just have I<n
 
 =over
 
-=item -
+=item *
 
 is easy to use and flexible tool to run smoke tests against web applications
 
 
-=item -
+=item *
 
 is L<curl|http://curl.haxx.se/> powered and L<TAP|https://testanything.org/> compatible
 
 
-=item -
+=item *
 
 has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
 
 
-=item -
+=item *
 
 has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl one-liners calls )
 
 
-=item -
+=item *
 
 is daily it/devops/dev helper with low price mastering ( see my tutorial )
 
 
-=item -
+=item *
 
 and yes ... swat is fun :)
 
@@ -224,12 +224,12 @@ and yes ... swat is fun :)
 =head2 Install swat
 
 
-=head2 developer release
+=head3 developer release
 
     sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
 
-=head2 stable release
+=head3 stable release
 
     sudo cpan install swat
 
@@ -268,7 +268,7 @@ Swat DSL consists of 2 parts. Routes and check patterns.
 
 Routes are http resources a tested web application should has.
 
-Swat utilize file system data calculating all existed routes as sub directories paths in the project root directory.
+Swat utilize file system I<representing> all existed routes as sub directories paths in the project root directory.
 Let we have a following project layout:
 
     example/my-app/
@@ -280,7 +280,7 @@ When you give swat a run
 
     swat example/my-app 127.0.0.1
 
-It just find all the directories holding get.txt files and "create" routes:
+It will find all the directories holding get.txt files and "create" routes:
 
     GET hello/
     GET hello/world
@@ -294,17 +294,17 @@ As you can see from tutorial above check patterns are  just text files describin
 
 =over
 
-=item -
+=item *
 
 Expected Values
 
 
-=item -
+=item *
 
 Comments
 
 
-=item -
+=item *
 
 Perl one-liners code
 
@@ -334,7 +334,7 @@ Comments are lines started with '#' symbol, they are for human not for swat whic
 =head3 Perl one-liners code
 
 Everything started with C<code:> would be treated by swat as perl code to execute.
-There are a I<lot of> possibilities! Please follow L<Test::More|search.cpan.org/perldoc/Test::More> documentation to get more info about useful function you may call here.
+There are a I<lot of possibilities>! Please follow L<Test::More|search.cpan.org/perldoc/Test::More> documentation to get more info about useful function you may call here.
 
     code: skip('next test is skipped',1) # skip next check forever
     HELLO WORLD
@@ -360,26 +360,18 @@ You may use curl_params settings ( follow swat settings section for details ) to
 
 =over
 
-=item -
+=item *
 
 C<-d> - Post data sending by html form submit.
-
-
-=back
 
 
      # Place this in swat.ini file or sets as env variable:
      curl_params='-d name=daniel -d skill=lousy'
 
 
-=over
-
-=item -
+=item *
 
 C<--data-binary> - Post data sending as is.
-
-
-=back
 
 
      # Place this in swat.ini file or sets as env variable:
@@ -387,6 +379,7 @@ C<--data-binary> - Post data sending as is.
      curl_params="${curl_params} -H 'Content-Type: application/json'"
 
 
+=back
 
 =head1 Swat settings
 
@@ -394,12 +387,12 @@ Swat comes with settings defined in two contexts:
 
 =over
 
-=item -
+=item *
 
 environmental variables
 
 
-=item -
+=item *
 
 swat.ini files
 
@@ -413,44 +406,44 @@ Defining a proper environment variables will provide swat settings.
 
 =over
 
-=item -
+=item *
 
-debug - set to 1 if you want to see some debug information in output, default value is C<0>
-
-
-=item -
-
-debug_bytes - number of bytes of http response  to be dumped out when debug is on. default value is C<500>
+C<debug> - set to 1 if you want to see some debug information in output, default value is C<0>
 
 
-=item -
+=item *
 
-ignoreI<http>err - ignore http errors, if this parameters is off (set to C<1>) returned  I<error http codes> will not result in test fails, useful when one need to test something with response differ from  2**,3** http codes. Default value is C<0>
-
-
-=item -
-
-try_num - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is C<2>
+C<debug_bytes> - number of bytes of http response  to be dumped out when debug is on. default value is C<500>
 
 
-=item -
+=item *
 
-curl_params - additional curl parameters being add to http requests, default value is C<"">, follow curl documentation for variety of values for this
-
-
-=item -
-
-curlI<connect>timeout - follow curl documentation
+C<ignore_http_err> - ignore http errors, if this parameters is off (set to C<1>) returned  I<error http codes> will not result in test fails, useful when one need to test something with response differ from  2**,3** http codes. Default value is C<0>
 
 
-=item -
+=item *
 
-curlI<max>time - follow curl documentation
+C<try_num> - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is C<2>
 
 
-=item -
+=item *
 
-port  - http port of tested host, default value is '80'
+C<curl_params> - additional curl parameters being add to http requests, default value is C<"">, follow curl documentation for variety of values for this
+
+
+=item *
+
+C<curl_connec_timeout> - follow curl documentation
+
+
+=item *
+
+C<curl_max_time> - follow curl documentation
+
+
+=item *
+
+C<port>  - http port of tested host, default value is '80'
 
 
 =back
@@ -487,19 +480,40 @@ Thus swat.ini file should be bash file with swat variables definitions. Here is 
 
 Here is the list of settings/contexts  in priority ascending order:
 
-| context | location | priority  level |
-| --------| ----- | --------- |---- |
-| swat.ini file           | ~/swat.ini              | 1 |
-| environmental variables | ---                     | 2 |
-| swat.ini file           | project root directory  | 3 |
-| swat.ini file           | route directory         | 4 |
+    | context                 | location                | priority  level |
+    | ------------------------|------------------------ | --------------- |
+    | swat.ini file           | ~/swat.ini              |               1 |
+    | environmental variables | ---                     |               2 |
+    | swat.ini file           | project root directory  |               3 |
+    | swat.ini file           | route directory         |               4 |
+
 
 Swat process settings in order. For every route found swat:
-- Clear all settings
-- Apply settings from environmental variables ( if any given )
-- Apply settings from swat.ini file in home directory ( if any given )
-- Apply settings from swat.ini file in project root directory ( if any given )
-- And finally apply settings from swat.ini file in route directory ( if any given )
+
+=over
+
+=item *
+
+Clear all settings
+
+=item *
+
+Apply settings from environmental variables ( if any given )
+
+=item *
+
+Apply settings from swat.ini file in home directory ( if any given )
+
+
+=item *
+
+Apply settings from swat.ini file in project root directory ( if any given )
+
+=item *
+
+And finally apply settings from swat.ini file in route directory ( if any given )
+
+=back
 
 
 =head1 TAP
@@ -516,14 +530,14 @@ Swat is shipped as cpan package , once it's installed ( see install section ) yo
 
 =over
 
-=item -
+=item *
 
-URL - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
+B<URL> - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
 
 
-=item -
+=item *
 
-project_dir - is a project root directory
+B<project_dir> - is a project root directory
 
 
 =back
@@ -537,10 +551,9 @@ Default value for options is  C<-v>. Here is another examples:
 
 =over
 
-=item -
+=item *
 
 C<-q -s> -  run tests in random and quite mode
-
 
 =back
 
@@ -556,13 +569,27 @@ Not that many :)
 
 =over
 
-=item -
+=item *
 
-perl / curl / bash / find  / head
+perl 
 
+=item *
+
+curl 
+
+=item *
+
+bash
+
+=item *
+
+find
+
+=item *
+
+head
 
 =back
-
 
 =head1 AUTHOR
 
@@ -572,9 +599,27 @@ L<Aleksei Melezhik|mailto:melezhik@gmail.com>
 =head1 Thanks
 
 To the authors of ( see list ) without who swat would not appear to light
-- perl
-- curl
-- TAP
-- Test::More
-- prove
 
+=over
+
+=item *
+
+perl
+
+=item *
+
+curl
+
+=item *
+
+TAP
+
+=item *
+
+Test::More
+
+=item *
+
+prove
+
+=back

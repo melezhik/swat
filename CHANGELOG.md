@@ -1,6 +1,8 @@
 # 0.1.13
 - Add swat entities generators 
 - Add noproxy settings
+- Fix pod documentation 
+
 
 # 0.1.12
 - Add pod documentation to lib/swat.pm

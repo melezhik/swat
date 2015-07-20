@@ -6,4 +6,5 @@ MANIFEST.bak
 blib/
 pm_to_blib
 swat-v*
-
+*.html
+*.tmp
