@@ -411,7 +411,7 @@ Defining a proper environment variables will provide swat settings.
 
 =item *
 
-C<debug> - set to 1 if you want to see some debug information in output, default value is C<0>
+C<debug> - set to C<1> if you want to see some debug information in output, default value is C<0>
 
 
 =item *
@@ -421,7 +421,8 @@ C<debug_bytes> - number of bytes of http response  to be dumped out when debug i
 
 =item *
 
-C<ignore_http_err> - ignore http errors, if this parameters is off (set to C<1>) returned  I<error http codes> will not result in test fails, useful when one need to test something with response differ from  2**,3** http codes. Default value is C<0>
+C<ignore_http_err> - ignore http errors, if this parameters is off (set to C<1>) returned  I<error http codes> will not result in test fails, 
+useful when one need to test something with response differ from  2**,3** http codes. Default value is C<0>
 
 
 =item *
@@ -446,7 +447,11 @@ C<curl_max_time> - follow curl documentation
 
 =item *
 
-C<port>  - http port of tested host, default value is '80'
+C<port>  - http port of tested host, default value is C<80>
+
+=item *
+
+C<noproxy>  - ignore http proxy when making http requests, default value is C<1>
 
 
 =back
