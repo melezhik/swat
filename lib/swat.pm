@@ -132,10 +132,12 @@ sub generate_asserts {
             undef $comment;
             my $code = $1;
             eval $code;
+            die "code entity eval perl error, code:$code , error: $@" if $@;
         }elsif($l=~/^\s*generator:\s+(.*)/){
             undef $comment;
             my $code = $1;
             my $arr_ref = eval $code;
+            die "generator entity perl eval error, code:$code , error: $@"  if $@;
             generate_asserts($arr_ref,0);
             
         }elsif($l=~/^\s*regexp:\s+(.*)/){

@@ -152,7 +152,7 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
             tfile="${reports_dir}/${path}/00.post.t"
         fi
 
-        echo 'BEGIN { push @INC, q{'`pwd`'}; }'  > $tfile
+        echo 'BEGIN { push @INC, q{'$safe_project'/lib}; }'  > $tfile
         echo >> $tfile
 
         echo "use Test::More q{no_plan};"  >> $tfile

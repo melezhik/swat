@@ -1,1 +1,1 @@
-generator: my @a = ('id', 'title', 'body', 'userId'); my $a = [] ; foreach my $i (@a) { push @$a, $i }; $a
+generator: [ qw( id title  body userId ) ];
