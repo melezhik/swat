@@ -382,6 +382,8 @@ C<--data-binary> - Post data sending as is.
      curl_params="${curl_params} -H 'Content-Type: application/json'"
 
 
+=back
+
 =head1 Generators
 
 Swat entities generators is the way to I<create swat entities on the fly>. Technically specaking it's just a perl code which should return an array reference:
@@ -403,8 +405,6 @@ to check return results with data base entries?
     generator: use DBI; use DBD::mysql; $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", { Slice => {} } ); map { $_->{ename} }  @$emps
 
 
-
-=back
 
 =head1 Swat settings
 
