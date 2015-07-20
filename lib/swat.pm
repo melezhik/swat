@@ -552,7 +552,7 @@ Swat is shipped as cpan package, once it's installed ( see L</"Install swat"> se
 
 =item *
 
-B<URL> - is base url for web application you run tests against, you need defined routes which will be requested against URL, see </"DSL"> section.
+B<URL> - is base url for web application you run tests against, you need defined routes which will be requested against URL, see <L/"DSL"> section.
 
 
 =item *

@@ -144,7 +144,7 @@ When talking about swat I always say about Get http request, but swat may send a
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt
 
-You may use curl\_params settings ( follow swat settings section for details ) to define post data, there are examples:
+You may use curl\_params setting ( follow ["Swat settings"](#swat-settings) section for details ) to define post data, there are some examples:
 
 - `-d` - Post data sending by html form submit.
 
@@ -232,11 +232,11 @@ See also ["Prove settings"](#prove-settings) section.
 
 # Command line tool
 
-Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called `swat`, this is usage info on it:
+Swat is shipped as cpan package, once it's installed ( see ["Install swat"](#install-swat) section ) you have a command line tool called **swat**, this is usage info on it:
 
     swat project_dir URL <prove settings>
 
-- **URL** - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
+- **URL** - is base url for web application you run tests against, you need defined routes which will be requested against URL, see <L/"DSL"> section.
 - **project\_dir** - is a project root directory
 
 ## Prove settings
