@@ -359,7 +359,7 @@ When talking about swat I always say about Get http request, but swat may send a
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt
 
-You may use curl_params settings ( follow swat settings section for details ) to define post data, there are examples:
+You may use curl_params setting ( follow L</"Swat settings"> section for details ) to define post data, there are some examples:
 
 =over
 
@@ -544,7 +544,7 @@ See also L<"Prove settings"> section.
 
 =head1 Command line tool
 
-Swat is shipped as cpan package , once it's installed ( see install section ) you have a command line tool called C<swat>, this is usage info on it:
+Swat is shipped as cpan package, once it's installed ( see L</"Install swat"> section ) you have a command line tool called B<swat>, this is usage info on it:
 
     swat project_dir URL <prove settings>
 
@@ -552,7 +552,7 @@ Swat is shipped as cpan package , once it's installed ( see install section ) yo
 
 =item *
 
-B<URL> - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
+B<URL> - is base url for web application you run tests against, you need defined routes which will be requested against URL, see </"DSL"> section.
 
 
 =item *
