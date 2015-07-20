@@ -1,10 +1,17 @@
 bin/swat
 CHANGELOG.md
 examples/google/get.txt
+examples/google/README.md
 examples/google/swat.ini
 examples/my-app/hello/get.txt
 examples/my-app/hello/world/get.txt
 examples/my-app/swat.ini
+examples/post-request/posts/post.txt
+examples/post-request/posts/swat.ini
+examples/post-request/README.md
+examples/swat-generators/posts/post.txt
+examples/swat-generators/posts/swat.ini
+examples/swat-generators/README.md
 lib/swat.pm
 Makefile
 Makefile.PL
@@ -14,3 +21,4 @@ MYMETA.yml
 README
 README.md
 t/swat.t
+todo.list.md

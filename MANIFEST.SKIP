@@ -4,3 +4,6 @@ blib
 \.tar
 \.bak
 \.SKIP
+\.html
+\.pod
+\.tmp
