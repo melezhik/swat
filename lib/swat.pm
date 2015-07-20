@@ -390,7 +390,7 @@ Swat entities generators is the way to I<create swat entities on the fly>. Techn
 
 
     # Place this in swat pattern file
-    generator: map  { "$_\n" } qw{foo bar baz}
+    generator: [ map  { "$_\n" } qw{ foo bar baz } ]
 
 The given code will generate 3 swat entities:
 
@@ -402,7 +402,7 @@ Of course there is no limit for you! Use any code you want with only requiments 
 to check return results with data base entries?
 
     # Place this in swat pattern file
-    generator: use DBI; use DBD::mysql; $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", { Slice => {} } ); map { $_->{ename} }  @$emps
+    generator: use DBI; use DBD::mysql; $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", { Slice => {} } ); [ map { $_->{ename} }  @$emps ]
 
 
 
