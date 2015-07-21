@@ -1,0 +1,13 @@
+generator: \
+
+use DBI; \
+my $dbh = DBI->connect("dbi:SQLite:dbname=t/data/test.db","",""); \
+my $sth = $dbh->prepare("SELECT name from users"); \
+$sth->execute(); \
+my $results = $sth->fetchall_arrayref; \
+
+[ map { $_->[0] } @${results} ]
+ 
+
+
+
