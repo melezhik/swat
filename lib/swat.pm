@@ -108,6 +108,7 @@ sub generate_asserts {
     if ( ref($filepath_or_array_ref) eq 'ARRAY') {
         @ents = @$filepath_or_array_ref
     }else{
+        return unless $filepath_or_array_ref;
         open my $fh, $filepath_or_array_ref or die $!;
         while (my $l = <$fh>){
             push @ents, $l
@@ -128,7 +129,7 @@ sub generate_asserts {
             next ENTITY;
         }
 
-        if ($l=~/^\s*code:\s+(.*)/){
+        if ($l=~/^\s*code:\s*(.*)/){
             my $code = $1;
             if ($code=~s/\\\s*$//){
                  push @ents_ok, $code;
@@ -138,7 +139,7 @@ sub generate_asserts {
                 undef $ent_type;
                 handle_code($code);
             }
-        }elsif($l=~/^\s*generator:\s+(.*)/){
+        }elsif($l=~/^\s*generator:\s*(.*)/){
             my $code = $1;
             if ($code=~s/\\\s*$//){
                  push @ents_ok, $code;
@@ -149,7 +150,7 @@ sub generate_asserts {
                 handle_generator($code);
             }
             
-        }elsif($l=~/^\s*regexp:\s+(.*)/){
+        }elsif($l=~/^\s*regexp:\s*(.*)/){
             my $re=$1;
             if ($re=~s/\\\s*$//){ 
                  push @ents_ok, $re;
@@ -485,17 +486,20 @@ As you can guess from examples above an array returned by generator should conta
 
 
 Of course there is no limit for you! Use any code you want with only requiments - the last line should return array reference. 
-What about mysql database lookup to check return results with data base entries?
+What about to compare results with ones in sqlite table?
 
     # Place this in swat pattern file
-    generator: 
-        use DBI; use DBD::mysql; \
-        $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  \
-        my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", \
-        { Slice => {} } ); \
-        [ map { $_->{ename} }  @$emps ]
-
-
+    generator: \
+    
+    use DBI; \
+    my $dbh = DBI->connect("dbi:SQLite:dbname=t/data/test.db","",""); \
+    my $sth = $dbh->prepare("SELECT name from users"); \
+    $sth->execute(); \
+    my $results = $sth->fetchall_arrayref; \
+    
+    [ map { $_->[0] } @${results} ]
+    
+See examples/swat-generators-sqlite3 for working example
 
 =head1 Multiline swat entities
 
