@@ -493,14 +493,32 @@ What about mysql database lookup to check return results with data base entries?
 
     # Place this in swat pattern file
     generator: 
-    use DBI; use DBD::mysql; \
-    $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  \
-    my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", \
-    { Slice => {} } ); \
-    [ map { $_->{ename} }  @$emps ]
+        use DBI; use DBD::mysql; \
+        $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  \
+        my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", \
+        { Slice => {} } ); \
+        [ map { $_->{ename} }  @$emps ]
 
 
-Noticed that '\' symbols in last example? Swat uses '\' to define multiline swat entities.
+
+=head1 Multiline swat entities
+
+Noticed that C<\> symbols in last example? Swat uses C<\> to tell multiline swat entities from single line ones. Here are some exmaples:
+
+    # Place this in swat pattern file
+    # multiline for `Google' expected value:
+    Go\
+    og\
+    gle
+
+    # Place this in swat pattern file
+    # multiline for `Google' expected value:
+    generator: [            \
+            map {           \
+            uc($_)          \
+        } qw( foo bar baz ) \
+    ]
+
 
 
 =head1 Generators and Perl one-liners scope
