@@ -41,7 +41,7 @@ WHY
         by hand ( which is true for most cases )
 
     *   has a simple and yet powerful DSL allow you to both run simple tests
-        ( 200 OK ) or complicated ones ( using curl api and perl one-liners
+        ( 200 OK ) or complicated ones ( using curl api and perl functions
         calls )
 
     *   is daily it/devops/dev helper with low price mastering ( see my
@@ -117,9 +117,9 @@ DSL
 
     *   Comments
 
-    *   Perl one-liners code
+    *   Perl Expressions and Generators
 
-   Expected values
+   Expected Values
     This is most usable entity that one may define at check patterns files.
     *It's just a string should be returned* when swat request a given URI.
     Here are examples:
@@ -138,10 +138,11 @@ DSL
         Hello World # this string should be in the response
         <head><title>Hello World</title></head> # and it should be proper html code
 
-   Perl one-liners code
-    Everything started with "code:" would be treated by swat as perl code to
-    execute. There are a *lot of possibilities*! Please follow Test::More
-    documentation to get more info about useful function you may call here.
+   Perl Expressions
+    Everything started with "code:" marker would be treated by swat as perl
+    code to execute. There are a *lot of possibilities*! Please follow
+    Test::More documentation to get more info about useful function you may
+    call here.
 
         code: skip('next test is skipped',1) # skip next check forever
         HELLO WORLD
@@ -149,7 +150,7 @@ DSL
    Using regexp
     Regexps are subtypes of expected values, with the only adjustment that
     you may use *perl regular expressions* instead of plain strings checks.
-    Everything started with "regexp:" would be treated as regular
+    Everything started with "regexp:" marker would be treated as regular
     expression.
 
         # this is example of regexp check
@@ -163,7 +164,7 @@ Post requests
         echo 200 OK >> my-app/hello/post.txt
         echo 200 OK >> my-app/hello/world/post.txt
 
-    You may use curl_params setting ( follow "Swat settings" section for
+    You may use curl_params setting ( follow "Swat Settings" section for
     details ) to define post data, there are some examples:
 
     *   "-d" - Post data sending by html form submit.
@@ -191,16 +192,20 @@ Generators
         bar
         baz
 
-    Generators are very close to perl one-liners, they both *perl evaled
-    during test run*, but remember value returned by generators and pass it
-    back recursively to parser so that new swat entities may be created.
+    Generators entities start with ":generator" marker.
+
+    Generators are very close to perl expression, they both *get perl evaled
+    during test run*, except for value returned from generator code is
+    passed back to swat parser so it can create new swate entites ( or new
+    generators ones in recursive way ! )
 
     As you can guess from examples above an array returned by generator
     should contain *strings representing swat entities*, here is another
-    example:
+    example with generator producing still 3 swat entites 'foo', 'bar',
+    'baz' :
 
         # Place this in swat pattern file
-        generator: [ map  { "$_\n" } [ '# my name is', 'John', '# I like ', 'perl' ]
+        generator: [ map  { "$_\n" } [ '# this is foo', 'foo', '# this is bar', 'bar', '# and this is baz', 'baz' ]
 
     Of course there is no limit for you! Use any code you want with only
     requiments - the last line should return array reference. What about to
@@ -237,19 +242,19 @@ Multiline swat entities
             } qw( foo bar baz ) \
         ]
 
-Generators and Perl one-liners scope
-    Swat usea *perl string eval* when process generators and one-liner, be
-    aware of this. Follow <http://perldoc.perl.org/functions/eval.html> to
-    get more on this.
+Generators and Perl Expressions Scope
+    Swat call *perl string eval* when process generators and perl
+    expressions entities, be aware of this. Follow
+    <http://perldoc.perl.org/functions/eval.html> to get more on this.
 
-Swat settings
+Swat Settings
     Swat comes with settings defined in two contexts:
 
-    *   environmental variables
+    *   Environmental Variables
 
     *   swat.ini files
 
-  Environmental variables
+  Environmental Variables
     Defining a proper environment variables will provide swat settings.
 
     *   "debug" - set to 1 if you want to see some debug information in

@@ -30,7 +30,7 @@ So this how I came up with the idea of swat. If I was a marketing guy I'd say th
 - is [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible
 - leverages famous [prove](http://search.cpan.org/perldoc?prove) utility
 - has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
-- has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl one-liners calls )
+- has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl functions calls )
 - is daily it/devops/dev helper with low price mastering ( see my tutorial )
 - and yes ... swat is fun :)
 
@@ -102,9 +102,9 @@ As you can see from tutorial above check patterns are  just text files describin
 
 - Expected Values
 - Comments
-- Perl one-liners code
+- Perl Expressions and Generators
 
-### Expected values
+### Expected Values
 
 This is most usable entity that one may define at check patterns files. _It's just a string should be returned_ when swat request a given URI. Here are examples:
 
@@ -121,9 +121,9 @@ Comments are lines started with '#' symbol, they are for humans not for swat whi
     Hello World # this string should be in the response
     <head><title>Hello World</title></head> # and it should be proper html code
 
-### Perl one-liners code
+### Perl Expressions
 
-Everything started with `code:` would be treated by swat as perl code to execute.
+Everything started with `code:` marker would be treated by swat as perl code to execute.
 There are a _lot of possibilities_! Please follow [Test::More](https://metacpan.org/pod/search.cpan.org#perldoc-Test::More) documentation to get more info about useful function you may call here.
 
     code: skip('next test is skipped',1) # skip next check forever
@@ -132,7 +132,7 @@ There are a _lot of possibilities_! Please follow [Test::More](https://metacpan.
 ### Using regexp
 
 Regexps are subtypes of expected values, with the only adjustment that you may use _perl regular expressions_ instead of plain strings checks.
-Everything started with `regexp:` would be treated as regular expression.
+Everything started with `regexp:` marker would be treated as regular expression.
 
     # this is example of regexp check
     regexp: App Version Number: (\d+\.\d+\.\d+)
@@ -144,7 +144,7 @@ When talking about swat I always say about Get http request, but swat may send a
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt
 
-You may use curl\_params setting ( follow ["Swat settings"](#swat-settings) section for details ) to define post data, there are some examples:
+You may use curl\_params setting ( follow ["Swat Settings"](#swat-settings) section for details ) to define post data, there are some examples:
 
 - `-d` - Post data sending by html form submit.
 
@@ -170,13 +170,16 @@ The given code will generate 3 swat entities:
     bar
     baz
 
-Generators are very close to perl one-liners, they both _perl evaled during test run_, but remember value returned by generators and pass it back recursively 
-to parser so that new swat entities may be created.
+Generators entities start with `:generator` marker.
 
-As you can guess from examples above an array returned by generator should contain _strings representing swat entities_, here is another example:
+Generators are very close to perl expression, they both _get perl evaled during test run_, except for value returned from generator code is passed back 
+to swat parser so it can create new swate entites ( or  new  generators ones in recursive way ! )
+
+As you can guess from examples above an array returned by generator should contain _strings representing swat entities_, here is another example
+with generator producing still 3 swat entites 'foo', 'bar', 'baz' :
 
     # Place this in swat pattern file
-    generator: [ map  { "$_\n" } [ '# my name is', 'John', '# I like ', 'perl' ]
+    generator: [ map  { "$_\n" } [ '# this is foo', 'foo', '# this is bar', 'bar', '# and this is baz', 'baz' ]
 
 Of course there is no limit for you! Use any code you want with only requiments - the last line should return array reference. 
 What about to compare results with ones in sqlite table?
@@ -212,19 +215,19 @@ Noticed that `\` symbols in last example? Swat uses `\` to tell multiline swat e
         } qw( foo bar baz ) \
     ]
 
-# Generators and Perl one-liners scope
+# Generators and Perl Expressions Scope
 
-Swat usea _perl string eval_ when process generators and one-liner, be aware of this. 
+Swat call _perl string eval_ when process generators and perl expressions entities, be aware of this. 
 Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get more on this.
 
-# Swat settings
+# Swat Settings
 
 Swat comes with settings defined in two contexts:
 
-- environmental variables
+- Environmental Variables
 - swat.ini files
 
-## Environmental variables
+## Environmental Variables
 
 Defining a proper environment variables will provide swat settings.
 

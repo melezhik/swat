@@ -286,7 +286,7 @@ has minimal dependency tree  and probably will run out of the box on most linux 
 
 =item *
 
-has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl one-liners calls )
+has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl functions calls )
 
 =item *
 
@@ -385,13 +385,13 @@ Comments
 
 =item *
 
-Perl one-liners code
+Perl Expressions and Generators
 
 
 =back
 
 
-=head3 Expected values
+=head3 Expected Values
 
 This is most usable entity that one may define at check patterns files. I<It's just a string should be returned> when swat request a given URI. Here are examples:
 
@@ -410,9 +410,9 @@ Comments are lines started with '#' symbol, they are for humans not for swat whi
     <head><title>Hello World</title></head> # and it should be proper html code
 
 
-=head3 Perl one-liners code
+=head3 Perl Expressions
 
-Everything started with C<code:> would be treated by swat as perl code to execute.
+Everything started with C<code:> marker would be treated by swat as perl code to execute.
 There are a I<lot of possibilities>! Please follow L<Test::More|search.cpan.org/perldoc/Test::More> documentation to get more info about useful function you may call here.
 
     code: skip('next test is skipped',1) # skip next check forever
@@ -422,7 +422,7 @@ There are a I<lot of possibilities>! Please follow L<Test::More|search.cpan.org/
 =head3 Using regexp
 
 Regexps are subtypes of expected values, with the only adjustment that you may use I<perl regular expressions> instead of plain strings checks.
-Everything started with C<regexp:> would be treated as regular expression.
+Everything started with C<regexp:> marker would be treated as regular expression.
 
     # this is example of regexp check
     regexp: App Version Number: (\d+\.\d+\.\d+)
@@ -435,7 +435,7 @@ When talking about swat I always say about Get http request, but swat may send a
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt
 
-You may use curl_params setting ( follow L</"Swat settings"> section for details ) to define post data, there are some examples:
+You may use curl_params setting ( follow L</"Swat Settings"> section for details ) to define post data, there are some examples:
 
 =over
 
@@ -474,14 +474,17 @@ The given code will generate 3 swat entities:
     bar
     baz
 
-Generators are very close to perl one-liners, they both I<perl evaled during test run>, but remember value returned by generators and pass it back recursively 
-to parser so that new swat entities may be created.
+Generators entities start with C<:generator> marker.
 
-As you can guess from examples above an array returned by generator should contain I<strings representing swat entities>, here is another example:
+Generators are very close to perl expression, they both I<get perl evaled during test run>, except for value returned from generator code is passed back 
+to swat parser so it can create new swate entites ( or  new  generators ones in recursive way ! )
+
+As you can guess from examples above an array returned by generator should contain I<strings representing swat entities>, here is another example
+with generator producing still 3 swat entites 'foo', 'bar', 'baz' :
 
 
     # Place this in swat pattern file
-    generator: [ map  { "$_\n" } [ '# my name is', 'John', '# I like ', 'perl' ]
+    generator: [ map  { "$_\n" } [ '# this is foo', 'foo', '# this is bar', 'bar', '# and this is baz', 'baz' ]
 
 
 
@@ -521,13 +524,13 @@ Noticed that C<\> symbols in last example? Swat uses C<\> to tell multiline swat
 
 
 
-=head1 Generators and Perl one-liners scope
+=head1 Generators and Perl Expressions Scope
 
-Swat usea I<perl string eval> when process generators and one-liner, be aware of this. 
+Swat call I<perl string eval> when process generators and perl expressions entities, be aware of this. 
 Follow L<http://perldoc.perl.org/functions/eval.html> to get more on this.
 
 
-=head1 Swat settings
+=head1 Swat Settings
 
 Swat comes with settings defined in two contexts:
 
@@ -535,7 +538,7 @@ Swat comes with settings defined in two contexts:
 
 =item *
 
-environmental variables
+Environmental Variables
 
 
 =item *
@@ -546,7 +549,7 @@ swat.ini files
 =back
 
 
-=head2 Environmental variables
+=head2 Environmental Variables
 
 Defining a proper environment variables will provide swat settings.
 
