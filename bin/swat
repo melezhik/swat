@@ -154,7 +154,6 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
         echo "use Test::More q{no_plan};"  >> $tfile
         echo $\content_file = q{"${reports_dir}${path}/content.${http_meth}.txt};"  >> $tfile
         echo $\path = q{"${path}};"  >> $tfile
-        echo $\swat_use_proxy = $swat_use_proxy';'  >> $tfile
         echo $\http_meth = q{"${http_meth}};"  >> $tfile
         echo $\url = q{"${http_url}};"  >> $tfile
         echo $\debug = $debug';'  >> $tfile

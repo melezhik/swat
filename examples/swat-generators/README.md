@@ -1,3 +1,3 @@
-- this is example of using swat generator when test google.com
+- this is example of using swat generators
 - usage: `swat examples/swat-generators http://jsonplaceholder.typicode.com`
 

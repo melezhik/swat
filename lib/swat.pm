@@ -12,6 +12,8 @@ our ($url, $path, $http_meth);
 our ($debug, $ignore_http_err, $try_num, $debug_bytes);
 $| = 1;
 
+my $comment;
+
 sub execute_with_retry {
 
     my $cmd = shift;
@@ -96,13 +98,14 @@ sub header {
 
 sub generate_asserts {
 
-
     my $filepath_or_array_ref = shift;
     my $write_header = shift;
 
     header() if $write_header;
 
-    my @ents = ();
+    my @ents;
+    my @ents_ok;
+    my $ent_type;
 
     if ( ref($filepath_or_array_ref) eq 'ARRAY') {
         @ents = @$filepath_or_array_ref
@@ -115,46 +118,119 @@ sub generate_asserts {
     }
 
 
-    my $comment;
 
-    for my $l (@ents){
+    ENTITY: for my $l (@ents){
 
         chomp $l;
+        warn $l if $ENV{'swat_debug'};
         
+        next ENTITY unless $l =~ /\S/; # skip blank lines
 
-        next unless $l =~ /\S/; # skip blank lines
         if ($l=~ /^\s*#(.*)/) { # skip comments
             $comment = $1;
             s/^\s+//, s/\s+$// for $comment;
-            next;
+            next ENTITY;
         }
 
         if ($l=~/^\s*code:\s+(.*)/){
-            undef $comment;
             my $code = $1;
-            eval $code;
-            die "code entity eval perl error, code:$code , error: $@" if $@;
+            if ($code=~s/\\\s*$//){
+                 push @ents_ok, $code;
+                 $ent_type = 'code';
+                 next ENTITY; # this is multiline, hold this until last line found
+            }else{
+                undef $ent_type;
+                handle_code($code);
+            }
         }elsif($l=~/^\s*generator:\s+(.*)/){
-            undef $comment;
             my $code = $1;
-            my $arr_ref = eval $code;
-            die "generator entity perl eval error, code:$code , error: $@"  if $@;
-            generate_asserts($arr_ref,0);
+            if ($code=~s/\\\s*$//){
+                 push @ents_ok, $code;
+                 $ent_type = 'generator';
+                 next ENTITY; # this is multiline, hold this until last line found
+            }else{
+                undef $ent_type;
+                handle_generator($code);
+            }
             
         }elsif($l=~/^\s*regexp:\s+(.*)/){
             my $re=$1;
-            my $message = $comment ? "[$comment] $http_meth $path returns data matching $re" : "$http_meth $path returns data matching $re";
-            check_line($re, 'regexp', $message);
-            undef $comment;
-        }else{
+            if ($re=~s/\\\s*$//){ 
+                 push @ents_ok, $re;
+                 $ent_type = 'regexp';
+                 next ENTITY; # this is multiline, hold this until last line found
+            }else{
+                undef $ent_type;
+                handle_regexp($re);
+                
+            }
+        }elsif(defined($ent_type)){
+            if ($l=~s/\\\s*$//) {
+                push @ents_ok, $l;
+                next ENTITY; # this is multiline, hold this until last line found
+             }else {
+
+                no strict 'refs';
+                my $name = "handle_"; $name.=$ent_type;
+                push @ents_ok, $l;
+                &$name(join "", @ents_ok);
+
+                undef $ent_type;
+                @ents_ok = ();
+    
+            }
+       }else{
             s{#.*}[], s{\s+$}[], s{^\s+}[] for $l;
-            my $message = $comment ? "[$comment] $http_meth $path returns $l" : "$http_meth $path returns $l";
-            check_line($l, 'default', $message);
-            undef $comment;
+            if ($l=~s{\\\s*$}[]){ 
+                 push @ents_ok, $l;
+                 $ent_type = 'expected_val';
+                 warn "push to multiline OK. $ent_type. $l" if $ENV{'swat_debug'};
+                 next ENTITY; # this is multiline, hold this until last line found
+            }else{
+                undef $ent_type;
+                handle_expected_val($l);
+                
+            }
         }
     }
 
 
+}
+
+sub handle_code {
+
+    my $code = shift;
+    eval $code;
+    die "code entity eval perl error, code:$code , error: $@" if $@;
+    warn "handle_code OK. $code" if $ENV{'swat_debug'};
+    
+}
+
+sub handle_generator {
+
+    my $code = shift;
+    my $arr_ref = eval $code;
+    die "generator entity perl eval error, code:$code , error: $@"  if $@;
+    generate_asserts($arr_ref,0);
+    warn "handle_generator OK. $code" if $ENV{'swat_debug'};
+    
+}
+
+sub handle_regexp {
+
+    my $re = shift;
+    my $message = $comment ? "[$comment] $http_meth $path returns data matching $re" : "$http_meth $path returns data matching $re";
+    check_line($re, 'regexp', $message);
+    warn "handle_regexp OK. $re" if $ENV{'swat_debug'};
+    
+}
+
+sub handle_expected_val {
+
+    my $l = shift;
+    my $message = $comment ? "[$comment] $http_meth $path returns $l" : "$http_meth $path returns $l";
+    check_line($l, 'default', $message);
+    warn "handle_expected_val OK. $l" if $ENV{'swat_debug'};   
 }
 
 
@@ -404,7 +480,7 @@ The given code will generate 3 swat entities:
 Generators are very close to perl one-liners, they both I<perl evaled during test run>, but remember value returned by generators and pass it back recursively 
 to parser so that new swat entities may be created.
 
-As you can notice an array wich generator return should contain I<strings representing swat entities>, here is another exmaple:
+As you can guess from examples above an array returned by generator should contain I<strings representing swat entities>, here is another example:
 
 
     # Place this in swat pattern file
@@ -412,15 +488,19 @@ As you can notice an array wich generator return should contain I<strings repres
 
 
 
-Of course there is no limit for you! Use any code you want with only requiments - the last line should return array reference. What about mysql database lookup
-to check return results with data base entries?
+Of course there is no limit for you! Use any code you want with only requiments - the last line should return array reference. 
+What about mysql database lookup to check return results with data base entries?
 
     # Place this in swat pattern file
     generator: 
     use DBI; use DBD::mysql; \
     $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  \
-    my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", { Slice => {} } ); \
+    my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", \
+    { Slice => {} } ); \
     [ map { $_->{ename} }  @$emps ]
+
+
+Noticed that '\' symbols in last example? Swat uses '\' to define multiline swat entities.
 
 
 =head1 Generators and Perl one-liners scope

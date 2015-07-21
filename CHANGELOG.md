@@ -1,6 +1,7 @@
 # 0.1.15
 - update documentation 
 - noproxy depricated
+- multiline entities
 
 # 0.1.13
 - Add swat entities generators 
