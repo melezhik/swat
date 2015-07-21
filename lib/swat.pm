@@ -498,7 +498,7 @@ What about to compare results with ones in sqlite table?
     my $results = $sth->fetchall_arrayref; \
     
     [ map { $_->[0] } @${results} ]
-    
+
 See examples/swat-generators-sqlite3 for working example
 
 =head1 Multiline swat entities

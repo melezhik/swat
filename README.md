@@ -179,15 +179,20 @@ As you can guess from examples above an array returned by generator should conta
     generator: [ map  { "$_\n" } [ '# my name is', 'John', '# I like ', 'perl' ]
 
 Of course there is no limit for you! Use any code you want with only requiments - the last line should return array reference. 
-What about mysql database lookup to check return results with data base entries?
+What about to compare results with ones in sqlite table?
 
     # Place this in swat pattern file
-    generator: 
-        use DBI; use DBD::mysql; \
-        $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  \
-        my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", \
-        { Slice => {} } ); \
-        [ map { $_->{ename} }  @$emps ]
+    generator: \
+    
+    use DBI; \
+    my $dbh = DBI->connect("dbi:SQLite:dbname=t/data/test.db","",""); \
+    my $sth = $dbh->prepare("SELECT name from users"); \
+    $sth->execute(); \
+    my $results = $sth->fetchall_arrayref; \
+    
+    [ map { $_->[0] } @${results} ]
+
+See examples/swat-generators-sqlite3 for working example
 
 # Multiline swat entities
 
