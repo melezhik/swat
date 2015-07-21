@@ -1,3 +1,7 @@
+# 0.1.15
+- update documentation 
+- noproxy depricated
+
 # 0.1.13
 - Add swat entities generators 
 - Add noproxy settings

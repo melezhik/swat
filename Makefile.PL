@@ -13,7 +13,7 @@ WriteMakefile(
     EXE_FILES => ['bin/swat'],
     PREREQ_PM => {
         "Test::More" => 0,
-        "Test::Harness" => 0,
+        "Test::Harness" => 0
     },
     META_ADD => {
         provides => {
