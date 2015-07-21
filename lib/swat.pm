@@ -12,8 +12,6 @@ our ($url, $path, $http_meth);
 our ($debug, $ignore_http_err, $try_num, $debug_bytes);
 $| = 1;
 
-my $comment;
-
 sub execute_with_retry {
 
     my $cmd = shift;
@@ -127,8 +125,6 @@ sub generate_asserts {
         next ENTITY unless $l =~ /\S/; # skip blank lines
 
         if ($l=~ /^\s*#(.*)/) { # skip comments
-            $comment = $1;
-            s/^\s+//, s/\s+$// for $comment;
             next ENTITY;
         }
 
@@ -219,7 +215,7 @@ sub handle_generator {
 sub handle_regexp {
 
     my $re = shift;
-    my $message = $comment ? "[$comment] $http_meth $path returns data matching $re" : "$http_meth $path returns data matching $re";
+    my $message = "$http_meth $path returns data matching $re";
     check_line($re, 'regexp', $message);
     warn "handle_regexp OK. $re" if $ENV{'swat_debug'};
     
@@ -228,7 +224,7 @@ sub handle_regexp {
 sub handle_expected_val {
 
     my $l = shift;
-    my $message = $comment ? "[$comment] $http_meth $path returns $l" : "$http_meth $path returns $l";
+    my $message = "$http_meth $path returns $l";
     check_line($l, 'default', $message);
     warn "handle_expected_val OK. $l" if $ENV{'swat_debug'};   
 }

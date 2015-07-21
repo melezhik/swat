@@ -1,5 +1,32 @@
+# this one generator is multiline
 generator: [ qw( id title \
- body userId ) ];
+ body \
+userId ) \
+];
 
-# done
+
+# this one expected values  is multiline
+id
+title
+body
+
+bo\
+d\
+y
+
+
+# and this one too
+
+userId
+
+tit\
+le
+
+body
+
+
+
+
+
+
 
