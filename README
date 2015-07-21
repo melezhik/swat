@@ -177,6 +177,51 @@ Post requests
              curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
              curl_params="${curl_params} -H 'Content-Type: application/json'"
 
+Generators
+    Swat entities generators is the way to *create swat entities on the
+    fly*. Technically specaking it's just a perl code which should return an
+    array reference:
+
+        # Place this in swat pattern file
+        generator: [ map  { "$_\n" } qw{ foo bar baz } ]
+
+    The given code will generate 3 swat entities:
+
+        foo
+        bar
+        baz
+
+    Generators are very close to perl one-liners, they both *perl evaled
+    during test run*, but remember value returned by generators and pass it
+    back recursively to parser so that new swat entities may be created.
+
+    As you can guess from examples above an array returned by generator
+    should contain *strings representing swat entities*, here is another
+    example:
+
+        # Place this in swat pattern file
+        generator: [ map  { "$_\n" } [ '# my name is', 'John', '# I like ', 'perl' ]
+
+    Of course there is no limit for you! Use any code you want with only
+    requiments - the last line should return array reference. What about
+    mysql database lookup to check return results with data base entries?
+
+        # Place this in swat pattern file
+        generator: 
+        use DBI; use DBD::mysql; \
+        $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  \
+        my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", \
+        { Slice => {} } ); \
+        [ map { $_->{ename} }  @$emps ]
+
+    Noticed that '\' symbols in last example? Swat uses '\' to define
+    multiline swat entities.
+
+Generators and Perl one-liners scope
+    Swat usea *perl string eval* when process generators and one-liner, be
+    aware of this. Follow <http://perldoc.perl.org/functions/eval.html> to
+    get more on this.
+
 Swat settings
     Swat comes with settings defined in two contexts:
 
@@ -210,9 +255,6 @@ Swat settings
     *   "curl_max_time" - follow curl documentation
 
     *   "port" - http port of tested host, default value is 80
-
-    *   "noproxy" - ignore http proxy when making http requests, default
-        value is 1
 
   Swat.ini files
     Swat checks files named "swat.ini" in the following directories

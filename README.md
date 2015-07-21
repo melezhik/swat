@@ -173,20 +173,23 @@ The given code will generate 3 swat entities:
 Generators are very close to perl one-liners, they both _perl evaled during test run_, but remember value returned by generators and pass it back recursively 
 to parser so that new swat entities may be created.
 
-As you can notice an array wich generator return should contain _strings representing swat entities_, here is another exmaple:
+As you can guess from examples above an array returned by generator should contain _strings representing swat entities_, here is another example:
 
     # Place this in swat pattern file
     generator: [ map  { "$_\n" } [ '# my name is', 'John', '# I like ', 'perl' ]
 
-Of course there is no limit for you! Use any code you want with only requiments - the last line should return array reference. What about mysql database lookup
-to check return results with data base entries?
+Of course there is no limit for you! Use any code you want with only requiments - the last line should return array reference. 
+What about mysql database lookup to check return results with data base entries?
 
     # Place this in swat pattern file
     generator: 
     use DBI; use DBD::mysql; \
     $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  \
-    my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", { Slice => {} } ); \
+    my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", \
+    { Slice => {} } ); \
     [ map { $_->{ename} }  @$emps ]
+
+Noticed that '\\' symbols in last example? Swat uses '\\' to define multiline swat entities.
 
 # Generators and Perl one-liners scope
 
