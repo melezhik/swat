@@ -208,14 +208,29 @@ Generators
 
         # Place this in swat pattern file
         generator: 
-        use DBI; use DBD::mysql; \
-        $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  \
-        my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", \
-        { Slice => {} } ); \
-        [ map { $_->{ename} }  @$emps ]
+            use DBI; use DBD::mysql; \
+            $dbh = DBI->connect("DBI:mysql:database=users;host=localhost;port=3306","root","");  \
+            my $emps = $dbh->selectall_arrayref("SELECT ename FROM emp ORDER BY ename", \
+            { Slice => {} } ); \
+            [ map { $_->{ename} }  @$emps ]
 
-    Noticed that '\' symbols in last example? Swat uses '\' to define
-    multiline swat entities.
+Multiline swat entities
+    Noticed that "\" symbols in last example? Swat uses "\" to tell
+    multiline swat entities from single line ones. Here are some exmaples:
+
+        # Place this in swat pattern file
+        # multiline for `Google' expected value:
+        Go\
+        og\
+        gle
+
+        # Place this in swat pattern file
+        # multiline for `Google' expected value:
+        generator: [            \
+                map {           \
+                uc($_)          \
+            } qw( foo bar baz ) \
+        ]
 
 Generators and Perl one-liners scope
     Swat usea *perl string eval* when process generators and one-liner, be
