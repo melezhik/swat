@@ -1,3 +1,8 @@
+# 0.1.18
+- swat packages
+- perl libraries path
+
+
 # 0.1.17
 - update documentation
 - add version() function to get swat package version

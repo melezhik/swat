@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = 'v0.1.17';
+our $VERSION = 'v0.1.18';
 
 use base 'Exporter'; 
 
@@ -103,7 +103,7 @@ sub check_line {
 sub header {
 
     diag("start swat for $url/$path");
-    diag("debug $debug | try num $try_num | ignore http errors $ignore_http_err")
+    diag("swat version $swat::VERSION | debug $debug | try num $try_num | ignore http errors $ignore_http_err")
 }
 
 sub generate_asserts {
@@ -251,10 +251,6 @@ sub handle_plain {
 
 
 1;
-
-=head1 ABSTRACT
-
-SWAT is Simple Web Application Test ( Tool )
 
 =head1 SYNOPSIS
 
