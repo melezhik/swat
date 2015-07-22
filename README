@@ -182,7 +182,7 @@ DSL
         HELLO SWAT
 
 Generators
-    Swat entities generators is the way to *create new swat entries on the
+    Swat entries generators is the way to *create new swat entries on the
     fly*. Technically specaking it's just a perl code which should return an
     array reference: Generators are very close to perl expressions (
     generators code is alos get evaled ) with maijor difference:
@@ -196,7 +196,7 @@ Generators
         # Place this in swat pattern file
         generator: [ qw{ foo bar baz } ]
 
-    This generator will generate 3 swat entities:
+    This generator will generate 3 swat entries:
 
         foo
         bar
@@ -207,14 +207,12 @@ Generators
     generator producing still 3 swat entites 'foo', 'bar', 'baz' :
 
         # Place this in swat pattern file
-        generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value', 'baz' => 'baz value'  }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ]
+        generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ]
 
     This generator will generate 3 swat entities:
 
         # foo
         foo value
-        # baz
-        baz value
         # bar
         bar value
 
@@ -239,7 +237,7 @@ Multiline expressions
     Sometimes code looks more readable when you split it on separate chunks.
     When swat parser meets "\" symbols it postpone entity execution and and
     next line to buffer. Once no "\" occured swat parser *execute* swat
-    entity.
+    entry.
 
     Here are some exmaples:
 
@@ -291,8 +289,8 @@ Post requests
              curl_params="${curl_params} -H 'Content-Type: application/json'"
 
 Generators and Perl Expressions Scope
-    Swat call *perl string eval* when process generators and perl
-    expressions entities, be aware of this. Follow
+    Swat uses *perl string eval* when process generators and perl
+    expressions code, be aware of this. Follow
     <http://perldoc.perl.org/functions/eval.html> to get more on this.
 
 Swat Settings

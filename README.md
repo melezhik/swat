@@ -160,7 +160,7 @@ There are a _lot of possibilities_! Please follow [Test::More](https://metacpan.
 
 # Generators
 
-Swat entities generators is the way to _create new swat entries on the fly_. Technically specaking it's just a perl code which should return an array reference:
+Swat entries generators is the way to _create new swat entries on the fly_. Technically specaking it's just a perl code which should return an array reference:
 Generators are very close to perl expressions ( generators code is alos get evaled ) with maijor difference:
 
 Value returned from generator's code should be  array reference. The array is passed back to swat parser so it can create new swat entries from it. 
@@ -170,7 +170,7 @@ Generators entries start with `:generator` marker. Here is example:
     # Place this in swat pattern file
     generator: [ qw{ foo bar baz } ]
 
-This generator will generate 3 swat entities:
+This generator will generate 3 swat entries:
 
     foo
     bar
@@ -180,14 +180,12 @@ As you can guess an array returned by generator should contain _perl strings_ re
 with generator producing still 3 swat entites 'foo', 'bar', 'baz' :
 
     # Place this in swat pattern file
-    generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value', 'baz' => 'baz value'  }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ] 
+    generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ] 
 
 This generator will generate 3 swat entities:
 
     # foo
     foo value
-    # baz
-    baz value
     # bar
     bar value
 
@@ -210,7 +208,7 @@ See examples/swat-generators-sqlite3 for working example
 # Multiline expressions
 
 Sometimes code looks more readable when you split it on separate chunks. When swat parser meets  `\` symbols it postpone entity execution and
-and next line to buffer. Once no `\` occured swat parser _execute_ swat entity.
+and next line to buffer. Once no `\` occured swat parser _execute_ swat entry.
 
 Here are some exmaples:
 
@@ -262,7 +260,7 @@ You may use curl\_params setting ( follow ["Swat Settings"](#swat-settings) sect
 
 # Generators and Perl Expressions Scope
 
-Swat call _perl string eval_ when process generators and perl expressions entities, be aware of this. 
+Swat uses _perl string eval_ when process generators and perl expressions code, be aware of this. 
 Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get more on this.
 
 # Swat Settings
