@@ -195,7 +195,7 @@ sub handle_code {
 
     my $code = shift;
 
-    if (ref $code){
+    unless (ref $code){
         eval $code;
         die "code entry eval perl error, code:$code , error: $@" if $@;
         diag "handle_code OK. $code" if $ENV{'swat_debug'};
@@ -203,7 +203,7 @@ sub handle_code {
         my $code_to_eval = join "\n", @$code;
         eval $code_to_eval;
         die "code entry eval error, code:$code_to_eval , error: $@" if $@;
-        diag "handle_code OK. multiline. $code" if $ENV{'swat_debug'};
+        diag "handle_code OK. multiline. $code_to_eval" if $ENV{'swat_debug'};
     }
     
 }
@@ -212,7 +212,7 @@ sub handle_generator {
 
     my $code = shift;
 
-    if (ref $code){
+    unless (ref $code){
         my $arr_ref = eval $code;
         die "generator entry eval error, code:$code , error: $@" if $@;
         generate_asserts($arr_ref,0);
@@ -222,7 +222,7 @@ sub handle_generator {
         my $arr_ref = eval $code_to_eval;
         generate_asserts($arr_ref,0);
         die "code entry eval error, code:$code_to_eval , error: $@" if $@;
-        diag "handle_generator OK. multiline. $code" if $ENV{'swat_debug'};
+        diag "handle_generator OK. multiline. $code_to_eval" if $ENV{'swat_debug'};
     }
     
 }
