@@ -1,7 +1,3 @@
-# ABSTRACT
-
-SWAT is Simple Web Application Test ( Tool )
-
 # SYNOPSIS
 
 SWAT is Simple Web Application Test ( Tool )
@@ -203,7 +199,7 @@ What about to validate web application content with sqlite database entries?
     
     [ map { $_->[0] } @${results} ]
 
-See examples/swat-generators-sqlite3 for working example
+As an example take a loot at examples/swat-generators-sqlite3 project
 
 # Multiline expressions
 
@@ -238,6 +234,19 @@ Here are some exmaples:
 
 Multiline expressions are only allowable for perl expressions and generators 
 
+# Generators and Perl Expressions Scope
+
+Swat uses _perl string eval_ when process generators and perl expressions code, be aware of this. 
+Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get more on this.
+
+# PERL5LIB
+
+Swat adds **$project\_root\_directory/lib** to PERL5LIB , so this is convient convenient to place here custom perl modules:
+
+    example/my-app/lib/Foo/Bar/Baz.pm
+
+As an example take a loot at examples/swat-generators-with-lib/ project
+
 # Post requests
 
 Name swat data file as post.txt to make http POST requests.
@@ -257,11 +266,6 @@ You may use curl\_params setting ( follow ["Swat Settings"](#swat-settings) sect
          # Place this in swat.ini file or sets as env variable:
          curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
          curl_params="${curl_params} -H 'Content-Type: application/json'"
-
-# Generators and Perl Expressions Scope
-
-Swat uses _perl string eval_ when process generators and perl expressions code, be aware of this. 
-Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get more on this.
 
 # Swat Settings
 
@@ -371,10 +375,15 @@ Not that many :)
 - bash
 - find
 - head
+- tar
 
 # AUTHOR
 
 [Aleksei Melezhik](mailto:melezhik@gmail.com)
+
+# Swat Project Home Page
+
+https://github.com/melezhik/swat
 
 # Thanks
 

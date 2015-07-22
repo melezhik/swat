@@ -531,7 +531,8 @@ What about to validate web application content with sqlite database entries?
     
     [ map { $_->[0] } @${results} ]
 
-See examples/swat-generators-sqlite3 for working example
+
+As an example take a loot at examples/swat-generators-sqlite3 project
 
 
 =head1 Multiline expressions
@@ -567,6 +568,21 @@ Here are some exmaples:
 
 Multiline expressions are only allowable for perl expressions and generators 
 
+=head1 Generators and Perl Expressions Scope
+
+Swat uses I<perl string eval> when process generators and perl expressions code, be aware of this. 
+Follow L<http://perldoc.perl.org/functions/eval.html> to get more on this.
+
+=head1 PERL5LIB
+
+Swat adds B<$project_root_directory/lib> to PERL5LIB , so this is convient convenient to place here custom perl modules:
+
+
+    example/my-app/lib/Foo/Bar/Baz.pm
+
+As an example take a loot at examples/swat-generators-with-lib/ project
+
+
 =head1 Post requests
 
 Name swat data file as post.txt to make http POST requests.
@@ -598,12 +614,6 @@ C<--data-binary> - Post data sending as is.
 
 
 =back
-
-
-=head1 Generators and Perl Expressions Scope
-
-Swat uses I<perl string eval> when process generators and perl expressions code, be aware of this. 
-Follow L<http://perldoc.perl.org/functions/eval.html> to get more on this.
 
 
 =head1 Swat Settings
@@ -835,11 +845,20 @@ find
 
 head
 
+=item *
+
+tar
+
 =back
 
 =head1 AUTHOR
 
 L<Aleksei Melezhik|mailto:melezhik@gmail.com>
+
+
+=head1 Swat Project Home Page
+
+https://github.com/melezhik/swat
 
 
 =head1 Thanks
