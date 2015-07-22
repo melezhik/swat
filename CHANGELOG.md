@@ -1,3 +1,9 @@
+# 0.1.16
+- update documentation
+- add version() function to get swat package version
+
+
+
 # 0.1.15
 - update documentation 
 - noproxy depricated

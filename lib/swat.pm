@@ -1,5 +1,16 @@
 package swat;
-our $VERSION = v0.1.16;
+
+our $VERSION = 'v0.1.17';
+
+use base 'Exporter'; 
+
+our @EXPORT = qw{version};
+
+sub version {
+    print $VERSION, "\n"
+}
+
+
 1;
 
 package main;
@@ -11,6 +22,7 @@ our ($curl_cmd, $content_file);
 our ($url, $path, $http_meth); 
 our ($debug, $ignore_http_err, $try_num, $debug_bytes);
 $| = 1;
+
 
 sub execute_with_retry {
 
@@ -234,6 +246,9 @@ sub handle_expected_val {
 
 1;
 
+=head1 ABSTRACT
+
+SWAT is Simple Web Application Test ( Tool )
 
 =head1 SYNOPSIS
 
@@ -306,20 +321,22 @@ and yes ... swat is fun :)
 =head2 Install swat
 
 
-=head3 developer release
-
-    sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
-
 =head3 stable release
 
     sudo cpan install swat
+
+=head3 developer release
+
+    # developer release might be untested and ustable
+    sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
+
 
 Once swat is installed you have B<swat> command line tool to run swat tests, but before do this you need to create them.
 
 
 =head2 Create tests
 
-    mkdir  my-app/ # create a project root directory to hold tests
+    mkdir  my-app/ # create a project root directory to contain tests
 
     # define http URIs application should response to
 
@@ -345,7 +362,7 @@ Swat DSL consists of 2 parts. Routes and check patterns.
 
 =head2 Routes
 
-Routes are http resources a tested web application should has.
+Routes are http resources a tested web application should have.
 
 Swat utilize file system I<representing> all existed routes as sub directories paths in the project root directory.
 Let we have a following project layout:
@@ -359,23 +376,29 @@ When you give swat a run
 
     swat example/my-app 127.0.0.1
 
-It will find all the directories holding get.txt files and "create" routes:
+It will find all the I<directories with get.txt inside> files and "create" routes:
 
     GET hello/
     GET hello/world
 
-Then check patterns come into play.
+Then you need to define swat data
 
 
-=head2 Check patterns
+=head2 Swat data
 
-As you can see from tutorial above check patterns are  just text files describing B<what> is expected to return when route requested. Check patterns file parsed by swat line by line and take an action depending on entity found. There are 3 types of entities may be found in check patterns file:
+Swat data is DSL to describe/generate I<what you expect to return>. 
+
+Swat with the help of curl makes http requests to web application and then I<using> swat data validate content returned.
+
+Swats recursively looks up  files named B<get.txt> or B<post.txt> under the project root directory to get test data.
+
+I<objects> found in test data file are called I<swat entries>. There are I<3 basic type> of swat entries:
 
 =over
 
 =item *
 
-Expected Values
+Check Expressions
 
 
 =item *
@@ -391,18 +414,27 @@ Perl Expressions and Generators
 =back
 
 
-=head3 Expected Values
+=head3 Check Expressions
 
-This is most usable entity that one may define at check patterns files. I<It's just a string should be returned> when swat request a given URI. Here are examples:
+This is most usable type of entries you  may define at swat data file. I<It's just a string should be returned> when swat request a given URI. Here are examples:
 
     200 OK
     Hello World
     <head><title>Hello World</title></head>
 
 
+Using regexps
+
+Regexps are check expresions with the usage of <perl regular expressions> instead of plain strings checks.
+Everything started with C<regexp:> marker would be treated as perl regular expression.
+
+    # this is example of regexp check
+    regexp: App Version Number: (\d+\.\d+\.\d+)
+
+
 =head3 Comments
 
-Comments are lines started with '#' symbol, they are for humans not for swat which ignore comments when parse check pattern file. Here are examples.
+Comments entries are lines started with C<#> symbol, swat will ignore comments when parse swat data file. Here are examples.
 
     # this http status is expected
     200 OK
@@ -412,6 +444,8 @@ Comments are lines started with '#' symbol, they are for humans not for swat whi
 
 =head3 Perl Expressions
 
+Perl expressions are just a pieces of perl code to I<get evaled> by swat when parsing test data files.
+
 Everything started with C<code:> marker would be treated by swat as perl code to execute.
 There are a I<lot of possibilities>! Please follow L<Test::More|search.cpan.org/perldoc/Test::More> documentation to get more info about useful function you may call here.
 
@@ -419,18 +453,101 @@ There are a I<lot of possibilities>! Please follow L<Test::More|search.cpan.org/
     HELLO WORLD
 
 
-=head3 Using regexp
+    code: skip('next test is skipped',1) unless $ENV{'debug'} == 1  # confitionally skip this check
+    HELLO SWAT
 
-Regexps are subtypes of expected values, with the only adjustment that you may use I<perl regular expressions> instead of plain strings checks.
-Everything started with C<regexp:> marker would be treated as regular expression.
 
-    # this is example of regexp check
-    regexp: App Version Number: (\d+\.\d+\.\d+)
+=head1 Generators
 
+Swat entities generators is the way to I<create new swat entries on the fly>. Technically specaking it's just a perl code which should return an array reference:
+Generators are very close to perl expressions ( generators code is alos get evaled ) with maijor difference:
+
+Value returned from generator's code should be  array reference. The array is passed back to swat parser so it can create new swat entries from it. 
+
+Generators entries start with C<:generator> marker. Here is example:
+
+    # Place this in swat pattern file
+    generator: [ qw{ foo bar baz } ]
+
+This generator will generate 3 swat entities:
+
+    foo
+    bar
+    baz
+
+
+
+As you can guess an array returned by generator should contain I<perl strings> representing swat entries, here is another example:
+with generator producing still 3 swat entites 'foo', 'bar', 'baz' :
+
+
+    # Place this in swat pattern file
+    generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value', 'baz' => 'baz value'  }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ] 
+
+
+This generator will generate 3 swat entities:
+
+    # foo
+    foo value
+    # baz
+    baz value
+    # bar
+    bar value
+
+
+There is no limit for you! Use any code you want with only requiment - it should return array reference. 
+What about to validate web application content with sqlite database entries?
+
+    # Place this in swat pattern file
+    generator: \
+    
+    use DBI; \
+    my $dbh = DBI->connect("dbi:SQLite:dbname=t/data/test.db","",""); \
+    my $sth = $dbh->prepare("SELECT name from users"); \
+    $sth->execute(); \
+    my $results = $sth->fetchall_arrayref; \
+    
+    [ map { $_->[0] } @${results} ]
+
+See examples/swat-generators-sqlite3 for working example
+
+
+=head1 Multiline expressions
+
+Sometimes code looks more readable when you split it on separate chunks. When swat parser meets  C<\> symbols it postpone entity execution and
+and next line to buffer. Once no C<\> occured swat parser I<execute> swat entity.
+
+Here are some exmaples:
+
+    # Place this in swat pattern file
+    generator:                  \
+    my %d = {                   \
+        'foo' => 'foo value',   \
+        'bar' => 'bar value',   \
+        'baz' => 'baz value'    \
+    };                          \
+    [                                               \
+        map  { ( "# $_", "$data{$_}" )  } keys %d   \
+    ]                                               \
+
+    # Place this in swat pattern file
+    generator: [            \
+            map {           \
+            uc($_)          \
+        } qw( foo bar baz ) \
+    ]
+
+    code:                                                       \
+    if $ENV{'debug'} == 1  { # confitionally skip this check    \
+        skip('next test is skipped',1)                          \ 
+    } 
+    HELLO SWAT
+
+Multiline expressions are only allowable for perl expressions and generators 
 
 =head1 Post requests
 
-When talking about swat I always say about Get http request, but swat may send a Post http request just name your check patterns file  as post.txt instead of get.txt
+Name swat data file as post.txt to make http POST requests.
 
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt
@@ -460,67 +577,7 @@ C<--data-binary> - Post data sending as is.
 
 =back
 
-=head1 Generators
 
-Swat entities generators is the way to I<create swat entities on the fly>. Technically specaking it's just a perl code which should return an array reference:
-
-
-    # Place this in swat pattern file
-    generator: [ map  { "$_\n" } qw{ foo bar baz } ]
-
-The given code will generate 3 swat entities:
-
-    foo
-    bar
-    baz
-
-Generators entities start with C<:generator> marker.
-
-Generators are very close to perl expression, they both I<get perl evaled during test run>, except for value returned from generator code is passed back 
-to swat parser so it can create new swate entites ( or  new  generators ones in recursive way ! )
-
-As you can guess from examples above an array returned by generator should contain I<strings representing swat entities>, here is another example
-with generator producing still 3 swat entites 'foo', 'bar', 'baz' :
-
-
-    # Place this in swat pattern file
-    generator: [ map  { "$_\n" } [ '# this is foo', 'foo', '# this is bar', 'bar', '# and this is baz', 'baz' ]
-
-
-
-Of course there is no limit for you! Use any code you want with only requiments - the last line should return array reference. 
-What about to compare results with ones in sqlite table?
-
-    # Place this in swat pattern file
-    generator: \
-    
-    use DBI; \
-    my $dbh = DBI->connect("dbi:SQLite:dbname=t/data/test.db","",""); \
-    my $sth = $dbh->prepare("SELECT name from users"); \
-    $sth->execute(); \
-    my $results = $sth->fetchall_arrayref; \
-    
-    [ map { $_->[0] } @${results} ]
-
-See examples/swat-generators-sqlite3 for working example
-
-=head1 Multiline swat entities
-
-Noticed that C<\> symbols in last example? Swat uses C<\> to tell multiline swat entities from single line ones. Here are some exmaples:
-
-    # Place this in swat pattern file
-    # multiline for `Google' expected value:
-    Go\
-    og\
-    gle
-
-    # Place this in swat pattern file
-    # multiline for `Google' expected value:
-    generator: [            \
-            map {           \
-            uc($_)          \
-        } qw( foo bar baz ) \
-    ]
 
 
 
