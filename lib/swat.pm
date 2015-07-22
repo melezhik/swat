@@ -794,8 +794,14 @@ B<project_dir> - is a project root directory
 
 =back
 
+=head1 Swat Packages
 
-=head2 Prove settings
+Swat packages is distributable archives of swat tests. It's easy to create your own swat packages and share with other. 
+Consider https://github.com/melezhik/swat-packages project for details.
+
+
+
+=head1 Prove settings
 
 Swat utilize L<prove utility|http://search.cpan.org/perldoc?prove> to run tests, so all the swat options I<are passed as is to prove utility>.
 Follow L<prove|http://search.cpan.org/perldoc?prove> utility documentation for variety of values you may set here.

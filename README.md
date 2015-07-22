@@ -350,7 +350,12 @@ Swat is shipped as cpan package, once it's installed ( see ["Install swat"](#ins
 - **URL** - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
 - **project\_dir** - is a project root directory
 
-## Prove settings
+# Swat Packages
+
+Swat packages is distributable archives of swat tests. It's easy to create your own swat packages and share with other. 
+Consider https://github.com/melezhik/swat-packages project for details.
+
+# Prove settings
 
 Swat utilize [prove utility](http://search.cpan.org/perldoc?prove) to run tests, so all the swat options _are passed as is to prove utility_.
 Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for variety of values you may set here.
