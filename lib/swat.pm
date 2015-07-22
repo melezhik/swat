@@ -130,15 +130,15 @@ sub generate_asserts {
 
 
 
-    ENTITY: for my $l (@ents){
+    ENTRY: for my $l (@ents){
 
         chomp $l;
         warn $l if $ENV{'swat_debug'};
         
-        next ENTITY unless $l =~ /\S/; # skip blank lines
+        next ENTRY unless $l =~ /\S/; # skip blank lines
 
         if ($l=~ /^\s*#(.*)/) { # skip comments
-            next ENTITY;
+            next ENTRY;
         }
 
         if ($l=~/^\s*code:\s*(.*)/){
@@ -146,7 +146,7 @@ sub generate_asserts {
             if ($code=~s/\\\s*$//){
                  push @ents_ok, $code;
                  $ent_type = 'code';
-                 next ENTITY; # this is multiline, hold this until last line found
+                 next ENTRY; # this is multiline, hold this until last line \ found
             }else{
                 undef $ent_type;
                 handle_code($code);
@@ -156,7 +156,7 @@ sub generate_asserts {
             if ($code=~s/\\\s*$//){
                  push @ents_ok, $code;
                  $ent_type = 'generator';
-                 next ENTITY; # this is multiline, hold this until last line found
+                 next ENTRY; # this is multiline, hold this until last line \ found
             }else{
                 undef $ent_type;
                 handle_generator($code);
@@ -164,25 +164,18 @@ sub generate_asserts {
             
         }elsif($l=~/^\s*regexp:\s*(.*)/){
             my $re=$1;
-            if ($re=~s/\\\s*$//){ 
-                 push @ents_ok, $re;
-                 $ent_type = 'regexp';
-                 next ENTITY; # this is multiline, hold this until last line found
-            }else{
-                undef $ent_type;
-                handle_regexp($re);
-                
-            }
+            undef $ent_type;
+            handle_regexp($re);
         }elsif(defined($ent_type)){
             if ($l=~s/\\\s*$//) {
                 push @ents_ok, $l;
-                next ENTITY; # this is multiline, hold this until last line found
+                next ENTRY; # this is multiline, hold this until last line \ found
              }else {
 
                 no strict 'refs';
                 my $name = "handle_"; $name.=$ent_type;
                 push @ents_ok, $l;
-                &$name(join "", @ents_ok);
+                &$name(\@ents_ok);
 
                 undef $ent_type;
                 @ents_ok = ();
@@ -190,16 +183,8 @@ sub generate_asserts {
             }
        }else{
             s{#.*}[], s{\s+$}[], s{^\s+}[] for $l;
-            if ($l=~s{\\\s*$}[]){ 
-                 push @ents_ok, $l;
-                 $ent_type = 'expected_val';
-                 warn "push to multiline OK. $ent_type. $l" if $ENV{'swat_debug'};
-                 next ENTITY; # this is multiline, hold this until last line found
-            }else{
-                undef $ent_type;
-                handle_expected_val($l);
-                
-            }
+            undef $ent_type;
+            handle_plain($l);
         }
     }
 
@@ -209,19 +194,36 @@ sub generate_asserts {
 sub handle_code {
 
     my $code = shift;
-    eval $code;
-    die "code entity eval perl error, code:$code , error: $@" if $@;
-    warn "handle_code OK. $code" if $ENV{'swat_debug'};
+
+    if (ref $code){
+        eval $code;
+        die "code entry eval perl error, code:$code , error: $@" if $@;
+        diag "handle_code OK. $code" if $ENV{'swat_debug'};
+    } else {
+        my $code_to_eval = join "\n", @$code;
+        eval $code_to_eval;
+        die "code entry eval error, code:$code_to_eval , error: $@" if $@;
+        diag "handle_code OK. multiline. $code" if $ENV{'swat_debug'};
+    }
     
 }
 
 sub handle_generator {
 
     my $code = shift;
-    my $arr_ref = eval $code;
-    die "generator entity perl eval error, code:$code , error: $@"  if $@;
-    generate_asserts($arr_ref,0);
-    warn "handle_generator OK. $code" if $ENV{'swat_debug'};
+
+    if (ref $code){
+        my $arr_ref = eval $code;
+        die "generator entry eval error, code:$code , error: $@" if $@;
+        generate_asserts($arr_ref,0);
+        diag "handle_code OK. $code" if $ENV{'swat_debug'};
+    } else {
+        my $code_to_eval = join "\n", @$code;
+        my $arr_ref = eval $code_to_eval;
+        generate_asserts($arr_ref,0);
+        die "code entry eval error, code:$code_to_eval , error: $@" if $@;
+        diag "handle_generator OK. multiline. $code" if $ENV{'swat_debug'};
+    }
     
 }
 
@@ -234,12 +236,12 @@ sub handle_regexp {
     
 }
 
-sub handle_expected_val {
+sub handle_plain {
 
     my $l = shift;
     my $message = "$http_meth $path returns $l";
     check_line($l, 'default', $message);
-    warn "handle_expected_val OK. $l" if $ENV{'swat_debug'};   
+    warn "handle_plain OK. $l" if $ENV{'swat_debug'};   
 }
 
 
@@ -534,8 +536,8 @@ See examples/swat-generators-sqlite3 for working example
 
 =head1 Multiline expressions
 
-Sometimes code looks more readable when you split it on separate chunks. When swat parser meets  C<\> symbols it postpone entity execution and
-and next line to buffer. Once no C<\> occured swat parser I<execute> swat entry.
+Sometimes code looks more readable when you split it on separate chunks. When swat parser meets  C<\> symbols it postpone entry execution and
+add next line to buffer. This is repeated till no C<\> found on next. Finally swat execute I<"accumulated"> swat entity.
 
 Here are some exmaples:
 
