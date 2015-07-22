@@ -126,10 +126,10 @@ DSL
     *   For every route swat makes http requests to web application and
         store content into text file
 
-    *   Every line of content is validated by every item in a *final check
+    *   Every line of text file is validated by every item in a *final check
         list*
 
-    *objects* found in test data file are called *swat entries*. There are
+    *Objects* found in test data file are called *swat entries*. There are
     *3 basic type* of swat entries:
 
     *   Check Expressions

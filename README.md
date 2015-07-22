@@ -110,10 +110,10 @@ The process of validation looks like:
 - Swat recursively find files named **get.txt** or **post.txt** in the project root directory to get swat data.
 - Swat parse swat data file and _execute_ entries found. At the end of this process swat creates a _final check list_ with 
 ["Check Expressions"](#check-expressions).
-- For every route swat makes http requests to web application and store content into text file
-- Every line of content is validated by every item in a _final check list_
+- For every route swat makes http requests to web application and store content into text file 
+- Every line of text file is validated by every item in a _final check list_
 
-_objects_ found in test data file are called _swat entries_. There are _3 basic type_ of swat entries:
+_Objects_ found in test data file are called _swat entries_. There are _3 basic type_ of swat entries:
 
 - Check Expressions
 - Comments
