@@ -1,6 +1,6 @@
 # 0.1.18
-- swat packages
-- perl libraries path
+- swat packages support
+- perl libraries path mentioned in doc
 
 
 # 0.1.17
