@@ -421,7 +421,7 @@ Prove settings
 
     *   "-q -s" - run tests in random and quite mode
 
-Debuggins
+Debugging
     set "swat_debug" environmental variable to 1
 
 Examples

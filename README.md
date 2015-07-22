@@ -363,7 +363,7 @@ Default value for prove options is  `-v`. Here is another examples:
 
 - `-q -s` -  run tests in random and quite mode
 
-# Debuggins
+# Debugging
 
 set `swat_debug` environmental variable to 1
 
