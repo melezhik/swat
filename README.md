@@ -48,7 +48,7 @@ So this how I came up with the idea of swat. If I was a marketing guy I'd say th
 
 ### developer release
 
-    # developer release might be untested and ustable
+    # developer release might be untested and unstable
     sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
 Once swat is installed you have **swat** command line tool to run swat tests, but before do this you need to create them.
@@ -76,14 +76,13 @@ Once swat is installed you have **swat** command line tool to run swat tests, bu
 
 # DSL
 
-Swat DSL consists of 2 parts. Routes and check patterns.
+Swat DSL consists of 2 parts. Routes and Swat Data.
 
 ## Routes
 
 Routes are http resources a tested web application should have.
 
-Swat utilize file system _representing_ all existed routes as sub directories paths in the project root directory.
-Let we have a following project layout:
+Swat utilize file system to get know about routes. Let we have a following project layout:
 
     example/my-app/
     example/my-app/hello/
@@ -94,20 +93,25 @@ When you give swat a run
 
     swat example/my-app 127.0.0.1
 
-It will find all the _directories with get.txt inside_ files and "create" routes:
+It will find all the _directories with get.txt|post.txt files inside_ and "create" routes:
 
     GET hello/
     GET hello/world
 
-Then you need to define swat data
+When you are done with routes you need to set swat data.
 
 ## Swat data
 
-Swat data is DSL to describe/generate _what you expect to return_. 
+Swat data is DSL to describe/generate validation checks you apply to content returned from web application.
+Swat data is stored in swat data files, named get.txt or post.txt. 
 
-Swat with the help of curl makes http requests to web application and then _using_ swat data validate content returned.
+The process of validation looks like:
 
-Swats recursively looks up  files named **get.txt** or **post.txt** under the project root directory to get test data.
+- Swat recursively find files named **get.txt** or **post.txt** in the project root directory to get swat data.
+- Swat parse swat data file and _execute_ entries found. At the end of this process swat creates a _final check list_ with 
+["Check Expressions"](#check-expressions).
+- For every route swat makes http requests to web application and store content into text file
+- Every line of content is validated by every item in a _final check list_
 
 _objects_ found in test data file are called _swat entries_. There are _3 basic type_ of swat entries:
 

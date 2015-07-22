@@ -327,7 +327,7 @@ and yes ... swat is fun :)
 
 =head3 developer release
 
-    # developer release might be untested and ustable
+    # developer release might be untested and unstable
     sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
 
@@ -358,14 +358,13 @@ Once swat is installed you have B<swat> command line tool to run swat tests, but
 
 =head1 DSL
 
-Swat DSL consists of 2 parts. Routes and check patterns.
+Swat DSL consists of 2 parts. Routes and Swat Data.
 
 =head2 Routes
 
 Routes are http resources a tested web application should have.
 
-Swat utilize file system I<representing> all existed routes as sub directories paths in the project root directory.
-Let we have a following project layout:
+Swat utilize file system to get know about routes. Let we have a following project layout:
 
     example/my-app/
     example/my-app/hello/
@@ -376,21 +375,44 @@ When you give swat a run
 
     swat example/my-app 127.0.0.1
 
-It will find all the I<directories with get.txt inside> files and "create" routes:
+It will find all the I<directories with get.txt|post.txt files inside> and "create" routes:
 
     GET hello/
     GET hello/world
 
-Then you need to define swat data
+When you are done with routes you need to set swat data.
 
 
 =head2 Swat data
 
-Swat data is DSL to describe/generate I<what you expect to return>. 
+Swat data is DSL to describe/generate validation checks you apply to content returned from web application.
+Swat data is stored in swat data files, named get.txt or post.txt. 
 
-Swat with the help of curl makes http requests to web application and then I<using> swat data validate content returned.
 
-Swats recursively looks up  files named B<get.txt> or B<post.txt> under the project root directory to get test data.
+
+The process of validation looks like:
+
+=over
+
+=item *
+
+Swat recursively find files named B<get.txt> or B<post.txt> in the project root directory to get swat data.
+
+=item *
+
+Swat parse swat data file and I<execute> entries found. At the end of this process swat creates a I<final check list> with 
+L</"Check Expressions">.
+
+=item *
+
+For every route swat makes http requests to web application and store content into text file
+
+=item *
+
+Every line of content is validated by every item in a I<final check list>
+
+
+=back 
 
 I<objects> found in test data file are called I<swat entries>. There are I<3 basic type> of swat entries:
 
