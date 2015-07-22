@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = 'v0.1.18';
+our $VERSION = 'v0.1.19';
 
 use base 'Exporter'; 
 
@@ -816,7 +816,7 @@ C<-q -s> -  run tests in random and quite mode
 =back
 
 
-=head1 Debuggins
+=head1 Debugging
 
 set C<swat_debug> environmental variable to 1
 
