@@ -133,7 +133,7 @@ sub generate_asserts {
     ENTRY: for my $l (@ents){
 
         chomp $l;
-        warn $l if $ENV{'swat_debug'};
+        diag $l if $ENV{'swat_debug'};
         
         next ENTRY unless $l =~ /\S/; # skip blank lines
 
@@ -232,7 +232,7 @@ sub handle_regexp {
     my $re = shift;
     my $message = "$http_meth $path returns data matching $re";
     check_line($re, 'regexp', $message);
-    warn "handle_regexp OK. $re" if $ENV{'swat_debug'};
+    diag "handle_regexp OK. $re" if $ENV{'swat_debug'};
     
 }
 
@@ -241,7 +241,7 @@ sub handle_plain {
     my $l = shift;
     my $message = "$http_meth $path returns $l";
     check_line($l, 'default', $message);
-    warn "handle_plain OK. $l" if $ENV{'swat_debug'};   
+    diag "handle_plain OK. $l" if $ENV{'swat_debug'};   
 }
 
 

@@ -1,32 +1,11 @@
 # this one generator is multiline
-generator: [ qw( id title \
- body \
-userId ) \
-];
-
-
-# this one expected values  is multiline
-id
-title
-body
-
-bo\
-d\
-y
-
-
-# and this one too
-
-userId
-
-tit\
-le
-
-body
-
-
-
-
-
+generator:              \ 
+    [ qw(               \
+        id              \
+        title           \
+        body            \
+        userId          \
+     )                  \
+    ];
 
 
