@@ -405,16 +405,16 @@ L</"Check Expressions">.
 
 =item *
 
-For every route swat makes http requests to web application and store content into text file
+For every route swat makes http requests to web application and store content into text file 
 
 =item *
 
-Every line of content is validated by every item in a I<final check list>
+Every line of text file is validated by every item in a I<final check list>
 
 
 =back 
 
-I<objects> found in test data file are called I<swat entries>. There are I<3 basic type> of swat entries:
+I<Objects> found in test data file are called I<swat entries>. There are I<3 basic type> of swat entries:
 
 =over
 
