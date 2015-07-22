@@ -207,8 +207,8 @@ See examples/swat-generators-sqlite3 for working example
 
 # Multiline expressions
 
-Sometimes code looks more readable when you split it on separate chunks. When swat parser meets  `\` symbols it postpone entity execution and
-and next line to buffer. Once no `\` occured swat parser _execute_ swat entry.
+Sometimes code looks more readable when you split it on separate chunks. When swat parser meets  `\` symbols it postpone entry execution and
+add next line to buffer. This is repeated till no `\` found on next. Finally swat execute _"accumulated"_ swat entity.
 
 Here are some exmaples:
 
@@ -353,6 +353,10 @@ Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for v
 Default value for prove options is  `-v`. Here is another examples:
 
 - `-q -s` -  run tests in random and quite mode
+
+# Debuggins
+
+set `swat_debug` environmental variable to 1
 
 # Examples
 

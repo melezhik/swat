@@ -235,9 +235,9 @@ Generators
 
 Multiline expressions
     Sometimes code looks more readable when you split it on separate chunks.
-    When swat parser meets "\" symbols it postpone entity execution and and
-    next line to buffer. Once no "\" occured swat parser *execute* swat
-    entry.
+    When swat parser meets "\" symbols it postpone entry execution and add
+    next line to buffer. This is repeated till no "\" found on next. Finally
+    swat execute *"accumulated"* swat entity.
 
     Here are some exmaples:
 
@@ -410,6 +410,9 @@ Command line tool
     prove options is "-v". Here is another examples:
 
     *   "-q -s" - run tests in random and quite mode
+
+Debuggins
+    set "swat_debug" environmental variable to 1
 
 Examples
     ./examples directory contains examples of swat tests for different

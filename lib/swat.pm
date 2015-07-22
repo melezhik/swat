@@ -142,6 +142,7 @@ sub generate_asserts {
         }
 
         if ($l=~/^\s*code:\s*(.*)/){
+            die "unterminated entity found: $ents_ok[-1]" if defined($ent_type);
             my $code = $1;
             if ($code=~s/\\\s*$//){
                  push @ents_ok, $code;
@@ -152,6 +153,7 @@ sub generate_asserts {
                 handle_code($code);
             }
         }elsif($l=~/^\s*generator:\s*(.*)/){
+            die "unterminated entity found: $ents_ok[-1]" if defined($ent_type);
             my $code = $1;
             if ($code=~s/\\\s*$//){
                  push @ents_ok, $code;
@@ -163,6 +165,7 @@ sub generate_asserts {
             }
             
         }elsif($l=~/^\s*regexp:\s*(.*)/){
+            die "unterminated entity found: $ents_ok[-1]" if defined($ent_type);
             my $re=$1;
             undef $ent_type;
             handle_regexp($re);
@@ -188,6 +191,7 @@ sub generate_asserts {
         }
     }
 
+    die "unterminated entity found: $ents_ok[-1]" if defined($ent_type);
 
 }
 
@@ -616,7 +620,6 @@ Swat comes with settings defined in two contexts:
 
 Environmental Variables
 
-
 =item *
 
 swat.ini files
@@ -800,6 +803,10 @@ C<-q -s> -  run tests in random and quite mode
 
 =back
 
+
+=head1 Debuggins
+
+set C<swat_debug> environmental variable to 1
 
 =head1 Examples
 
