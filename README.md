@@ -193,13 +193,13 @@ There is no limit for you! Use any code you want with only requiment - it should
 What about to validate web application content with sqlite database entries?
 
     # Place this in swat pattern file
-    generator: \
+    generator:                                                          \
     
-    use DBI; \
-    my $dbh = DBI->connect("dbi:SQLite:dbname=t/data/test.db","",""); \
-    my $sth = $dbh->prepare("SELECT name from users"); \
-    $sth->execute(); \
-    my $results = $sth->fetchall_arrayref; \
+    use DBI;                                                            \
+    my $dbh = DBI->connect("dbi:SQLite:dbname=t/data/test.db","","");   \
+    my $sth = $dbh->prepare("SELECT name from users");                  \
+    $sth->execute();                                                    \
+    my $results = $sth->fetchall_arrayref;                              \
     
     [ map { $_->[0] } @${results} ]
 
