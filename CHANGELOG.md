@@ -1,7 +1,6 @@
-# 0.1.16
+# 0.1.17
 - update documentation
 - add version() function to get swat package version
-
 
 
 # 0.1.15
