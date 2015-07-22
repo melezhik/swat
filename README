@@ -407,7 +407,12 @@ Command line tool
 
     *   project_dir - is a project root directory
 
-  Prove settings
+Swat Packages
+    Swat packages is distributable archives of swat tests. It's easy to
+    create your own swat packages and share with other. Consider
+    https://github.com/melezhik/swat-packages project for details.
+
+Prove settings
     Swat utilize prove utility <http://search.cpan.org/perldoc?prove> to run
     tests, so all the swat options *are passed as is to prove utility*.
     Follow prove <http://search.cpan.org/perldoc?prove> utility
