@@ -302,7 +302,7 @@ produces L<TAP|https://testanything.org/> output
 
 =item *
 
-leverages famous L<perl prove|http://search.cpan.org/perldoc?prove> and <curl|http://curl.haxx.se/> utilities
+leverages famous L<perl prove|http://search.cpan.org/perldoc?prove> and L<curl|http://curl.haxx.se/> utilities
 
 
 =item *
