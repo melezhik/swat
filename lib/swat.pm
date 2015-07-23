@@ -373,7 +373,7 @@ When you give swat a run
 
     swat example/my-app 127.0.0.1
 
-It will find all the I<directories with get.txt|post.txt files inside> and "create" routes:
+It will find all the I<directories with get.txt or post.txt files inside> and "create" routes:
 
     GET hello/
     GET hello/world
@@ -762,7 +762,7 @@ And finally apply settings from swat.ini file in route directory ( if any given 
 
 =head1 TAP
 
-Swat produce output in L<TAP|https://testanything.org/> format , that means you may use your favorite tap parsers to bring result to
+Swat produces output in L<TAP|https://testanything.org/> format , that means you may use your favorite tap parsers to bring result to
 another test / reporting systems, follow TAP documentation to get more on this. Here is example for converting swat tests into JUNIT format
 
     swat $project_root $host --formatter TAP::Formatter::JUnit
@@ -774,7 +774,7 @@ See also L<"Prove settings"> section.
 
 Swat is shipped as cpan package, once it's installed ( see L</"Install swat"> section ) you have a command line tool called B<swat>, this is usage info on it:
 
-    swat project_dir URL <prove settings>
+    swat project_root_dir|swat_package URL <prove settings>
 
 =over
 
@@ -787,14 +787,12 @@ B<URL> - is base url for web application you run tests against, you need defined
 
 B<project_dir> - is a project root directory
 
+=item *
+
+B<swat_package> - the name of swat package, see L</"Swat Packages"> section
+
 
 =back
-
-=head1 Swat Packages
-
-Swat packages is distributable archives of swat tests. It's easy to create your own swat packages and share with other. 
-Consider https://github.com/melezhik/swat-packages project for details.
-
 
 
 =head1 Prove settings
@@ -812,9 +810,68 @@ C<-q -s> -  run tests in random and quite mode
 =back
 
 
+=head1 Swat Packages
+
+Swat packages is distributable archives of swat tests. It's easy to create your own swat packages and share with other. 
+
+This is how-to on creating swat packages and using them:
+
+=head2 Create swat package
+
+Let's imagine you've got ready swat tests you want to distribute. First of all you need to create _tar.gz archive_ of
+swat project root directory:
+
+    tar -zcf $project_root_dir.tar.gz project_root_dir
+
+For example for project ./examples/google 
+
+    cd ./examples/
+    tar -zcf google.tar.gz ./google
+
+=head2 Upload package to swat repository
+
+Swat repository might be  _ANY_ web server. One should upload archive into server.
+Let's say we have nginx server. The example below is for debian:
+
+    # install nginx:
+    sudo apt-get install nginx
+
+    # copy swat distributive:
+    sudo cp google.tar.gz /var/www/html/
+
+    # check for archive availability over web server:
+    curl -s 127.0.0.1/google.tar.gz -D - -o /dev/null  | head  -n 1
+    HTTP/1.1 200 OK
+
+You swat repository with nginx swat package uploaded is ready!
+
+=head2 Install swat package
+
+Swat comes with utility called B<swatman> to manage swat packages. First need to setup swat repository :
+
+    echo "swat_repo=127.0.0.1" >> ~/swat.ini
+
+Then install package
+
+    swatman install google
+
+Swatman utility has some other usefull commands, try 
+
+    swatman help 
+
+to get more info on it.
+
+
+=head2 Run swat tests
+
+Once swat package is installed into your system you man give it a run:
+
+    swat google google.ru
+
 =head1 Debugging
 
 set C<swat_debug> environmental variable to 1
+
 
 =head1 Examples
 

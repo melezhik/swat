@@ -24,15 +24,17 @@ while dev guys or QA team ensure that deploy is fine and nothing breaks on the r
 So I need a **tool to run smoke tests against web applications**. 
 Not tool only, but the way to **create such a tests from the scratch in way easy and fast enough**. 
 
-So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
+So this how I came up with the idea of swat. 
 
-- is easy to use and flexible tool to run smoke tests against web applications
-- is [curl](http://curl.haxx.se/) powered and [TAP](https://testanything.org/) compatible
-- leverages famous [prove](http://search.cpan.org/perldoc?prove) utility
+# Key features
+
+SWAT:
+
+- is very pragmatical tool designed for job to be done in a fast and simple way
+- has simple and yet flexible DSL with low price mastering ( see my tutorial )
+- produces [TAP](https://testanything.org/) output
+- leverages famous [perl prove](http://search.cpan.org/perldoc?prove) and <curl|http://curl.haxx.se/> utilities
 - has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
-- has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl functions calls )
-- is daily it/devops/dev helper with low price mastering ( see my tutorial )
-- and yes ... swat is fun :)
 
 # Tutorial
 
@@ -58,7 +60,7 @@ Once swat is installed you have **swat** command line tool to run swat tests, bu
     mkdir -p my-app/hello # GET /hello
     mkdir -p my-app/hello/world # GET /hello/world
 
-    # define the content the expected to return by requested URIs
+    # define the content to return by URIs
 
     echo 200 OK >> my-app/hello/get.txt
     echo 200 OK >> my-app/hello/world/get.txt
@@ -89,7 +91,7 @@ When you give swat a run
 
     swat example/my-app 127.0.0.1
 
-It will find all the _directories with get.txt|post.txt files inside_ and "create" routes:
+It will find all the _directories with get.txt or post.txt files inside_ and "create" routes:
 
     GET hello/
     GET hello/world
@@ -99,9 +101,10 @@ When you are done with routes you need to set swat data.
 ## Swat data
 
 Swat data is DSL to describe/generate validation checks you apply to content returned from web application.
+
 Swat data is stored in swat data files, named get.txt or post.txt. 
 
-The process of validation looks like:
+The validation process looks like:
 
 - Swat recursively find files named **get.txt** or **post.txt** in the project root directory to get swat data.
 - Swat parse swat data file and _execute_ entries found. At the end of this process swat creates a _final check list_ with 
@@ -334,7 +337,7 @@ Swat processes settings _in order_. For every route found swat:
 
 # TAP
 
-Swat produce output in [TAP](https://testanything.org/) format , that means you may use your favorite tap parsers to bring result to
+Swat produces output in [TAP](https://testanything.org/) format , that means you may use your favorite tap parsers to bring result to
 another test / reporting systems, follow TAP documentation to get more on this. Here is example for converting swat tests into JUNIT format
 
     swat $project_root $host --formatter TAP::Formatter::JUnit
@@ -345,15 +348,11 @@ See also ["Prove settings"](#prove-settings) section.
 
 Swat is shipped as cpan package, once it's installed ( see ["Install swat"](#install-swat) section ) you have a command line tool called **swat**, this is usage info on it:
 
-    swat project_dir URL <prove settings>
+    swat project_root_dir|swat_package URL <prove settings>
 
 - **URL** - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
 - **project\_dir** - is a project root directory
-
-# Swat Packages
-
-Swat packages is distributable archives of swat tests. It's easy to create your own swat packages and share with other. 
-Consider https://github.com/melezhik/swat-packages project for details.
+- **swat\_package** - the name of swat package, see ["Swat Packages"](#swat-packages) section
 
 # Prove settings
 
@@ -362,6 +361,63 @@ Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for v
 Default value for prove options is  `-v`. Here is another examples:
 
 - `-q -s` -  run tests in random and quite mode
+
+# Swat Packages
+
+Swat packages is distributable archives of swat tests. It's easy to create your own swat packages and share with other. 
+
+This is how-to on creating swat packages and using them:
+
+## Create swat package
+
+Let's imagine you've got ready swat tests you want to distribute. First of all you need to create \_tar.gz archive\_ of
+swat project root directory:
+
+    tar -zcf $project_root_dir.tar.gz project_root_dir
+
+For example for project ./examples/google 
+
+    cd ./examples/
+    tar -zcf google.tar.gz ./google
+
+## Upload package to swat repository
+
+Swat repository might be  \_ANY\_ web server. One should upload archive into server.
+Let's say we have nginx server. The example below is for debian:
+
+    # install nginx:
+    sudo apt-get install nginx
+
+    # copy swat distributive:
+    sudo cp google.tar.gz /var/www/html/
+
+    # check for archive availability over web server:
+    curl -s 127.0.0.1/google.tar.gz -D - -o /dev/null  | head  -n 1
+    HTTP/1.1 200 OK
+
+You swat repository with nginx swat package uploaded is ready!
+
+## Install swat package
+
+Swat comes with utility called **swatman** to manage swat packages. First need to setup swat repository :
+
+    echo "swat_repo=127.0.0.1" >> ~/swat.ini
+
+Then install package
+
+    swatman install google
+
+Swatman utility has some other usefull commands, try 
+
+    swatman help 
+
+to get more info on it.
+
+## Run swat tests
+
+Once swat package is installed into your system you man give it a run:
+
+    swat google google.ru
 
 # Debugging
 
