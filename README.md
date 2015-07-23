@@ -33,7 +33,7 @@ SWAT:
 - is very pragmatical tool designed for job to be done in a fast and simple way
 - has simple and yet flexible DSL with low price mastering ( see my tutorial )
 - produces [TAP](https://testanything.org/) output
-- leverages famous [perl prove](http://search.cpan.org/perldoc?prove) and <curl|http://curl.haxx.se/> utilities
+- leverages famous [perl prove](http://search.cpan.org/perldoc?prove) and [curl](http://curl.haxx.se/) utilities
 - has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
 
 # Tutorial
