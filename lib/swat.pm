@@ -279,39 +279,35 @@ while dev guys or QA team ensure that deploy is fine and nothing breaks on the r
 So I need a B<tool to run smoke tests against web applications>. 
 Not tool only, but the way to B<create such a tests from the scratch in way easy and fast enough>. 
 
-So this how I came up with the idea of swat. If I was a marketing guy I'd say that swat:
+So this how I came up with the idea of swat. 
+
+
+=head1 Key features
+
+SWAT:
 
 =over
 
 =item *
 
-is easy to use and flexible tool to run smoke tests against web applications
-
-
-=item *
-
-is L<curl|http://curl.haxx.se/> powered and L<TAP|https://testanything.org/> compatible
+is very pragmatical tool designed for job to be done in a fast and simple way
 
 =item *
 
-leverages famous L<prove|http://search.cpan.org/perldoc?prove> utility
+has simple and yet flexible DSL with low price mastering ( see my tutorial )
+
+=item *
+
+produces L<TAP|https://testanything.org/> output
+
+=item *
+
+leverages famous L<perl prove|http://search.cpan.org/perldoc?prove> and <curl|http://curl.haxx.se/> utilities
 
 
 =item *
 
 has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
-
-=item *
-
-has a simple and yet powerful DSL allow you to both run simple tests ( 200 OK ) or complicated ones ( using curl api and perl functions calls )
-
-=item *
-
-is daily it/devops/dev helper with low price mastering ( see my tutorial )
-
-=item *
-
-and yes ... swat is fun :)
 
 
 =back
@@ -345,7 +341,7 @@ Once swat is installed you have B<swat> command line tool to run swat tests, but
     mkdir -p my-app/hello # GET /hello
     mkdir -p my-app/hello/world # GET /hello/world
 
-    # define the content the expected to return by requested URIs
+    # define the content to return by URIs
 
     echo 200 OK >> my-app/hello/get.txt
     echo 200 OK >> my-app/hello/world/get.txt
@@ -388,11 +384,11 @@ When you are done with routes you need to set swat data.
 =head2 Swat data
 
 Swat data is DSL to describe/generate validation checks you apply to content returned from web application.
+
 Swat data is stored in swat data files, named get.txt or post.txt. 
 
 
-
-The process of validation looks like:
+The validation process looks like:
 
 =over
 
