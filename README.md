@@ -366,7 +366,7 @@ Default value for prove options is  `-v`. Here is another examples:
 
 Swat packages is distributable archives of swat tests. It's easy to create your own swat packages and share with other. 
 
-This is how-to on creating swat packages and using them:
+This is mini how-to on creating swat packages:
 
 ## Create swat package
 
@@ -399,19 +399,14 @@ You swat repository with nginx swat package uploaded is ready!
 
 ## Install swat package
 
-Swat comes with utility called **swatman** to manage swat packages. First need to setup swat repository :
+Swat comes with utility called **swatman** to manage swat packages. 
+First of all one need to setup swat repository:
 
     echo "swat_repo=127.0.0.1" >> ~/swat.ini
 
 Then install package
 
     swatman install google
-
-Swatman utility has some other usefull commands, try 
-
-    swatman help 
-
-to get more info on it.
 
 ## Run swat tests
 

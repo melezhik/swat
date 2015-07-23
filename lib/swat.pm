@@ -815,7 +815,7 @@ C<-q -s> -  run tests in random and quite mode
 
 Swat packages is distributable archives of swat tests. It's easy to create your own swat packages and share with other. 
 
-This is how-to on creating swat packages and using them:
+This is mini how-to on creating swat packages:
 
 =head2 Create swat package
 
@@ -848,20 +848,14 @@ You swat repository with nginx swat package uploaded is ready!
 
 =head2 Install swat package
 
-Swat comes with utility called B<swatman> to manage swat packages. First need to setup swat repository :
+Swat comes with utility called B<swatman> to manage swat packages. 
+First of all one need to setup swat repository:
 
     echo "swat_repo=127.0.0.1" >> ~/swat.ini
 
 Then install package
 
     swatman install google
-
-Swatman utility has some other usefull commands, try 
-
-    swatman help 
-
-to get more info on it.
-
 
 =head2 Run swat tests
 
