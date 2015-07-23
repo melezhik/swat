@@ -20,7 +20,10 @@ session_file=~/.swat/.cache/$project/$url/session.ini
 # try first find project in installed swat pacakges:
 packages_dir=~/.swat/.packages/
 if [ -d "${packages_dir}/${project}" ]; then
+    is_swat_package=1
     project=$packages_dir/$project/
+else
+    is_swat_package=0
 fi
 
 
@@ -167,6 +170,7 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
         echo $\ignore_http_err = $ignore_http_err';'  >> $tfile
         echo $\try_num = $try_num';'  >> $tfile
         echo $\curl_cmd = q{"${curl_cmd}};"  >> $tfile
+        echo $\is_swat_package = $is_swat_package';'  >> $tfile
         echo >> $tfile
 
         echo "require swat;"  >> $tfile

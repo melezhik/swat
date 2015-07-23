@@ -21,6 +21,7 @@ our $HTTP_RESPONSE;
 our ($curl_cmd, $content_file);
 our ($url, $path, $http_meth); 
 our ($debug, $ignore_http_err, $try_num, $debug_bytes);
+our ($is_swat_package);
 $| = 1;
 
 
@@ -102,7 +103,7 @@ sub check_line {
 
 sub header {
 
-    diag("start swat for $url/$path");
+    diag("start swat for $url/$path | is swat package $is_swat_package");
     diag("swat version $swat::VERSION | debug $debug | try num $try_num | ignore http errors $ignore_http_err")
 }
 
