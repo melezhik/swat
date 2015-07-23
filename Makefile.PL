@@ -10,7 +10,7 @@ WriteMakefile(
     #LICENSE           => 'perl',
     #Value must be from legacy list of licenses here
     #http://search.cpan.org/perldoc?Module%3A%3ABuild%3A%3AAPI
-    EXE_FILES => ['bin/swat'],
+    EXE_FILES => ['bin/swat', 'bin/swatman'],
     PREREQ_PM => {
         "Test::More" => 0,
         "Test::Harness" => 0

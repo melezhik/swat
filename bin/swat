@@ -17,16 +17,10 @@ mkdir -p ~/.swat/.cache/$project/$url
 swat_environment_settings_file=~/.swat/.cache/$project/$url/$swat_ini_file
 session_file=~/.swat/.cache/$project/$url/session.ini
 
-# download swat package if swat_repo is set
-if [ -n "${swat_repo}" ]; then
-    package_download_dir=~/.swat/.packages/
-    if [ -d "${package_download_dir}/${project}" ]; then
-        project=$package_download_dir/$project/
-    else
-        mkdir -p $package_download_dir
-        curl -f -s  -s -o $package_download_dir/$project.tar.gz $swat_repo/$project.tar.gz && \
-        cd $package_download_dir && tar -xzf $project.tar.gz && project=$package_download_dir/$project/
-    fi
+# try first find project in installed swat pacakges:
+package_dir=~/.swat/.packages/
+if [ -d "${packages_dir}/${project}" ]; then
+    project=$packages_dir/$project/
 fi
 
 

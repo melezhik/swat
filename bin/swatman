@@ -1,0 +1,48 @@
+#!/bin/bash
+
+action=$1
+object=$2
+
+
+test -f ~/swat.ini && source ~/swat.ini
+
+
+if [ \(  -n "${action}"  \) -a \( "${action}" = 'install'  \) -a \(  -n "${object}"  \) ] ; then
+
+    packages_dir=~/.swat/.packages/
+    mkdir -p $packages_dir
+
+
+    if [ -n "${swat_repo}" ]; then
+
+            if [ -d "${packages_dir}/${object}" ]; then
+                rm -rf $packages_dir/$object
+                update_mode=1
+            else
+                update_mode=0
+            fi
+
+            ( curl -s -f -o $packages_dir/$object.tar.gz    \
+              $swat_repo/$object.tar.gz && cd $packages_dir \
+              && tar -xzf $object.tar.gz  \
+            ) || ( echo 'failed to install package '$object; exit 1 )
+
+            if [ "${update_mode}" -eq 0 ]  ; then
+                echo 'successfully installed package' $object
+            else
+                echo 'successfully updated package' $object
+            fi
+
+    else
+        echo 'swat_repo is not set!'
+        exit 1
+    fi
+
+else
+    echo "usage: swatman action [package]"
+    exit 1
+
+fi
+
+
+
