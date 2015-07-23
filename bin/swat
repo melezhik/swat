@@ -18,7 +18,7 @@ swat_environment_settings_file=~/.swat/.cache/$project/$url/$swat_ini_file
 session_file=~/.swat/.cache/$project/$url/session.ini
 
 # try first find project in installed swat pacakges:
-package_dir=~/.swat/.packages/
+packages_dir=~/.swat/.packages/
 if [ -d "${packages_dir}/${project}" ]; then
     project=$packages_dir/$project/
 fi
