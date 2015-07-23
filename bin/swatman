@@ -22,16 +22,22 @@ if [ \(  -n "${action}"  \) -a \( "${action}" = 'install'  \) -a \(  -n "${objec
                 update_mode=0
             fi
 
-            ( curl -s -f -o $packages_dir/$object.tar.gz    \
+            if curl -s -f -o $packages_dir/$object.tar.gz    \
               $swat_repo/$object.tar.gz && cd $packages_dir \
-              && tar -xzf $object.tar.gz  \
-            ) || ( echo 'failed to install package '$object; exit 1 )
+              && tar -xzf $object.tar.gz ; then
 
-            if [ "${update_mode}" -eq 0 ]  ; then
-                echo 'successfully installed package' $object
+                if [ "${update_mode}" -eq 0 ]  ; then
+                    echo 'successfully installed package' $object
+                else
+                    echo 'successfully updated package' $object
+                fi
+    
             else
-                echo 'successfully updated package' $object
+                echo 'failed to install package '$object
+                exit 1
             fi
+
+
 
     else
         echo 'swat_repo is not set!'
