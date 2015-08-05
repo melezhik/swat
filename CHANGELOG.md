@@ -1,3 +1,6 @@
+# 0.1.20
+- a documentation release
+
 # 0.1.18
 - swat packages support
 - PERL5LIB in swat doc
