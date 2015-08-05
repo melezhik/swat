@@ -487,7 +487,7 @@ Value returned from generator's code should be  array reference. The array is pa
 
 Generators entries start with C<:generator> marker. Here is example:
 
-    # Place this in swat pattern file
+    # Place this in swat data file
     generator: [ qw{ foo bar baz } ]
 
 This generator will generate 3 swat entries:
@@ -502,7 +502,7 @@ As you can guess an array returned by generator should contain I<perl strings> r
 with generator producing still 3 swat entites 'foo', 'bar', 'baz' :
 
 
-    # Place this in swat pattern file
+    # Place this in swat date file
     generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ] 
 
 
@@ -517,7 +517,7 @@ This generator will generate 3 swat entities:
 There is no limit for you! Use any code you want with only requiment - it should return array reference. 
 What about to validate web application content with sqlite database entries?
 
-    # Place this in swat pattern file
+    # Place this in swat data file
     generator:                                                          \
     
     use DBI;                                                            \
@@ -539,7 +539,7 @@ add next line to buffer. This is repeated till no C<\> found on next. Finally sw
 
 Here are some exmaples:
 
-    # Place this in swat pattern file
+    # Place this in swat data file
     generator:                  \
     my %d = {                   \
         'foo' => 'foo value',   \
@@ -550,7 +550,7 @@ Here are some exmaples:
         map  { ( "# $_", "$data{$_}" )  } keys %d   \
     ]                                               \
 
-    # Place this in swat pattern file
+    # Place this in swat data file
     generator: [            \
             map {           \
             uc($_)          \
@@ -859,7 +859,7 @@ Then install package
 
 =head2 Run swat tests
 
-Once swat package is installed into your system you man give it a run:
+Once swat package is installed into your system you may give it a run:
 
     swat google google.ru
 
