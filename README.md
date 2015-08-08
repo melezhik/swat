@@ -4,10 +4,10 @@ SWAT is Simple Web Application Test ( Tool )
 
     $  swat examples/google/ google.ru
     /home/vagrant/.swat/reports/google.ru/00.t ..
-    # start swat for google.ru//
+    # start swat for google.ru/
     # try num 2
     ok 1 - successfull response from GET google.ru/
-    # data file: /home/vagrant/.swat/reports/google.ru///content.GET.txt
+    # data file: /home/vagrant/.swat/reports/google.ru/content.GET.txt
     ok 2 - GET / returns 200 OK
     ok 3 - GET / returns Google
     1..3
@@ -166,7 +166,7 @@ Value returned from generator's code should be  array reference. The array is pa
 
 Generators entries start with `:generator` marker. Here is example:
 
-    # Place this in swat pattern file
+    # Place this in swat data file
     generator: [ qw{ foo bar baz } ]
 
 This generator will generate 3 swat entries:
@@ -178,7 +178,7 @@ This generator will generate 3 swat entries:
 As you can guess an array returned by generator should contain _perl strings_ representing swat entries, here is another example:
 with generator producing still 3 swat entites 'foo', 'bar', 'baz' :
 
-    # Place this in swat pattern file
+    # Place this in swat date file
     generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ] 
 
 This generator will generate 3 swat entities:
@@ -191,7 +191,7 @@ This generator will generate 3 swat entities:
 There is no limit for you! Use any code you want with only requiment - it should return array reference. 
 What about to validate web application content with sqlite database entries?
 
-    # Place this in swat pattern file
+    # Place this in swat data file
     generator:                                                          \
     
     use DBI;                                                            \
@@ -211,7 +211,7 @@ add next line to buffer. This is repeated till no `\` found on next. Finally swa
 
 Here are some exmaples:
 
-    # Place this in swat pattern file
+    # Place this in swat data file
     generator:                  \
     my %d = {                   \
         'foo' => 'foo value',   \
@@ -222,7 +222,7 @@ Here are some exmaples:
         map  { ( "# $_", "$data{$_}" )  } keys %d   \
     ]                                               \
 
-    # Place this in swat pattern file
+    # Place this in swat data file
     generator: [            \
             map {           \
             uc($_)          \
@@ -410,7 +410,7 @@ Then install package
 
 ## Run swat tests
 
-Once swat package is installed into your system you man give it a run:
+Once swat package is installed into your system you may give it a run:
 
     swat google google.ru
 

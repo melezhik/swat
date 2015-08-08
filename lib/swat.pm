@@ -259,10 +259,10 @@ SWAT is Simple Web Application Test ( Tool )
 
     $  swat examples/google/ google.ru
     /home/vagrant/.swat/reports/google.ru/00.t ..
-    # start swat for google.ru//
+    # start swat for google.ru/
     # try num 2
     ok 1 - successfull response from GET google.ru/
-    # data file: /home/vagrant/.swat/reports/google.ru///content.GET.txt
+    # data file: /home/vagrant/.swat/reports/google.ru/content.GET.txt
     ok 2 - GET / returns 200 OK
     ok 3 - GET / returns Google
     1..3
