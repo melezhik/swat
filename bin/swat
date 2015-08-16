@@ -160,6 +160,7 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
         echo 'BEGIN { push @INC, q{'$safe_project'/lib}; }'  > $tfile
         echo >> $tfile
 
+
         echo "use Test::More q{no_plan};"  >> $tfile
         echo $\content_file = q{"${reports_dir}${path}/content.${http_meth}.txt};"  >> $tfile
         echo $\path = q{"${path}};"  >> $tfile
@@ -174,6 +175,10 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
         echo >> $tfile
 
         echo "require swat;"  >> $tfile
+
+        test -f $safe_project/hook.pm && echo "require '"`pwd`"/${safe_project}/hook.pm';"  >> $tfile
+        test -f $test_dir/hook.pm && echo "require '"`pwd`"/${test_dir}/hook.pm';"  >> $tfile
+
         echo >> $tfile
 
         echo "SKIP: {" >> $tfile

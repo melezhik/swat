@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = 'v0.1.20';
+our $VERSION = 'v0.1.21';
 
 use base 'Exporter'; 
 
@@ -579,6 +579,32 @@ Swat adds B<$project_root_directory/lib> to PERL5LIB , so this is convient conve
 
 As an example take a loot at examples/swat-generators-with-lib/ project
 
+
+=head1 Hooks
+
+Hooks are files to be `required` into the begining of every swat test. There are 2 types of hooks:
+
+=over 
+
+=item *
+
+B<project based hooks>
+
+File located $project_root_directory/hook.pm
+
+=item *
+
+B<routes based hooks>
+
+File located $project_root_directory/$route_directory/hook.pm
+
+=item *
+
+=back
+
+This is very convinient to use hooks as place where you just `use` some other perl modules so not overhelm swat data files
+with such `initialization` code. For example 
+ 
 
 =head1 Post requests
 
