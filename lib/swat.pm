@@ -597,7 +597,7 @@ written into into proper *.t file.
 =head2 Give it a run by prove
 
 Once swat finish parsing all the swat data files there is a whole bunch of *.t files kept under a designated  temporary directory,
-thus every swat route maps into Test::More test file with the list of asserts. Now all is ready for prove run. Internally `prove -R `
+thus every swat route maps into Test::More test file with the list of asserts. Now all is ready for prove run. Internally `prove -r `
 command is issued to run tests and generate TAP report. That is it.
 
 
