@@ -1,9 +1,12 @@
+# 0.1.23
+- dynamic routes
+
 # 0.1.22
 - removed none ASCII symbols from pod
 
 # 0.1.21
 - swat hooks
-- documentatiion fixes 
+- documentation fixes 
 
 # 0.1.20
 - a documentation release
@@ -20,7 +23,7 @@
 
 # 0.1.15
 - update documentation 
-- noproxy depricated
+- noproxy deprecated
 - multiline entities
 
 # 0.1.13
@@ -50,14 +53,14 @@
 # 0.1.7
 - small fixes related swat settings 
 - add some extra info in swat output 
-- a lot of impovements to documentation
+- a lot of improvements to documentation
 - add todo list
 
 # 0.1.6
 - does not add http:// for requested url 
 
 # 0.1.5
-- curl_params varibale now is respected 
+- curl_params variable now is respected 
 - small internal changes ( path to session file )
 
 

@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = 'v0.1.22';
+our $VERSION = 'v0.1.23';
 
 use base 'Exporter'; 
 
@@ -743,6 +743,40 @@ C<--data-binary> - Post data sending as is.
 
 
 =back
+
+
+=head1 Dynamic routes
+
+There are possibilities to create a undetermined routes using C<:path> placeholders. Let say we have application confirming GET /foo/:whatever 
+requests where :whatevery is arbitrary sting like: GET /foo/one or /foo/two or /foo/baz. Using dynamic routes we could write an swat test for it.
+
+First let's create difinition for C<`whatever`> path in swat.ini file. This is as simple as create bash variable with a randome sting value:
+
+
+    # Place this in swat.ini file
+    export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1` 
+
+
+Now we should inform swat to use bash varibale $whatever when generating request for /foo/whatever
+
+
+    $ mkdir foo/:whatever 
+
+
+And finaly drop some check expressions for it:
+
+    $ echo 'generator [ $ENV{"whatever"} ]' > foo/:whatever/get.txt
+    
+
+Of cousre there are as many dynamic parts in http requests as you need:
+
+ 
+    # Place this in swat.ini file
+    export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1` 
+    export whenever=`date +%s` 
+
+    $ mkdir foo/:whatever 
+    $ echo 'generator [ $ENV{"whatever"}, $ENV{"whenever"} ]' > foo/:whatever/:whenever/get.txt
 
 
 =head1 Swat Settings

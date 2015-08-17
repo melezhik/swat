@@ -1,0 +1,2 @@
+404
+generator: [ $ENV{'foo'}, $ENV['bar'], $ENV['baz'] ]

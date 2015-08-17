@@ -149,7 +149,9 @@ if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; t
            curl_cmd="$curl_cmd ${curl_params}"
         fi
 
-        curl_cmd="$curl_cmd $http_url$path"
+        real_path=`perl -e  '$p=shift(); s{:(\w+)}($ENV{$1}||":$1")ge for $p; print $p' $path`
+
+        curl_cmd="$curl_cmd $http_url$real_path"
 
         if [ "$http_meth" = 'GET' ]; then
             tfile="${reports_dir}/${path}/00.t"
