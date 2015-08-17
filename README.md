@@ -6,7 +6,7 @@ SWAT is Simple Web Application Test ( Tool )
     /home/vagrant/.swat/reports/google.ru/00.t ..
     # start swat for google.ru/
     # try num 2
-    ok 1 - successfull response from GET google.ru/
+    ok 1 - successful response from GET google.ru/
     # data file: /home/vagrant/.swat/reports/google.ru/content.GET.txt
     ok 2 - GET / returns 200 OK
     ok 3 - GET / returns Google
@@ -30,7 +30,7 @@ So this how I came up with the idea of swat.
 
 SWAT:
 
-- is very pragmatical tool designed for job to be done in a fast and simple way
+- is very pragmatic tool designed for job to be done in a fast and simple way
 - has simple and yet flexible DSL with low price mastering ( see my tutorial )
 - produces [TAP](https://testanything.org/) output
 - leverages famous [perl prove](http://search.cpan.org/perldoc?prove) and [curl](http://curl.haxx.se/) utilities
@@ -128,7 +128,7 @@ This is most usable type of entries you  may define at swat data file. _It's jus
 
 Using regexps
 
-Regexps are check expresions with the usage of <perl regular expressions> instead of plain strings checks.
+Regexps are check expressions with the usage of <perl regular expressions> instead of plain strings checks.
 Everything started with `regexp:` marker would be treated as perl regular expression.
 
     # this is example of regexp check
@@ -154,13 +154,13 @@ There are a _lot of possibilities_! Please follow [Test::More](https://metacpan.
     HELLO WORLD
 
 
-    code: skip('next test is skipped',1) unless $ENV{'debug'} == 1  # confitionally skip this check
+    code: skip('next test is skipped',1) unless $ENV{'debug'} == 1  # conditionally skip this check
     HELLO SWAT
 
 # Generators
 
-Swat entries generators is the way to _create new swat entries on the fly_. Technically specaking it's just a perl code which should return an array reference:
-Generators are very close to perl expressions ( generators code is alos get evaled ) with maijor difference:
+Swat entries generators is the way to _create new swat entries on the fly_. Technically speaking it's just a perl code which should return an array reference:
+Generators are very close to perl expressions ( generators code is also get evaled ) with maijor difference:
 
 Value returned from generator's code should be  array reference. The array is passed back to swat parser so it can create new swat entries from it. 
 
@@ -176,7 +176,7 @@ This generator will generate 3 swat entries:
     baz
 
 As you can guess an array returned by generator should contain _perl strings_ representing swat entries, here is another example:
-with generator producing still 3 swat entites 'foo', 'bar', 'baz' :
+with generator producing still 3 swat entities 'foo', 'bar', 'baz' :
 
     # Place this in swat date file
     generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ] 
@@ -188,7 +188,7 @@ This generator will generate 3 swat entities:
     # bar
     bar value
 
-There is no limit for you! Use any code you want with only requiment - it should return array reference. 
+There is no limit for you! Use any code you want with only requirement - it should return array reference. 
 What about to validate web application content with sqlite database entries?
 
     # Place this in swat data file
@@ -230,7 +230,7 @@ Here are some exmaples:
     ]
 
     code:                                                       \
-    if $ENV{'debug'} == 1  { # confitionally skip this check    \
+    if $ENV{'debug'} == 1  { # conditionally skip this check    \
         skip('next test is skipped',1)                          \ 
     } 
     HELLO SWAT
@@ -244,11 +244,129 @@ Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/fun
 
 # PERL5LIB
 
-Swat adds **$project\_root\_directory/lib** to PERL5LIB , so this is convient convenient to place here custom perl modules:
+Swat adds **$project\_root\_directory/lib** to PERL5LIB , so this is convenient convenient to place here custom perl modules:
 
     example/my-app/lib/Foo/Bar/Baz.pm
 
 As an example take a loot at examples/swat-generators-with-lib/ project
+
+# Anatomy of swat 
+
+Once swat runs it goes through some steps to get job done. Here is description of such a steps executed in orders
+
+## Run iterator over swat data files
+
+Swat iterator look for all files named get.txt or post.txt under project root directory. Actually this is simple bash find loop.
+
+## Parse swat data file
+
+For every swat data file find by iterator parsing process starts. Swat parse data file line by line, at the end of such a process
+_a list of Test::More asserts_ is generated. Finally asserts list and other input parameters are serialized as Test::More test scenario 
+written into into proper \*.t file.
+
+## Give it a run by prove
+
+Once swat finish parsing all the swat data files there is a whole bunch of \*.t files kept under a designated  temporary directory,
+thus every swat route maps into Test::More test file with the list of asserts. Now all is ready for prove run. Internally \`prove -R \`
+command is issued to run tests and generate TAP report. That is it.
+
+Below is example hwo this looks like
+
+### project structure
+
+    vagrant@Debian-jessie-amd64-netboot:~/projects/swat$ tree examples/anatomy/
+    examples/anatomy/
+    ├── FOO
+    │    └── BARs
+    │    └── post.txt
+    └── FOOs
+        └── get.txt
+
+    3 directories, 2 files
+
+### swat data files
+
+    # /FOOs 
+    FOO
+    FOO2
+    generator: | %w{ FOO3 FOO4 }|
+
+    # /FOO/BARs
+    BAR
+    BAR2
+    generator: | %w{ BAR3 BAR4 }|
+    code: skip('skip next 2 test',2);
+    BAR5
+    BAR6
+    BAR7
+
+### Test::More Asserts list
+
+    # /FOOs/0.t
+    SKIP {
+        ok($status, "successful response from $http_meth $url/FOO") 
+        ok($status, "GET /FOOs returns FOO")
+        ok($status, "GET /FOOs returns FOO2")
+        ok($status, "GET /FOOs returns FOO3")
+        ok($status, "GET /FOOs returns FOO4")
+    }
+
+    # /FOO/BARs0.t
+    SKIP {
+        ok($status, "successful response from $http_meth $url/FOO/BARs") 
+        ok($status, "GET /FOO/BARs returns BAR")
+        ok($status, "GET /FOO/BARs returns BAR")
+        ok($status, "GET /FOO/BARs returns BAR3")
+        ok($status, "GET /FOO/BARs returns BAR4")
+        skip('skip next 2 test',2);
+        ok($status, "GET /FOO/BARs returns BAR5")
+        ok($status, "GET /FOO/BARs returns BAR6")
+        ok($status, "GET /FOO/BARs returns BAR7")
+    }
+
+# Hooks
+
+Hooks are files containing any perl code to be \`required\` into the beginning of every swat test. There are 2 types of hooks:
+
+- **project based hooks**
+
+    File located at `$project_root_directory/hook.pm`. Project based hooks are applied for every route in project and
+    could be used for _project initialization_. For example one could define generators here:
+
+        # place this in hook.pm file:
+        sub list1 { | %w{ foo bar baz } | }
+        sub list2 { | %w{ red green blue } | }
+
+
+        # now we could use it in swat data file
+        generator:  list() 
+        generator:  list2()    
+
+- **route based hooks**
+
+    File located at `$project_root_directory/$route_directory/hook.pm`. Routes based hook are route specific hooks and
+    could be used for _route initialization_. For example one could define route specific generators here:
+
+        # place this in hook.pm file:
+        # notices that we could tell GET from POST http methods here:
+
+        sub list1 { 
+
+            my $list;
+
+            if ($method eq 'GET') {
+                $list = | %w{ GET_foo GET_bar GET_baz } | 
+            }elsif($method eq 'POST'){
+                $list = | %w{ POST_foo POST_bar POST_baz } | 
+            }else{
+                die "method $method is not supported"
+            }
+            $list;
+        }
+
+
+        # now we could use it in swat data file
+        generator:  list() 
 
 # Post requests
 
@@ -364,7 +482,7 @@ Default value for prove options is  `-v`. Here is another examples:
 
 # Swat Packages
 
-Swat packages is distributable archives of swat tests. It's easy to create your own swat packages and share with other. 
+Swat packages is portable archives of swat tests. It's easy to create your own swat packages and share with other. 
 
 This is mini how-to on creating swat packages:
 
@@ -450,3 +568,11 @@ To the authors of ( see list ) without who swat would not appear to light
 - TAP
 - Test::More
 - prove
+
+# POD ERRORS
+
+Hey! **The above document had some coding errors, which are explained below:**
+
+- Around line 611:
+
+    Non-ASCII character seen before =encoding in '├──'. Assuming UTF-8
