@@ -1,3 +1,6 @@
+# 0.1.22
+- removed none ASCII symbols from pod
+
 # 0.1.21
 - swat hooks
 - documentatiion fixes 

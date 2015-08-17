@@ -1,9 +1,17 @@
 bin/swat
 bin/swatman
 CHANGELOG.md
+examples/anatomy/FOO/BARs/post.txt
+examples/anatomy/FOOs/get.txt
 examples/google/get.txt
 examples/google/README.md
 examples/google/swat.ini
+examples/hooks/hook.pm
+examples/hooks/lib/Foo.pm
+examples/hooks/posts/hook.pm
+examples/hooks/posts/post.txt
+examples/hooks/posts/swat.ini
+examples/hooks/README.md
 examples/multilines/posts/post.txt
 examples/multilines/posts/swat.ini
 examples/multilines/README.md

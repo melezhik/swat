@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = 'v0.1.21';
+our $VERSION = 'v0.1.22';
 
 use base 'Exporter'; 
 
@@ -608,11 +608,11 @@ Below is example hwo this looks like
 
     vagrant@Debian-jessie-amd64-netboot:~/projects/swat$ tree examples/anatomy/
     examples/anatomy/
-    ├── FOO
-    │    └── BARs
-    │    └── post.txt
-    └── FOOs
-        └── get.txt
+    |----FOO
+    |-----|----BARs
+    |           |---- post.txt
+    |--- FOOs
+          |--- get.txt
 
     3 directories, 2 files
 
@@ -627,7 +627,7 @@ Below is example hwo this looks like
     BAR
     BAR2
     generator: | %w{ BAR3 BAR4 }|
-    code: skip('skip next 2 test',2);
+    code: skip('skip next 2 tests',2);
     BAR5
     BAR6
     BAR7
@@ -638,7 +638,7 @@ Below is example hwo this looks like
 
     # /FOOs/0.t
     SKIP {
-        ok($status, "successful response from $http_meth $url/FOO") 
+        ok($status, "successful response from GET $host/FOOs") 
         ok($status, "GET /FOOs returns FOO")
         ok($status, "GET /FOOs returns FOO2")
         ok($status, "GET /FOOs returns FOO3")
@@ -647,15 +647,15 @@ Below is example hwo this looks like
 
     # /FOO/BARs0.t
     SKIP {
-        ok($status, "successful response from $http_meth $url/FOO/BARs") 
-        ok($status, "GET /FOO/BARs returns BAR")
-        ok($status, "GET /FOO/BARs returns BAR")
-        ok($status, "GET /FOO/BARs returns BAR3")
-        ok($status, "GET /FOO/BARs returns BAR4")
-        skip('skip next 2 test',2);
-        ok($status, "GET /FOO/BARs returns BAR5")
-        ok($status, "GET /FOO/BARs returns BAR6")
-        ok($status, "GET /FOO/BARs returns BAR7")
+        ok($status, "successful response from POST $host/FOO/BARs") 
+        ok($status, "POST /FOO/BARs returns BAR")
+        ok($status, "POST /FOO/BARs returns BAR")
+        ok($status, "POST /FOO/BARs returns BAR3")
+        ok($status, "POST /FOO/BARs returns BAR4")
+        skip('skip next 2 tests',2);
+        ok($status, "POST /FOO/BARs returns BAR5")
+        ok($status, "POST /FOO/BARs returns BAR6")
+        ok($status, "POST /FOO/BARs returns BAR7")
     }
 
 =head1 Hooks
