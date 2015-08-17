@@ -775,7 +775,7 @@ Of cousre there are as many dynamic parts in http requests as you need:
     export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1` 
     export whenever=`date +%s` 
 
-    $ mkdir foo/:whatever 
+    $ mkdir -p foo/:whatever/:whenever 
     $ echo 'generator [ $ENV{"whatever"}, $ENV{"whenever"} ]' > foo/:whatever/:whenever/get.txt
 
 
