@@ -519,7 +519,7 @@ Command line tool
         swat <project_root_dir|swat_package> <host:port> <prove settings>
 
     *   host - is base url for web application you run tests against, you
-        also have to define swat routes, see <L/"DSL"> section.
+        also have to define swat routes, see DSL section.
 
     *   project_dir - is a project root directory
 

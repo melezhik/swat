@@ -468,7 +468,7 @@ Swat is shipped as cpan package, once it's installed ( see ["Install swat"](#ins
 
     swat <project_root_dir|swat_package> <host:port> <prove settings>
 
-- **host** - is base url for web application you run tests against, you also have to define swat routes, see <L/"DSL"> section.
+- **host** - is base url for web application you run tests against, you also have to define swat routes, see DSL section.
 - **project\_dir** - is a project root directory
 - **swat\_package** - the name of swat package, see ["Swat Packages"](#swat-packages) section
 
