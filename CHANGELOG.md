@@ -1,5 +1,6 @@
 # 0.1.21
 - swat hooks
+- documentatiion fixes 
 
 # 0.1.20
 - a documentation release
