@@ -907,13 +907,13 @@ See also L<"Prove settings"> section.
 
 Swat is shipped as cpan package, once it's installed ( see L</"Install swat"> section ) you have a command line tool called B<swat>, this is usage info on it:
 
-    swat project_root_dir|swat_package URL <prove settings>
+    swat <project_root_dir|swat_package> <host:port> <prove settings>
 
 =over
 
 =item *
 
-B<URL> - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
+B<host> - is base url for web application you run tests against, you also have to define swat routes, see L<"DSL"> section.
 
 
 =item *

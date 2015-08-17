@@ -466,9 +466,9 @@ See also ["Prove settings"](#prove-settings) section.
 
 Swat is shipped as cpan package, once it's installed ( see ["Install swat"](#install-swat) section ) you have a command line tool called **swat**, this is usage info on it:
 
-    swat project_root_dir|swat_package URL <prove settings>
+    swat <project_root_dir|swat_package> <host:port> <prove settings>
 
-- **URL** - is base url for web application you run tests against, you need defined routes which will be requested against URL, see DSL section.
+- **host** - is base url for web application you run tests against, you also have to define swat routes, see ["DSL"](#dsl) section.
 - **project\_dir** - is a project root directory
 - **swat\_package** - the name of swat package, see ["Swat Packages"](#swat-packages) section
 
