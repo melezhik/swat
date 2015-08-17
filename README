@@ -426,7 +426,7 @@ Dynamic routes
     is as simple as create bash variable with a randome sting value:
 
         # Place this in swat.ini file
-        whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1`
+        export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1`
 
     Now we should inform swat to use bash varibale $whatever when generating
     request for /foo/whatever
@@ -435,16 +435,16 @@ Dynamic routes
 
     And finaly drop some check expressions for it:
 
-        $ echo 200 OK > foo/:whatever/get.txt
+        $ echo 'generator [ $ENV{"whatever"} ]' > foo/:whatever/get.txt
 
     Of cousre there are as many dynamic parts in http requests as you need:
 
         # Place this in swat.ini file
-        whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1` 
-        whenever=`date +%s` 
+        export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1` 
+        export whenever=`date +%s` 
 
         $ mkdir foo/:whatever 
-        $ echo 200 OK > foo/:whatever/:whenever/get.txt
+        $ echo 'generator [ $ENV{"whatever"}, $ENV{"whenever"} ]' > foo/:whatever/:whenever/get.txt
 
 Swat Settings
     Swat comes with settings defined in two contexts:

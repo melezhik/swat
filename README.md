@@ -388,6 +388,34 @@ You may use curl\_params setting ( follow ["Swat Settings"](#swat-settings) sect
          curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
          curl_params="${curl_params} -H 'Content-Type: application/json'"
 
+# Dynamic routes
+
+There are possibilities to create a undetermined routes using `:path` placeholders. Let say we have application confirming GET /foo/:whatever 
+requests where :whatevery is arbitrary sting like: GET /foo/one or /foo/two or /foo/baz. Using dynamic routes we could write an swat test for it.
+
+First let's create difinition for `` `whatever` `` path in swat.ini file. This is as simple as create bash variable with a randome sting value:
+
+    # Place this in swat.ini file
+    export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1` 
+
+Now we should inform swat to use bash varibale $whatever when generating request for /foo/whatever
+
+    $ mkdir foo/:whatever 
+
+And finaly drop some check expressions for it:
+
+    $ echo 'generator [ $ENV{"whatever"} ]' > foo/:whatever/get.txt
+    
+
+Of cousre there are as many dynamic parts in http requests as you need:
+
+    # Place this in swat.ini file
+    export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1` 
+    export whenever=`date +%s` 
+
+    $ mkdir foo/:whatever 
+    $ echo 'generator [ $ENV{"whatever"}, $ENV{"whenever"} ]' > foo/:whatever/:whenever/get.txt
+
 # Swat Settings
 
 Swat comes with settings defined in two contexts:
