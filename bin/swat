@@ -10,20 +10,25 @@ prove_flags=${prove_flags:='-v'}
 
 swat_ini_file=${swat_ini_file:='swat.ini'}
 
+if [ -n "${url}"  ] ; then
+    rm -rf ~/.swat/.cache/$url
+    mkdir -p ~/.swat/.cache/$url
+    swat_environment_settings_file=~/.swat/.cache/$url/$swat_ini_file
+    session_file=~/.swat/.cache/$project/$url/session.ini
+else
+    echo "usage: swat project HOST:port prove-options"
+    exit 1
+fi
 
-rm -rf ~/.swat/.cache/$project/$url
-mkdir -p ~/.swat/.cache/$project/$url
 
-swat_environment_settings_file=~/.swat/.cache/$project/$url/$swat_ini_file
-session_file=~/.swat/.cache/$project/$url/session.ini
-
-# try first find project in installed swat pacakges:
-packages_dir=~/.swat/.packages/
-if [ -d "${packages_dir}/${project}" ]; then
+if [ \(  -n "${project}"  \) -a \( -d "${project}" \) ] ; then
+    is_swat_package=0
+elif [ \( perl -e '$l = shift(); $l=~/^\w+$/ or exit(1)' $project \) -a \( -d "${packages_dir}/${project}" \) ]; then
     is_swat_package=1
     project=$packages_dir/$project/
 else
-    is_swat_package=0
+    echo "usage: swat project HOST:port prover-options"
+    exit 1
 fi
 
 
@@ -100,114 +105,94 @@ if [ -n "${port}" ]; then
 fi
 
 
-if [ \(  -n "${project}"  \) -a \( -d "${project}" \) -a \( -n "${url}" \) ] ; then
+safe_project=`perl -MFile::Basename -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print $i' $project`
+
+reports_dir=~/.swat/reports/$url/
+rm -rf $reports_dir
+mkdir -p $reports_dir
+
+for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
+
+    test_dir=`perl -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print $sp' $f`;
+
+    unset debug
+    unset try_num
+    unset ignore_http_err
+    unset curl_connect_timeout
+    unset curl_max_time
+    unset curl_params
+    unset port
+
+    source $session_file
+    test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
+    test -f $test_dir/$swat_ini_file && source $test_dir/$swat_ini_file
+
+    path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $safe_project $f`;
+    mkdir -p "${reports_dir}/${path}";
+
+    http_meth=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
+
+    if [ -n "${port}" ]; then
+        http_url="$url:$port"
+    else
+        http_url=$url
+    fi
+
+    curl_cmd="curl -X $http_meth"
+
+    curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L --stderr -"
+
+    if [ "$ignore_http_err" -eq '0' ]; then
+        curl_cmd="$curl_cmd -f"
+    fi
+
+    if [ -n "${curl_params}" ]; then
+       curl_cmd="$curl_cmd ${curl_params}"
+    fi
+
+    real_path=`perl -e  '$p=shift(); s{:(\w+)}($ENV{$1}||":$1")ge for $p; print $p' $path`
+
+    curl_cmd="$curl_cmd $http_url$real_path"
+
+    if [ "$http_meth" = 'GET' ]; then
+        tfile="${reports_dir}/${path}/00.t"
+    else
+        tfile="${reports_dir}/${path}/00.post.t"
+    fi
+
+    echo 'BEGIN { push @INC, q{'$safe_project'/lib}; }'  > $tfile
+    echo >> $tfile
 
 
-    safe_project=`perl -MFile::Basename -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print $i' $project`
+    echo "use Test::More q{no_plan};"  >> $tfile
+    echo $\content_file = q{"${reports_dir}${path}/content.${http_meth}.txt};"  >> $tfile
+    echo $\path = q{"${path}};"  >> $tfile
+    echo $\http_meth = q{"${http_meth}};"  >> $tfile
+    echo $\url = q{"${http_url}};"  >> $tfile
+    echo $\debug = $debug';'  >> $tfile
+    echo $\debug_bytes = $debug_bytes';'  >> $tfile
+    echo $\ignore_http_err = $ignore_http_err';'  >> $tfile
+    echo $\try_num = $try_num';'  >> $tfile
+    echo $\curl_cmd = q{"${curl_cmd}};"  >> $tfile
+    echo $\is_swat_package = $is_swat_package';'  >> $tfile
+    echo >> $tfile
+
+    echo "require swat;"  >> $tfile
+
+    test -f $safe_project/hook.pm && echo "require '"`pwd`"/${safe_project}/hook.pm';"  >> $tfile
+    test -f $test_dir/hook.pm && echo "require '"`pwd`"/${test_dir}/hook.pm';"  >> $tfile
+
+    echo >> $tfile
+
+    echo "SKIP: {" >> $tfile
+    echo -e "\tgenerate_asserts(q{$f},1)" >> $tfile;
+    echo >> $tfile
+    echo "}" >> $tfile
+
+done;
+
+prove -m -r $@ "$prove_flags" $reports_dir;
 
 
-    reports_dir=~/.swat/reports/$url/
-    rm -rf $reports_dir
-    mkdir -p $reports_dir
-
-    for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
-
-        test_dir=`perl -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print $sp' $f`;
-
-        unset debug
-        unset try_num
-        unset ignore_http_err
-        unset curl_connect_timeout
-        unset curl_max_time
-        unset curl_params
-        unset port
-
-        source $session_file
-        test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
-        test -f $test_dir/$swat_ini_file && source $test_dir/$swat_ini_file
-
-        path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $safe_project $f`;
-        mkdir -p "${reports_dir}/${path}";
-
-        http_meth=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
-
-        if [ -n "${port}" ]; then
-            http_url="$url:$port"
-        else
-            http_url=$url
-        fi
-
-        curl_cmd="curl -X $http_meth"
-
-        curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L --stderr -"
-
-        if [ "$ignore_http_err" -eq '0' ]; then
-            curl_cmd="$curl_cmd -f"
-        fi
-
-        if [ -n "${curl_params}" ]; then
-           curl_cmd="$curl_cmd ${curl_params}"
-        fi
-
-        real_path=`perl -e  '$p=shift(); s{:(\w+)}($ENV{$1}||":$1")ge for $p; print $p' $path`
-
-        curl_cmd="$curl_cmd $http_url$real_path"
-
-        if [ "$http_meth" = 'GET' ]; then
-            tfile="${reports_dir}/${path}/00.t"
-        else
-            tfile="${reports_dir}/${path}/00.post.t"
-        fi
-
-        echo 'BEGIN { push @INC, q{'$safe_project'/lib}; }'  > $tfile
-        echo >> $tfile
-
-
-        echo "use Test::More q{no_plan};"  >> $tfile
-        echo $\content_file = q{"${reports_dir}${path}/content.${http_meth}.txt};"  >> $tfile
-        echo $\path = q{"${path}};"  >> $tfile
-        echo $\http_meth = q{"${http_meth}};"  >> $tfile
-        echo $\url = q{"${http_url}};"  >> $tfile
-        echo $\debug = $debug';'  >> $tfile
-        echo $\debug_bytes = $debug_bytes';'  >> $tfile
-        echo $\ignore_http_err = $ignore_http_err';'  >> $tfile
-        echo $\try_num = $try_num';'  >> $tfile
-        echo $\curl_cmd = q{"${curl_cmd}};"  >> $tfile
-        echo $\is_swat_package = $is_swat_package';'  >> $tfile
-        echo >> $tfile
-
-        echo "require swat;"  >> $tfile
-
-        test -f $safe_project/hook.pm && echo "require '"`pwd`"/${safe_project}/hook.pm';"  >> $tfile
-        test -f $test_dir/hook.pm && echo "require '"`pwd`"/${test_dir}/hook.pm';"  >> $tfile
-
-        echo >> $tfile
-
-        echo "SKIP: {" >> $tfile
-        echo -e "\tgenerate_asserts(q{$f},1)" >> $tfile;
-        echo >> $tfile
-        echo "}" >> $tfile
-
-    done;
-
-    prove -m -r $@ "$prove_flags" $reports_dir;
-
-
-elif [ -z "${project}" ] ; then
-    echo "error - project directory parameter is not set"
-    echo "usage: swat project URL"
-    exit 1
-elif ! [ -d "${project}" ] ; then
-    echo "error - project directory does not exist"
-    echo "usage: swat project URL"
-    exit 1
-elif [ -z  "${url}"  ] ; then
-    echo "error - url parameter is not set"
-    echo "usage: swat project URL"
-    exit 1
-else
-    echo "usage: swat project URL"
-    exit 1
-fi
 
 

@@ -1,3 +1,6 @@
+# 0.1.24
+- fix for running swat ./
+
 # 0.1.23
 - dynamic routes
 

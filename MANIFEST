@@ -3,6 +3,9 @@ bin/swatman
 CHANGELOG.md
 examples/anatomy/FOO/BARs/post.txt
 examples/anatomy/FOOs/get.txt
+examples/dynamic-routes/:foo/:bar/:baz/get.txt
+examples/dynamic-routes/README.md
+examples/dynamic-routes/swat.ini
 examples/google/get.txt
 examples/google/README.md
 examples/google/swat.ini
