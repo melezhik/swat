@@ -20,10 +20,11 @@ else
     exit 1
 fi
 
+packages_dir=~/.swat/.packages/
 
-if [ \(  -n "${project}"  \) -a \( -d "${project}" \) ] ; then
+if [ \(  -n "${project}"  \) -a \( -d "${project}" \) ]; then
     is_swat_package=0
-elif [ \( perl -e '$l = shift(); $l=~/^\w+$/ or exit(1)' $project \) -a \( -d "${packages_dir}/${project}" \) ]; then
+elif perl -e '$l=shift(); $l=~/^\w+$/ or exit 1' $project   && [ -d "${packages_dir}/${project}" ]  ; then
     is_swat_package=1
     project=$packages_dir/$project/
 else
