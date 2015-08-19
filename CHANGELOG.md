@@ -1,3 +1,7 @@
+# 0.1.25
+- prove options could be set by prove_options environment variable 
+
+
 # 0.1.24
 - fix for running swat ./
 

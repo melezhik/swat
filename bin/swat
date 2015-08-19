@@ -1,14 +1,18 @@
-V#!/bin/bash
+#!/bin/bash
 
 project=$1
 url=$2
 shift;
 shift;
 
-prove_flags="$@"
-prove_flags=${prove_flags:='-v'}
+swat_ini_file='swat.ini'
 
-swat_ini_file=${swat_ini_file:='swat.ini'}
+# apply home directory swat settings
+test -f ~/$swat_ini_file && source ~/$swat_ini_file
+
+prove_options=${prove_options:="$@"}
+prove_options=${prove_options:='-v'}
+
 
 if [ -n "${url}"  ] ; then
     rm -rf ~/.swat/.cache/$url
@@ -74,8 +78,6 @@ if [ -n "${swat_use_proxy}" ]; then
     echo "swat_use_proxy=$swat_use_proxy" >> $swat_environment_settings_file
 fi
 
-# apply home directory swat settings
-test -f ~/$swat_ini_file && source ~/$swat_ini_file
 
 # re-apply swat environmetal settings
 source $swat_environment_settings_file
@@ -116,7 +118,6 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
     test_dir=`perl -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print $sp' $f`;
 
-    unset debug
     unset try_num
     unset ignore_http_err
     unset curl_connect_timeout
@@ -192,7 +193,7 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
 done;
 
-prove -m -r $@ "$prove_flags" $reports_dir;
+prove -m -r $@ "$prove_options" $reports_dir;
 
 
 
