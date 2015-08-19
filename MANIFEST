@@ -26,6 +26,8 @@ examples/post-request/posts/swat.ini
 examples/post-request/README.md
 examples/swat-generators-sqlite3/post/post.txt
 examples/swat-generators-sqlite3/post/swat.ini
+examples/swat-generators-sqlite3/posts/post.txt
+examples/swat-generators-sqlite3/posts/swat.ini
 examples/swat-generators-sqlite3/README.md
 examples/swat-generators-with-lib/lib/Foo.pm
 examples/swat-generators-with-lib/posts/post.txt

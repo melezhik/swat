@@ -14,7 +14,7 @@ if [ -n "${url}"  ] ; then
     rm -rf ~/.swat/.cache/$url
     mkdir -p ~/.swat/.cache/$url
     swat_environment_settings_file=~/.swat/.cache/$url/$swat_ini_file
-    session_file=~/.swat/.cache/$project/$url/session.ini
+    session_file=~/.swat/.cache/$url/session.ini
 else
     echo "usage: swat project HOST:port prove-options"
     exit 1
