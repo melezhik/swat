@@ -54,7 +54,7 @@ Tutorial
         sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
    install from source
-        # usefull for contributors
+        # useful for contributors
         perl Makefile.PL
         make
         make test
@@ -185,7 +185,7 @@ Generators
     Swat entries generators is the way to *create new swat entries on the
     fly*. Technically speaking it's just a perl code which should return an
     array reference: Generators are very close to perl expressions (
-    generators code is also get evaled ) with maijor difference:
+    generators code is also get evaled ) with major difference:
 
     Value returned from generator's code should be array reference. The
     array is passed back to swat parser so it can create new swat entries
@@ -239,7 +239,7 @@ Multiline expressions
     next line to buffer. This is repeated till no "\" found on next. Finally
     swat execute *"accumulated"* swat entity.
 
-    Here are some exmaples:
+    Here are some examples:
 
         # Place this in swat data file
         generator:                  \
@@ -303,7 +303,7 @@ Anatomy of swat
     all is ready for prove run. Internally `prove -r ` command is issued to
     run tests and generate TAP report. That is it.
 
-    Below is example hwo this looks like
+    Below is example how this looks like
 
    project structure
         vagrant@Debian-jessie-amd64-netboot:~/projects/swat$ tree examples/anatomy/
@@ -425,26 +425,26 @@ Post requests
 Dynamic routes
     There are possibilities to create a undetermined routes using ":path"
     placeholders. Let say we have application confirming GET /foo/:whatever
-    requests where :whatevery is arbitrary sting like: GET /foo/one or
+    requests where :whatever is arbitrary sting like: GET /foo/one or
     /foo/two or /foo/baz. Using dynamic routes we could write an swat test
     for it.
 
-    First let's create difinition for `whatever` path in swat.ini file. This
-    is as simple as create bash variable with a randome sting value:
+    First let's create definition for `whatever` path in swat.ini file. This
+    is as simple as create bash variable with a random sting value:
 
         # Place this in swat.ini file
         export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1`
 
-    Now we should inform swat to use bash varibale $whatever when generating
+    Now we should inform swat to use bash variable $whatever when generating
     request for /foo/whatever
 
         $ mkdir foo/:whatever
 
-    And finaly drop some check expressions for it:
+    And finally drop some check expressions for it:
 
         $ echo 'generator [ $ENV{"whatever"} ]' > foo/:whatever/get.txt
 
-    Of cousre there are as many dynamic parts in http requests as you need:
+    Of course there are as many dynamic parts in http requests as you need:
 
         # Place this in swat.ini file
         export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1` 
@@ -458,7 +458,7 @@ Swat Settings
 
     *   Environment variables ( session settings )
 
-    *   swat.ini files ( home direoctory , project based and route based
+    *   swat.ini files ( home directory , project based and route based
         settings )
 
   Environment variables
@@ -484,7 +484,7 @@ Swat Settings
         requests, default value is "", follow curl documentation for variety
         of values for this
 
-    *   "curl_connec_timeout" - follow curl documentation
+    *   "curl_connect_timeout" - follow curl documentation
 
     *   "curl_max_time" - follow curl documentation
 
@@ -503,7 +503,7 @@ Swat Settings
 
     Here are examples of locations of swat.ini files:
 
-         ~/swat.ini # home directory seetings 
+         ~/swat.ini # home directory settings 
          my-app/swat.ini # project based settings
          my-app/hello/get.txt
          my-app/hello/swat.ini # route based settings ( route hello )
@@ -525,7 +525,7 @@ Swat Settings
     This table describes order in which settings are applied, statrs from
     lowest priority settings
 
-        | context                 | location                | seetings type        | priority  level |
+        | context                 | location                | settings type        | priority  level |
         | ------------------------|------------------------ | -------------------- | ----------------
         | swat.ini file           | ~/swat.ini              | home directory       |       1         |
         | environment variables   | ---                     | session              |       2         |
@@ -533,9 +533,9 @@ Swat Settings
         | swat.ini file           | route directory         | route based          |       4         |
 
 Settings merge algorithm
-    At the very begining swat apply hoem direcory settings if exist. Then
+    At the very beginning swat apply home directory settings if exist. Then
     for every route swat settings are applied in order. For every new routes
-    swat does follwing:
+    swat does following:
 
     *   Clear a designated set of settings:
 

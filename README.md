@@ -51,7 +51,7 @@ SWAT:
 
 ### install from source
 
-    # usefull for contributors
+    # useful for contributors
     perl Makefile.PL
     make
     make test
@@ -168,7 +168,7 @@ There are a _lot of possibilities_! Please follow [Test::More](https://metacpan.
 # Generators
 
 Swat entries generators is the way to _create new swat entries on the fly_. Technically speaking it's just a perl code which should return an array reference:
-Generators are very close to perl expressions ( generators code is also get evaled ) with maijor difference:
+Generators are very close to perl expressions ( generators code is also get evaled ) with major difference:
 
 Value returned from generator's code should be  array reference. The array is passed back to swat parser so it can create new swat entries from it. 
 
@@ -217,7 +217,7 @@ As an example take a loot at examples/swat-generators-sqlite3 project
 Sometimes code looks more readable when you split it on separate chunks. When swat parser meets  `\` symbols it postpone entry execution and
 add next line to buffer. This is repeated till no `\` found on next. Finally swat execute _"accumulated"_ swat entity.
 
-Here are some exmaples:
+Here are some examples:
 
     # Place this in swat data file
     generator:                  \
@@ -278,7 +278,7 @@ Once swat finish parsing all the swat data files there is a whole bunch of \*.t 
 thus every swat route maps into Test::More test file with the list of asserts. Now all is ready for prove run. Internally \`prove -r \`
 command is issued to run tests and generate TAP report. That is it.
 
-Below is example hwo this looks like
+Below is example how this looks like
 
 ### project structure
 
@@ -399,23 +399,23 @@ You may use curl\_params setting ( follow ["Swat Settings"](#swat-settings) sect
 # Dynamic routes
 
 There are possibilities to create a undetermined routes using `:path` placeholders. Let say we have application confirming GET /foo/:whatever 
-requests where :whatevery is arbitrary sting like: GET /foo/one or /foo/two or /foo/baz. Using dynamic routes we could write an swat test for it.
+requests where :whatever is arbitrary sting like: GET /foo/one or /foo/two or /foo/baz. Using dynamic routes we could write an swat test for it.
 
-First let's create difinition for `` `whatever` `` path in swat.ini file. This is as simple as create bash variable with a randome sting value:
+First let's create definition for `` `whatever` `` path in swat.ini file. This is as simple as create bash variable with a random sting value:
 
     # Place this in swat.ini file
     export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1` 
 
-Now we should inform swat to use bash varibale $whatever when generating request for /foo/whatever
+Now we should inform swat to use bash variable $whatever when generating request for /foo/whatever
 
     $ mkdir foo/:whatever 
 
-And finaly drop some check expressions for it:
+And finally drop some check expressions for it:
 
     $ echo 'generator [ $ENV{"whatever"} ]' > foo/:whatever/get.txt
     
 
-Of cousre there are as many dynamic parts in http requests as you need:
+Of course there are as many dynamic parts in http requests as you need:
 
     # Place this in swat.ini file
     export whatever=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5  | head -n 1` 
@@ -429,7 +429,7 @@ Of cousre there are as many dynamic parts in http requests as you need:
 Swat comes with settings defined in two contexts:
 
 - Environment variables ( session settings )
-- swat.ini files ( home direoctory , project based and route based settings  )
+- swat.ini files ( home directory , project based and route based settings  )
 
 ## Environment variables
 
@@ -442,7 +442,7 @@ Following variables define a proper swat settings.
 useful when one need to test something with response differ from  2\*\*,3\*\* http codes. Default value is `0`
 - `try_num` - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is `2`
 - `curl_params` - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this
-- `curl_connec_timeout` - follow curl documentation
+- `curl_connect_timeout` - follow curl documentation
 - `curl_max_time` - follow curl documentation
 - `port`  - http port of tested host, default value is `80`
 - `prove_options` - prove options, default value is `-v`
@@ -457,7 +457,7 @@ Swat checks files named `swat.ini` in the following directories
 
 Here are examples of locations of swat.ini files:
 
-     ~/swat.ini # home directory seetings 
+     ~/swat.ini # home directory settings 
      my-app/swat.ini # project based settings
      my-app/hello/get.txt
      my-app/hello/swat.ini # route based settings ( route hello )
@@ -477,7 +477,7 @@ Thus swat.ini file should be bash file with swat variables definitions. Here is 
 
 This table describes order in which settings are applied, statrs from lowest priority settings
 
-    | context                 | location                | seetings type        | priority  level |
+    | context                 | location                | settings type        | priority  level |
     | ------------------------|------------------------ | -------------------- | ----------------
     | swat.ini file           | ~/swat.ini              | home directory       |       1         |
     | environment variables   | ---                     | session              |       2         |
@@ -486,8 +486,8 @@ This table describes order in which settings are applied, statrs from lowest pri
 
 # Settings merge algorithm
 
-At the very begining swat apply hoem direcory settings if exist. Then for every route swat settings are applied in order.
-For every new routes swat does follwing:
+At the very beginning swat apply home directory settings if exist. Then for every route swat settings are applied in order.
+For every new routes swat does following:
 
 - Clear a designated set of settings:
 
