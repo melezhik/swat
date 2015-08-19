@@ -53,6 +53,13 @@ Tutorial
         # developer release might be untested and unstable
         sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
+   install from source
+        # usefull for contributors
+        perl Makefile.PL
+        make
+        make test
+        make install
+
     Once swat is installed you have swat command line tool to run swat
     tests, but before do this you need to create them.
 
@@ -449,18 +456,21 @@ Dynamic routes
 Swat Settings
     Swat comes with settings defined in two contexts:
 
-    *   Environmental Variables
+    *   Environment variables ( session settings )
 
-    *   swat.ini files
+    *   swat.ini files ( home direoctory , project based and route based
+        settings )
 
-  Environmental Variables
-    Defining a proper environment variables will provide swat settings.
+  Environment variables
+    Following variables define a proper swat settings.
 
     *   "debug" - set to 1 if you want to see some debug information in
         output, default value is 0
 
     *   "debug_bytes" - number of bytes of http response to be dumped out
         when debug is on. default value is 500
+
+    *   "swat_debug" - run swat in debug mode, default value is 0
 
     *   "ignore_http_err" - ignore http errors, if this parameters is off
         (set to 1) returned *error http codes* will not result in test
@@ -480,23 +490,25 @@ Swat Settings
 
     *   "port" - http port of tested host, default value is 80
 
+    *   "prove_options" - prove options, default value is "-v"
+
   Swat.ini files
     Swat checks files named "swat.ini" in the following directories
 
-    *   ~/swat.ini
+    *   ~/swat.ini - home directory settings
 
-    *   $project_root_directory/swat.ini
+    *   $project_root_directory/swat.ini - project based settings
 
-    *   $route_directory/swat.ini
+    *   $route_directory/swat.ini - route based settings
 
     Here are examples of locations of swat.ini files:
 
-         ~/swat.ini # home directory swat.ini file
-         my-app/swat.ini # project_root directory swat.ini file
+         ~/swat.ini # home directory seetings 
+         my-app/swat.ini # project based settings
          my-app/hello/get.txt
-         my-app/hello/swat.ini # route directory swat.ini file ( route hello )
+         my-app/hello/swat.ini # route based settings ( route hello )
          my-app/hello/world/get.txt
-         my-app/hello/world/swat.ini # route directory swat.ini file ( route hello/world )
+         my-app/hello/world/swat.ini # route based settings ( route hello/world )
 
     Once file exists at any location swat simply bash sources it to apply
     settings.
@@ -507,30 +519,37 @@ Swat Settings
         # the content of swat.ini file:
         curl_params="-H 'Content-Type: text/html'"
         debug=1
+        try_num=3
 
   Settings priority table
-    Here is the list of settings/contexts in priority ascending order:
+    This table describes order in which settings are applied, statrs from
+    lowest priority settings
 
-        | context                 | location                | priority  level |
-        | ------------------------|------------------------ | --------------- |
-        | swat.ini file           | ~/swat.ini              |               1 |
-        | environmental variables | ---                     |               2 |
-        | swat.ini file           | project root directory  |               3 |
-        | swat.ini file           | route directory         |               4 |
+        | context                 | location                | seetings type        | priority  level |
+        | ------------------------|------------------------ | -------------------- | ----------------
+        | swat.ini file           | ~/swat.ini              | home directory       |       1         |
+        | environment variables   | ---                     | session              |       2         |
+        | swat.ini file           | project root directory  | project based        |       3         |
+        | swat.ini file           | route directory         | route based          |       4         |
 
-    Swat processes settings *in order*. For every route found swat:
+Settings merge algorithm
+    At the very begining swat apply hoem direcory settings if exist. Then
+    for every route swat settings are applied in order. For every new routes
+    swat does follwing:
 
-    *   Clear all settings
+    *   Clear a designated set of settings:
 
-    *   Apply settings from environmental variables ( if any given )
+            try_num
+            ignore_http_err
+            curl_connect_timeout
+            curl_max_time
+            curl_params
 
-    *   Apply settings from swat.ini file in home directory ( if any given )
+    *   Apply environmental settings if exist
 
-    *   Apply settings from swat.ini file in project root directory ( if any
-        given )
+    *   Apply project based settings if exist
 
-    *   And finally apply settings from swat.ini file in route directory (
-        if any given )
+    *   And finally apply route based settings if exist
 
 TAP
     Swat produces output in TAP <https://testanything.org/> format , that
