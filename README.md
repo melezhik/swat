@@ -506,7 +506,7 @@ For every new routes swat does following:
 Swat produces output in [TAP](https://testanything.org/) format , that means you may use your favorite tap parsers to bring result to
 another test / reporting systems, follow TAP documentation to get more on this. Here is example for converting swat tests into JUNIT format
 
-    swat $project_root $host --formatter TAP::Formatter::JUnit
+    swat <project_root> <host> --formatter TAP::Formatter::JUnit
 
 See also ["Prove settings"](#prove-settings) section.
 
@@ -519,6 +519,17 @@ Swat is shipped as cpan package, once it's installed ( see ["Install swat"](#ins
 - **host** - is base url for web application you run tests against, you also have to define swat routes, see DSL section.
 - **project\_dir** - is a project root directory
 - **swat\_package** - the name of swat package, see ["Swat Packages"](#swat-packages) section
+
+## Default Host
+
+Sometimes it is helpfull to not setup host as command line parameter but define it at $project\_root/host file. For example:
+
+    # let's create a default host for foo/bar project
+
+    $ cat foo/bar/host
+    foo.bar.com
+
+    $ swat foo/bar/ # will run tests for foo.bar.com
 
 # Prove settings
 
