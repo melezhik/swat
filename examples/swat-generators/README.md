@@ -1,3 +1,13 @@
-- this is example of using swat generators
-- usage: `swat examples/swat-generators http://jsonplaceholder.typicode.com`
+# Synopsis
+
+This is example of using swat generators
+
+
+# Usage
+
+     swat examples/swat-generators
+
+
+
+
 

@@ -1,4 +1,9 @@
-# usage
+# Synopsis
 
-    swat ./examples/dynamic-routes google.ru
+This is example of swat dynamic routes
+
+# Usage
+
+    swat ./examples/dynamic-routes
+
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 project=$1
-url=$2
+host=$2
 shift;
 shift;
 
@@ -12,13 +12,20 @@ test -f ~/$swat_ini_file && source ~/$swat_ini_file
 
 prove_options=${prove_options:="$@"}
 prove_options=${prove_options:='-v'}
+test -f $project/host && host=${host:=`cat $project/host`}
 
+if [ -n "${host}"  ] ; then
 
-if [ -n "${url}"  ] ; then
-    rm -rf ~/.swat/.cache/$url
-    mkdir -p ~/.swat/.cache/$url
-    swat_environment_settings_file=~/.swat/.cache/$url/$swat_ini_file
-    session_file=~/.swat/.cache/$url/session.ini
+    # host valiadtion; it should not contain '../'
+    if perl -e '$l=shift(); $l=~/\.\.\// or exit 1' "${host}"; then
+        echo "bad host: ${host}"
+        exit 1
+    fi
+
+    rm -rf ~/.swat/.cache/$host
+    mkdir -p ~/.swat/.cache/$host
+    swat_environment_settings_file=~/.swat/.cache/$host/$swat_ini_file
+    session_file=~/.swat/.cache/$host/session.ini
 else
     echo "usage: swat project HOST:port prove-options"
     exit 1
@@ -110,7 +117,7 @@ fi
 
 safe_project=`perl -MFile::Basename -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print $i' $project`
 
-reports_dir=~/.swat/reports/$url/
+reports_dir=~/.swat/reports/$host/
 rm -rf $reports_dir
 mkdir -p $reports_dir
 
@@ -135,9 +142,9 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     http_meth=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
 
     if [ -n "${port}" ]; then
-        http_url="$url:$port"
+        http_url="$host:$port"
     else
-        http_url=$url
+        http_url=$host
     fi
 
     curl_cmd="curl -X $http_meth"

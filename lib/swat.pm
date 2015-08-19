@@ -953,7 +953,7 @@ And finally apply route based settings if exist
 Swat produces output in L<TAP|https://testanything.org/> format , that means you may use your favorite tap parsers to bring result to
 another test / reporting systems, follow TAP documentation to get more on this. Here is example for converting swat tests into JUNIT format
 
-    swat $project_root $host --formatter TAP::Formatter::JUnit
+    swat <project_root> <host> --formatter TAP::Formatter::JUnit
 
 
 See also L<"Prove settings"> section.
@@ -982,6 +982,18 @@ B<swat_package> - the name of swat package, see L</"Swat Packages"> section
 
 =back
 
+
+=head2 Default Host
+
+Sometimes it is helpfull to not setup host as command line parameter but define it at $project_root/host file. For example:
+
+
+    # let's create a default host for foo/bar project
+
+    $ cat foo/bar/host
+    foo.bar.com
+
+    $ swat foo/bar/ # will run tests for foo.bar.com
 
 =head1 Prove settings
 
