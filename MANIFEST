@@ -1,4 +1,5 @@
 bin/swat
+bin/swat.save
 bin/swatman
 CHANGELOG.md
 examples/anatomy/FOO/BARs/post.txt
