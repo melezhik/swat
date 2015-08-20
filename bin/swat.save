@@ -200,11 +200,13 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 done;
 
 if [ -z "${rest_args}" ] && [ -n "${prove_options}" ]; then
-    rest_args=("$prove_options")
-    prove -m -r $rest_args  $reports_dir;
+    echo 1
+    prove -m -r  "${prove_options}" $reports_dir;
 elif [ -n "${rest_args}"  ]; then
+    echo 2
     prove -m -r  $rest_args $reports_dir;
 else
+        
     prove -m -r -v $reports_dir;
 fi
 
