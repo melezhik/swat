@@ -1,4 +1,4 @@
-# 0.1.26
+# 0.1.27
 - prove options could be set by prove_options environment variable 
 - typos fixes in documentation
 - default host  feature 
