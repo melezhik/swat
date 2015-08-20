@@ -1,5 +1,4 @@
 bin/swat
-bin/swat.save
 bin/swatman
 CHANGELOG.md
 examples/anatomy/FOO/BARs/post.txt
@@ -31,8 +30,6 @@ examples/post-request/posts/post.txt
 examples/post-request/posts/swat.ini
 examples/post-request/README.md
 examples/swat-generators-sqlite3/host
-examples/swat-generators-sqlite3/post/post.txt
-examples/swat-generators-sqlite3/post/swat.ini
 examples/swat-generators-sqlite3/posts/post.txt
 examples/swat-generators-sqlite3/posts/swat.ini
 examples/swat-generators-sqlite3/README.md
