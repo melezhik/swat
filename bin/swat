@@ -10,8 +10,8 @@ swat_ini_file='swat.ini'
 # apply home directory swat settings
 test -f ~/$swat_ini_file && source ~/$swat_ini_file
 
-prove_options=${prove_options:="$@"}
 prove_options=${prove_options:='-v'}
+
 test -f $project/host && host=${host:=`cat $project/host`}
 
 if [ -n "${host}"  ] ; then
@@ -200,7 +200,8 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
 done;
 
-prove -m -r $@ "$prove_options" $reports_dir;
+
+prove -m -r $@ "${prove_options}" $reports_dir;
 
 
 
