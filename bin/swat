@@ -4,7 +4,7 @@ project=$1
 host=$2
 shift;
 shift;
-rest_args=("$@")
+rest_args=$@
 
 swat_ini_file='swat.ini'
 
