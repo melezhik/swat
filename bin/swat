@@ -34,9 +34,9 @@ packages_dir=~/.swat/.packages/
 
 if [ \(  -n "${project}"  \) -a \( -d "${project}" \) ]; then
     is_swat_package=0
-elif perl -e '$l=shift(); $l=~/^\w+$/ or exit 1' $project   && [ -d "${packages_dir}/${project}" ]  ; then
+elif perl -M$project -MFile::ShareDir -e "print(File::ShareDir::module_dir($project))"  ; then
     is_swat_package=1
-    project=$packages_dir/$project/
+    project=`perl -M$project -MFile::ShareDir -e "print(File::ShareDir::module_dir($project))"`;
 else
     echo "usage: swat project HOST:port prover-options"
     exit 1
