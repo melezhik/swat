@@ -547,49 +547,36 @@ This is mini how-to on creating swat packages:
 
 ## Create swat package
 
-Let's imagine you've got ready swat tests you want to distribute. First of all you need to create \_tar.gz archive\_ of
-swat project root directory:
+Swat packages are _just cpan modules_. So all you need is to create cpan module distribution archive and upload it to CPAN.
 
-    tar -zcf $project_root_dir.tar.gz project_root_dir
+The only requirement for installer is that swat data files should be installed into _module directory_ at the end of install proccess. 
+<File::ShareDir::Install|http://search.cpan.org/perldoc?File%3A%3AShareDir%3A%3AInstall> allows you to install 
+read-only data files from a distribution and could be very helpfull.
 
-For example for project ./examples/google 
+Here is example of Makefile.PL for [swat::mongodb package](https://github.com/melezhik/swat-packages/tree/master/mongodb-http):
 
-    cd ./examples/
-    tar -zcf google.tar.gz ./google
+    use inc::Module::Install;
 
-## Upload package to swat repository
+    # Define metadata
+    name           'swat-mongodb';
+    all_from       'lib/swat/mongodb.pm';
 
-Swat repository might be  \_ANY\_ web server. One should upload archive into server.
-Let's say we have nginx server. The example below is for debian:
+    # Specific dependencies
+    requires       'swat'         => '0.1.28';
+    test_requires  'Test::More'   => '0';
 
-    # install nginx:
-    sudo apt-get install nginx
+    install_share  'module' => 'swat::mongodb', 'share';    
 
-    # copy swat distributive:
-    sudo cp google.tar.gz /var/www/html/
+    license 'perl';
 
-    # check for archive availability over web server:
-    curl -s 127.0.0.1/google.tar.gz -D - -o /dev/null  | head  -n 1
-    HTTP/1.1 200 OK
+    WriteAll;
 
-You swat repository with nginx swat package uploaded is ready!
+Here we create a swat package swat::mongodb with swat data files in project\_root directory ./share
 
-## Install swat package
+Once we uploaded a module to CPAN repository we can use it: 
 
-Swat comes with utility called **swatman** to manage swat packages. 
-First of all one need to setup swat repository:
-
-    echo "swat_repo=127.0.0.1" >> ~/swat.ini
-
-Then install package
-
-    swatman install google
-
-## Run swat tests
-
-Once swat package is installed into your system you may give it a run:
-
-    swat google google.ru
+    $ cpan install swat::mongodb
+    $ swat swat::mongodb 127.0.0.1:28017
 
 # Debugging
 
