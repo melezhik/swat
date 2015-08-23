@@ -1,3 +1,9 @@
+# 0.1.28
+- Makefile.PL - use Module::Install instead of ExtUtils::MakeMaker
+- swatman is depricated
+- swat packages as cpan packages
+
+
 # 0.1.27
 - prove options could be set by prove_options environment variable 
 - typos fixes in documentation
