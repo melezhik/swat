@@ -307,11 +307,13 @@ leverages famous L<perl prove|http://search.cpan.org/perldoc?prove> and L<curl|h
 
 =back
 
-=head1 INSTALL
+=head1 Install
 
 Swat relies on curl utility to make http requests. Thus first you need to install curl:
 
     $ sudo apt-get install curl
+
+Also swat client is bash script so you need a bash. 
 
 Then you install swat cpan module:
 
@@ -1053,11 +1055,6 @@ set C<swat_debug> environmental variable to 1
 =head1 Examples
 
 ./examples directory contains examples of swat tests for different cases. Follow README.md files for details.
-
-
-=head1 Dependencies
-
-Besides supplimental perl modules declared at Makefile.PL - bash / curl.
 
 =head1 AUTHOR
 

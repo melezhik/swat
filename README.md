@@ -35,11 +35,13 @@ SWAT:
 - produces [TAP](https://testanything.org/) output
 - leverages famous [perl prove](http://search.cpan.org/perldoc?prove) and [curl](http://curl.haxx.se/) utilities
 
-# INSTALL
+# Install
 
 Swat relies on curl utility to make http requests. Thus first you need to install curl:
 
     $ sudo apt-get install curl
+
+Also swat client is bash script so you need a bash. 
 
 Then you install swat cpan module:
 
@@ -589,10 +591,6 @@ set `swat_debug` environmental variable to 1
 # Examples
 
 ./examples directory contains examples of swat tests for different cases. Follow README.md files for details.
-
-# Dependencies
-
-Besides supplimental perl modules declared at Makefile.PL - bash / curl.
 
 # AUTHOR
 
