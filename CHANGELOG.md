@@ -1,7 +1,8 @@
 # 0.1.28
 - Makefile.PL - use Module::Install instead of ExtUtils::MakeMaker
 - swatman is depricated
-- swat packages as cpan packages
+- now swat packages as cpan packages
+- apply environment settings with highest priority
 
 
 # 0.1.27
