@@ -47,11 +47,6 @@ Then you install swat cpan module:
 
     sudo cpan install swat
 
-## Developer release
-
-    # developer release might be untested and unstable
-    sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
-
 ## Install from source
 
     # useful for contributors

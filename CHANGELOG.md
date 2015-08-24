@@ -1,3 +1,6 @@
+# 0.1.29
+- technical release, ./examples directory removed from CPAN archive   
+
 # 0.1.28
 - Makefile.PL - use Module::Install instead of ExtUtils::MakeMaker
 - swatman is depricated

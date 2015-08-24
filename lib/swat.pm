@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.28';
+our $VERSION = '0.1.29';
 
 use base 'Exporter'; 
 
@@ -320,10 +320,6 @@ Then you install swat cpan module:
 
     sudo cpan install swat
 
-=head2 Developer release
-
-    # developer release might be untested and unstable
-    sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
 =head2 Install from source
 
