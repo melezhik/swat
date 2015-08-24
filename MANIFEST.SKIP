@@ -7,3 +7,4 @@ blib
 \.html
 \.pod
 \.tmp
+examples\/
