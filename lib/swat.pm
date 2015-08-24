@@ -18,6 +18,7 @@ use strict;
 use Test::More;
 
 our $HTTP_RESPONSE;
+our ($project);
 our ($curl_cmd, $content_file);
 our ($url, $path, $http_meth); 
 our ($debug, $ignore_http_err, $try_num, $debug_bytes);
@@ -103,7 +104,7 @@ sub check_line {
 
 sub header {
 
-    diag("start swat for $url/$path | is swat package $is_swat_package");
+    diag("start swat for $url/$path | project $project | is swat package $is_swat_package");
     diag("swat version $swat::VERSION | debug $debug | try num $try_num | ignore http errors $ignore_http_err")
 }
 
