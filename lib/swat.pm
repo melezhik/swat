@@ -307,22 +307,22 @@ leverages famous L<perl prove|http://search.cpan.org/perldoc?prove> and L<curl|h
 
 =back
 
+=head1 INSTALL
 
-=head1 Tutorial
+Swat relies on curl utility to make http requests. Thus first you need to install curl:
 
-=head2 Install swat
+    $ sudo apt-get install curl
 
-
-=head3 stable release
+Then you install swat cpan module:
 
     sudo cpan install swat
 
-=head3 developer release
+=head2 Developer release
 
     # developer release might be untested and unstable
     sudo cpanm --mirror-only --mirror https://stratopan.com/melezhik/swat-release/master swat
 
-=head3 install from source
+=head2 Install from source
 
     # useful for contributors
     perl Makefile.PL
@@ -330,8 +330,9 @@ leverages famous L<perl prove|http://search.cpan.org/perldoc?prove> and L<curl|h
     make test
     make install
 
-Once swat is installed you have B<swat> command line tool to run swat tests, but before do this you need to create them.
+=head1 Swat mini tutorial
 
+For those who love to make long story short ...
 
 =head2 Create tests
 
@@ -902,9 +903,9 @@ This table describes order in which settings are applied, starts from lowest pri
     | context                 | location                | settings type        | priority  level |
     | ------------------------|------------------------ | -------------------- | ----------------
     | swat.ini file           | ~/swat.ini              | home directory       |       1         |
-    | environment variables   | ---                     | session              |       2         |
-    | swat.ini file           | project root directory  | project based        |       3         |
-    | swat.ini file           | route directory         | route based          |       4         |
+    | swat.ini file           | project root directory  | project based        |       2         |
+    | swat.ini file           | route directory         | route based          |       3         |
+    | environment variables   | ---                     | session              |       4         |
 
 
 =head1 Settings merge algorithm
@@ -924,18 +925,18 @@ Clear a designated set of settings:
     curl_max_time
     curl_params
 
-=item *
-
-Apply environmental settings if exist
-
 
 =item *
 
-Apply project based settings if exist
+Apply project based settings if exist.
 
 =item *
 
-And finally apply route based settings if exist
+Apply route based settings if exist.
+
+=item *
+
+And finally apply environmental settings if exist.
 
 =back
 
@@ -1014,7 +1015,7 @@ Swat packages are I<just cpan modules>. So all you need is to create cpan module
 
 The only requirement for installer is that swat data files should be installed into I<cpan module directory> at the end of install process. 
 L<File::ShareDir::Install|http://search.cpan.org/perldoc?File%3A%3AShareDir%3A%3AInstall> allows you to install 
-read-only data files from a distribution and considered best practise.
+read-only data files from a distribution and considered as best practice for such a things.
 
 Here is example of Makefile.PL for L<swat::mongodb package|https://github.com/melezhik/swat-packages/tree/master/mongodb-http>:
 
@@ -1036,7 +1037,7 @@ Here is example of Makefile.PL for L<swat::mongodb package|https://github.com/me
     WriteAll;
 
 Here we create a swat package swat::mongodb with swat data files kept in the project_root directory ./share and get installed into
-auto/share/module/swat-mongodb/ directory.
+C<auto/share/module/swat-mongodb> directory.
 
 
 Once we uploaded a module to CPAN repository we can use it: 
@@ -1056,35 +1057,7 @@ set C<swat_debug> environmental variable to 1
 
 =head1 Dependencies
 
-Not that many :)
-
-=over
-
-=item *
-
-perl 
-
-=item *
-
-curl 
-
-=item *
-
-bash
-
-=item *
-
-find
-
-=item *
-
-head
-
-=item *
-
-tar
-
-=back
+Besides supplimental perl modules declared at Makefile.PL - bash / curl.
 
 =head1 AUTHOR
 
