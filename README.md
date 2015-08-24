@@ -34,7 +34,6 @@ SWAT:
 - has simple and yet flexible DSL with low price mastering ( see my tutorial )
 - produces [TAP](https://testanything.org/) output
 - leverages famous [perl prove](http://search.cpan.org/perldoc?prove) and [curl](http://curl.haxx.se/) utilities
-- has minimal dependency tree  and probably will run out of the box on most linux environments, provided that one has perl/bash/find/curl by hand ( which is true  for most cases )
 
 # Tutorial
 
@@ -475,7 +474,7 @@ Thus swat.ini file should be bash file with swat variables definitions. Here is 
 
 ## Settings priority table
 
-This table describes order in which settings are applied, statrs from lowest priority settings
+This table describes order in which settings are applied, starts from lowest priority settings
 
     | context                 | location                | settings type        | priority  level |
     | ------------------------|------------------------ | -------------------- | ----------------
@@ -522,7 +521,7 @@ Swat is shipped as cpan package, once it's installed ( see ["Install swat"](#ins
 
 ## Default Host
 
-Sometimes it is helpfull to not setup host as command line parameter but define it at $project\_root/host file. For example:
+Sometimes it is helpful to not setup host as command line parameter but define it at $project\_root/host file. For example:
 
     # let's create a default host for foo/bar project
 
@@ -549,9 +548,9 @@ This is mini how-to on creating swat packages:
 
 Swat packages are _just cpan modules_. So all you need is to create cpan module distribution archive and upload it to CPAN.
 
-The only requirement for installer is that swat data files should be installed into _module directory_ at the end of install proccess. 
-<File::ShareDir::Install|http://search.cpan.org/perldoc?File%3A%3AShareDir%3A%3AInstall> allows you to install 
-read-only data files from a distribution and could be very helpfull.
+The only requirement for installer is that swat data files should be installed into _cpan module directory_ at the end of install process. 
+[File::ShareDir::Install](http://search.cpan.org/perldoc?File%3A%3AShareDir%3A%3AInstall) allows you to install 
+read-only data files from a distribution and considered best practise.
 
 Here is example of Makefile.PL for [swat::mongodb package](https://github.com/melezhik/swat-packages/tree/master/mongodb-http):
 
@@ -571,7 +570,8 @@ Here is example of Makefile.PL for [swat::mongodb package](https://github.com/me
 
     WriteAll;
 
-Here we create a swat package swat::mongodb with swat data files in project\_root directory ./share
+Here we create a swat package swat::mongodb with swat data files kept in the project\_root directory ./share and get installed into
+auto/share/module/swat-mongodb/ directory.
 
 Once we uploaded a module to CPAN repository we can use it: 
 
