@@ -131,9 +131,9 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     unset curl_params
     unset port
 
-    source $session_file
     test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
     test -f $test_dir/$swat_ini_file && source $test_dir/$swat_ini_file
+    source $session_file
 
     path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $safe_project $f`;
     mkdir -p "${reports_dir}/${path}";
