@@ -1,6 +1,6 @@
 # 0.1.32
 - small documentation fixes
-
+- does not print result of File::ShareDir::module_dir in conditional statement  
 
 # 0.1.31
 - correct calculation of swat settings 
