@@ -486,20 +486,12 @@ This table describes order in which settings are applied, starts from lowest pri
 
 # Settings merge algorithm
 
-At the very beginning swat apply home directory settings if exist. Then for every route swat settings are applied in order.
-For every new routes swat does following:
+Swat applies settings in order for every route:
 
-- Clear a designated set of settings:
-
-        try_num
-        ignore_http_err
-        curl_connect_timeout
-        curl_max_time
-        curl_params
-
-- Apply project based settings if exist.
-- Apply route based settings if exist.
-- And finally apply environmental settings if exist.
+- Home directory settings are applied if exist.
+- Project based settings are applied if exist.
+- Route based settings are applied if exist.
+- And finally environment settings aer applied if exist.
 
 # TAP
 
@@ -581,7 +573,7 @@ Once we uploaded a module to CPAN repository we can use it:
 
 # Debugging
 
-set `swat_debug` environmental variable to 1
+set `swat_debug` environment variable to 1
 
 # Examples
 

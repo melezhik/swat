@@ -1,3 +1,7 @@
+# 0.1.32
+- small documentation fixes
+
+
 # 0.1.31
 - correct calculation of swat settings 
 

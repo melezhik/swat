@@ -532,23 +532,15 @@ Swat Settings
         | environment variables   | ---                     | session              |       4         |
 
 Settings merge algorithm
-    At the very beginning swat apply home directory settings if exist. Then
-    for every route swat settings are applied in order. For every new routes
-    swat does following:
+    Swat applies settings in order for every route:
 
-    *   Clear a designated set of settings:
+    *   Home directory settings are applied if exist.
 
-            try_num
-            ignore_http_err
-            curl_connect_timeout
-            curl_max_time
-            curl_params
+    *   Project based settings are applied if exist.
 
-    *   Apply project based settings if exist.
+    *   Route based settings are applied if exist.
 
-    *   Apply route based settings if exist.
-
-    *   And finally apply environmental settings if exist.
+    *   And finally environment settings aer applied if exist.
 
 TAP
     Swat produces output in TAP <https://testanything.org/> format , that
@@ -640,7 +632,7 @@ Swat Packages
         $ swat swat::mongodb 127.0.0.1:28017
 
 Debugging
-    set "swat_debug" environmental variable to 1
+    set "swat_debug" environment variable to 1
 
 Examples
     ./examples directory contains examples of swat tests for different
