@@ -80,10 +80,6 @@ if [ -n "${port}" ]; then
     echo "port=$port" >> $swat_environment_settings_file
 fi
 
-if [ -n "${swat_use_proxy}" ]; then
-    echo "swat_use_proxy=$swat_use_proxy" >> $swat_environment_settings_file
-fi
-
 
 # re-apply swat environmetal settings
 source $swat_environment_settings_file
@@ -91,7 +87,6 @@ source $swat_environment_settings_file
 # sets defaults
 debug=${debug:=0}
 debug_bytes=${debug_bytes:=500}
-curl_params=${curl_params:=''}
 ignore_http_err=${ignore_http_err:=0}
 try_num=${try_num:=2}
 curl_connect_timeout=${curl_connect_timeout:=20}
@@ -107,7 +102,11 @@ echo "try_num=$try_num" >> $session_file
 echo "ignore_http_err=$ignore_http_err" >> $session_file
 echo "curl_connect_timeout=$curl_connect_timeout" >> $session_file
 echo "curl_max_time=$curl_max_time" >> $session_file
-echo "curl_params=$curl_params" >> $session_file
+
+
+if [ -n "${curl_params}" ]; then
+    echo "curl_params=$curl_params" >> $session_file
+fi
 
 if [ -n "${port}" ]; then
     echo "port=$port" >> $session_file

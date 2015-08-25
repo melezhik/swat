@@ -8,3 +8,4 @@ blib
 \.pod
 \.tmp
 examples\/
+swat-.*\/

@@ -1,3 +1,6 @@
+# 0.1.30
+- hotfix for curl_params='' issue 
+
 # 0.1.29
 - technical release, ./examples directory removed from CPAN archive   
 
