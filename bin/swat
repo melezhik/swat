@@ -69,6 +69,9 @@ if [ -n "${try_num}" ]; then
     echo "try_num=$try_num" >> $session_file
 fi
 
+if [ -n "${prove_options}" ]; then
+    echo "prove_options=$prove_options" >> $session_file
+fi
 
 safe_project=`perl -MFile::Basename -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print $i' $project`
 
@@ -160,6 +163,9 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     echo "}" >> $tfile
 
 done;
+
+test -f ~/$swat_ini_file && source ~/$swat_ini_file
+source $session_file
 
 if [ -z "${rest_args}" ] && [ -n "${prove_options}" ]; then
     rest_args=("$prove_options")

@@ -1,6 +1,7 @@
 # 0.1.32
 - small documentation fixes
 - does not print result of File::ShareDir::module_dir in conditional statement  
+- respect prove_options set as environment variable
 
 # 0.1.31
 - correct calculation of swat settings 
