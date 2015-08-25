@@ -8,9 +8,6 @@ rest_args=$@
 
 swat_ini_file='swat.ini'
 
-# apply home directory swat settings
-test -f ~/$swat_ini_file && source ~/$swat_ini_file
-
 test -f $project/host && host=${host:=`cat $project/host`}
 
 if [ -n "${host}"  ] ; then
@@ -23,7 +20,6 @@ if [ -n "${host}"  ] ; then
 
     rm -rf ~/.swat/.cache/$host
     mkdir -p ~/.swat/.cache/$host
-    swat_environment_settings_file=~/.swat/.cache/$host/$swat_ini_file
     session_file=~/.swat/.cache/$host/session.ini
 else
     echo "usage: swat project HOST:port prove-options"
@@ -43,63 +39,16 @@ else
 fi
 
 
-# save swat environmetal settings to re-apply later
-
-echo > $swat_environment_settings_file
-
-if [ -n "${debug}" ]; then
-    echo "debug=$debug" >> $swat_environment_settings_file
-fi
-
-if [ -n "${debug_bytes}" ]; then
-    echo "debug_bytes=$debug_bytes" >> $swat_environment_settings_file
-fi
-
-if [ -n "${try_num}" ]; then
-    echo "try_num=$try_num" >> $swat_environment_settings_file
-fi
-
-if [ -n "${ignore_http_err}" ]; then
-    echo "ignore_http_err=$ignore_http_err" >> $swat_environment_settings_file
-fi
-
-if [ -n "${curl_connect_timeout}" ]; then
-    echo "curl_connect_timeout=$curl_connect_timeout" >> $swat_environment_settings_file
-fi
-
-if [ -n "${curl_max_time}" ]; then
-    echo "curl_max_time=$curl_max_time" >> $swat_environment_settings_file
-fi
-
-
-if [ -n "${curl_params}" ]; then
-    echo "curl_params=$curl_params" >> $swat_environment_settings_file
-fi
-
-if [ -n "${port}" ]; then
-    echo "port=$port" >> $swat_environment_settings_file
-fi
-
-
-# re-apply swat environmetal settings
-source $swat_environment_settings_file
-
-# sets defaults
+# set defaults
 debug=${debug:=0}
 debug_bytes=${debug_bytes:=500}
-ignore_http_err=${ignore_http_err:=0}
-try_num=${try_num:=2}
 curl_connect_timeout=${curl_connect_timeout:=20}
 curl_max_time=${curl_max_time:=20}
-swat_use_proxy=${swat_use_proxy:=0}
 
-
-# save `merged' result to session file
+# save environment settings to session file
 
 echo "debug=$debug" > $session_file
 echo "debug_bytes=$debug_bytes" >> $session_file
-echo "try_num=$try_num" >> $session_file
-echo "ignore_http_err=$ignore_http_err" >> $session_file
 echo "curl_connect_timeout=$curl_connect_timeout" >> $session_file
 echo "curl_max_time=$curl_max_time" >> $session_file
 
@@ -110,6 +59,14 @@ fi
 
 if [ -n "${port}" ]; then
     echo "port=$port" >> $session_file
+fi
+
+if [ -n "${ignore_http_err}" ]; then
+    echo "ignore_http_err=$ignore_http_err" >> $session_file
+fi
+
+if [ -n "${try_num}" ]; then
+    echo "try_num=$try_num" >> $session_file
 fi
 
 
@@ -130,9 +87,14 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     unset curl_params
     unset port
 
+    test -f ~/$swat_ini_file && source ~/$swat_ini_file
     test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
     test -f $test_dir/$swat_ini_file && source $test_dir/$swat_ini_file
+
     source $session_file
+
+    ignore_http_err=${ignore_http_err:=0}
+    try_num=${try_num:=2}
 
     path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $safe_project $f`;
     mkdir -p "${reports_dir}/${path}";

@@ -1,3 +1,6 @@
+# 0.1.31
+- correct calculation of swat settings 
+
 # 0.1.30
 - hotfix for curl_params='' issue 
 
