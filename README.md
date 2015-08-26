@@ -18,19 +18,19 @@ SWAT is Simple Web Application Test ( Tool )
 
 # WHY
 
-I know there are a lot of tests tool and frameworks, but let me  briefly tell _why_ I created swat.
-As devops I update a dozens of web application weekly, sometimes I just have _no time_ sitting and wait 
-while dev guys or QA team ensure that deploy is fine and nothing breaks on the road. 
+I know there are a lot of test tools and frameworks, but let me  briefly tell _why_ I created swat.
+As devops, I update dozens of web application weekly, sometimes I just have _no time_ to sit and wait, 
+while dev guys or QA team ensure that deployment is fine and nothing breaks on the road. 
 So I need a **tool to run smoke tests against web applications**. 
-Not tool only, but the way to **create such a tests from the scratch in way easy and fast enough**. 
+Not just a tool, but the way to **create such tests from scratch in a way that's easy and fast enough**. 
 
-So this how I came up with the idea of swat. 
+So this is how I came up with the idea of swat. 
 
 # Key features
 
 SWAT:
 
-- is very pragmatic tool designed for job to be done in a fast and simple way
+- is a very pragmatic tool, designed for the job to be done in a fast and simple way
 - has simple and yet flexible DSL with low price mastering ( see my tutorial )
 - produces [TAP](https://testanything.org/) output
 - leverages famous [perl prove](http://search.cpan.org/perldoc?prove) and [curl](http://curl.haxx.se/) utilities
@@ -41,7 +41,7 @@ Swat relies on curl utility to make http requests. Thus first you need to instal
 
     $ sudo apt-get install curl
 
-Also swat client is bash script so you need a bash. 
+Also swat client is a bash script so you need bash. 
 
 Then you install swat cpan module:
 
@@ -475,7 +475,8 @@ Thus swat.ini file should be bash file with swat variables definitions. Here is 
 
 ## Settings priority table
 
-This table describes order in which settings are applied, starts from lowest priority settings
+This table describes all the settings with priority levels, the settings with higher priority are applied after settings
+with lower priority.
 
     | context                 | location                | settings type        | priority  level |
     | ------------------------|------------------------ | -------------------- | ----------------
@@ -486,7 +487,7 @@ This table describes order in which settings are applied, starts from lowest pri
 
 # Settings merge algorithm
 
-Swat applies settings in order for every route:
+Thus swat applies settings in order for every route:
 
 - Home directory settings are applied if exist.
 - Project based settings are applied if exist.

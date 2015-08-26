@@ -897,7 +897,9 @@ Thus swat.ini file should be bash file with swat variables definitions. Here is 
 
 =head2 Settings priority table
 
-This table describes order in which settings are applied, starts from lowest priority settings
+This table describes all the settings with priority levels, the settings with higher priority are applied after settings
+with lower priority.
+
 
     | context                 | location                | settings type        | priority  level |
     | ------------------------|------------------------ | -------------------- | ----------------
@@ -909,7 +911,7 @@ This table describes order in which settings are applied, starts from lowest pri
 
 =head1 Settings merge algorithm
 
-Swat applies settings in order for every route:
+Thus swat applies settings in order for every route:
 
 =over
 
