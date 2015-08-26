@@ -275,13 +275,13 @@ SWAT is Simple Web Application Test ( Tool )
 
 =head1 WHY
 
-I know there are a lot of tests tool and frameworks, but let me  briefly tell I<why> I created swat.
-As devops I update a dozens of web application weekly, sometimes I just have I<no time> sitting and wait 
-while dev guys or QA team ensure that deploy is fine and nothing breaks on the road. 
+I know there are a lot of test tools and frameworks, but let me  briefly tell I<why> I created swat.
+As devops, I update dozens of web application weekly, sometimes I just have I<no time> to sit and wait, 
+while dev guys or QA team ensure that deployment is fine and nothing breaks on the road. 
 So I need a B<tool to run smoke tests against web applications>. 
-Not tool only, but the way to B<create such a tests from the scratch in way easy and fast enough>. 
+Not just a tool, but the way to B<create such tests from scratch in a way that's easy and fast enough>. 
 
-So this how I came up with the idea of swat. 
+So this is how I came up with the idea of swat. 
 
 
 =head1 Key features
@@ -292,7 +292,7 @@ SWAT:
 
 =item *
 
-is very pragmatic tool designed for job to be done in a fast and simple way
+is a very pragmatic tool, designed for the job to be done in a fast and simple way
 
 =item *
 
@@ -314,7 +314,7 @@ Swat relies on curl utility to make http requests. Thus first you need to instal
 
     $ sudo apt-get install curl
 
-Also swat client is bash script so you need a bash. 
+Also swat client is a bash script so you need bash. 
 
 Then you install swat cpan module:
 
