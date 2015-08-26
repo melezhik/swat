@@ -1,3 +1,7 @@
+# 0.1.33
+- documentation typo fixes - thanks to @zoffixznet - pull/1
+- small refactoring ( better names for variables )
+
 # 0.1.32
 - small documentation fixes
 - does not print result of File::ShareDir::module_dir in conditional statement  

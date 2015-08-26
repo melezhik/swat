@@ -12,7 +12,7 @@ test -f $project/host && host=${host:=`cat $project/host`}
 
 if [ -n "${host}"  ] ; then
 
-    # host valiadtion; it should not contain '../'
+    # host validation; it should not contain '../'
     if perl -e '$l=shift(); $l=~/\.\.\// or exit 1' "${host}"; then
         echo "bad host: ${host}"
         exit 1
@@ -81,7 +81,7 @@ mkdir -p $reports_dir
 
 for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
-    test_dir=`perl -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print $sp' $f`;
+    route_dir=`perl -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print $sp' $f`;
 
     unset try_num
     unset ignore_http_err
@@ -92,7 +92,7 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
     test -f ~/$swat_ini_file && source ~/$swat_ini_file
     test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
-    test -f $test_dir/$swat_ini_file && source $test_dir/$swat_ini_file
+    test -f $route_dir/$swat_ini_file && source $route_dir/$swat_ini_file
 
     source $session_file
 
@@ -153,7 +153,7 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     echo "require swat;"  >> $tfile
 
     test -f $safe_project/hook.pm && echo "require '"`pwd`"/${safe_project}/hook.pm';"  >> $tfile
-    test -f $test_dir/hook.pm && echo "require '"`pwd`"/${test_dir}/hook.pm';"  >> $tfile
+    test -f $route_dir/hook.pm && echo "require '"`pwd`"/${route_dir}/hook.pm';"  >> $tfile
 
     echo >> $tfile
 
