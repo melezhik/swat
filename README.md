@@ -597,3 +597,9 @@ To the authors of ( see list ) without who swat would not appear to light
 - TAP
 - Test::More
 - prove
+
+# COPYRIGHT
+
+Copyright 2015 Alexey Melezhik.
+
+This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.

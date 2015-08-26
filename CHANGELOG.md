@@ -1,6 +1,8 @@
 # 0.1.33
 - documentation typo fixes - thanks to @zoffixznet - pull/1
 - small refactoring ( better names for variables )
+- added abstract and copyright sections
+
 
 # 0.1.32
 - small documentation fixes

@@ -1,5 +1,5 @@
 ---
-abstract: ~
+abstract: 'simple web application tests'
 author:
   - 'L<Aleksei Melezhik|mailto:melezhik@gmail.com>'
 build_requires:
