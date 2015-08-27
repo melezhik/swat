@@ -1,3 +1,7 @@
+# 0.1.34
+- removed pwd from require path to hook.pm files
+- fix for regexp checks with quoted patterns
+
 # 0.1.33
 - documentation typo fixes - thanks to @zoffixznet - pull/1
 - small refactoring ( better names for variables )

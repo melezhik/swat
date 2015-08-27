@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.33';
+our $VERSION = '0.1.34';
 
 use base 'Exporter'; 
 
@@ -80,8 +80,8 @@ sub check_line {
         $status = 1 if index($data,$pattern) != -1
     }elsif($check_type eq 'regexp'){
         for my $l (split /\n/, $data){
-            chomp $l;
-            if ($l =~ qr/$pattern/){
+            chomp $l; my $re = qr/$pattern/;
+            if ($l =~ $re ){
                 push @chunks, $1||$&;
                 $status = 1;
             }

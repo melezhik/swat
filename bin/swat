@@ -152,8 +152,8 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
     echo "require swat;"  >> $tfile
 
-    test -f $safe_project/hook.pm && echo "require '"`pwd`"/${safe_project}/hook.pm';"  >> $tfile
-    test -f $route_dir/hook.pm && echo "require '"`pwd`"/${route_dir}/hook.pm';"  >> $tfile
+    test -f $safe_project/hook.pm && echo "require '${safe_project}/hook.pm';"  >> $tfile
+    test -f $route_dir/hook.pm && echo "require '${route_dir}/hook.pm';"  >> $tfile
 
     echo >> $tfile
 
