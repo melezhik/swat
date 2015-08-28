@@ -586,6 +586,8 @@ Once we uploaded a module to CPAN repository we can use it:
     $ cpan install swat::mongodb
     $ swat swat::mongodb 127.0.0.1:28017
 
+Check out existed swat packages here - https://github.com/melezhik/swat-packages/
+
 # Debugging
 
 set `swat_debug` environment variable to 1
