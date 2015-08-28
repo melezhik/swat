@@ -13,6 +13,7 @@ requires    'File::ShareDir';
 license     'perl';
 
 install_script 'bin/swat';
+no_index    directory => 'examples';
 
 WriteAll;
 

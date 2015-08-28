@@ -7,5 +7,4 @@ blib
 \.html
 \.pod
 \.tmp
-examples\/
 swat-.*\/
