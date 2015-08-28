@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.34';
+our $VERSION = '0.1.35';
 
 use base 'Exporter'; 
 
@@ -606,7 +606,7 @@ Below is example how this looks like
 =head3 project structure
 
 
-    vagrant@Debian-jessie-amd64-netboot:~/projects/swat$ tree examples/anatomy/
+    $ tree examples/anatomy/
     examples/anatomy/
     |----FOO
     |-----|----BARs
@@ -791,7 +791,7 @@ Environment variables ( session settings )
 
 =item *
 
-swat.ini files ( home directory , project based and route based settings  )
+swat.ini files ( home directory , project based, route based and custom settings  )
 
 
 =back
@@ -873,6 +873,10 @@ B<$project_root_directory/swat.ini> -  project based settings
 
 B<$route_directory/swat.ini> - route based settings 
 
+=item *
+
+B<$cwd/swat.my> - custom settings 
+
 =back
 
 Here are examples of locations of swat.ini files:
@@ -901,12 +905,13 @@ This table describes all the settings with priority levels, the settings with hi
 with lower priority.
 
 
-    | context                 | location                | settings type        | priority  level |
-    | ------------------------|------------------------ | -------------------- | ----------------
-    | swat.ini file           | ~/swat.ini              | home directory       |       1         |
-    | swat.ini file           | project root directory  | project based        |       2         |
-    | swat.ini file           | route directory         | route based          |       3         |
-    | environment variables   | ---                     | session              |       4         |
+    | context                 | location                   | settings type        | priority  level |
+    | ------------------------|--------------------------- | -------------------- | --------------- |
+    | swat.ini file           | ~/swat.ini                 | home directory       |       1         |
+    | swat.ini file           | project root directory     | project based        |       2         |
+    | swat.my  file           | current working directory  | custom settings      |       3         |
+    | swat.ini file           | route directory            | route based          |       4         |
+    | environment variables   | ---                        | session              |       5         |
 
 
 =head1 Settings merge algorithm
@@ -925,6 +930,10 @@ Project based settings are applied if exist.
 
 =item *
 
+Custom settings are applied if exist.
+
+=item *
+
 Route based settings are applied if exist.
 
 =item *
@@ -933,6 +942,16 @@ And finally environment settings aer applied if exist.
 
 =back
 
+=head2 Custom Settings
+
+Custom settings are way to cutomize existed L<"Swat Packages"> settings. This file should be located at current working directory,
+where you run swat from. For example:
+
+    # override http port
+    $ echo port=8080 >> swat.my
+    $ swat swat::nginx 127.0.0.1
+
+Follow section L<"Swat Packages"> to get more about portable swat tests.
 
 =head1 TAP
 

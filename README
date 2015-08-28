@@ -305,7 +305,7 @@ Anatomy of swat
     Below is example how this looks like
 
    project structure
-        vagrant@Debian-jessie-amd64-netboot:~/projects/swat$ tree examples/anatomy/
+        $ tree examples/anatomy/
         examples/anatomy/
         |----FOO
         |-----|----BARs
@@ -457,8 +457,8 @@ Swat Settings
 
     *   Environment variables ( session settings )
 
-    *   swat.ini files ( home directory , project based and route based
-        settings )
+    *   swat.ini files ( home directory , project based, route based and
+        custom settings )
 
   Environment variables
     Following variables define a proper swat settings.
@@ -500,6 +500,8 @@ Swat Settings
 
     *   $route_directory/swat.ini - route based settings
 
+    *   $cwd/swat.my - custom settings
+
     Here are examples of locations of swat.ini files:
 
          ~/swat.ini # home directory settings 
@@ -524,12 +526,13 @@ Swat Settings
     This table describes all the settings with priority levels, the settings
     with higher priority are applied after settings with lower priority.
 
-        | context                 | location                | settings type        | priority  level |
-        | ------------------------|------------------------ | -------------------- | ----------------
-        | swat.ini file           | ~/swat.ini              | home directory       |       1         |
-        | swat.ini file           | project root directory  | project based        |       2         |
-        | swat.ini file           | route directory         | route based          |       3         |
-        | environment variables   | ---                     | session              |       4         |
+        | context                 | location                   | settings type        | priority  level |
+        | ------------------------|--------------------------- | -------------------- | --------------- |
+        | swat.ini file           | ~/swat.ini                 | home directory       |       1         |
+        | swat.ini file           | project root directory     | project based        |       2         |
+        | swat.my  file           | current working directory  | custom settings      |       3         |
+        | swat.ini file           | route directory            | route based          |       4         |
+        | environment variables   | ---                        | session              |       5         |
 
 Settings merge algorithm
     Thus swat applies settings in order for every route:
@@ -538,9 +541,22 @@ Settings merge algorithm
 
     *   Project based settings are applied if exist.
 
+    *   Custom settings are applied if exist.
+
     *   Route based settings are applied if exist.
 
     *   And finally environment settings aer applied if exist.
+
+  Custom Settings
+    Custom settings are way to cutomize existed "Swat Packages" settings.
+    This file should be located at current working directory, where you run
+    swat from. For example:
+
+        # override http port
+        $ echo port=8080 >> swat.my
+        $ swat swat::nginx 127.0.0.1
+
+    Follow section "Swat Packages" to get more about portable swat tests.
 
 TAP
     Swat produces output in TAP <https://testanything.org/> format , that
