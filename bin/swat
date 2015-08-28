@@ -98,6 +98,7 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
     test -f ~/$swat_ini_file && source ~/$swat_ini_file
     test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
+    test -f 'swat.my' && source 'swat.my'
     test -f $route_dir/$swat_ini_file && source $route_dir/$swat_ini_file
 
     source $session_file
@@ -176,6 +177,8 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 done;
 
 test -f ~/$swat_ini_file && source ~/$swat_ini_file
+test -f 'swat.my' && source 'swat.my'
+
 source $session_file
 
 if [ -z "${rest_args}" ] && [ -n "${prove_options}" ]; then
