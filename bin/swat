@@ -39,6 +39,7 @@ else
 fi
 
 # save environment settings to session file
+echo > $session_file
 
 if [ -n "${curl_params}" ]; then
     echo "curl_params=$curl_params" >> $session_file
