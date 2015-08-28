@@ -499,7 +499,7 @@ Thus swat applies settings in order for every route:
 
 ## Custom Settings
 
-Custom settings are way to cutomize existed ["Swat Packages"](#swat-packages) settings. This file should be located at current working directory,
+Custom settings are way to cutomize settings for existed swat package. This file should be located at current working directory,
 where you run swat from. For example:
 
     # override http port

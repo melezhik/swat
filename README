@@ -548,7 +548,7 @@ Settings merge algorithm
     *   And finally environment settings aer applied if exist.
 
   Custom Settings
-    Custom settings are way to cutomize existed "Swat Packages" settings.
+    Custom settings are way to cutomize settings for existed swat package.
     This file should be located at current working directory, where you run
     swat from. For example:
 

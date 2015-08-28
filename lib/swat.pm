@@ -944,7 +944,7 @@ And finally environment settings aer applied if exist.
 
 =head2 Custom Settings
 
-Custom settings are way to cutomize existed L<"Swat Packages"> settings. This file should be located at current working directory,
+Custom settings are way to cutomize settings for existed swat package. This file should be located at current working directory,
 where you run swat from. For example:
 
     # override http port
