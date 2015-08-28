@@ -553,7 +553,7 @@ Settings merge algorithm
     swat from. For example:
 
         # override http port
-        $ echo port=8080 >> swat.my
+        $ echo port=8080 > swat.my
         $ swat swat::nginx 127.0.0.1
 
     Follow section "Swat Packages" to get more about portable swat tests.
@@ -569,9 +569,9 @@ TAP
     See also "Prove settings" section.
 
 Command line tool
-    Swat is shipped as cpan package, once it's installed ( see "Install
-    swat" section ) you have a command line tool called swat, this is usage
-    info on it:
+    Swat is shipped as cpan package, once it's installed ( see "Install"
+    section ) you have a command line tool called swat, this is usage info
+    on it:
 
         swat <project_root_dir|swat_package> <host:port> <prove settings>
 

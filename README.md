@@ -503,7 +503,7 @@ Custom settings are way to cutomize settings for existed swat package. This file
 where you run swat from. For example:
 
     # override http port
-    $ echo port=8080 >> swat.my
+    $ echo port=8080 > swat.my
     $ swat swat::nginx 127.0.0.1
 
 Follow section ["Swat Packages"](#swat-packages) to get more about portable swat tests.
@@ -519,7 +519,7 @@ See also ["Prove settings"](#prove-settings) section.
 
 # Command line tool
 
-Swat is shipped as cpan package, once it's installed ( see ["Install swat"](#install-swat) section ) you have a command line tool called **swat**, this is usage info on it:
+Swat is shipped as cpan package, once it's installed ( see ["Install"](#install) section ) you have a command line tool called **swat**, this is usage info on it:
 
     swat <project_root_dir|swat_package> <host:port> <prove settings>
 

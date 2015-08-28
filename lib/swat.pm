@@ -965,7 +965,7 @@ See also L<"Prove settings"> section.
 
 =head1 Command line tool
 
-Swat is shipped as cpan package, once it's installed ( see L</"Install swat"> section ) you have a command line tool called B<swat>, this is usage info on it:
+Swat is shipped as cpan package, once it's installed ( see L</"Install"> section ) you have a command line tool called B<swat>, this is usage info on it:
 
     swat <project_root_dir|swat_package> <host:port> <prove settings>
 
