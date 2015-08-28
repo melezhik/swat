@@ -1,6 +1,7 @@
 # 0.1.35
 - swat.my settings to override project based swat.ini files
 - all bash variables get unset before a new route is started 
+- added examples to cpan distro
 
 # 0.1.34
 - removed pwd from require path to hook.pm files
