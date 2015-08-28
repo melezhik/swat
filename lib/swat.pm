@@ -948,7 +948,7 @@ Custom settings are way to cutomize settings for existed swat package. This file
 where you run swat from. For example:
 
     # override http port
-    $ echo port=8080 >> swat.my
+    $ echo port=8080 > swat.my
     $ swat swat::nginx 127.0.0.1
 
 Follow section L<"Swat Packages"> to get more about portable swat tests.
