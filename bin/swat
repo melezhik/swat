@@ -8,6 +8,16 @@ rest_args=$@
 
 swat_ini_file='swat.ini'
 
+if [ \(  -n "${project}"  \) -a \( -d "${project}" \) ]; then
+    is_swat_package=0
+elif perl -M$project -MFile::ShareDir -e "File::ShareDir::module_dir($project)"  ; then
+    is_swat_package=1
+    project=`perl -M$project -MFile::ShareDir -e "print(File::ShareDir::module_dir($project))"`;
+else
+    echo "usage: swat project HOST:port prover-options"
+    exit 1
+fi
+
 test -f $project/host && host=${host:=`cat $project/host`}
 
 if [ -n "${host}"  ] ; then
@@ -26,17 +36,6 @@ else
     exit 1
 fi
 
-packages_dir=~/.swat/.packages/
-
-if [ \(  -n "${project}"  \) -a \( -d "${project}" \) ]; then
-    is_swat_package=0
-elif perl -M$project -MFile::ShareDir -e "File::ShareDir::module_dir($project)"  ; then
-    is_swat_package=1
-    project=`perl -M$project -MFile::ShareDir -e "print(File::ShareDir::module_dir($project))"`;
-else
-    echo "usage: swat project HOST:port prover-options"
-    exit 1
-fi
 
 # save environment settings to session file
 echo > $session_file

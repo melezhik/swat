@@ -1,3 +1,7 @@
+# 0.1.36
+- fix for default host for swat packages
+
+
 # 0.1.35
 - swat.my settings to override project based swat.ini files
 - all bash variables get unset before a new route is started 
