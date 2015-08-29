@@ -332,11 +332,11 @@ Below is example how this looks like
         ok($status, "POST /FOO/BARs returns BAR7")
     }
 
-# Hooks
+# Perl hooks
 
-Hooks are files containing any perl code to be \`required\` into the beginning of every swat test. There are 2 types of hooks:
+Perl hooks are just perl code files \`required\` in the beginning of next swat test. There are 2 types of perl hooks:
 
-- **project based hooks**
+- **project based hook**
 
     File located at `$project_root_directory/hook.pm`. Project based hooks are applied for every route in project and
     could be used for _project initialization_. For example one could define generators here:
@@ -352,7 +352,7 @@ Hooks are files containing any perl code to be \`required\` into the beginning o
 
 - **route based hooks**
 
-    File located at `$project_root_directory/$route_directory/hook.pm`. Routes based hook are route specific hooks and
+    Files located at `$project_root_directory/$route_directory/hook.pm`. Routes based hook are route specific hooks and
     could be used for _route initialization_. For example one could define route specific generators here:
 
         # place this in hook.pm file:
@@ -375,6 +375,25 @@ Hooks are files containing any perl code to be \`required\` into the beginning o
 
         # now we could use it in swat data file
         generator:  list() 
+
+# Bash hooks
+
+Similar to perl hooks bash hooks are just a bash files \`sourced\` _before_ execution of next swat test. 
+
+There are 2 types of bash hooks:
+
+- **project based hook**
+
+    File located at `$project_root_directory/hook.bash`. Project based hooks are applied for every route in project and
+    could be used for _project initialization_.
+
+- **route based hooks**
+
+    Files located at `$project_root_directory/$route_directory/hook.bash`. Routes based hook are route specific hooks and
+    could be used for _route initialization_.
+
+It is important to note that bash hooks are executed _after swat setting merge done_ , see  ["Swat Settings"](#swat-settings) section to get more
+about swat settings.
 
 # Post requests
 
@@ -600,7 +619,7 @@ set `swat_debug` environment variable to 1
 
 [Aleksei Melezhik](mailto:melezhik@gmail.com)
 
-# Swat Project Home Page
+# Home Page
 
 https://github.com/melezhik/swat
 

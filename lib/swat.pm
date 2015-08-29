@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.36';
+our $VERSION = '0.1.37';
 
 use base 'Exporter'; 
 
@@ -658,15 +658,15 @@ Below is example how this looks like
         ok($status, "POST /FOO/BARs returns BAR7")
     }
 
-=head1 Hooks
+=head1 Perl hooks
 
-Hooks are files containing any perl code to be `required` into the beginning of every swat test. There are 2 types of hooks:
+Perl hooks are just perl code files `required` in the beginning of next swat test. There are 2 types of perl hooks:
 
 =over 
 
 =item *
 
-B<project based hooks>
+B<project based hook>
 
 File located at C<$project_root_directory/hook.pm>. Project based hooks are applied for every route in project and
 could be used for I<project initialization>. For example one could define generators here:
@@ -684,7 +684,7 @@ could be used for I<project initialization>. For example one could define genera
 
 B<route based hooks>
 
-File located at C<$project_root_directory/$route_directory/hook.pm>. Routes based hook are route specific hooks and
+Files located at C<$project_root_directory/$route_directory/hook.pm>. Routes based hook are route specific hooks and
 could be used for I<route initialization>. For example one could define route specific generators here:
 
     # place this in hook.pm file:
@@ -711,6 +711,33 @@ could be used for I<route initialization>. For example one could define route sp
 
 
 =back
+
+=head1 Bash hooks
+
+Similar to perl hooks bash hooks are just a bash files `sourced` I<before> execution of next swat test. 
+
+There are 2 types of bash hooks:
+
+=over 
+
+=item *
+
+B<project based hook>
+
+File located at C<$project_root_directory/hook.bash>. Project based hooks are applied for every route in project and
+could be used for I<project initialization>.
+
+=item *
+
+B<route based hooks>
+
+Files located at C<$project_root_directory/$route_directory/hook.bash>. Routes based hook are route specific hooks and
+could be used for I<route initialization>.
+
+=back
+
+It is important to note that bash hooks are executed I<after swat setting merge done> , see  L<"Swat Settings"> section to get more
+about swat settings.
 
 =head1 Post requests
 
@@ -1074,7 +1101,7 @@ set C<swat_debug> environment variable to 1
 L<Aleksei Melezhik|mailto:melezhik@gmail.com>
 
 
-=head1 Swat Project Home Page
+=head1 Home Page
 
 https://github.com/melezhik/swat
 

@@ -125,6 +125,11 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
     curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L --stderr -"
 
+    # execute bash hooks
+
+    test -f $safe_project/hook.bash && source $safe_project/hook.bash
+    test -f $route_dir/hook.bash && source $route_dir/hook.bash
+
     if [ "$ignore_http_err" -eq '0' ]; then
         curl_cmd="$curl_cmd -f"
     fi

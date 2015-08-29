@@ -1,2 +1,2 @@
-prove_options=-q
+prove_options=-v
 

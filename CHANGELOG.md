@@ -1,3 +1,6 @@
+# 0.1.37
+- bash hooks
+
 # 0.1.36
 - fix for default host for swat packages
 
