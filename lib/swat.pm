@@ -900,7 +900,23 @@ where you run swat from. For example:
 
 Follow section L<"Swat Packages"> to get more about portable swat tests.
 
-=head1 Perl hooks
+=head1 Hooks
+
+Hooks are extension points you may imppliment to hack into swat complie / runtime workflow. There are two types of hooks:
+
+=over 
+
+=item *
+
+Perl hooks
+
+=item *
+
+Bash Hooks
+
+=back
+
+=head2 Perl hooks
 
 Perl hooks are just perl code files `required` in the beginning of next swat test. There are 2 types of perl hooks:
 
@@ -954,7 +970,7 @@ could be used for I<route initialization>. For example one could define route sp
 
 =back
 
-=head1 Bash hooks
+=head2 Bash hooks
 
 Similar to perl hooks bash hooks are just a bash files `sourced` I<before> execution of next swat test. 
 
@@ -978,8 +994,28 @@ could be used for I<route initialization>.
 
 =back
 
-It is important to note that bash hooks are executed I<after swat setting merge done> , see  L<"Swat Settings"> section to get more
+It is important to note that bash hooks are executed I<after swat settings merge done> , see  L<"Swat Settings"> section to get more
 about swat settings.
+
+
+Useful environment vairables one may rely upon when writting bash hooks:
+
+=over 
+
+=item *
+
+B<http_url>
+
+=item *
+
+B<curl_params>
+
+=item *
+
+B<http_meth> - C<GET|POST>
+
+=back
+
 
 =head1 TAP
 

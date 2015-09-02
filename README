@@ -510,7 +510,15 @@ Settings merge algorithm
 
     Follow section "Swat Packages" to get more about portable swat tests.
 
-Perl hooks
+Hooks
+    Hooks are extension points you may imppliment to hack into swat complie
+    / runtime workflow. There are two types of hooks:
+
+    *   Perl hooks
+
+    *   Bash Hooks
+
+  Perl hooks
     Perl hooks are just perl code files `required` in the beginning of next
     swat test. There are 2 types of perl hooks:
 
@@ -558,7 +566,7 @@ Perl hooks
             # now we could use it in swat data file
             generator:  list()
 
-Bash hooks
+  Bash hooks
     Similar to perl hooks bash hooks are just a bash files `sourced`
     *before* execution of next swat test.
 
@@ -577,9 +585,17 @@ Bash hooks
         hook are route specific hooks and could be used for *route
         initialization*.
 
-    It is important to note that bash hooks are executed *after swat setting
-    merge done* , see "Swat Settings" section to get more about swat
-    settings.
+    It is important to note that bash hooks are executed *after swat
+    settings merge done* , see "Swat Settings" section to get more about
+    swat settings.
+
+    Useful environment vairables one may rely upon when writting bash hooks:
+
+    *   http_url
+
+    *   curl_params
+
+    *   http_meth - "GET|POST"
 
 TAP
     Swat produces output in TAP <https://testanything.org/> format , that

@@ -464,7 +464,14 @@ where you run swat from. For example:
 
 Follow section ["Swat Packages"](#swat-packages) to get more about portable swat tests.
 
-# Perl hooks
+# Hooks
+
+Hooks are extension points you may imppliment to hack into swat complie / runtime workflow. There are two types of hooks:
+
+- Perl hooks
+- Bash Hooks
+
+## Perl hooks
 
 Perl hooks are just perl code files \`required\` in the beginning of next swat test. There are 2 types of perl hooks:
 
@@ -508,7 +515,7 @@ Perl hooks are just perl code files \`required\` in the beginning of next swat t
         # now we could use it in swat data file
         generator:  list() 
 
-# Bash hooks
+## Bash hooks
 
 Similar to perl hooks bash hooks are just a bash files \`sourced\` _before_ execution of next swat test. 
 
@@ -524,8 +531,14 @@ There are 2 types of bash hooks:
     Files located at `$project_root_directory/$route_directory/hook.bash`. Routes based hook are route specific hooks and
     could be used for _route initialization_.
 
-It is important to note that bash hooks are executed _after swat setting merge done_ , see  ["Swat Settings"](#swat-settings) section to get more
+It is important to note that bash hooks are executed _after swat settings merge done_ , see  ["Swat Settings"](#swat-settings) section to get more
 about swat settings.
+
+Useful environment vairables one may rely upon when writting bash hooks:
+
+- **http\_url**
+- **curl\_params**
+- **http\_meth** - `GET|POST`
 
 # TAP
 
