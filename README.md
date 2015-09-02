@@ -553,6 +553,8 @@ Useful environment vairables one may rely upon when writting bash hooks:
 - **http\_url**
 - **curl\_params**
 - **http\_meth** - `GET|POST`
+- **route\_dir**
+- **project**
 
 # TAP
 

@@ -1,5 +1,6 @@
 # 0.1.39
 - swat cleanup/startup hooks
+- route_dir variable in lib/swat.pm
 
 # 0.1.38
 - small documentation changes

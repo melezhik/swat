@@ -20,7 +20,7 @@ use Test::More;
 our $HTTP_RESPONSE;
 our ($project);
 our ($curl_cmd, $content_file);
-our ($url, $path, $http_meth); 
+our ($url, $path, $route_dir, $http_meth); 
 our ($debug, $ignore_http_err, $try_num, $debug_bytes);
 our ($is_swat_package);
 $| = 1;
@@ -1032,6 +1032,14 @@ B<curl_params>
 =item *
 
 B<http_meth> - C<GET|POST>
+
+=item *
+
+B<route_dir>
+
+=item *
+
+B<project>
 
 =back
 

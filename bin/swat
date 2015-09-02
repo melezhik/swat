@@ -158,6 +158,7 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     echo "use Test::More q{no_plan};"  >> $tfile
     echo $\content_file = q{"${reports_dir}${path}/content.${http_meth}.txt};"  >> $tfile
     echo $\path = q{"${path}};"  >> $tfile
+    echo $\route_dir = q{"${route_dir}};"  >> $tfile
     echo $\project = q{"${safe_project}};"  >> $tfile
     echo $\http_meth = q{"${http_meth}};"  >> $tfile
     echo $\url = q{"${http_url}};"  >> $tfile
