@@ -523,13 +523,21 @@ There are 2 types of bash hooks:
 
 - **project based hook**
 
-    File located at `$project_root_directory/hook.bash`. Project based hooks are applied for every route in project and
-    could be used for _project initialization_.
+    File located at `$project_root_directory/hook.bash`. 
+
+    Project based hooks are applied for every route in project and could be used for _project initialization_.
+
+    **cleanup based hook**
+
+    File located at `$project_root_directory/cleanup.bash`. 
+
+    Cleanup hook is executed after swat tests are done and could be used for _cleanup procedures_.
 
 - **route based hooks**
 
-    Files located at `$project_root_directory/$route_directory/hook.bash`. Routes based hook are route specific hooks and
-    could be used for _route initialization_.
+    Files located at `$project_root_directory/$route_directory/hook.bash`. 
+
+    Routes based hooks are route specific hooks and could be used for _route initialization_.
 
 It is important to note that bash hooks are executed _after swat settings merge done_ , see  ["Swat Settings"](#swat-settings) section to get more
 about swat settings.

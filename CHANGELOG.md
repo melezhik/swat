@@ -1,6 +1,8 @@
+# 0.1.39
+- swat cleanup hooks
+
 # 0.1.38
 - small documentation changes
-
 
 # 0.1.37
 - bash hooks

@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.38';
+our $VERSION = '0.1.39';
 
 use base 'Exporter'; 
 
@@ -982,15 +982,23 @@ There are 2 types of bash hooks:
 
 B<project based hook>
 
-File located at C<$project_root_directory/hook.bash>. Project based hooks are applied for every route in project and
-could be used for I<project initialization>.
+File located at C<$project_root_directory/hook.bash>. 
+
+Project based hooks are applied for every route in project and could be used for I<project initialization>.
+
+B<cleanup based hook>
+
+File located at C<$project_root_directory/cleanup.bash>. 
+
+Cleanup hook is executed after swat tests are done and could be used for I<cleanup procedures>.
 
 =item *
 
 B<route based hooks>
 
-Files located at C<$project_root_directory/$route_directory/hook.bash>. Routes based hook are route specific hooks and
-could be used for I<route initialization>.
+Files located at C<$project_root_directory/$route_directory/hook.bash>. 
+
+Routes based hooks are route specific hooks and could be used for I<route initialization>.
 
 =back
 

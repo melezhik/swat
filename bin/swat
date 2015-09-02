@@ -195,6 +195,9 @@ else
 fi
 
 
+# execute cleanup hook
+test -f $safe_project/cleanup.bash && source $safe_project/cleanup.bash
+
 
 
 
