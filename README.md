@@ -332,69 +332,6 @@ Below is example how this looks like
         ok($status, "POST /FOO/BARs returns BAR7")
     }
 
-# Perl hooks
-
-Perl hooks are just perl code files \`required\` in the beginning of next swat test. There are 2 types of perl hooks:
-
-- **project based hook**
-
-    File located at `$project_root_directory/hook.pm`. Project based hooks are applied for every route in project and
-    could be used for _project initialization_. For example one could define generators here:
-
-        # place this in hook.pm file:
-        sub list1 { | %w{ foo bar baz } | }
-        sub list2 { | %w{ red green blue } | }
-
-
-        # now we could use it in swat data file
-        generator:  list() 
-        generator:  list2()    
-
-- **route based hooks**
-
-    Files located at `$project_root_directory/$route_directory/hook.pm`. Routes based hook are route specific hooks and
-    could be used for _route initialization_. For example one could define route specific generators here:
-
-        # place this in hook.pm file:
-        # notices that we could tell GET from POST http methods here:
-
-        sub list1 { 
-
-            my $list;
-
-            if ($method eq 'GET') {
-                $list = | %w{ GET_foo GET_bar GET_baz } | 
-            }elsif($method eq 'POST'){
-                $list = | %w{ POST_foo POST_bar POST_baz } | 
-            }else{
-                die "method $method is not supported"
-            }
-            $list;
-        }
-
-
-        # now we could use it in swat data file
-        generator:  list() 
-
-# Bash hooks
-
-Similar to perl hooks bash hooks are just a bash files \`sourced\` _before_ execution of next swat test. 
-
-There are 2 types of bash hooks:
-
-- **project based hook**
-
-    File located at `$project_root_directory/hook.bash`. Project based hooks are applied for every route in project and
-    could be used for _project initialization_.
-
-- **route based hooks**
-
-    Files located at `$project_root_directory/$route_directory/hook.bash`. Routes based hook are route specific hooks and
-    could be used for _route initialization_.
-
-It is important to note that bash hooks are executed _after swat setting merge done_ , see  ["Swat Settings"](#swat-settings) section to get more
-about swat settings.
-
 # Post requests
 
 Name swat data file as post.txt to make http POST requests.
@@ -526,6 +463,69 @@ where you run swat from. For example:
     $ swat swat::nginx 127.0.0.1
 
 Follow section ["Swat Packages"](#swat-packages) to get more about portable swat tests.
+
+# Perl hooks
+
+Perl hooks are just perl code files \`required\` in the beginning of next swat test. There are 2 types of perl hooks:
+
+- **project based hook**
+
+    File located at `$project_root_directory/hook.pm`. Project based hooks are applied for every route in project and
+    could be used for _project initialization_. For example one could define generators here:
+
+        # place this in hook.pm file:
+        sub list1 { | %w{ foo bar baz } | }
+        sub list2 { | %w{ red green blue } | }
+
+
+        # now we could use it in swat data file
+        generator:  list() 
+        generator:  list2()    
+
+- **route based hooks**
+
+    Files located at `$project_root_directory/$route_directory/hook.pm`. Routes based hook are route specific hooks and
+    could be used for _route initialization_. For example one could define route specific generators here:
+
+        # place this in hook.pm file:
+        # notices that we could tell GET from POST http methods here:
+
+        sub list1 { 
+
+            my $list;
+
+            if ($method eq 'GET') {
+                $list = | %w{ GET_foo GET_bar GET_baz } | 
+            }elsif($method eq 'POST'){
+                $list = | %w{ POST_foo POST_bar POST_baz } | 
+            }else{
+                die "method $method is not supported"
+            }
+            $list;
+        }
+
+
+        # now we could use it in swat data file
+        generator:  list() 
+
+# Bash hooks
+
+Similar to perl hooks bash hooks are just a bash files \`sourced\` _before_ execution of next swat test. 
+
+There are 2 types of bash hooks:
+
+- **project based hook**
+
+    File located at `$project_root_directory/hook.bash`. Project based hooks are applied for every route in project and
+    could be used for _project initialization_.
+
+- **route based hooks**
+
+    Files located at `$project_root_directory/$route_directory/hook.bash`. Routes based hook are route specific hooks and
+    could be used for _route initialization_.
+
+It is important to note that bash hooks are executed _after swat setting merge done_ , see  ["Swat Settings"](#swat-settings) section to get more
+about swat settings.
 
 # TAP
 

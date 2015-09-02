@@ -1,3 +1,7 @@
+# 0.1.38
+- small documentation changes
+
+
 # 0.1.37
 - bash hooks
 
