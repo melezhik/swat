@@ -579,7 +579,7 @@ Hooks
         Project based hooks are applied for every route in project and could
         be used for *project initialization*.
 
-        route based hooks
+    *   route based hooks
 
         Files located at
         "$project_root_directory/$route_directory/hook.bash".

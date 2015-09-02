@@ -986,6 +986,8 @@ File located at C<$project_root_directory/hook.bash>.
 
 Project based hooks are applied for every route in project and could be used for I<project initialization>.
 
+=item *
+
 B<route based hooks>
 
 Files located at C<$project_root_directory/$route_directory/hook.bash>. 

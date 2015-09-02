@@ -527,7 +527,7 @@ There are 4 types of bash hooks:
 
     Project based hooks are applied for every route in project and could be used for _project initialization_.
 
-    **route based hooks**
+- **route based hooks**
 
     Files located at `$project_root_directory/$route_directory/hook.bash`. 
 
