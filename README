@@ -570,7 +570,7 @@ Hooks
     Similar to perl hooks bash hooks are just a bash files `sourced`
     *before* execution of next swat test.
 
-    There are 2 types of bash hooks:
+    There are 4 types of bash hooks:
 
     *   project based hook
 
@@ -579,20 +579,27 @@ Hooks
         Project based hooks are applied for every route in project and could
         be used for *project initialization*.
 
-        cleanup based hook
-
-        File located at "$project_root_directory/cleanup.bash".
-
-        Cleanup hook is executed after swat tests are done and could be used
-        for *cleanup procedures*.
-
-    *   route based hooks
+        route based hooks
 
         Files located at
         "$project_root_directory/$route_directory/hook.bash".
 
         Routes based hooks are route specific hooks and could be used for
         *route initialization*.
+
+    *   startup hook
+
+        File located at "$project_root_directory/startup.bash".
+
+        Startup hook is executed before swat tests gets compiled, at the
+        very begining, at could be used for *initialization*.
+
+    *   cleanup hook
+
+        File located at "$project_root_directory/cleanup.bash".
+
+        Cleanup hook is executed *after swat tests are executed*, at the
+        very end, and could be used for *cleanup procedures*.
 
     It is important to note that bash hooks are executed *after swat
     settings merge done* , see "Swat Settings" section to get more about

@@ -1,5 +1,5 @@
 # 0.1.39
-- swat cleanup hooks
+- swat cleanup/startup hooks
 
 # 0.1.38
 - small documentation changes

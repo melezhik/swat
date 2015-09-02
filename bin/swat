@@ -82,6 +82,9 @@ reports_dir=~/.swat/reports/$host/
 rm -rf $reports_dir
 mkdir -p $reports_dir
 
+# execute startup hook
+test -f $safe_project/startup.bash && source $safe_project/startup.bash
+
 for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
     route_dir=`perl -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print $sp' $f`;

@@ -974,7 +974,7 @@ could be used for I<route initialization>. For example one could define route sp
 
 Similar to perl hooks bash hooks are just a bash files `sourced` I<before> execution of next swat test. 
 
-There are 2 types of bash hooks:
+There are 4 types of bash hooks:
 
 =over 
 
@@ -986,19 +986,28 @@ File located at C<$project_root_directory/hook.bash>.
 
 Project based hooks are applied for every route in project and could be used for I<project initialization>.
 
-B<cleanup based hook>
-
-File located at C<$project_root_directory/cleanup.bash>. 
-
-Cleanup hook is executed after swat tests are done and could be used for I<cleanup procedures>.
-
-=item *
-
 B<route based hooks>
 
 Files located at C<$project_root_directory/$route_directory/hook.bash>. 
 
 Routes based hooks are route specific hooks and could be used for I<route initialization>.
+
+=item *
+
+B<startup hook>
+
+File located at C<$project_root_directory/startup.bash>. 
+
+Startup hook is executed before swat tests gets compiled, at the very begining, at could be used for I<initialization>.
+
+=item *
+
+B<cleanup hook>
+
+File located at C<$project_root_directory/cleanup.bash>. 
+
+Cleanup hook is executed I<after swat tests are executed>, at the very end, and could be used for I<cleanup procedures>.
+
 
 =back
 
