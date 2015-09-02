@@ -918,7 +918,7 @@ Bash Hooks
 
 =head2 Perl hooks
 
-Perl hooks are just perl code files `required` in the beginning of next swat test. There are 2 types of perl hooks:
+Perl hooks are files with perl code `required` I<in the beginning of a swat test>. There are 2 types of perl hooks:
 
 =over 
 
@@ -938,11 +938,13 @@ could be used for I<project initialization>. For example one could define genera
     generator:  list() 
     generator:  list2()    
 
+File located at C<$project_root_directory/cleanup.pm>. The same as hool.pm but `required` I<in the end> of a swat test
+
 =item *
 
 B<route based hooks>
 
-Files located at C<$project_root_directory/$route_directory/hook.pm>. Routes based hook are route specific hooks and
+Files located at C<$route_directory/hook.pm>. Routes based hook are route specific hooks and
 could be used for I<route initialization>. For example one could define route specific generators here:
 
     # place this in hook.pm file:
@@ -967,6 +969,7 @@ could be used for I<route initialization>. For example one could define route sp
     generator:  list() 
 
 
+File located at C<$route_directory/cleanup.pm>. The same as hool.pm but `required` I<in the end> of a swat test
 
 =back
 

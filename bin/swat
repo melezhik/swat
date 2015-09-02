@@ -181,6 +181,10 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     echo -e "\tgenerate_asserts(q{$f},1)" >> $tfile;
     echo >> $tfile
     echo "}" >> $tfile
+    echo >> $tfile
+
+    test -f $route_dir/cleanup.pm && echo "require '${route_dir}/cleanup.pm';"  >> $tfile
+    test -f $safe_project/cleanup.pm && echo "require '${safe_project}/cleanup.pm';"  >> $tfile
 
 done;
 

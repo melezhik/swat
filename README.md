@@ -473,7 +473,7 @@ Hooks are extension points you may imppliment to hack into swat complie / runtim
 
 ## Perl hooks
 
-Perl hooks are just perl code files \`required\` in the beginning of next swat test. There are 2 types of perl hooks:
+Perl hooks are files with perl code \`required\` _in the beginning of a swat test_. There are 2 types of perl hooks:
 
 - **project based hook**
 
@@ -489,9 +489,11 @@ Perl hooks are just perl code files \`required\` in the beginning of next swat t
         generator:  list() 
         generator:  list2()    
 
+    File located at `$project_root_directory/cleanup.pm`. The same as hool.pm but \`required\` _in the end_ of a swat test
+
 - **route based hooks**
 
-    Files located at `$project_root_directory/$route_directory/hook.pm`. Routes based hook are route specific hooks and
+    Files located at `$route_directory/hook.pm`. Routes based hook are route specific hooks and
     could be used for _route initialization_. For example one could define route specific generators here:
 
         # place this in hook.pm file:
@@ -514,6 +516,8 @@ Perl hooks are just perl code files \`required\` in the beginning of next swat t
 
         # now we could use it in swat data file
         generator:  list() 
+
+    File located at `$route_directory/cleanup.pm`. The same as hool.pm but \`required\` _in the end_ of a swat test
 
 ## Bash hooks
 

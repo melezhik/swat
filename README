@@ -519,8 +519,8 @@ Hooks
     *   Bash Hooks
 
   Perl hooks
-    Perl hooks are just perl code files `required` in the beginning of next
-    swat test. There are 2 types of perl hooks:
+    Perl hooks are files with perl code `required` *in the beginning of a
+    swat test*. There are 2 types of perl hooks:
 
     *   project based hook
 
@@ -538,12 +538,14 @@ Hooks
             generator:  list() 
             generator:  list2()
 
+        File located at "$project_root_directory/cleanup.pm". The same as
+        hool.pm but `required` *in the end* of a swat test
+
     *   route based hooks
 
-        Files located at "$project_root_directory/$route_directory/hook.pm".
-        Routes based hook are route specific hooks and could be used for
-        *route initialization*. For example one could define route specific
-        generators here:
+        Files located at "$route_directory/hook.pm". Routes based hook are
+        route specific hooks and could be used for *route initialization*.
+        For example one could define route specific generators here:
 
             # place this in hook.pm file:
             # notices that we could tell GET from POST http methods here:
@@ -565,6 +567,9 @@ Hooks
 
             # now we could use it in swat data file
             generator:  list()
+
+        File located at "$route_directory/cleanup.pm". The same as hool.pm
+        but `required` *in the end* of a swat test
 
   Bash hooks
     Similar to perl hooks bash hooks are just a bash files `sourced`
