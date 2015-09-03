@@ -580,24 +580,24 @@ List of variables one may rely upon when writting perl/bash hooks:
 
 # Swat Compile and Runtime 
 
-\- Execute **global startup bash hook**
-\- Start of swat compilation phase
-\- For every route gets compiled:
-\-- Merge swat settings
-\-- Set predifined variables
-\-- Execute **project based bash hook**
-\-- Execute **route based bash hook**
-\-- Compile route test
-\- The end of swat compilation phase
-\- Start of swat executation phase. 
-\- For every route test gets executed:
-\-- Execute **project based perl hook**
-\-- Execute **route based perl hook**
-\-- Execute route test
-\-- Execute **route based perl hook**
-\-- Execute **project based perl hook**
-\- The end of swat compilation phase
-\- Execute **global cleanup bash hook**
+    - Execute B<global startup bash hook>
+    - Start of swat compilation phase
+    - For every route gets compiled:
+       -- Merge swat settings
+        -- Set predifined variables
+        -- Execute B<project based bash hook>
+        -- Execute B<route based bash hook>
+        -- Compile route test
+    - The end of swat compilation phase
+    - Start of swat executation phase. 
+    - For every route test gets executed:
+        -- Execute B<project based perl hook>
+        -- Execute B<route based perl hook>
+        -- Execute route test
+        -- Execute B<route based perl hook>
+        -- Execute B<project based perl hook>
+    - The end of swat compilation phase
+    - Execute B<global cleanup bash hook>
 
 # TAP
 
