@@ -1072,71 +1072,24 @@ B<project>
 
 =head1 Swat Compile and Runtime 
 
-=over 
-
-=item * 
-
-execute B<global startup bash hook>
-
-=over 
-
-=item *
-
-Swat compilation phase. For every route gets compiled:
-
-=item * 
-
-merge swat settings
-
-=item * 
-
-set predifined variables
-
-=item * 
-
-execute B<project based bash hook>
-
-=item * 
-
-execute B<route based bash hook>
-
-=item *
-
-compile route test
-
-=back
-
-=over 
-
-=item *
-
-Swat executation phase. For every route test gets executed :
-
-=item * 
-
-execute B<project based perl hook>
-
-=item * 
-
-execute B<route based perl hook>
-
-=item *
-
-execute route test
-
-=item * 
-
-execute B<route based perl hook>
-
-=item * 
-
-execute B<project based perl hook>
-
-=back
-
-execute B<global cleanup bash hook>
-
-=back
+- Execute B<global startup bash hook>
+- Start of swat compilation phase
+- For every route gets compiled:
+-- Merge swat settings
+-- Set predifined variables
+-- Execute B<project based bash hook>
+-- Execute B<route based bash hook>
+-- Compile route test
+- The end of swat compilation phase
+- Start of swat executation phase. 
+- For every route test gets executed:
+-- Execute B<project based perl hook>
+-- Execute B<route based perl hook>
+-- Execute route test
+-- Execute B<route based perl hook>
+-- Execute B<project based perl hook>
+- The end of swat compilation phase
+- Execute B<global cleanup bash hook>
 
 =head1 TAP
 
