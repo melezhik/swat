@@ -885,7 +885,7 @@ Route based settings are applied if exist.
 
 =item *
 
-And finally environment settings aer applied if exist.
+And finally environment settings are applied if exist.
 
 =back
 

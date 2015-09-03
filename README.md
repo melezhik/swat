@@ -451,7 +451,7 @@ Thus swat applies settings in order for every route:
 - Project based settings are applied if exist.
 - Custom settings are applied if exist.
 - Route based settings are applied if exist.
-- And finally environment settings aer applied if exist.
+- And finally environment settings are applied if exist.
 
 ## Custom Settings
 

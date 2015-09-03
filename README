@@ -497,7 +497,7 @@ Settings merge algorithm
 
     *   Route based settings are applied if exist.
 
-    *   And finally environment settings aer applied if exist.
+    *   And finally environment settings are applied if exist.
 
   Custom Settings
     Custom settings are way to cutomize settings for existed swat package.
