@@ -473,12 +473,16 @@ Hooks are extension points you may imppliment to hack into swat complie / runtim
 
 ## Perl hooks
 
-Perl hooks are files with perl code \`required\` _in the beginning of a swat test_. There are 2 types of perl hooks:
+Perl hooks are files with perl code \`required\` _in the beginning/end of a swat test_. There are four types of perl hooks:
 
-- **project based hook**
+- **project based startup hook**
 
-    File located at `$project_root_directory/hook.pm`. Project based hooks are applied for every route in project and
-    could be used for _project initialization_. For example one could define generators here:
+    File located at `$project_root_directory/hook.pm`. 
+
+    Project based startup hooks are \`required\` _in the begining_ of a swat test and applied for every route in project 
+    and thus could be used for _project initialization_ procedures. 
+
+    For example one could define common generators here:
 
         # place this in hook.pm file:
         sub list1 { | %w{ foo bar baz } | }
@@ -489,15 +493,23 @@ Perl hooks are files with perl code \`required\` _in the beginning of a swat tes
         generator:  list() 
         generator:  list2()    
 
-    File located at `$project_root_directory/cleanup.pm`. The same as hool.pm but \`required\` _in the end_ of a swat test
+- **project based cleanup hook**
 
-- **route based hooks**
+    File located at `$project_root_directory/cleanup.pm`. 
 
-    Files located at `$route_directory/hook.pm`. Routes based hook are route specific hooks and
-    could be used for _route initialization_. For example one could define route specific generators here:
+    This hooks is similar to startup hook but \`required\` _in the end_ of a swat test.
+
+- **route based startup hooks**
+
+    Files located at `$route_directory/hook.pm`. 
+
+    Routes based startup hooks are applied for every route in project and thus could be used for _route initialization_ procedures.
+
+    For example one could define route specific generators here:
 
         # place this in hook.pm file:
-        # notices that we could tell GET from POST http methods here:
+        # notices that we could tell GET from POST http methods here
+        # using predefined $method variable
 
         sub list1 { 
 
@@ -517,11 +529,15 @@ Perl hooks are files with perl code \`required\` _in the beginning of a swat tes
         # now we could use it in swat data file
         generator:  list() 
 
-    File located at `$route_directory/cleanup.pm`. The same as hool.pm but \`required\` _in the end_ of a swat test
+- **route based cleanup hooks**
+
+    Files located at `$route_directory/cleanup.pm`.
+
+    This hooks is similar to route based startup hooks but \`required\` _in the end_ of a swat test.
 
 ## Bash hooks
 
-Similar to perl hooks bash hooks are just a bash files \`sourced\` _before_ execution of next swat test. 
+Similar to perl hooks bash hooks are just a bash files \`sourced\` _before compilation_ of a swat test. 
 
 There are 4 types of bash hooks:
 
@@ -529,36 +545,58 @@ There are 4 types of bash hooks:
 
     File located at `$project_root_directory/hook.bash`. 
 
-    Project based hooks are applied for every route in project and could be used for _project initialization_.
+    Project based bash hooks are applied for every route in project and could be used for _project initialization_ procedures.
 
 - **route based hooks**
 
     Files located at `$project_root_directory/$route_directory/hook.bash`. 
 
-    Routes based hooks are route specific hooks and could be used for _route initialization_.
+    Routes based bash hooks are route specific hooks and could be used for _route initialization_ procedures.
 
-- **startup hook**
+- **global startup hook**
 
     File located at `$project_root_directory/startup.bash`. 
 
-    Startup hook is executed before swat tests gets compiled, at the very begining, at could be used for _initialization_.
+    Startup hook is executed before swat tests gets compiled, at the very begining, at could be used for _global initialization_ procedures.
 
-- **cleanup hook**
+- **global cleanup hook**
 
     File located at `$project_root_directory/cleanup.bash`. 
 
-    Cleanup hook is executed _after swat tests are executed_, at the very end, and could be used for _cleanup procedures_.
+    Cleanup hook is executed _after swat tests are executed_, at the very end, and could be used for _global cleanup_ procedures.
 
 It is important to note that bash hooks are executed _after swat settings merge done_ , see  ["Swat Settings"](#swat-settings) section to get more
 about swat settings.
 
-Useful environment vairables one may rely upon when writting bash hooks:
+## Predifined variables 
+
+List of variables one may rely upon when writting perl/bash hooks:
 
 - **http\_url**
 - **curl\_params**
 - **http\_meth** - `GET|POST`
 - **route\_dir**
 - **project**
+
+# Swat Compile and Runtime 
+
+- execute **global startup bash hook**
+
+    - Swat compilation phase. For every route gets compiled:
+    - merge swat settings
+    - set predifined variables
+    - execute **project based bash hook**
+    - execute **route based bash hook**
+    - compile route test
+
+    - Swat executation phase. For every route test gets executed :
+    - execute **project based perl hook**
+    - execute **route based perl hook**
+    - execute route test
+    - execute **route based perl hook**
+    - execute **project based perl hook**
+
+    execute **global cleanup bash hook**
 
 # TAP
 
