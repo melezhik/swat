@@ -1,4 +1,2 @@
-- refine README.md
-- implement macros feature - ability to generate check pattern entities on the fly
-- notion of swat packages idea
-- add more examples ( post requests, https etc )
+- swat_output_off - disable output, even when run with debug set to 1; f.e. when handle binary responses
+- debug=1 should implicitly adds `-v` to prove options?
