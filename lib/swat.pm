@@ -924,7 +924,7 @@ Perl hooks are files with perl code `required` I<in the beginning/end of a swat 
 
 =item *
 
-B<project based startup hook>
+B<project based perl startup hook>
 
 File located at C<$project_root_directory/hook.pm>. 
 
@@ -944,7 +944,7 @@ For example one could define common generators here:
 
 =item *
 
-B<project based cleanup hook>
+B<project based perl cleanup hook>
 
 File located at C<$project_root_directory/cleanup.pm>. 
 
@@ -952,7 +952,7 @@ This hooks is similar to startup hook but `required` I<in the end> of a swat tes
 
 =item *
 
-B<route based startup hooks>
+B<route based perl startup hooks>
 
 Files located at C<$route_directory/hook.pm>. 
 
@@ -986,7 +986,7 @@ For example one could define route specific generators here:
 
 =item *
 
-B<route based cleanup hooks>
+B<route based perl cleanup hooks>
 
 Files located at C<$route_directory/cleanup.pm>.
 
@@ -1004,7 +1004,7 @@ There are 4 types of bash hooks:
 
 =item *
 
-B<project based hook>
+B<project based bash hook>
 
 File located at C<$project_root_directory/hook.bash>. 
 
@@ -1012,7 +1012,7 @@ Project based bash hooks are applied for every route in project and could be use
 
 =item *
 
-B<route based hooks>
+B<route based bash hooks>
 
 Files located at C<$project_root_directory/$route_directory/hook.bash>. 
 
@@ -1020,7 +1020,7 @@ Routes based bash hooks are route specific hooks and could be used for I<route i
 
 =item *
 
-B<global startup hook>
+B<global startup bash hook>
 
 File located at C<$project_root_directory/startup.bash>. 
 
@@ -1029,7 +1029,7 @@ Startup hook is executed before swat tests gets compiled, at the very begining, 
 
 =item *
 
-B<global cleanup hook>
+B<global cleanup bash hook>
 
 File located at C<$project_root_directory/cleanup.bash>. 
 
@@ -1072,24 +1072,24 @@ B<project>
 
 =head1 Swat Compile and Runtime 
 
- - Execute B<global startup bash hook>
+ - Execute *global startup bash hook*
  - Start of swat compilation phase
  - For every route gets compiled:
     -- Merge swat settings
      -- Set predifined variables
-     -- Execute B<project based bash hook>
-     -- Execute B<route based bash hook>
+     -- Execute *project based bash hook*
+     -- Execute *route based bash hook*
      -- Compile route test
  - The end of swat compilation phase
  - Start of swat executation phase. 
  - For every route test gets executed:
-     -- Execute B<project based perl hook>
-     -- Execute B<route based perl hook>
+     -- Execute *project based perl startup hook*
+     -- Execute *route based perl startup hook*
      -- Execute route test
-     -- Execute B<route based perl hook>
-     -- Execute B<project based perl hook>
+     -- Execute *route based perl cleanup hook*
+     -- Execute *project based perl cleanup hook*
  - The end of swat compilation phase
- - Execute B<global cleanup bash hook>
+ - Execute *global cleanup bash hook*
 
 =head1 TAP
 
