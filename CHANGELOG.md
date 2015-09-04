@@ -1,3 +1,6 @@
+# 0.1.40
+- fix for bash global startup script
+
 # 0.1.39
 - swat cleanup/startup hooks
 - route_dir variable in lib/swat.pm

@@ -31,6 +31,7 @@ if [ -n "${host}"  ] ; then
     rm -rf ~/.swat/.cache/$host
     mkdir -p ~/.swat/.cache/$host
     session_file=~/.swat/.cache/$host/session.ini
+    startup_lock_file=~/.swat/.cache/$host/startup.lock
 else
     echo "usage: swat project HOST:port prove-options"
     exit 1
@@ -39,6 +40,7 @@ fi
 
 # save environment settings to session file
 echo > $session_file
+rm -rf $startup_lock_file
 
 if [ -n "${curl_params}" ]; then
     echo "curl_params=$curl_params" >> $session_file
@@ -82,8 +84,6 @@ reports_dir=~/.swat/reports/$host/
 rm -rf $reports_dir
 mkdir -p $reports_dir
 
-# execute startup hook
-test -f $safe_project/startup.bash && source $safe_project/startup.bash
 
 for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
@@ -122,6 +122,14 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
         http_url="$host:$port"
     else
         http_url=$host
+    fi
+
+    # execute startup hook
+    if test -f $startup_lock_file; then
+        :
+    else
+        test -f $safe_project/startup.bash && source $safe_project/startup.bash
+        touch $startup_lock_file
     fi
 
     curl_cmd="curl -X $http_meth"
@@ -192,6 +200,8 @@ test -f ~/$swat_ini_file && source ~/$swat_ini_file
 test -f 'swat.my' && source 'swat.my'
 
 source $session_file
+
+export port
 
 if [ -z "${rest_args}" ] && [ -n "${prove_options}" ]; then
     rest_args=("$prove_options")
