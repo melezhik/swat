@@ -1,5 +1,6 @@
 # 0.1.40
 - fix for bash global startup script
+- export port variable
 
 # 0.1.39
 - swat cleanup/startup hooks
