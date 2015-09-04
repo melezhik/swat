@@ -78,7 +78,7 @@ if [ -n "${curl_connect_timeout}" ]; then
     echo "curl_connect_timeout=$curl_connect_timeout" >> $session_file
 fi
 
-safe_project=`perl -MFile::Basename -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print $i' $project`
+safe_project=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project`
 
 reports_dir=~/.swat/reports/$host/
 rm -rf $reports_dir
@@ -87,7 +87,7 @@ mkdir -p $reports_dir
 
 for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
-    route_dir=`perl -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print $sp' $f`;
+    route_dir=`perl -MFile::Spec -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print File::Spec->rel2abs($sp)' $f`;
 
     unset ignore_http_err
     unset try_num

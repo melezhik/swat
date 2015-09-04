@@ -1,3 +1,6 @@
+# 0.1.41
+- absolute paths for route_dir, project 
+
 # 0.1.40
 - fix for bash global startup script
 - export port variable
