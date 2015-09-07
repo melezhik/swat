@@ -18,6 +18,9 @@ else
     exit 1
 fi
 
+project=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project`
+safe_project=project
+
 test -f $project/host && host=${host:=`cat $project/host`}
 
 if [ -n "${host}"  ] ; then
@@ -78,14 +81,13 @@ if [ -n "${curl_connect_timeout}" ]; then
     echo "curl_connect_timeout=$curl_connect_timeout" >> $session_file
 fi
 
-safe_project=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project`
 
 reports_dir=~/.swat/reports/$host/
 rm -rf $reports_dir
 mkdir -p $reports_dir
 
 
-for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
+for f in `find $project/ -type f -name get.txt -o -name post.txt`; do
 
     route_dir=`perl -MFile::Spec -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print File::Spec->rel2abs($sp)' $f`;
 
@@ -99,7 +101,7 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     unset port
 
     test -f ~/$swat_ini_file && source ~/$swat_ini_file
-    test -f $safe_project/$swat_ini_file && source $safe_project/$swat_ini_file
+    test -f $project/$swat_ini_file && source $project/$swat_ini_file
     test -f 'swat.my' && source 'swat.my'
     test -f $route_dir/$swat_ini_file && source $route_dir/$swat_ini_file
 
@@ -113,7 +115,7 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     curl_max_time=${curl_max_time:=20}
     curl_connect_timeout=${curl_connect_timeout:=20}
 
-    path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $safe_project $f`;
+    path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $project $f`;
     mkdir -p "${reports_dir}/${path}";
 
     http_meth=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
@@ -128,7 +130,7 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     if test -f $startup_lock_file; then
         :
     else
-        test -f $safe_project/startup.bash && source $safe_project/startup.bash
+        test -f $project/startup.bash && source $project/startup.bash
         touch $startup_lock_file
     fi
 
@@ -138,7 +140,7 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
 
     # execute bash hooks
 
-    test -f $safe_project/hook.bash && source $safe_project/hook.bash
+    test -f $project/hook.bash && source $project/hook.bash
     test -f $route_dir/hook.bash && source $route_dir/hook.bash
 
     if [ "$ignore_http_err" -eq '0' ]; then
@@ -159,28 +161,33 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
         tfile="${reports_dir}/${path}/00.post.t"
     fi
 
-    echo 'BEGIN { push @INC, q{'$safe_project'/lib}; }'  > $tfile
+    echo 'BEGIN { push @INC, q{'$project'/lib}; }'  > $tfile
     echo >> $tfile
 
 
     echo "use Test::More q{no_plan};"  >> $tfile
-    echo $\content_file = q{"${reports_dir}${path}/content.${http_meth}.txt};"  >> $tfile
-    echo $\path = q{"${path}};"  >> $tfile
-    echo $\route_dir = q{"${route_dir}};"  >> $tfile
-    echo $\project = q{"${safe_project}};"  >> $tfile
-    echo $\http_meth = q{"${http_meth}};"  >> $tfile
-    echo $\url = q{"${http_url}};"  >> $tfile
-    echo $\debug = $debug';'  >> $tfile
-    echo $\debug_bytes = $debug_bytes';'  >> $tfile
-    echo $\ignore_http_err = $ignore_http_err';'  >> $tfile
-    echo $\try_num = $try_num';'  >> $tfile
-    echo $\curl_cmd = q{"${curl_cmd}};"  >> $tfile
-    echo $\is_swat_package = $is_swat_package';'  >> $tfile
+    echo "use strict;"  >> $tfile
+    echo >> $tfile
+    echo "BEGIN{"  >> $tfile
+    echo our $\content_file = q{"${reports_dir}${path}/content.${http_meth}.txt};"  >> $tfile
+    echo our $\path = q{"${path}};"  >> $tfile
+    echo our $\route_dir = q{"${route_dir}};"  >> $tfile
+    echo our $\project = q{"${project}};"  >> $tfile
+    echo our $\http_meth = q{"${http_meth}};"  >> $tfile
+    echo our $\url = q{"${http_url}};"  >> $tfile
+    echo our $\debug = $debug';'  >> $tfile
+    echo our $\debug_bytes = $debug_bytes';'  >> $tfile
+    echo our $\ignore_http_err = $ignore_http_err';'  >> $tfile
+    echo our $\try_num = $try_num';'  >> $tfile
+    echo our $\curl_cmd = q{"${curl_cmd}};"  >> $tfile
+    echo our $\is_swat_package = $is_swat_package';'  >> $tfile
+    echo >> $tfile
+    echo "}"  >> $tfile
     echo >> $tfile
 
     echo "require swat;"  >> $tfile
 
-    test -f $safe_project/hook.pm && echo "require '${safe_project}/hook.pm';"  >> $tfile
+    test -f $project/hook.pm && echo "require '${project}/hook.pm';"  >> $tfile
     test -f $route_dir/hook.pm && echo "require '${route_dir}/hook.pm';"  >> $tfile
 
     echo >> $tfile
@@ -192,7 +199,7 @@ for f in `find $safe_project/ -type f -name get.txt -o -name post.txt`; do
     echo >> $tfile
 
     test -f $route_dir/cleanup.pm && echo "require '${route_dir}/cleanup.pm';"  >> $tfile
-    test -f $safe_project/cleanup.pm && echo "require '${safe_project}/cleanup.pm';"  >> $tfile
+    test -f $project/cleanup.pm && echo "require '${project}/cleanup.pm';"  >> $tfile
 
 done;
 
@@ -214,7 +221,7 @@ fi
 
 
 # execute cleanup hook
-test -f $safe_project/cleanup.bash && source $safe_project/cleanup.bash
+test -f $project/cleanup.bash && source $project/cleanup.bash
 
 
 

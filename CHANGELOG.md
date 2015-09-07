@@ -1,3 +1,7 @@
+# 0.1.42
+- use-strict refactoring
+- project is equal safe_project
+
 # 0.1.41
 - absolute paths for route_dir, project 
 
