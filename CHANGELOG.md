@@ -1,3 +1,6 @@
+# 0.1.43
+- hotfix for final exit code
+
 # 0.1.42
 - use-strict refactoring
 - project is equal safe_project
