@@ -104,8 +104,8 @@ sub check_line {
 
 sub header {
 
-    diag("start swat for $url/$path | project $project | is swat package $is_swat_package") unless $debug;
-    diag("swat version $swat::VERSION | debug $debug | try num $try_num | ignore http errors $ignore_http_err") unless $debug;
+    diag("start swat for $url/$path | project $project | is swat package $is_swat_package") if $debug;
+    diag("swat version $swat::VERSION | debug $debug | try num $try_num | ignore http errors $ignore_http_err") if $debug;
 }
 
 sub generate_asserts {
