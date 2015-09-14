@@ -54,7 +54,7 @@ sub make_http_request {
 
     ok($st, "successful response from $http_meth $url$path") unless $ignore_http_err;
 
-    diag "data file: $content_file";
+    diag "data file: $content_file" if $debug;
 
     return $HTTP_RESPONSE;
 }
@@ -94,7 +94,7 @@ sub check_line {
 
 
     for my $c (@chunks){
-        diag("line found: $c");
+        diag("line found: $c") if $debug;
     }
 
     return
