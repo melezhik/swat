@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.43';
+our $VERSION = '0.1.44';
 
 use base 'Exporter'; 
 
@@ -104,8 +104,8 @@ sub check_line {
 
 sub header {
 
-    diag("start swat for $url/$path | project $project | is swat package $is_swat_package");
-    diag("swat version $swat::VERSION | debug $debug | try num $try_num | ignore http errors $ignore_http_err")
+    diag("start swat for $url/$path | project $project | is swat package $is_swat_package") unless $debug;
+    diag("swat version $swat::VERSION | debug $debug | try num $try_num | ignore http errors $ignore_http_err") unless $debug;
 }
 
 sub generate_asserts {
