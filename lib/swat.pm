@@ -32,7 +32,7 @@ sub execute_with_retry {
     my $try = shift || 1;
 
     for my $i (1..$try){
-        diag "\nexecute cmd: $cmd, attempt number: $i" if $debug;
+        diag "\nexecute cmd: $cmd, attempt number: $i" if debug_mod2();
         return $i if system($cmd) == 0;
         sleep $i**2;
     }
@@ -50,11 +50,11 @@ sub make_http_request {
     $HTTP_RESPONSE.= $_ while <F>;
     close F;
 
-    diag `head -c $debug_bytes $content_file` if $debug;
+    diag `head -c $debug_bytes $content_file` if debug_mod2();
 
     ok($st, "successful response from $http_meth $url$path") unless $ignore_http_err;
 
-    diag "data file: $content_file" if $debug;
+    ok(1,"data file: $content_file created");
 
     return $HTTP_RESPONSE;
 }
@@ -94,7 +94,7 @@ sub check_line {
 
 
     for my $c (@chunks){
-        diag("line found: $c") if $debug;
+        diag("line found: $c") if debug_mod2();
     }
 
     return
@@ -104,8 +104,8 @@ sub check_line {
 
 sub header {
 
-    diag("start swat for $url/$path | project $project | is swat package $is_swat_package") if $debug;
-    diag("swat version $swat::VERSION | debug $debug | try num $try_num | ignore http errors $ignore_http_err") if $debug;
+    diag("start swat for $url/$path | project $project | is swat package $is_swat_package") if debug_mod2();
+    diag("swat version $swat::VERSION | debug $debug | try num $try_num | ignore http errors $ignore_http_err") if debug_mod2();
 }
 
 sub generate_asserts {
@@ -251,6 +251,15 @@ sub handle_plain {
 }
 
 
+sub debug_mod1 {
+
+    $debug == 1
+}
+
+sub debug_mod2 {
+
+    $debug == 2
+}
 
 1;
 
@@ -752,7 +761,7 @@ Following variables define a proper swat settings.
 
 =item *
 
-C<debug> - set to C<1> if you want to see some debug information in output, default value is C<0>
+C<debug> - set to C<1,2> if you want to see some debug information in output, default value is C<0>
 
 =item *
 

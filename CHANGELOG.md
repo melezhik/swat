@@ -1,5 +1,6 @@
 # 0.1.44
 - remove some diag messages from output ( show them only when debug is set )
+- debug 1,2,3 - many levels of verbosity
 
 # 0.1.43
 - hotfix for final exit code
