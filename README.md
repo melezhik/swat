@@ -391,7 +391,7 @@ Swat comes with settings defined in two contexts:
 
 Following variables define a proper swat settings.
 
-- `debug` - set to `1` if you want to see some debug information in output, default value is `0`
+- `debug` - set to `1,2` if you want to see some debug information in output, default value is `0`
 - `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is `500`
 - `swat_debug` - run swat in debug mode, default value is `0`
 - `ignore_http_err` - ignore http errors, if this parameters is off (set to `1`) returned  _error http codes_ will not result in test fails, 
