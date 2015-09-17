@@ -54,7 +54,7 @@ sub make_http_request {
 
     ok($st, "successful response from $http_meth $url$path") unless $ignore_http_err;
 
-    ok(1,"response saved to: $content_file");
+    ok(1,"response saved to $content_file");
 
     return $HTTP_RESPONSE;
 }
