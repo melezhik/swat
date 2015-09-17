@@ -1,5 +1,6 @@
 # 0.1.45
 - minor refactoring - improving some test::more ok() messages from swat
+- fix for debug_mod1 silent behavior 
 
 # 0.1.44
 - remove some diag messages from output ( show them only when debug is set )
