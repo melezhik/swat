@@ -1,3 +1,6 @@
+# 0.1.45
+- minor refactoring - improving some test::more ok() messages from swat
+
 # 0.1.44
 - remove some diag messages from output ( show them only when debug is set )
 - debug 1,2,3 - many levels of verbosity

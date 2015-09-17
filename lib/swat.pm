@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.44';
+our $VERSION = '0.1.45';
 
 use base 'Exporter'; 
 
@@ -54,7 +54,7 @@ sub make_http_request {
 
     ok($st, "successful response from $http_meth $url$path") unless $ignore_http_err;
 
-    ok(1,"data file: $content_file created");
+    ok(1,"response saved to: $content_file");
 
     return $HTTP_RESPONSE;
 }
@@ -586,7 +586,7 @@ Swat adds B<$project_root_directory/lib> to PERL5LIB , so this is convenient con
 
     example/my-app/lib/Foo/Bar/Baz.pm
 
-As an example take a loot at examples/swat-generators-with-lib/ project
+Take a look at examples/swat-generators-with-lib/ for working example
 
 
 =head1 Anatomy of swat 

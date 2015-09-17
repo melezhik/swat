@@ -256,7 +256,7 @@ Swat adds **$project\_root\_directory/lib** to PERL5LIB , so this is convenient 
 
     example/my-app/lib/Foo/Bar/Baz.pm
 
-As an example take a loot at examples/swat-generators-with-lib/ project
+Take a look at examples/swat-generators-with-lib/ for working example
 
 # Anatomy of swat 
 

@@ -278,7 +278,7 @@ PERL5LIB
 
         example/my-app/lib/Foo/Bar/Baz.pm
 
-    As an example take a loot at examples/swat-generators-with-lib/ project
+    Take a look at examples/swat-generators-with-lib/ for working example
 
 Anatomy of swat
     Once swat runs it goes through some steps to get job done. Here is
