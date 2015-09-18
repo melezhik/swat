@@ -1,3 +1,6 @@
+# 0.1.46
+- debug2 now shows swat info
+
 # 0.1.45
 - minor refactoring - improving some test::more ok() messages from swat
 - fix for debug_mod1 silent behavior 
