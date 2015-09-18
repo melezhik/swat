@@ -7,4 +7,5 @@ blib
 \.html
 \.pod
 \.tmp
-swat-.*\/
+swat-.*\.gz
+swat\.my

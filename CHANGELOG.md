@@ -1,3 +1,6 @@
+# 0.1.47
+- MANIFEST.SKIP corrected
+
 # 0.1.46
 - debug2 now shows swat info
 

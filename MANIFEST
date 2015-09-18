@@ -28,6 +28,19 @@ examples/post-request/host
 examples/post-request/posts/post.txt
 examples/post-request/posts/swat.ini
 examples/post-request/README.md
+examples/swat-generators-sqlite3/host
+examples/swat-generators-sqlite3/posts/post.txt
+examples/swat-generators-sqlite3/posts/swat.ini
+examples/swat-generators-sqlite3/README.md
+examples/swat-generators-with-lib/host
+examples/swat-generators-with-lib/lib/Foo.pm
+examples/swat-generators-with-lib/posts/post.txt
+examples/swat-generators-with-lib/posts/swat.ini
+examples/swat-generators-with-lib/README.md
+examples/swat-generators/host
+examples/swat-generators/posts/post.txt
+examples/swat-generators/posts/swat.ini
+examples/swat-generators/README.md
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
@@ -47,7 +60,6 @@ MYMETA.yml
 README
 README.md
 run_examples.bash
-swat.my
 t/data/test.db
 t/data/test.sql
 t/swat.t
