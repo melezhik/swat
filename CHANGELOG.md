@@ -1,5 +1,6 @@
 # 0.1.47
 - MANIFEST.SKIP corrected
+- show matched lines when debug_mod1
 
 # 0.1.46
 - debug2 now shows swat info

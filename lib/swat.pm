@@ -94,7 +94,7 @@ sub check_line {
 
 
     for my $c (@chunks){
-        diag("line found: $c") if debug_mod2();
+        diag("line found: $c") if debug_mod1() or debug_mod2();
     }
 
     return
