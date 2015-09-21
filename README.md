@@ -153,7 +153,7 @@ Comments entries are lines started with `#` symbol, swat will ignore comments wh
 
 ### Matching block of text
 
-Sometimes it is very helful not match a content against a _single strings_, but a `block of text`, like here:
+Sometimes it is very helpful not match a content against a _single strings_, but a `block of text`, like here:
 
     # this 3 string should be in an output
     # line by line
@@ -165,7 +165,7 @@ Sometimes it is very helful not match a content against a _single strings_, but 
 
     # you even may to use regexps here:
     regexp: what about (me|you)
-        and finaly the last one
+        and finally the last one
     
     end: 
 
@@ -176,7 +176,7 @@ This kind of check should be passed when running against for example this block 
     and this one followed by previous one
 
     what about me?
-    and finaly the last one
+    and finally the last one
 
 But **won't** be passed against this block of text:
 
@@ -186,7 +186,16 @@ But **won't** be passed against this block of text:
 
     what about me?
     what about you?
-    and finaly the last one
+    and finally the last one
+
+`begin:` `end:` markes decorate block of text should present in a response content, there should not be any text after
+`begin:|end:` marker. Also be aware if you leave "dangling" begin: marker without closing end: somewhere else this will
+implies block-of-text mode till the end of your test, which is probably not you want:
+
+    begin:
+    here we begin
+    and till the very end of test
+    we are in `block-of-text` mode    
 
 ### Perl Expressions
 
