@@ -474,22 +474,22 @@ Comments entries are lines started with C<#> symbol, swat will ignore comments w
 
 =head3 Matching block of text
 
-Sometimes it is very usefull not only try find a strings, but a C<blocks of text>, like here
+Sometimes it is very helful not match a content against a I<single strings>, but a C<block of text>, like here:
 
 
     # this 3 string should be in an output
     # line by line
 
-begin:
+    begin:
     this string
     followed by that string
     and this one followed by previous one
 
     # you even may to use regexps here:
-regexp: what about (me|you)
+    regexp: what about (me|you)
         and finaly the last one
     
-end: 
+    end: 
 
 This kind of check should be passed when running against for example this block of text:
 
