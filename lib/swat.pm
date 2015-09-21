@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.47';
+our $VERSION = '0.1.48';
 
 use base 'Exporter'; 
 
@@ -471,6 +471,45 @@ Comments entries are lines started with C<#> symbol, swat will ignore comments w
     Hello World # this string should be in the response
     <head><title>Hello World</title></head> # and it should be proper html code
 
+
+=head3 Matching block of text
+
+Sometimes it is very usefull not only try find a strings, but a C<blocks of text>, like here
+
+
+    # this 3 string should be in an output
+    # line by line
+
+begin:
+    this string
+    followed by that string
+    and this one followed by previous one
+
+    # you even may to use regexps here:
+regexp: what about (me|you)
+        and finaly the last one
+    
+end: 
+
+This kind of check should be passed when running against for example this block of text:
+
+    this string - "I am OK"
+    sure, followed by that string
+    and this one followed by previous one
+
+    what about me?
+    and finaly the last one
+
+
+But B<won't> be passed against this block of text:
+
+    this string - "I am OK"
+    sure, followed by that string
+    and this one followed by previous one
+
+    what about me?
+    what about you?
+    and finaly the last one
 
 =head3 Perl Expressions
 

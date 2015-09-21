@@ -1,3 +1,7 @@
+# 0.1.48
+- new feature - begin: ... end: blocks
+
+
 # 0.1.47
 - MANIFEST.SKIP corrected
 - show matched lines when debug_mod1
