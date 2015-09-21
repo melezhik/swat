@@ -18,6 +18,10 @@ use strict;
 use Test::More;
 
 our $HTTP_RESPONSE;
+our $_DATA  = [];
+our $_DATA_CURR;
+our $BLOCK_MODE;
+ 
 our ($project);
 our ($curl_cmd, $content_file);
 our ($url, $path, $route_dir, $http_meth); 
@@ -56,6 +60,7 @@ sub make_http_request {
 
     ok(1,"response saved to $content_file");
 
+    $_DATA = [ split /\n/, $HTTP_RESPONSE ];
     return $HTTP_RESPONSE;
 }
 
@@ -72,18 +77,30 @@ sub check_line {
     my $message = shift;
 
     my $status = 0;
-    my $data = make_http_request();
+
+    make_http_request();
 
     my @chunks;
+    my $j=0;
+    $_DATA_CURR ||= [ map { my $a=$_; $j++; [ $a, $j ] } @{$_DATA} ];
 
+    my $_DATA_CURR_NEW = [];
     if ($check_type eq 'default'){
-        $status = 1 if index($data,$pattern) != -1
+        for my $l (@{$_DATA_CURR}){
+            my $ln = $l->[0]; chomp $ln;
+            if ( index($ln,$pattern) != -1){
+                $status = 1;
+                push @{$_DATA_CURR_NEW}, $_DATA_CURR->[$l->[1]];                 
+            }
+        }
     }elsif($check_type eq 'regexp'){
-        for my $l (split /\n/, $data){
-            chomp $l; my $re = qr/$pattern/;
-            if ($l =~ $re ){
+        for my $l (@{$_DATA_CURR}){
+            my $re = qr/$pattern/;
+            my $ln = $l->[0]; chomp $ln;
+            if ($ln =~ $re ){
                 push @chunks, $1||$&;
                 $status = 1;
+                push @{$_DATA_CURR_NEW}, $_DATA_CURR->[$l->[1]];                 
             }
         }
     }else {
@@ -97,6 +114,11 @@ sub check_line {
         diag("line found: $c") if debug_mod1() or debug_mod2();
     }
 
+    if ($BLOCK_MODE){
+        $_DATA_CURR = $_DATA_CURR_NEW 
+    }else{
+        undef $_DATA_CURR
+    }
     return
 
 }
@@ -140,6 +162,15 @@ sub generate_asserts {
         next ENTRY unless $l =~ /\S/; # skip blank lines
 
         if ($l=~ /^\s*#(.*)/) { # skip comments
+            next ENTRY;
+        }
+
+        if ($l=~ /^\s*begin:\s/) { # begin: block marker
+            $BLOCK_MODE=1;
+            next ENTRY;
+        }
+        if ($l=~ /^\s*end:\s/) { # end: block marker
+            $BLOCK_MODE=0;
             next ENTRY;
         }
 
