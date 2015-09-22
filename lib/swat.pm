@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.49';
+our $VERSION = '0.1.50';
 
 use base 'Exporter'; 
 
@@ -30,6 +30,7 @@ our ($debug, $ignore_http_err, $try_num, $debug_bytes);
 our ($is_swat_package);
 $| = 1;
 
+my $context_populated;
 
 sub execute_with_retry {
 
@@ -48,6 +49,7 @@ sub execute_with_retry {
 sub make_http_request {
 
     return $HTTP_RESPONSE if defined $HTTP_RESPONSE;
+
     my $st = execute_with_retry("$curl_cmd > $content_file && test -s $content_file", $try_num);
 
     open F, $content_file or die $!;
@@ -66,6 +68,8 @@ sub make_http_request {
 
 sub populate_context {
 
+    return if $context_populated;
+
     my $data = shift;
     my $i = 0;
 
@@ -78,6 +82,7 @@ sub populate_context {
     }
     @CONTEXT_C = @CONTEXT;
     diag("context populated") if debug_mod2();
+    $context_populated=1;
 }
 
 sub hostname {
@@ -97,6 +102,8 @@ sub check_line {
     my @chunks;
 
     my @context_new = ();
+
+    populate_context( make_http_request() );
 
     diag("lookup $pattern ...") if debug_mod2();
     if ($check_type eq 'default'){
@@ -167,7 +174,6 @@ sub generate_asserts {
 
 
 
-    populate_context( make_http_request() );
   
     ENTRY: for my $l (@ents){
 
@@ -189,6 +195,7 @@ sub generate_asserts {
             $BLOCK_MODE=0;
             populate_context( make_http_request() );
             diag("end: block") if debug_mod2();
+            $context_populated=0; # flush current context
             next ENTRY;
         }
 

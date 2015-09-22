@@ -1,3 +1,6 @@
+# 0.1.50
+- fast fix for context_populate issue
+
 # 0.1.49
 - documentation fixes ( brougth by 0.1.48 version )
 
