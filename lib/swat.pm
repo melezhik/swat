@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.48';
+our $VERSION = '0.1.49';
 
 use base 'Exporter'; 
 
@@ -523,46 +523,46 @@ Comments entries are lines started with C<#> symbol, swat will ignore comments w
 
 =head3 Matching block of text
 
-Sometimes it is very helpful not match a content against a I<single strings>, but a C<block of text>, like here:
+Sometimes it is very helpful match a content I<not against a single string>, but against a C<block of text>, like here:
 
 
-    # this 3 string should be in an output
-    # line by line
+    # this block of text
+    # consists of 5 strings should be at output: 
 
     begin:
-    this string
-    followed by that string
-    and this one followed by previous one
-
-    # you even may to use regexps here:
-    regexp: what about (me|you)
-        and finally the last one
-    
+        # plain strings
+        this string followed by
+        that string followed by
+        another one
+        # regexps patterns:
+    regexp: with (this|that)
+        # and the last one in a block
+        at the very end
     end: 
 
 This kind of check should be passed when running against for example this block of text:
 
-    this string - "I am OK"
-    sure, followed by that string
-    and this one followed by previous one
-
-    what about me?
-    and finally the last one
+    this string followed by
+    that string followed by
+    another one string
+    with that string
+    at the very end.
 
 
 But B<won't> be passed against this block of text:
 
-    this string - "I am OK"
-    sure, followed by that string
-    and this one followed by previous one
+    that string followed by
+    this string followed by
+    another one string
+    with that string
+    at the very end.
 
-    what about me?
-    what about you?
-    and finally the last one
+C<begin:> C<end:> markers decorate `block of text` to be found at return content. 
 
-C<begin:> C<end:> markes decorate block of text should present in a response content, there should not be any text after
-C<begin:|end:> marker. Also be aware if you leave "dangling" begin: marker without closing end: somewhere else this will
-implies block-of-text mode till the end of your test, which is probably not you want:
+Markers should not be followed by any text at the same line.
+
+Also be aware if you leave "dangling" begin: marker without closing end: somewhere else this will
+result in `block-of-text` mode till the end of your test, which is probably not you want:
 
 
     begin:

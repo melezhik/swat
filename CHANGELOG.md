@@ -1,6 +1,8 @@
+# 0.1.49
+- documentation fixes ( brougth by 0.1.48 version )
+
 # 0.1.48
 - new feature - begin: ... end: blocks
-
 
 # 0.1.47
 - MANIFEST.SKIP corrected
