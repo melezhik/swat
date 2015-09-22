@@ -99,7 +99,7 @@ When you give swat a run
 
     swat example/my-app 127.0.0.1
 
-It will find all the _directories with get.txt or post.txt files inside_ and "create" routes:
+It will find all the _directories with get.txt or post.txt or put.txt files inside_ and "create" routes:
 
     GET hello/
     GET hello/world
@@ -110,11 +110,11 @@ When you are done with routes you need to set swat data.
 
 Swat data is DSL to describe/generate validation checks you apply to content returned from web application.
 
-Swat data is stored in swat data files, named get.txt or post.txt. 
+Swat data is stored in swat data files, named get.txt or post.txt or put.txt. 
 
 The validation process looks like:
 
-- Swat recursively find files named **get.txt** or **post.txt** in the project root directory to get swat data.
+- Swat recursively find files named **get.txt** or **post.txt** or **put.txt** in the project root directory to get swat data.
 - Swat parse swat data file and _execute_ entries found. At the end of this process swat creates a _final check list_ with 
 ["Check Expressions"](#check-expressions).
 - For every route swat makes http requests to web application and store content into text file 
@@ -310,7 +310,7 @@ Once swat runs it goes through some steps to get job done. Here is description o
 
 ## Run iterator over swat data files
 
-Swat iterator look for all files named get.txt or post.txt under project root directory. Actually this is simple bash find loop.
+Swat iterator look for all files named get.txt or post.txt or put.txt under project root directory. Actually this is simple bash find loop.
 
 ## Parse swat data file
 
@@ -378,9 +378,9 @@ Below is example how this looks like
         ok($status, "POST /FOO/BARs returns BAR7")
     }
 
-# Post requests
+# POST/PUT requests
 
-Name swat data file as post.txt to make http POST requests.
+Name swat data file as post.txt (put.txt) to make http POST (PUT) requests.
 
     echo 200 OK >> my-app/hello/post.txt
     echo 200 OK >> my-app/hello/world/post.txt

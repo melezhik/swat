@@ -87,7 +87,7 @@ rm -rf $reports_dir
 mkdir -p $reports_dir
 
 
-for f in `find $project/ -type f -name get.txt -o -name post.txt`; do
+for f in `find $project/ -type f -name get.txt -o -name post.txt -o -name put.txt`; do
 
     route_dir=`perl -MFile::Spec -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print File::Spec->rel2abs($sp)' $f`;
 
@@ -155,11 +155,7 @@ for f in `find $project/ -type f -name get.txt -o -name post.txt`; do
 
     curl_cmd="$curl_cmd $http_url$real_path"
 
-    if [ "$http_meth" = 'GET' ]; then
-        tfile="${reports_dir}/${path}/00.t"
-    else
-        tfile="${reports_dir}/${path}/00.post.t"
-    fi
+    tfile="${reports_dir}/${path}/00.${http_meth}.t"
 
     echo 'BEGIN { push @INC, q{'$project'/lib}; }'  > $tfile
     echo >> $tfile

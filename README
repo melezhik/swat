@@ -99,8 +99,8 @@ DSL
 
         swat example/my-app 127.0.0.1
 
-    It will find all the *directories with get.txt or post.txt files inside*
-    and "create" routes:
+    It will find all the *directories with get.txt or post.txt or put.txt
+    files inside* and "create" routes:
 
         GET hello/
         GET hello/world
@@ -111,12 +111,13 @@ DSL
     Swat data is DSL to describe/generate validation checks you apply to
     content returned from web application.
 
-    Swat data is stored in swat data files, named get.txt or post.txt.
+    Swat data is stored in swat data files, named get.txt or post.txt or
+    put.txt.
 
     The validation process looks like:
 
-    *   Swat recursively find files named get.txt or post.txt in the project
-        root directory to get swat data.
+    *   Swat recursively find files named get.txt or post.txt or put.txt in
+        the project root directory to get swat data.
 
     *   Swat parse swat data file and *execute* entries found. At the end of
         this process swat creates a *final check list* with "Check
@@ -334,8 +335,8 @@ Anatomy of swat
     description of such a steps executed in orders
 
   Run iterator over swat data files
-    Swat iterator look for all files named get.txt or post.txt under project
-    root directory. Actually this is simple bash find loop.
+    Swat iterator look for all files named get.txt or post.txt or put.txt
+    under project root directory. Actually this is simple bash find loop.
 
   Parse swat data file
     For every swat data file find by iterator parsing process starts. Swat
@@ -402,8 +403,9 @@ Anatomy of swat
             ok($status, "POST /FOO/BARs returns BAR7")
         }
 
-Post requests
-    Name swat data file as post.txt to make http POST requests.
+POST/PUT requests
+    Name swat data file as post.txt (put.txt) to make http POST (PUT)
+    requests.
 
         echo 200 OK >> my-app/hello/post.txt
         echo 200 OK >> my-app/hello/world/post.txt
