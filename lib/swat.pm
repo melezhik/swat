@@ -61,7 +61,6 @@ sub make_http_request {
 
     ok(1,"response saved to $content_file");
 
-    populate_context($HTTP_RESPONSE);
     return $HTTP_RESPONSE;
 }
 
@@ -78,6 +77,7 @@ sub populate_context {
         push @CONTEXT, [$l, $i];        
     }
     @CONTEXT_C = @CONTEXT;
+    diag("context populated") if debug_mod2();
 }
 
 sub hostname {
@@ -93,10 +93,6 @@ sub check_line {
     my $message = shift;
 
     my $status = 0;
-
-    my $res = make_http_request();
-
-    populate_context($res) unless $BLOCK_MODE;  
 
     my @chunks;
 
@@ -171,6 +167,8 @@ sub generate_asserts {
 
 
 
+    populate_context( make_http_request() );
+  
     ENTRY: for my $l (@ents){
 
         chomp $l;
@@ -183,11 +181,14 @@ sub generate_asserts {
         }
 
         if ($l=~ /^\s*begin:\s*$/) { # begin: block marker
+            diag("begin: block") if debug_mod2();
             $BLOCK_MODE=1;
             next ENTRY;
         }
         if ($l=~ /^\s*end:\s*$/) { # end: block marker
             $BLOCK_MODE=0;
+            populate_context( make_http_request() );
+            diag("end: block") if debug_mod2();
             next ENTRY;
         }
 
