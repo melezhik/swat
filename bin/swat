@@ -151,7 +151,7 @@ for f in `find $project/ -type f -name get.txt -o -name post.txt -o -name put.tx
        curl_cmd="$curl_cmd ${curl_params}"
     fi
 
-    real_path=`perl -e  '$p=shift(); s{:(\w+)}($ENV{$1}||":$1")ge for $p; print $p' $path`
+    real_path=`perl -e  '$p=shift(); s{:([\w_-\d]+)}($ENV{$1}||":$1")ge for $p; print $p' $path`
 
     curl_cmd="$curl_cmd $http_url$real_path"
 

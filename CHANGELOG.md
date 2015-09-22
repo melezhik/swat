@@ -1,5 +1,6 @@
 # 0.1.51
 - new feature - PUT requests
+- dynamic routes could contain digits, '-', and '_' 
 
 # 0.1.50
 - fast fix for context_populate issue
