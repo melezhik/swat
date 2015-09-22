@@ -16,10 +16,11 @@ sub version {
 package main;
 use strict;
 use Test::More;
+use Data::Dumper;
 
 our $HTTP_RESPONSE;
-our $_DATA  = [];
-our $_DATA_CURR;
+our @CONTEXT = ();
+our @CONTEXT_C = ();
 our $BLOCK_MODE;
  
 our ($project);
@@ -60,8 +61,23 @@ sub make_http_request {
 
     ok(1,"response saved to $content_file");
 
-    $_DATA = [ split /\n/, $HTTP_RESPONSE ];
+    populate_context($HTTP_RESPONSE);
     return $HTTP_RESPONSE;
+}
+
+sub populate_context {
+
+    my $data = shift;
+    my $i = 0;
+
+    @CONTEXT = ();
+
+    for my $l ( split /\n/, $data ){
+        chomp $l;
+        $i++;
+        push @CONTEXT, [$l, $i];        
+    }
+    @CONTEXT_C = @CONTEXT;
 }
 
 sub hostname {
@@ -78,29 +94,31 @@ sub check_line {
 
     my $status = 0;
 
-    make_http_request();
+    my $res = make_http_request();
+
+    populate_context($res) unless $BLOCK_MODE;  
 
     my @chunks;
-    my $j=0;
-    $_DATA_CURR ||= [ map { my $a=$_; $j++; [ $a, $j ] } @{$_DATA} ];
 
-    my $_DATA_CURR_NEW = [];
+    my @context_new = ();
+
+    diag("lookup $pattern ...") if debug_mod2();
     if ($check_type eq 'default'){
-        for my $l (@{$_DATA_CURR}){
-            my $ln = $l->[0]; chomp $ln;
+        for my $c (@CONTEXT_C){
+            my $ln = $c->[0]; my $next_i = $c->[1];
             if ( index($ln,$pattern) != -1){
                 $status = 1;
-                push @{$_DATA_CURR_NEW}, $_DATA_CURR->[$l->[1]];                 
+                push @context_new, $CONTEXT[$next_i];
             }
         }
     }elsif($check_type eq 'regexp'){
-        for my $l (@{$_DATA_CURR}){
+        for my $c (@CONTEXT_C){
             my $re = qr/$pattern/;
-            my $ln = $l->[0]; chomp $ln;
+            my $ln = $c->[0]; my $next_i = $c->[1];
             if ($ln =~ $re ){
                 push @chunks, $1||$&;
                 $status = 1;
-                push @{$_DATA_CURR_NEW}, $_DATA_CURR->[$l->[1]];                 
+                push @context_new, $CONTEXT[$next_i];
             }
         }
     }else {
@@ -115,10 +133,9 @@ sub check_line {
     }
 
     if ($BLOCK_MODE){
-        $_DATA_CURR = $_DATA_CURR_NEW 
-    }else{
-        undef $_DATA_CURR
+        @CONTEXT_C = @context_new; 
     }
+
     return
 
 }
@@ -165,11 +182,11 @@ sub generate_asserts {
             next ENTRY;
         }
 
-        if ($l=~ /^\s*begin:\s/) { # begin: block marker
+        if ($l=~ /^\s*begin:\s*$/) { # begin: block marker
             $BLOCK_MODE=1;
             next ENTRY;
         }
-        if ($l=~ /^\s*end:\s/) { # end: block marker
+        if ($l=~ /^\s*end:\s*$/) { # end: block marker
             $BLOCK_MODE=0;
             next ENTRY;
         }
