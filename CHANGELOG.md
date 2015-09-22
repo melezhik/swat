@@ -1,6 +1,7 @@
 # 0.1.51
 - new feature - PUT requests
 - dynamic routes could contain digits, '-', and '_' 
+- made filnames for tests and http response much shorter 
 
 # 0.1.50
 - fast fix for context_populate issue

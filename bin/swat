@@ -82,10 +82,11 @@ if [ -n "${curl_connect_timeout}" ]; then
 fi
 
 
-reports_dir=~/.swat/reports/$host/
+reports_dir=~/.swat/reports/$$/
 rm -rf $reports_dir
 mkdir -p $reports_dir
 
+tt=1
 
 for f in `find $project/ -type f -name get.txt -o -name post.txt -o -name put.txt`; do
 
@@ -157,6 +158,8 @@ for f in `find $project/ -type f -name get.txt -o -name post.txt -o -name put.tx
 
     tfile="${reports_dir}/${path}/00.${http_meth}.t"
 
+    tt=$((tt+1))
+
     echo 'BEGIN { push @INC, q{'$project'/lib}; }'  > $tfile
     echo >> $tfile
 
@@ -165,7 +168,7 @@ for f in `find $project/ -type f -name get.txt -o -name post.txt -o -name put.tx
     echo "use strict;"  >> $tfile
     echo >> $tfile
     echo "BEGIN{"  >> $tfile
-    echo our $\content_file = q{"${reports_dir}${path}/content.${http_meth}.txt};"  >> $tfile
+    echo our $\content_file = q{"${reports_dir}${tt}.txt};"  >> $tfile
     echo our $\path = q{"${path}};"  >> $tfile
     echo our $\route_dir = q{"${route_dir}};"  >> $tfile
     echo our $\project = q{"${project}};"  >> $tfile
