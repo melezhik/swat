@@ -285,7 +285,7 @@ sub handle_generator {
 sub handle_regexp {
 
     my $re = shift;
-    my $message = "$http_meth $path returns data matching $re";
+    my $message = "$http_meth $path matches $re";
     check_line($re, 'regexp', $message);
     diag "handle_regexp OK. $re" if $ENV{'swat_debug'};
     
