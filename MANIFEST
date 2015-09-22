@@ -1,7 +1,12 @@
 bin/swat
 CHANGELOG.md
+data.txt
 examples/anatomy/FOO/BARs/post.txt
 examples/anatomy/FOOs/get.txt
+examples/block-of-text/:data/get.txt
+examples/block-of-text/:data/swat.ini
+examples/block-of-text/host
+examples/block-of-text/README.md
 examples/dynamic-routes/:foo/:bar/:baz/get.txt
 examples/dynamic-routes/host
 examples/dynamic-routes/README.md
