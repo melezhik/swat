@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.51';
+our $VERSION = '0.1.52';
 
 use base 'Exporter'; 
 
@@ -292,7 +292,7 @@ sub handle_generator {
 sub handle_regexp {
 
     my $re = shift;
-    my $message = "$http_meth $path matches $re";
+    my $message = $BLOCK_MODE ? "$http_meth $path matches | $re" : "$http_meth $path matches $re";
     check_line($re, 'regexp', $message);
     diag "handle_regexp OK. $re" if $ENV{'swat_debug'};
     
@@ -301,7 +301,7 @@ sub handle_regexp {
 sub handle_plain {
 
     my $l = shift;
-    my $message = "$http_meth $path returns $l";
+    my $message = $BLOCK_MODE ? "$http_meth $path returns | $l" : "$http_meth $path returns $l";
     check_line($l, 'default', $message);
     diag "handle_plain OK. $l" if $ENV{'swat_debug'};   
 }

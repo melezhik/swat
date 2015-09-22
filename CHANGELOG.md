@@ -1,3 +1,7 @@
+# 0.1.52
+- by bmartins - removed trailing slash that breaks paths on OSX - PR#2
+- block-of-text ok asserts are prefixed by '|' for visability
+
 # 0.1.51
 - new feature - PUT requests
 - dynamic routes could contain digits, '-', and '_' 
