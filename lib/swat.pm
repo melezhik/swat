@@ -735,7 +735,7 @@ Here is a couple of exmaples:
     for my $c (@{captures()}) {         \
         $total+=$c->[0];                \         
     }                                   \
-    cmp_ok( DateTime->compare($total),'>',10,"total amount is greater than 10" );
+    cmp_ok( $total,'>',10,"total amount is greater than 10" );
 
 
     # Place this in swat data file
