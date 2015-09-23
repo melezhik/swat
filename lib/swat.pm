@@ -31,7 +31,7 @@ my $http_response;
 my @context = ();
 my @context_local = ();
 my $block_mode;
-my @captures = ();
+my $captures = [];
 
 sub execute_with_retry {
 
@@ -94,7 +94,7 @@ sub hostname {
 
 sub captures {
 
-    [@captures];
+    $captures;
 }
 
 sub check_line {
@@ -107,7 +107,7 @@ sub check_line {
 
 
     my @context_new = ();
-    @captures = ();
+    $captures = [];
 
     populate_context( make_http_request() );
 
@@ -128,7 +128,7 @@ sub check_line {
             my @foo = ($ln =~ /$re/g);
 
             if (scalar @foo){
-                push @captures, @foo;
+                push @{$captures}, [@foo];
                 $status = 1;
                 push @context_new, $context[$next_i];
             }
@@ -141,8 +141,13 @@ sub check_line {
 
 
     if (debug_mod1() or debug_mod2()){
-        for my $c (@captures){
-            diag("captured: $c");
+        my $k=0;
+        for my $ce (@{$captures}){
+            $k++;
+            diag "captured item N $k";
+            for  my $c (@{$ce}){
+                diag("\tcaptures: $c");
+            }
         }
     }
 
