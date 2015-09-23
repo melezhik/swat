@@ -88,14 +88,14 @@ mkdir -p $reports_dir
 
 tt=1
 
-if [ -n "${swat_route}" ]; then
-    find_root_dir=$project/$swat_route
+if [ -n "${swat_test}" ]; then
+    swat_test=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $swat_test`
+    find_cmd="find $project -type f -wholename ${swat_test}"
 else
-    find_root_dir=$project
+    find_cmd="find $project -type f -name get.txt -o -name post.txt -o -name put.txt"
 fi
 
-for f in `find $find_root_dir -type f -name get.txt -o -name post.txt -o -name put.txt`; do
-
+for f in `$find_cmd`; do
     route_dir=`perl -MFile::Spec -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print File::Spec->rel2abs($sp)' $f`;
 
     unset ignore_http_err
