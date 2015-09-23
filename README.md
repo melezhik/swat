@@ -304,6 +304,21 @@ Swat adds **$project\_root\_directory/lib** to PERL5LIB , so this is convenient 
 
 Take a look at examples/swat-generators-with-lib/ for working example
 
+### Captures
+
+Captures is a way to _access_ the _data captured in a regexp check expressions_. 
+
+Perl expressions and code generators could access captures calling `capture()` function:
+
+    # Place this in swat data file
+    regexp: yesterday is: (\d\d\d\d)-(\d\d)-(\d\d)
+    code:                       \
+    use DateTime;               \
+    my $c = capture();          \
+    my $dt = DateTime->new( year => $c->[0], month => $c->[1], day => $c->[2]  ); \
+    my $yesterday = DateTime->now->subtract( days =>  1 );     \
+    cmp_ok( DateTime->compare($dt, $yesterday),'==',0,"$dt this is a yesterday" );
+
 # Anatomy of swat 
 
 Once swat runs it goes through some steps to get job done. Here is description of such a steps executed in orders

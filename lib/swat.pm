@@ -31,6 +31,7 @@ my $http_response;
 my @context = ();
 my @context_local = ();
 my $block_mode;
+my @captures = ();
 
 sub execute_with_retry {
 
@@ -91,6 +92,11 @@ sub hostname {
     return $a;
 }
 
+sub captures {
+
+    [@captures];
+}
+
 sub check_line {
  
     my $pattern = shift;
@@ -99,9 +105,9 @@ sub check_line {
 
     my $status = 0;
 
-    my @chunks;
 
     my @context_new = ();
+    @captures = ();
 
     populate_context( make_http_request() );
 
@@ -118,8 +124,11 @@ sub check_line {
         for my $c (@context_local){
             my $re = qr/$pattern/;
             my $ln = $c->[0]; my $next_i = $c->[1];
-            if ($ln =~ $re ){
-                push @chunks, $1||$&;
+
+            my @foo = ($ln =~ /$re/g);
+
+            if (scalar @foo){
+                push @captures, @foo;
                 $status = 1;
                 push @context_new, $context[$next_i];
             }
@@ -131,8 +140,10 @@ sub check_line {
     ok($status,$message);
 
 
-    for my $c (@chunks){
-        diag("line found: $c") if debug_mod1() or debug_mod2();
+    if (debug_mod1() or debug_mod2()){
+        for my $c (@captures){
+            diag("captured: $c");
+        }
     }
 
     if ($block_mode){
@@ -694,6 +705,23 @@ Swat adds B<$project_root_directory/lib> to PERL5LIB , so this is convenient con
     example/my-app/lib/Foo/Bar/Baz.pm
 
 Take a look at examples/swat-generators-with-lib/ for working example
+
+
+=head3 Captures
+
+Captures is a way to I<access> the I<data captured in a regexp check expressions>. 
+
+Perl expressions and code generators could access captures calling C<capture()> function:
+
+
+    # Place this in swat data file
+    regexp: yesterday is: (\d\d\d\d)-(\d\d)-(\d\d)
+    code:                       \
+    use DateTime;               \
+    my $c = capture();          \
+    my $dt = DateTime->new( year => $c->[0], month => $c->[1], day => $c->[2]  ); \
+    my $yesterday = DateTime->now->subtract( days =>  1 );     \
+    cmp_ok( DateTime->compare($dt, $yesterday),'==',0,"$dt this is a yesterday" );
 
 
 =head1 Anatomy of swat 

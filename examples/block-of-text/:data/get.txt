@@ -15,6 +15,12 @@ alex
 end:
 
 begin:
-hello
-world
-jan
+regexp: (a(\d+))
+regexp: (b(\d+))
+end:
+
+
+begin:
+regexp: hel.*
+regexp: wor.*
+regexp: jan
