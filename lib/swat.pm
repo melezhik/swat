@@ -594,7 +594,7 @@ There are a I<lot of possibilities>! Please follow L<Test::More|search.cpan.org/
     HELLO SWAT
 
 
-=head1 Generators
+=head3 Generators
 
 Swat entries generators is the way to I<create new swat entries on the fly>. Technically speaking it's just a perl code which should return an array reference:
 Generators are very close to perl expressions ( generators code is also get evaled ) with major difference:
@@ -648,7 +648,7 @@ What about to validate web application content with sqlite database entries?
 As an example take a loot at examples/swat-generators-sqlite3 project
 
 
-=head1 Multiline expressions
+=head3 Multiline expressions
 
 Sometimes code looks more readable when you split it on separate chunks. When swat parser meets  C<\> symbols it postpone entry execution and
 add next line to buffer. This is repeated till no C<\> found on next. Finally swat execute I<"accumulated"> swat entity.
@@ -681,12 +681,12 @@ Here are some examples:
 
 Multiline expressions are only allowable for perl expressions and generators 
 
-=head1 Generators and Perl Expressions Scope
+=head3 Generators and Perl Expressions Scope
 
 Swat uses I<perl string eval> when process generators and perl expressions code, be aware of this. 
 Follow L<http://perldoc.perl.org/functions/eval.html> to get more on this.
 
-=head1 PERL5LIB
+=head3 PERL5LIB
 
 Swat adds B<$project_root_directory/lib> to PERL5LIB , so this is convenient convenient to place here custom perl modules:
 

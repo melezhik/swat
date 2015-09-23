@@ -230,7 +230,7 @@ DSL
         code: skip('next test is skipped',1) unless $ENV{'debug'} == 1  # conditionally skip this check
         HELLO SWAT
 
-Generators
+   Generators
     Swat entries generators is the way to *create new swat entries on the
     fly*. Technically speaking it's just a perl code which should return an
     array reference: Generators are very close to perl expressions (
@@ -282,7 +282,7 @@ Generators
 
     As an example take a loot at examples/swat-generators-sqlite3 project
 
-Multiline expressions
+   Multiline expressions
     Sometimes code looks more readable when you split it on separate chunks.
     When swat parser meets "\" symbols it postpone entry execution and add
     next line to buffer. This is repeated till no "\" found on next. Finally
@@ -317,12 +317,12 @@ Multiline expressions
     Multiline expressions are only allowable for perl expressions and
     generators
 
-Generators and Perl Expressions Scope
+   Generators and Perl Expressions Scope
     Swat uses *perl string eval* when process generators and perl
     expressions code, be aware of this. Follow
     <http://perldoc.perl.org/functions/eval.html> to get more on this.
 
-PERL5LIB
+   PERL5LIB
     Swat adds $project_root_directory/lib to PERL5LIB , so this is
     convenient convenient to place here custom perl modules:
 
