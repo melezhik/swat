@@ -104,6 +104,10 @@ It will find all the _directories with get.txt or post.txt or put.txt files insi
     GET hello/
     GET hello/world
 
+It is possible to run a test against a single route, setting a `swat_route` variable:
+
+    swat_route=example/my-app/hello/get.txt swat example/my-app 127.0.0.1
+
 When you are done with routes you need to set swat data.
 
 ## Swat data
@@ -759,9 +763,17 @@ Once we uploaded a module to CPAN repository we can use it:
 
 Check out existed swat packages here - https://github.com/melezhik/swat-packages/
 
-# Debugging
+# Misc
+
+## Debugging
 
 set `swat_debug` environment variable to 1
+
+## Running a single test
+
+It is possible to run a single swat test setting a `swat_route` variable:
+
+`swat_route`=/path/to/swat/data/file
 
 # Examples
 

@@ -88,7 +88,13 @@ mkdir -p $reports_dir
 
 tt=1
 
-for f in `find $project -type f -name get.txt -o -name post.txt -o -name put.txt`; do
+if [ -n "${swat_route}" ]; then
+    find_root_dir=$project/$swat_route
+else
+    find_root_dir=$project
+fi
+
+for f in `find $find_root_dir -type f -name get.txt -o -name post.txt -o -name put.txt`; do
 
     route_dir=`perl -MFile::Spec -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print File::Spec->rel2abs($sp)' $f`;
 

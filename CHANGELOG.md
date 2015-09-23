@@ -1,6 +1,7 @@
 # 0.1.53
 - new feature - captures
 - variable names refactoring
+- ability to run a single test
 
 
 # 0.1.52
