@@ -1,3 +1,8 @@
+# 0.1.53
+- new feature - captures
+- variable names refactoring
+
+
 # 0.1.52
 - by bmartins - removed trailing slash that breaks paths on OSX - PR#2
 - block-of-text ok asserts are prefixed by '|' for visability

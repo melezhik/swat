@@ -18,10 +18,6 @@ use strict;
 use Test::More;
 use Data::Dumper;
 
-our $HTTP_RESPONSE;
-our @CONTEXT = ();
-our @CONTEXT_C = ();
-our $BLOCK_MODE;
  
 our ($project);
 our ($curl_cmd, $content_file);
@@ -31,6 +27,10 @@ our ($is_swat_package);
 $| = 1;
 
 my $context_populated;
+my $http_response;
+my @context = ();
+my @context_local = ();
+my $block_mode;
 
 sub execute_with_retry {
 
@@ -48,13 +48,13 @@ sub execute_with_retry {
 
 sub make_http_request {
 
-    return $HTTP_RESPONSE if defined $HTTP_RESPONSE;
+    return $http_response if defined $http_response;
 
     my $st = execute_with_retry("$curl_cmd > $content_file && test -s $content_file", $try_num);
 
     open F, $content_file or die $!;
-    $HTTP_RESPONSE = '';
-    $HTTP_RESPONSE.= $_ while <F>;
+    $http_response = '';
+    $http_response.= $_ while <F>;
     close F;
 
     diag `head -c $debug_bytes $content_file` if debug_mod2();
@@ -63,7 +63,7 @@ sub make_http_request {
 
     ok(1,"response saved to $content_file");
 
-    return $HTTP_RESPONSE;
+    return $http_response;
 }
 
 sub populate_context {
@@ -73,14 +73,14 @@ sub populate_context {
     my $data = shift;
     my $i = 0;
 
-    @CONTEXT = ();
+    @context = ();
 
     for my $l ( split /\n/, $data ){
         chomp $l;
         $i++;
-        push @CONTEXT, [$l, $i];        
+        push @context, [$l, $i];        
     }
-    @CONTEXT_C = @CONTEXT;
+    @context_local = @context;
     diag("context populated") if debug_mod2();
     $context_populated=1;
 }
@@ -107,21 +107,21 @@ sub check_line {
 
     diag("lookup $pattern ...") if debug_mod2();
     if ($check_type eq 'default'){
-        for my $c (@CONTEXT_C){
+        for my $c (@context_local){
             my $ln = $c->[0]; my $next_i = $c->[1];
             if ( index($ln,$pattern) != -1){
                 $status = 1;
-                push @context_new, $CONTEXT[$next_i];
+                push @context_new, $context[$next_i];
             }
         }
     }elsif($check_type eq 'regexp'){
-        for my $c (@CONTEXT_C){
+        for my $c (@context_local){
             my $re = qr/$pattern/;
             my $ln = $c->[0]; my $next_i = $c->[1];
             if ($ln =~ $re ){
                 push @chunks, $1||$&;
                 $status = 1;
-                push @context_new, $CONTEXT[$next_i];
+                push @context_new, $context[$next_i];
             }
         }
     }else {
@@ -135,8 +135,8 @@ sub check_line {
         diag("line found: $c") if debug_mod1() or debug_mod2();
     }
 
-    if ($BLOCK_MODE){
-        @CONTEXT_C = @context_new; 
+    if ($block_mode){
+        @context_local = @context_new; 
     }
 
     return
@@ -188,11 +188,11 @@ sub generate_asserts {
 
         if ($l=~ /^\s*begin:\s*$/) { # begin: block marker
             diag("begin: block") if debug_mod2();
-            $BLOCK_MODE=1;
+            $block_mode=1;
             next ENTRY;
         }
         if ($l=~ /^\s*end:\s*$/) { # end: block marker
-            $BLOCK_MODE=0;
+            $block_mode=0;
             populate_context( make_http_request() );
             diag("end: block") if debug_mod2();
             $context_populated=0; # flush current context
@@ -292,7 +292,7 @@ sub handle_generator {
 sub handle_regexp {
 
     my $re = shift;
-    my $message = $BLOCK_MODE ? "$http_meth $path matches | $re" : "$http_meth $path matches $re";
+    my $message = $block_mode ? "$http_meth $path matches | $re" : "$http_meth $path matches $re";
     check_line($re, 'regexp', $message);
     diag "handle_regexp OK. $re" if $ENV{'swat_debug'};
     
@@ -301,7 +301,7 @@ sub handle_regexp {
 sub handle_plain {
 
     my $l = shift;
-    my $message = $BLOCK_MODE ? "$http_meth $path returns | $l" : "$http_meth $path returns $l";
+    my $message = $block_mode ? "$http_meth $path returns | $l" : "$http_meth $path returns $l";
     check_line($l, 'default', $message);
     diag "handle_plain OK. $l" if $ENV{'swat_debug'};   
 }
@@ -1173,7 +1173,7 @@ B<curl_params>
 
 =item *
 
-B<http_meth> - C<GET|POST>
+B<http_meth> - C<GET|POST|HEAD>
 
 =item *
 

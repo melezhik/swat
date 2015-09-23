@@ -684,7 +684,7 @@ Hooks
 
     *   curl_params
 
-    *   http_meth - "GET|POST"
+    *   http_meth - "GET|POST|HEAD"
 
     *   route_dir
 

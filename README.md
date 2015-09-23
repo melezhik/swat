@@ -136,7 +136,7 @@ This is most usable type of entries you  may define at swat data file. _It's jus
 
 Using regexps
 
-Regexps are check expressions with the usage of &lt;perl regular expressions> instead of plain strings checks.
+Regexps are check expressions with the usage of <perl regular expressions> instead of plain strings checks.
 Everything started with `regexp:` marker would be treated as perl regular expression.
 
     # this is example of regexp check
@@ -620,7 +620,7 @@ List of variables one may rely upon when writting perl/bash hooks:
 
 - **http\_url**
 - **curl\_params**
-- **http\_meth** - `GET|POST`
+- **http\_meth** - `GET|POST|HEAD`
 - **route\_dir**
 - **project**
 
