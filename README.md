@@ -306,18 +306,37 @@ Take a look at examples/swat-generators-with-lib/ for working example
 
 ### Captures
 
-Captures is a way to _access_ the _data captured in a regexp check expressions_. 
+Captures is a way to _access_ the data captured in an _last regexp check_. 
 
-Perl expressions and code generators could access captures calling `capture()` function:
+Perl expressions and code generators could access captures calling `captures()` function.
+Captures() returns array reference holding all captures found during _last regexp check_.
+Here is a couple of exmaples:
 
     # Place this in swat data file
-    regexp: yesterday is: (\d\d\d\d)-(\d\d)-(\d\d)
-    code:                       \
-    use DateTime;               \
-    my $c = capture();          \
+    # check if outpiut contains digits
+    # calculate total amount 
+    # it should be > then 10
+
+    regexp: (\d+)
+    code:                               \
+    my $total=0;                        \
+    for my $c (@{captures()}) {         \
+        $total+=$c->[0];                \         
+    }                                   \
+    cmp_ok( DateTime->compare($total),'>',10,"total amount is greater than 10" );
+
+
+    # Place this in swat data file
+    # check if output contains lines with date in `date: YYYY-MM-DD` format
+    # check if first date found is yesterday
+
+    regexp: date: (\d\d\d\d)-(\d\d)-(\d\d)
+    code:                               \
+    use DateTime;                       \
+    my $c = captures()->[0];            \
     my $dt = DateTime->new( year => $c->[0], month => $c->[1], day => $c->[2]  ); \
     my $yesterday = DateTime->now->subtract( days =>  1 );     \
-    cmp_ok( DateTime->compare($dt, $yesterday),'==',0,"$dt this is a yesterday" );
+    cmp_ok( DateTime->compare($dt, $yesterday),'==',0,"first day found is - $dt and this is a yesterday" );
 
 # Anatomy of swat 
 
