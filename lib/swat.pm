@@ -97,6 +97,10 @@ sub captures {
     $captures;
 }
 
+sub capture {
+    captures()->[0]
+}
+
 sub check_line {
  
     my $pattern = shift;
@@ -462,7 +466,7 @@ It will find all the I<directories with get.txt or post.txt or put.txt files ins
 
 It is possible to run a single swat test setting a C<test_file> variable:
 
-    test_file=example/my-app/hello/get.txt swat example/my-app 127.0.0.1
+    test_file=hello/get.txt swat example/my-app 127.0.0.1
 
 When you are done with routes you need to set swat data.
 
@@ -749,6 +753,18 @@ Here is a couple of exmaples:
     my $dt = DateTime->new( year => $c->[0], month => $c->[1], day => $c->[2]  ); \
     my $yesterday = DateTime->now->subtract( days =>  1 );     \
     cmp_ok( DateTime->compare($dt, $yesterday),'==',0,"first day found is - $dt and this is a yesterday" );
+
+
+You also may use C<capture()> function to get a I<first element> of captures array:
+
+
+    # Place this in swat data file
+    # check if outpiut contains digits
+    # calculate total amount 
+    # it should be > then 10
+
+    regexp: (\d+)
+    code: cmp_ok( capture()->[0],'>',10,"fisrt number is greater than 10" );
 
 
 =head1 Anatomy of swat 
@@ -1379,7 +1395,9 @@ set C<swat_debug> environment variable to 1
 
 It is possible to run a single swat test setting a C<test_file> variable:
 
-C<test_file>=/path/to/swat/data/file
+C<test_file>=/relative/path/to/swat/data/file . Path should be relative to project root directory
+
+
 
 =head1 Examples
 
