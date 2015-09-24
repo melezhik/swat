@@ -88,9 +88,9 @@ mkdir -p $reports_dir
 
 tt=1
 
-if [ -n "${swat_test}" ]; then
-    swat_test=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $swat_test`
-    find_cmd="find $project -type f -wholename ${swat_test}"
+if test -n  "${test_file}" ; then
+    test_file=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project/$test_file`
+    find_cmd="find $project -type f -wholename ${test_file}"
 else
     find_cmd="find $project -type f -name get.txt -o -name post.txt -o -name put.txt"
 fi

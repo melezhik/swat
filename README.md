@@ -104,9 +104,9 @@ It will find all the _directories with get.txt or post.txt or put.txt files insi
     GET hello/
     GET hello/world
 
-It is possible to run a single swat test setting a `swat_test` variable:
+It is possible to run a single swat test setting a `test_file` variable:
 
-    swat_test=example/my-app/hello/get.txt swat example/my-app 127.0.0.1
+    test_file=example/my-app/hello/get.txt swat example/my-app 127.0.0.1
 
 When you are done with routes you need to set swat data.
 
@@ -771,9 +771,9 @@ set `swat_debug` environment variable to 1
 
 ## Running a single test
 
-It is possible to run a single swat test setting a `swat_test` variable:
+It is possible to run a single swat test setting a `test_file` variable:
 
-`swat_test`=/path/to/swat/data/file
+`test_file`=/path/to/swat/data/file
 
 # Examples
 
