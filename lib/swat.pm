@@ -1395,7 +1395,7 @@ set C<swat_debug> environment variable to 1
 
 It is possible to run a single swat test setting a C<test_file> variable:
 
-C<test_file>=/relative/path/to/swat/data/file . Path should be relative to project root directory
+C<test_file>=/relative/path/to/swat/data/file . Path should be relative to the project root directory.
 
 
 
