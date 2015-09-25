@@ -764,7 +764,7 @@ Now captures might be accessed by code generators to get some extra checks:
     for my $c (@{captures()}) {         \
         $total+=$c->[0];                \         
     }                                   \
-    cmp_ok( $total,'==',62,"total age of my family" );
+    cmp_ok( $total,'==',72,"total age of my family" );
     
 
 Thus perl expressions and code generators access captures data calling C<captures()> function.
