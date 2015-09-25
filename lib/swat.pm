@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.53';
+our $VERSION = '0.1.54';
 
 use base 'Exporter'; 
 
@@ -499,7 +499,6 @@ For every route swat makes http requests to web application and store content in
 
 Every line of text file is validated by every item in a I<final check list>
 
-
 =back 
 
 I<Objects> found in test data file are called I<swat entries>. There are I<3 basic type> of swat entries:
@@ -509,7 +508,6 @@ I<Objects> found in test data file are called I<swat entries>. There are I<3 bas
 =item *
 
 Check Expressions
-
 
 =item *
 
@@ -533,7 +531,7 @@ This is most usable type of entries you  may define at swat data file. I<It's ju
     <head><title>Hello World</title></head>
 
 
-Using regexps
+Using regexps.
 
 Regexps are check expressions with the usage of <perl regular expressions> instead of plain strings checks.
 Everything started with C<regexp:> marker would be treated as perl regular expression.
@@ -552,13 +550,29 @@ Comments entries are lines started with C<#> symbol, swat will ignore comments w
     <head><title>Hello World</title></head> # and it should be proper html code
 
 
-=head3 Matching block of text
-
-Sometimes it is very helpful match a content I<not against a single string>, but against a C<block of text>, like here:
+=head3 Blank lines
 
 
-    # this block of text
-    # consists of 5 strings should be at output: 
+Blank lines found swat data files are ignored. You may use any of them juts to improve readability:
+
+    # check http header
+    200 OK
+    # then 2 blank lines
+
+
+    # then another check
+    HELLO WORLD
+    
+
+=head3 Matching text blocks
+
+Sometimes it is very helpful match a content I<not against a single string>, but against a C<block of strings> goes consequentially, like here:
+
+
+    # this text block
+    # consists of 5 strings 
+    # goes consequentially 
+    # line by line:
 
     begin:
         # plain strings
@@ -571,7 +585,7 @@ Sometimes it is very helpful match a content I<not against a single string>, but
         at the very end
     end: 
 
-This kind of check should be passed when running against for example this block of text:
+This test will pass when running against this chunk:
 
     this string followed by
     that string followed by
@@ -580,7 +594,7 @@ This kind of check should be passed when running against for example this block 
     at the very end.
 
 
-But B<won't> be passed against this block of text:
+But B<won't> pass for this chunk:
 
     that string followed by
     this string followed by
@@ -588,18 +602,16 @@ But B<won't> be passed against this block of text:
     with that string
     at the very end.
 
-C<begin:> C<end:> markers decorate `block of text` to be found at return content. 
-
-Markers should not be followed by any text at the same line.
+C<begin:> C<end:> markers decorate `text blocks` content. Markers should not be followed by any text at the same line.
 
 Also be aware if you leave "dangling" begin: marker without closing end: somewhere else this will
-result in `block-of-text` mode till the end of your test, which is probably not you want:
+result in `text block` mode till the end of your test, which is probably not you want:
 
 
     begin:
     here we begin
     and till the very end of test
-    we are in `block-of-text` mode    
+    we are in `text block` mode    
 
 
 
@@ -627,7 +639,6 @@ Value returned from generator's code should be  array reference. The array is pa
 
 Generators entries start with C<:generator> marker. Here is example:
 
-    # Place this in swat data file
     generator: [ qw{ foo bar baz } ]
 
 This generator will generate 3 swat entries:
@@ -642,7 +653,6 @@ As you can guess an array returned by generator should contain I<perl strings> r
 with generator producing still 3 swat entities 'foo', 'bar', 'baz' :
 
 
-    # Place this in swat date file
     generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ] 
 
 
@@ -657,7 +667,6 @@ This generator will generate 3 swat entities:
 There is no limit for you! Use any code you want with only requirement - it should return array reference. 
 What about to validate web application content with sqlite database entries?
 
-    # Place this in swat data file
     generator:                                                          \
     
     use DBI;                                                            \
@@ -679,7 +688,8 @@ add next line to buffer. This is repeated till no C<\> found on next. Finally sw
 
 Here are some examples:
 
-    # Place this in swat data file
+    # this is a generator
+    # with multiline code
     generator:                  \
     my %d = {                   \
         'foo' => 'foo value',   \
@@ -690,7 +700,8 @@ Here are some examples:
         map  { ( "# $_", "$data{$_}" )  } keys %d   \
     ]                                               \
 
-    # Place this in swat data file
+    # this is also a generator
+    # with a code consists of many lines
     generator: [            \
             map {           \
             uc($_)          \
@@ -703,7 +714,7 @@ Here are some examples:
     } 
     HELLO SWAT
 
-Multiline expressions are only allowable for perl expressions and generators 
+Multiline expressions are only allowable for perl expressions and generators.
 
 =head3 Generators and Perl Expressions Scope
 
@@ -722,16 +733,49 @@ Take a look at examples/swat-generators-with-lib/ for working example
 
 =head3 Captures
 
-Captures is a way to I<access> the data captured in an I<last regexp check>. 
+Captures are pieces of data get captured when swat match content against check expressions using I<regexps>:
 
-Perl expressions and code generators could access captures calling C<captures()> function.
-Captures() returns array reference holding all captures found during I<last regexp check>.
-Here is a couple of exmaples:
+    # here is content returned.
+    # it is just my family ages.
+    alex    38
+    julia   25
+    jan     2
+    
+    
+    # here is swat data
 
-    # Place this in swat data file
-    # check if outpiut contains digits
+    regexp: /(\w+)\s+(\d+)/
+
+
+A check expression above will result in a captured data as perl array reference:
+
+    [
+        ['alex',    38 ]
+        ['julia',   32 ]
+        ['jan',     2  ]
+    ]
+
+
+Now captures might be accessed by code generators to get some extra checks:
+
+
+    code:                               \
+    my $total=0;                        \
+    for my $c (@{captures()}) {         \
+        $total+=$c->[0];                \         
+    }                                   \
+    cmp_ok( $total,'==',62,"total age of my family" );
+    
+
+Thus. Perl expressions and code generators access captures data calling C<captures()> function.
+
+Captures() returns an array reference holding all data captured during I<latest regexp check>.
+
+Here some more examples:
+
+    # check if output contains numbers
     # calculate total amount 
-    # it should be > then 10
+    # it should be greater then ten
 
     regexp: (\d+)
     code:                               \
@@ -742,8 +786,8 @@ Here is a couple of exmaples:
     cmp_ok( $total,'>',10,"total amount is greater than 10" );
 
 
-    # Place this in swat data file
-    # check if output contains lines with date in `date: YYYY-MM-DD` format
+    # check if output contains lines 
+    # with date formatted as `date: YYYY-MM-DD`
     # check if first date found is yesterday
 
     regexp: date: (\d\d\d\d)-(\d\d)-(\d\d)
@@ -758,13 +802,11 @@ Here is a couple of exmaples:
 You also may use C<capture()> function to get a I<first element> of captures array:
 
 
-    # Place this in swat data file
-    # check if outpiut contains digits
-    # calculate total amount 
-    # it should be > then 10
+    # check if output contains numbers
+    # a first number should be greater then ten
 
     regexp: (\d+)
-    code: cmp_ok( capture()->[0],'>',10,"fisrt number is greater than 10" );
+    code: cmp_ok( capture()->[0],'>',10,"first number is greater than 10" );
 
 
 =head1 Anatomy of swat 
@@ -1078,7 +1120,7 @@ And finally environment settings are applied if exist.
 
 =head2 Custom Settings
 
-Custom settings are way to cutomize settings for existed swat package. This file should be located at current working directory,
+Custom settings are way to customize settings for existed swat package. This file should be located at current working directory,
 where you run swat from. For example:
 
     # override http port
@@ -1089,7 +1131,7 @@ Follow section L<"Swat Packages"> to get more about portable swat tests.
 
 =head1 Hooks
 
-Hooks are extension points you may imppliment to hack into swat complie / runtime workflow. There are two types of hooks:
+Hooks are extension points you may implement to hack into swat compile / runtime workflow. There are two types of hooks:
 
 =over 
 
@@ -1115,7 +1157,7 @@ B<project based perl startup hook>
 
 File located at C<$project_root_directory/hook.pm>. 
 
-Project based startup hooks are `required` I<in the begining> of a swat test and applied for every route in project 
+Project based startup hooks are `required` I<in the beginning> of a swat test and applied for every route in project 
 and thus could be used for I<project initialization> procedures. 
 
 For example one could define common generators here:
@@ -1211,7 +1253,7 @@ B<global startup bash hook>
 
 File located at C<$project_root_directory/startup.bash>. 
 
-Startup hook is executed before swat tests gets compiled, at the very begining, at could be used for I<global initialization> procedures.
+Startup hook is executed before swat tests gets compiled, at the very beginning, at could be used for I<global initialization> procedures.
 
 
 =item *
@@ -1228,9 +1270,9 @@ It is important to note that bash hooks are executed I<after swat settings merge
 about swat settings.
 
 
-=head2 Predifined variables 
+=head2 Predefined variables 
 
-List of variables one may rely upon when writting perl/bash hooks:
+List of variables one may rely upon when writing perl/bash hooks:
 
 =over 
 
@@ -1263,12 +1305,12 @@ B<project>
  - Start of swat compilation phase
  - For every route gets compiled:
     -- Merge swat settings
-     -- Set predifined variables
+     -- Set predefined variables
      -- Execute *project based bash hook*
      -- Execute *route based bash hook*
      -- Compile route test
  - The end of swat compilation phase
- - Start of swat executation phase. 
+ - Start of swat execution phase. 
  - For every route test gets executed:
      -- Execute *project based perl startup hook*
      -- Execute *route based perl startup hook*
