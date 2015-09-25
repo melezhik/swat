@@ -767,7 +767,7 @@ Now captures might be accessed by code generators to get some extra checks:
     cmp_ok( $total,'==',62,"total age of my family" );
     
 
-Thus. Perl expressions and code generators access captures data calling C<captures()> function.
+Thus perl expressions and code generators access captures data calling C<captures()> function.
 
 Captures() returns an array reference holding all data captured during I<latest regexp check>.
 
