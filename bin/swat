@@ -8,6 +8,8 @@ rest_args=$@
 
 swat_ini_file='swat.ini'
 
+project=${project:=`pwd`}
+
 if [ \(  -n "${project}"  \) -a \( -d "${project}" \) ]; then
     is_swat_package=0
 elif perl -M$project -MFile::ShareDir -e "File::ShareDir::module_dir($project)"  ; then

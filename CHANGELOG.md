@@ -1,5 +1,6 @@
 # 0.1.55
 - set_server_response feature
+- set project_root to `pwd` if project_root or swat_package is not set
 
 # 0.1.54
 - just a documentation release - various fixes at documentation
