@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.54';
+our $VERSION = '0.1.55';
 
 use base 'Exporter'; 
 
@@ -24,6 +24,10 @@ our ($curl_cmd, $content_file);
 our ($url, $path, $route_dir, $http_meth); 
 our ($debug, $ignore_http_err, $try_num, $debug_bytes);
 our ($is_swat_package);
+our ($set_server_response);
+
+our $server_response;
+
 $| = 1;
 
 my $context_populated;
@@ -47,22 +51,39 @@ sub execute_with_retry {
 
 }
 
+sub set_server_response {
+    $server_response = shift;
+}
+
 sub make_http_request {
 
     return $http_response if defined $http_response;
 
-    my $st = execute_with_retry("$curl_cmd > $content_file && test -s $content_file", $try_num);
+    if ($set_server_response){
+
+        ok(1,"response set somewhere else");
+
+        open F, ">", $content_file or die $!;
+        print F $server_response;
+        close F;
+
+        ok(1,"response saved to $content_file");
+
+    }else{
+
+        my $st = execute_with_retry("$curl_cmd > $content_file && test -s $content_file", $try_num);
+        ok($st, "successful response from $http_meth $url$path") unless $ignore_http_err;
+        ok(1,"response saved to $content_file");
+
+    }
 
     open F, $content_file or die $!;
     $http_response = '';
     $http_response.= $_ while <F>;
     close F;
+    
 
     diag `head -c $debug_bytes $content_file` if debug_mod2();
-
-    ok($st, "successful response from $http_meth $url$path") unless $ignore_http_err;
-
-    ok(1,"response saved to $content_file");
 
     return $http_response;
 }

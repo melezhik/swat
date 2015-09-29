@@ -81,6 +81,10 @@ if [ -n "${curl_connect_timeout}" ]; then
     echo "curl_connect_timeout=$curl_connect_timeout" >> $session_file
 fi
 
+if [ -n "${set_server_response}" ]; then
+    echo "set_server_response=$set_server_response" >> $session_file
+fi
+
 
 reports_dir=~/.swat/reports/$$/
 rm -rf $reports_dir
@@ -106,6 +110,7 @@ for f in `$find_cmd`; do
     unset curl_connect_timeout
     unset curl_params
     unset port
+    unset set_server_response
 
     test -f ~/$swat_ini_file && source ~/$swat_ini_file
     test -f $project/$swat_ini_file && source $project/$swat_ini_file
@@ -121,6 +126,7 @@ for f in `$find_cmd`; do
     debug_bytes=${debug_bytes:=500}
     curl_max_time=${curl_max_time:=20}
     curl_connect_timeout=${curl_connect_timeout:=20}
+    set_server_response=${set_server_response:=0}
 
     path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $project $f`;
     mkdir -p "${reports_dir}/${path}";
@@ -186,6 +192,8 @@ for f in `$find_cmd`; do
     echo our $\try_num = $try_num';'  >> $tfile
     echo our $\curl_cmd = q{"${curl_cmd}};"  >> $tfile
     echo our $\is_swat_package = $is_swat_package';'  >> $tfile
+    echo our $\set_server_response = $set_server_response';' >> $tfile
+
     echo >> $tfile
     echo "}"  >> $tfile
     echo >> $tfile
