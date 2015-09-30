@@ -100,6 +100,7 @@ sub populate_context {
     for my $l ( split /\n/, $data ){
         chomp $l;
         $i++;
+        $l=":blank_line" unless $l=~/\S/;
         push @context, [$l, $i];        
     }
     @context_local = @context;
@@ -582,7 +583,7 @@ Comments entries are lines started with C<#> symbol, swat will ignore comments w
 =head3 Blank lines
 
 
-Blank lines found swat data files are ignored. You may use any of them juts to improve readability:
+Blank lines found swat data files are ignored. You may use any of them just to improve readability:
 
     # check http header
     200 OK
@@ -592,6 +593,19 @@ Blank lines found swat data files are ignored. You may use any of them juts to i
     # then another check
     HELLO WORLD
     
+
+... But you B<can't ignore> blank lines in a C<text block matching> context ( see next section ), use C<:blank_line> marker to match blank lines:
+
+    # :blank_line marker matches blank lines
+    # this is especially useful 
+    # when match in text blocks context:
+
+    begin:
+        this line followed by 2 blank lines
+        :blank_line
+        :blank_line
+    end:
+ 
 
 =head3 Matching text blocks
 

@@ -2,6 +2,8 @@
 - set_server_response feature
 - set project_root to `pwd` if project_root or swat_package is not set
 - test_file now is treated as usual unix file path, not only location  of certain swat data file 
+- blank lines matches
+
 
 # 0.1.54
 - just a documentation release - various fixes at documentation

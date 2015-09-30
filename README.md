@@ -164,7 +164,7 @@ Comments entries are lines started with `#` symbol, swat will ignore comments wh
 
 ### Blank lines
 
-Blank lines found swat data files are ignored. You may use any of them juts to improve readability:
+Blank lines found swat data files are ignored. You may use any of them just to improve readability:
 
     # check http header
     200 OK
@@ -173,6 +173,19 @@ Blank lines found swat data files are ignored. You may use any of them juts to i
 
     # then another check
     HELLO WORLD
+    
+
+... But you **can't ignore** blank lines in a `text block matching` context ( see next section ), use `:blank_line` marker to match blank lines:
+
+       # :blank_line marker matches blank lines
+       # this is especially useful 
+       # when match in text blocks context:
+
+       begin:
+           this line followed by 2 blank lines
+           :blank_line
+           :blank_line
+       end:
     
 
 ### Matching text blocks
