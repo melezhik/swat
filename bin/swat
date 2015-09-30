@@ -94,9 +94,10 @@ mkdir -p $reports_dir
 
 tt=1
 
-if test -n  "${test_file}" ; then
-    test_file=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project/$test_file`
-    find_cmd="find $project -type f -wholename ${test_file}"
+if test -n  "${test_file}" && test "$is_swat_package" -eq '0' ; then
+    find_cmd="find $test_file -type f -name get.txt -o -name post.txt -o -name put.txt"
+elif test -n  "${test_file}" && test "$is_swat_package" -eq '1' ; then
+    echo "test_file is not supported for swat packages"; exit 1
 else
     find_cmd="find $project -type f -name get.txt -o -name post.txt -o -name put.txt"
 fi

@@ -485,11 +485,19 @@ It will find all the I<directories with get.txt or post.txt or put.txt files ins
     GET hello/
     GET hello/world
 
-It is possible to run a single swat test setting a C<test_file> variable:
+It is possible to run a subset of swat tests using a C<test_file> variable:
 
-    test_file=hello/get.txt swat example/my-app 127.0.0.1
+    # run a single `hello/world/get.txt' test
+    test_file=example/my-app/hello/world/get.txt swat example/my-app 127.0.0.1
 
-When you are done with routes you need to set swat data.
+    # the same as above but in less precise maner:
+    test_file=example/my-app/hello/world/ swat example/my-app 127.0.0.1
+
+    # run all `hello' tests:
+    test_file=example/my-app/hello/ swat example/my-app 127.0.0.1
+
+
+Ok, when we are done with routes we need to setup swat data.
 
 
 =head2 Swat data
@@ -1388,7 +1396,20 @@ Sometimes it is helpful to not setup host as command line parameter but define i
 
     $ swat foo/bar/ # will run tests for foo.bar.com
 
-=head1 Prove settings
+=head2 Debugging
+
+set C<swat_debug> environment variable to 1
+
+=head2 Running a subset of tests
+
+It is possible to run a subset of swat test setting a C<test_file> variable:
+
+C<test_file>={unix file path} . Test_file path might be relative or absolute unix file path, internally swat just try to find all proper files using a trivial C<unix find> 
+construction:
+
+    find $test_file -name  -type f -name get.txt -o -name post.txt -o -name put.txt
+
+=head2 Prove settings
 
 Swat utilize L<prove utility|http://search.cpan.org/perldoc?prove> to run tests, so all the swat options I<are passed as is to prove utility>.
 Follow L<prove|http://search.cpan.org/perldoc?prove> utility documentation for variety of values you may set here.
@@ -1446,20 +1467,6 @@ Once we uploaded a module to CPAN repository we can use it:
     $ swat swat::mongodb 127.0.0.1:28017
 
 Check out existed swat packages here - https://github.com/melezhik/swat-packages/
-
-
-=head1 Misc
-
-=head2 Debugging
-
-set C<swat_debug> environment variable to 1
-
-=head2 Running a single test
-
-It is possible to run a single swat test setting a C<test_file> variable:
-
-C<test_file>=/relative/path/to/swat/data/file . Path should be relative to the project root directory.
-
 
 
 =head1 Examples

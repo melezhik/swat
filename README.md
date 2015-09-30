@@ -104,11 +104,18 @@ It will find all the _directories with get.txt or post.txt or put.txt files insi
     GET hello/
     GET hello/world
 
-It is possible to run a single swat test setting a `test_file` variable:
+It is possible to run a subset of swat tests using a `test_file` variable:
 
-    test_file=hello/get.txt swat example/my-app 127.0.0.1
+    # run a single `hello/world/get.txt' test
+    test_file=example/my-app/hello/world/get.txt swat example/my-app 127.0.0.1
 
-When you are done with routes you need to set swat data.
+    # the same as above but in less precise maner:
+    test_file=example/my-app/hello/world/ swat example/my-app 127.0.0.1
+
+    # run all `hello' tests:
+    test_file=example/my-app/hello/ swat example/my-app 127.0.0.1
+
+Ok, when we are done with routes we need to setup swat data.
 
 ## Swat data
 
@@ -140,7 +147,7 @@ This is most usable type of entries you  may define at swat data file. _It's jus
 
 Using regexps.
 
-Regexps are check expressions with the usage of <perl regular expressions> instead of plain strings checks.
+Regexps are check expressions with the usage of &lt;perl regular expressions> instead of plain strings checks.
 Everything started with `regexp:` marker would be treated as perl regular expression.
 
     # this is example of regexp check
@@ -763,7 +770,20 @@ Sometimes it is helpful to not setup host as command line parameter but define i
 
     $ swat foo/bar/ # will run tests for foo.bar.com
 
-# Prove settings
+## Debugging
+
+set `swat_debug` environment variable to 1
+
+## Running a subset of tests
+
+It is possible to run a subset of swat test setting a `test_file` variable:
+
+`test_file`={unix file path} . Test\_file path might be relative or absolute unix file path, internally swat just try to find all proper files using a trivial `unix find` 
+construction:
+
+    find $test_file -name  -type f -name get.txt -o -name post.txt -o -name put.txt
+
+## Prove settings
 
 Swat utilize [prove utility](http://search.cpan.org/perldoc?prove) to run tests, so all the swat options _are passed as is to prove utility_.
 Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for variety of values you may set here.
@@ -812,18 +832,6 @@ Once we uploaded a module to CPAN repository we can use it:
     $ swat swat::mongodb 127.0.0.1:28017
 
 Check out existed swat packages here - https://github.com/melezhik/swat-packages/
-
-# Misc
-
-## Debugging
-
-set `swat_debug` environment variable to 1
-
-## Running a single test
-
-It is possible to run a single swat test setting a `test_file` variable:
-
-`test_file`=/relative/path/to/swat/data/file . Path should be relative to the project root directory.
 
 # Examples
 
