@@ -59,7 +59,6 @@ lib/swat.pm
 Makefile
 Makefile.PL
 MANIFEST			This list of files
-META.yml
 MYMETA.json
 MYMETA.yml
 README
