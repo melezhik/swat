@@ -42,6 +42,8 @@ sub execute_with_retry {
     my $cmd = shift;
     my $try = shift || 1;
 
+    s/%([\w\d_-]+)%/$ENV{$1}/ for $cmd;
+
     for my $i (1..$try){
         diag "\nexecute cmd: $cmd, attempt number: $i" if debug_mod2();
         return $i if system($cmd) == 0;
