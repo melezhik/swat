@@ -230,14 +230,15 @@ for f in `$find_cmd`; do
     echo "}" >> $tfile
     echo >> $tfile
 
+
+    test -f $route_dir/cleanup.pm && echo "require '${route_dir}/cleanup.pm';"  >> $tfile
+    test -f $project/cleanup.pm && echo "require '${project}/cleanup.pm';"  >> $tfile
+
     echo >> $tfile
     echo "}"  >> $tfile
     echo >> $tfile
     echo '1;'>> $tfile
     echo >> $tfile
-
-    test -f $route_dir/cleanup.pm && echo "require '${route_dir}/cleanup.pm';"  >> $tfile
-    test -f $project/cleanup.pm && echo "require '${project}/cleanup.pm';"  >> $tfile
 
 done;
 
