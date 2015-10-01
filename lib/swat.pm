@@ -25,7 +25,7 @@ our ($url, $path, $route_dir, $http_meth);
 our ($debug, $ignore_http_err, $try_num, $debug_bytes);
 our ($is_swat_package);
 our ($set_server_response);
-
+our ($test_root_dir);
 our $server_response;
 
 $| = 1;
@@ -357,6 +357,21 @@ sub debug_mod1 {
 sub debug_mod2 {
 
     $debug == 2
+}
+
+sub run_swat_module {
+
+    my $http_method = uc(shift());
+    my $path = shift;
+
+    undef($context_populated);
+    undef($http_response);
+
+    require "$test_root_dir/$path/00.$http_meth.m";
+
+    undef($context_populated);
+    undef($http_response);
+
 }
 
 1;
