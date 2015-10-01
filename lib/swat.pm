@@ -380,6 +380,8 @@ sub run_swat_module {
 
     $command_params = $params;
 
+    diag "run swat module: $http_method => $path " if debug_mod2();
+
     require "$test_root_dir/$path/00.$http_meth.m";
 
     undef($context_populated);
