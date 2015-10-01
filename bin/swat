@@ -98,13 +98,15 @@ mkdir -p $reports_dir
 
 tt=1
 
-if test -n  "${test_file}" && test "$is_swat_package" -eq '0' ; then
-    find_cmd="find $test_file -type f -name get.txt -o -name post.txt -o -name put.txt -o -name delete.txt"
-elif test -n  "${test_file}" && test "$is_swat_package" -eq '1' ; then
-    echo "test_file is not supported for swat packages"; exit 1
-else
-    find_cmd="find $project -type f -name get.txt -o -name post.txt -o -name put.txt -o -name delete.txt"
-fi
+#if test -n  "${test_file}" && test "$is_swat_package" -eq '0' ; then
+#    find_cmd="find $test_file -type f -name get.txt -o -name post.txt -o -name put.txt -o -name delete.txt"
+#elif test -n  "${test_file}" && test "$is_swat_package" -eq '1' ; then
+#    echo "test_file is not supported for swat packages"; exit 1
+#else
+#    find_cmd="find $project -type f -name get.txt -o -name post.txt -o -name put.txt -o -name delete.txt"
+#fi
+
+find_cmd="find $project -type f -name get.txt -o -name post.txt -o -name put.txt -o -name delete.txt"
 
 for f in `$find_cmd`; do
     route_dir=`perl -MFile::Spec -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print File::Spec->rel2abs($sp)' $f`;
@@ -253,13 +255,16 @@ export port
 
 if [ -z "${rest_args}" ] && [ -n "${prove_options}" ]; then
     rest_args=("$prove_options")
-    prove -m -r $rest_args  $reports_dir;
+    cmd="prove -m -r $rest_args  $reports_dir/$test_file";
+    eval $cmd
     status=$?
 elif [ -n "${rest_args}"  ]; then
-    prove -m -r  $rest_args $reports_dir;
+    cmd="prove -m -r  $rest_args $reports_dir/$test_file";
+    eval $cmd
     status=$?
 else
-    prove -m -r -v $reports_dir;
+    cmd="prove -m -r -v $reports_dir/$test_file";
+    eval $cmd
     status=$?
 fi
 
