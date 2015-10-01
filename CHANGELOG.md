@@ -5,6 +5,7 @@
 - blank lines matchers
 - swat_modules feature - todo: add to doc
 - allow DELETE requests - todo: add to doc
+- breaking changes - parameterized (curl) requests instead of dynamic routes 
 
 # 0.1.54
 - just a documentation release - various fixes at documentation

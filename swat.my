@@ -1,2 +1,3 @@
 prove_options=-v
-
+try_num=1
+debug_bytes=100

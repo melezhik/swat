@@ -26,7 +26,9 @@ our ($debug, $ignore_http_err, $try_num, $debug_bytes);
 our ($is_swat_package);
 our ($set_server_response);
 our ($test_root_dir);
-our $server_response;
+our ($server_response);
+
+our $command_params = {};
 
 $| = 1;
 
@@ -42,7 +44,13 @@ sub execute_with_retry {
     my $cmd = shift;
     my $try = shift || 1;
 
-    s/%([\w\d_-]+)%/$ENV{$1}/ for $cmd;
+
+    for my $p ( keys %$command_params ){
+        my $v = $command_params->{$p};
+        diag "dynamic cmd parameter set: $p => $v" if debug_mod2();
+        my $re = "__".$p."__";
+        s{$re}[$v]g for $cmd;
+    }
 
     for my $i (1..$try){
         diag "\nexecute cmd: $cmd, attempt number: $i" if debug_mod2();
@@ -365,14 +373,19 @@ sub run_swat_module {
 
     my $http_method = uc(shift());
     my $path = shift;
+    my $params = shift || {};
 
     undef($context_populated);
     undef($http_response);
+
+    $command_params = $params;
 
     require "$test_root_dir/$path/00.$http_meth.m";
 
     undef($context_populated);
     undef($http_response);
+
+    $command_params = {};
 
 }
 
