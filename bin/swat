@@ -87,6 +87,10 @@ if [ -n "${set_server_response}" ]; then
     echo "set_server_response=$set_server_response" >> $session_file
 fi
 
+if [ -n "${swat_module}" ]; then
+    echo "swat_module=$swat_module" >> $session_file
+fi
+
 
 reports_dir=~/.swat/reports/$$/
 rm -rf $reports_dir
@@ -114,6 +118,7 @@ for f in `$find_cmd`; do
     unset curl_params
     unset port
     unset set_server_response
+    unset swat_module
 
     test -f ~/$swat_ini_file && source ~/$swat_ini_file
     test -f $project/$swat_ini_file && source $project/$swat_ini_file
@@ -130,6 +135,7 @@ for f in `$find_cmd`; do
     curl_max_time=${curl_max_time:=20}
     curl_connect_timeout=${curl_connect_timeout:=20}
     set_server_response=${set_server_response:=0}
+    swat_module=${swat_module:=0}
 
     path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $project $f`;
     mkdir -p "${reports_dir}/${path}";
@@ -171,7 +177,12 @@ for f in `$find_cmd`; do
 
     curl_cmd="$curl_cmd $http_url$real_path"
 
-    tfile="${reports_dir}/${path}/00.${http_meth}.t"
+    if [ "$swat_module" -eq '0' ]; then
+        tfile="${reports_dir}/${path}/00.${http_meth}.t"
+    else
+        tfile="${reports_dir}/${path}/00.${http_meth}.m"
+    fi
+
 
     tt=$((tt+1))
 
@@ -179,26 +190,31 @@ for f in `$find_cmd`; do
     echo >> $tfile
 
 
-    echo "use Test::More q{no_plan};"  >> $tfile
+    if [ "$swat_module" -eq '0' ]; then
+        echo "use Test::More q{no_plan};"  >> $tfile
+    fi
+
     echo "use strict;"  >> $tfile
     echo >> $tfile
-    echo "BEGIN{"  >> $tfile
-    echo our $\content_file = q{"${reports_dir}${tt}.txt};"  >> $tfile
-    echo our $\path = q{"${path}};"  >> $tfile
-    echo our $\route_dir = q{"${route_dir}};"  >> $tfile
-    echo our $\project = q{"${project}};"  >> $tfile
-    echo our $\http_meth = q{"${http_meth}};"  >> $tfile
-    echo our $\url = q{"${http_url}};"  >> $tfile
-    echo our $\debug = $debug';'  >> $tfile
-    echo our $\debug_bytes = $debug_bytes';'  >> $tfile
-    echo our $\ignore_http_err = $ignore_http_err';'  >> $tfile
-    echo our $\try_num = $try_num';'  >> $tfile
-    echo our $\curl_cmd = q{"${curl_cmd}};"  >> $tfile
-    echo our $\is_swat_package = $is_swat_package';'  >> $tfile
-    echo our $\set_server_response = $set_server_response';' >> $tfile
+    #echo "BEGIN {"  >> $tfile
+    echo "{"  >> $tfile
+    echo local our $\test_root_dir = q{"$reports_dir};" >> $tfile
+    echo local our $\content_file = q{"${reports_dir}${tt}.txt};"  >> $tfile
+    echo local our $\path = q{"${path}};"  >> $tfile
+    echo local our $\route_dir = q{"${route_dir}};"  >> $tfile
+    echo local our $\project = q{"${project}};"  >> $tfile
+    echo local our $\http_meth = q{"${http_meth}};"  >> $tfile
+    echo local our $\url = q{"${http_url}};"  >> $tfile
+    echo local our $\debug = $debug';'  >> $tfile
+    echo local our $\debug_bytes = $debug_bytes';'  >> $tfile
+    echo local our $\ignore_http_err = $ignore_http_err';'  >> $tfile
+    echo local our $\try_num = $try_num';'  >> $tfile
+    echo local our $\curl_cmd = q{"${curl_cmd}};"  >> $tfile
+    echo local our $\is_swat_package = $is_swat_package';'  >> $tfile
+    echo local our $\swat_module = $swat_module';'  >> $tfile
+    echo local our $\set_server_response = $set_server_response';' >> $tfile
 
     echo >> $tfile
-    echo "}"  >> $tfile
     echo >> $tfile
 
     echo "require swat;"  >> $tfile
@@ -212,6 +228,12 @@ for f in `$find_cmd`; do
     echo -e "\tgenerate_asserts(q{$f},1)" >> $tfile;
     echo >> $tfile
     echo "}" >> $tfile
+    echo >> $tfile
+
+    echo >> $tfile
+    echo "}"  >> $tfile
+    echo >> $tfile
+    echo '1;'>> $tfile
     echo >> $tfile
 
     test -f $route_dir/cleanup.pm && echo "require '${route_dir}/cleanup.pm';"  >> $tfile

@@ -30,8 +30,8 @@ our $server_response;
 
 $| = 1;
 
-my $context_populated;
-my $http_response;
+our $context_populated;
+our $http_response;
 my @context = ();
 my @context_local = ();
 my $block_mode;
