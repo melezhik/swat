@@ -10,6 +10,7 @@ all_from       'lib/swat.pm';
 requires    'Test::More';
 requires    'Test::Harness';
 requires    'File::ShareDir'; 
+requires    'File::Temp';
 license     'perl';
 
 install_script 'bin/swat';

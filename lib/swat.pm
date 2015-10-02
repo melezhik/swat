@@ -17,12 +17,12 @@ package main;
 use strict;
 use Test::More;
 use Data::Dumper;
-use File::Temp qw/ :POSIX /;
+use File::Temp qw/ tempfile /;
 
  
 our ($project);
 our ($curl_cmd);
-our ($url, $path, $route_dir, $http_meth); 
+our ($http_url, $path, $route_dir, $http_meth); 
 our ($debug, $ignore_http_err, $try_num, $debug_bytes);
 our ($is_swat_package);
 our ($set_server_response);
@@ -71,7 +71,7 @@ sub make_http_request {
 
     return $http_response if defined $http_response;
 
-    my $content_file = tmpnam();
+    my ($fh, $content_file) = tempfile( DIR => $test_root_dir);
 
     if ($set_server_response){
 
@@ -87,9 +87,9 @@ sub make_http_request {
 
         my $st = execute_with_retry("$curl_cmd > $content_file && test -s $content_file", $try_num);
         if ($ignore_http_err){
-            ok(1, "@{[ $st ? 'succ': 'unsucc' ]}sessful response from $http_meth $url$path") 
+            ok(1, "@{[ $st ? 'succ': 'unsucc' ]}sessful response from $http_meth $http_url$path") 
         }else{
-            ok($st, "successful response from $http_meth $url$path") 
+            ok($st, "successful response from $http_meth $http_url$path") 
         }
         ok(1,"response saved to $content_file");
 
@@ -210,7 +210,7 @@ sub header {
         ok(1, "swat version: $swat::VERSION");
         ok(1, "project: $project");
         ok(1, "is swat package: $is_swat_package");
-        ok(1, "url: $url/$path");
+        ok(1, "url: $http_url/$path");
         ok(1, "route: $path ");
         ok(1, "set server response: $set_server_response");
         ok(1, "debug: $debug");

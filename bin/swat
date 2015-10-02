@@ -22,6 +22,7 @@ fi
 
 project=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project`
 safe_project=project
+cache_dir=~/.swat/.cache/$$
 
 test -f $project/host && host=${host:=`cat $project/host`}
 
@@ -33,10 +34,10 @@ if [ -n "${host}"  ] ; then
         exit 1
     fi
 
-    rm -rf ~/.swat/.cache/$host
-    mkdir -p ~/.swat/.cache/$host
-    session_file=~/.swat/.cache/$host/session.ini
-    startup_lock_file=~/.swat/.cache/$host/startup.lock
+    rm -rf $cache_dir
+    mkdir -p $cache_dir
+    session_file=$cache_dir/session.ini
+    startup_lock_file=$cache_dir/startup.lock
 else
     echo "usage: swat project HOST:port prove-options"
     exit 1
@@ -92,9 +93,9 @@ if [ -n "${swat_module}" ]; then
 fi
 
 
-reports_dir=~/.swat/reports/$$/
-rm -rf $reports_dir
-mkdir -p $reports_dir
+test_root_dir=$cache_dir/prove
+rm -rf $test_root_dir
+mkdir -p $test_root_dir
 
 tt=1
 
@@ -134,7 +135,7 @@ for f in `$find_cmd`; do
     swat_module=${swat_module:=0}
 
     path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $project $f`;
-    mkdir -p "${reports_dir}/${path}";
+    mkdir -p "${test_root_dir}/${path}";
 
 
     if [ -n "${port}" ]; then
@@ -170,9 +171,9 @@ for f in `$find_cmd`; do
     curl_cmd="$curl_cmd $http_url$real_path"
 
     if [ "$swat_module" -eq '0' ]; then
-        tfile="${reports_dir}/${path}/00.${http_meth}.t"
+        tfile="${test_root_dir}/${path}/00.${http_meth}.t"
     else
-        tfile="${reports_dir}/${path}/00.${http_meth}.m"
+        tfile="${test_root_dir}/${path}/00.${http_meth}.m"
     fi
 
 
@@ -190,7 +191,7 @@ for f in `$find_cmd`; do
     echo >> $tfile
     #echo "BEGIN {"  >> $tfile
     echo "{"  >> $tfile
-    echo local our $\test_root_dir = q{"$reports_dir};" >> $tfile
+    echo local our $\test_root_dir = q{"$test_root_dir};" >> $tfile
     echo local our $\path = q{"${path}};"  >> $tfile
     echo local our $\route_dir = q{"${route_dir}};"  >> $tfile
     echo local our $\project = q{"${project}};"  >> $tfile
@@ -242,15 +243,15 @@ export port
 
 if [ -z "${rest_args}" ] && [ -n "${prove_options}" ]; then
     rest_args=("$prove_options")
-    cmd="prove -m -r $rest_args  $reports_dir/$test_file";
+    cmd="prove -m -r $rest_args  $test_root_dir/$test_file";
     eval $cmd
     status=$?
 elif [ -n "${rest_args}"  ]; then
-    cmd="prove -m -r  $rest_args $reports_dir/$test_file";
+    cmd="prove -m -r  $rest_args $test_root_dir/$test_file";
     eval $cmd
     status=$?
 else
-    cmd="prove -m -r -v $reports_dir/$test_file";
+    cmd="prove -m -r -v $test_root_dir/$test_file";
     eval $cmd
     status=$?
 fi
