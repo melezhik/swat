@@ -17,10 +17,11 @@ package main;
 use strict;
 use Test::More;
 use Data::Dumper;
+use File::Temp qw/ :POSIX /;
 
  
 our ($project);
-our ($curl_cmd, $content_file);
+our ($curl_cmd);
 our ($url, $path, $route_dir, $http_meth); 
 our ($debug, $ignore_http_err, $try_num, $debug_bytes);
 our ($is_swat_package);
@@ -53,10 +54,11 @@ sub execute_with_retry {
     }
 
     for my $i (1..$try){
-        diag "\nexecute cmd: $cmd, attempt number: $i" if debug_mod2();
+        diag(1, "\nexecute cmd: $cmd\n attempt number: $i") if debug_mod2();
         return $i if system($cmd) == 0;
         sleep $i**2;
     }
+
     return
 
 }
@@ -68,6 +70,8 @@ sub set_server_response {
 sub make_http_request {
 
     return $http_response if defined $http_response;
+
+    my $content_file = tmpnam();
 
     if ($set_server_response){
 
@@ -82,7 +86,11 @@ sub make_http_request {
     }else{
 
         my $st = execute_with_retry("$curl_cmd > $content_file && test -s $content_file", $try_num);
-        ok($st, "successful response from $http_meth $url$path") unless $ignore_http_err;
+        if ($ignore_http_err){
+            ok(1, "@{[ $st ? 'succ': 'unsucc' ]}sessful response from $http_meth $url$path") 
+        }else{
+            ok($st, "successful response from $http_meth $url$path") 
+        }
         ok(1,"response saved to $content_file");
 
     }

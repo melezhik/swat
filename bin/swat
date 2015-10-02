@@ -151,7 +151,7 @@ for f in `$find_cmd`; do
         touch $startup_lock_file
     fi
 
-    curl_cmd="curl -X $http_meth"
+    curl_cmd="curl -f -X $http_meth"
 
     curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L --stderr -"
 
@@ -160,10 +160,6 @@ for f in `$find_cmd`; do
     test -f $project/hook.bash && source $project/hook.bash
 
     test -f $route_dir/hook.bash && source $route_dir/hook.bash
-
-    if [ "$ignore_http_err" -eq '0' ]; then
-        curl_cmd="$curl_cmd -f"
-    fi
 
     if [ -n "${curl_params}" ]; then
        curl_cmd="$curl_cmd ${curl_params}"
@@ -195,7 +191,6 @@ for f in `$find_cmd`; do
     #echo "BEGIN {"  >> $tfile
     echo "{"  >> $tfile
     echo local our $\test_root_dir = q{"$reports_dir};" >> $tfile
-    echo local our $\content_file = q{"${reports_dir}${tt}.txt};"  >> $tfile
     echo local our $\path = q{"${path}};"  >> $tfile
     echo local our $\route_dir = q{"${route_dir}};"  >> $tfile
     echo local our $\project = q{"${project}};"  >> $tfile
