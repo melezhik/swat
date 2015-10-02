@@ -176,7 +176,7 @@ sub check_line {
     ok($status,$message);
 
 
-    if (debug_mod1() or debug_mod2()){
+    if (debug_mod2()){
         my $k=0;
         for my $ce (@{$captures}){
             $k++;
@@ -198,8 +198,17 @@ sub check_line {
 
 sub header {
 
-    diag("start swat for $url/$path | project $project | is swat package $is_swat_package") if debug_mod1() or debug_mod2();
-    diag("swat version $swat::VERSION | debug $debug | try num $try_num | ignore http errors $ignore_http_err | route $path ") if debug_mod1() or debug_mod2();
+    if (debug_mod12()) {
+        ok(1, "swat version: $swat::VERSION");
+        ok(1, "project: $project");
+        ok(1, "is swat package: $is_swat_package");
+        ok(1, "url: $url/$path");
+        ok(1, "route: $path ");
+        ok(1, "set server response: $set_server_response");
+        ok(1, "debug: $debug");
+        ok(1, "try num: $try_num");
+        ok(1, "ignore http errors: $ignore_http_err");
+    }
 }
 
 sub generate_asserts {
@@ -369,6 +378,11 @@ sub debug_mod2 {
     $debug == 2
 }
 
+sub debug_mod12 {
+
+    debug_mod1() or debug_mod2()
+}
+
 sub run_swat_module {
 
     my $http_method = uc(shift());
@@ -380,9 +394,9 @@ sub run_swat_module {
 
     $command_params = $params;
 
-    diag "run swat module: $http_method => $path " if debug_mod2();
+    ok(1,"run swat module: $http_method => $path") if debug_mod12();
 
-    require "$test_root_dir/$path/00.$http_method.m";
+    do "$test_root_dir/$path/00.$http_method.m";
 
     undef($context_populated);
     undef($http_response);
