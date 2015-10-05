@@ -765,7 +765,7 @@ C<prove_options> - prove options to be passed to prove runner,  default value is
 
 Setting  http paramters alter http request logic, most of these parameters are refered to curl.
 
-=over *
+=over
 
 =item *
 
