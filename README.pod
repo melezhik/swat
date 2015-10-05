@@ -78,6 +78,8 @@ Swat test stories always answer on 2 type of questions:
 
 =over
 
+=item *
+
 I<What kind of> http request should be send
 
 =item *
@@ -337,9 +339,6 @@ B<plain string>
     
 This just ask swat to check if http response has a lines matches to '200 OK' and 'HELLO SWAT' strings.
 
-
-=over
-
 =item *
 
 B<regular expression>
@@ -372,7 +371,6 @@ Comment lines start with C<#> symbol, swat ignore comments chunks when parse swa
 =item *
 
 B<blank lines>
-
 
 Blank lines found are ignored. You may use blank lines to improve code readability:
 
