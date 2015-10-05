@@ -1,10 +1,11 @@
 # 0.1.55
+- rewrote documentation completely
 - set_server_response feature
+- swat_modules feature - todo: add to doc
+- blank lines matchers
+- allow DELETE requests
 - set project_root to `pwd` if project_root or swat_package is not set
 - test_file now is treated as usual unix file path, not only location  of certain swat data file 
-- blank lines matchers
-- swat_modules feature - todo: add to doc
-- allow DELETE requests - todo: add to doc
 - breaking changes - parameterized (curl) requests instead of dynamic routes 
 
 # 0.1.54
