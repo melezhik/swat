@@ -619,7 +619,7 @@ However as long as talk about perl expressions and generators it is convininet t
     ]                                               
 
 
-
+=back
 
 =head1 Captures
 
@@ -765,10 +765,11 @@ C<prove_options> - prove options to be passed to prove runner,  default value is
 
 Setting  http paramters alter http request logic, most of these parameters are refered to curl.
 
+=over *
+
 =item *
 
 C<try_num> - number of http requests attempts in case of none successful http code return, default value is C<2>.
-
 
 =item *
 
