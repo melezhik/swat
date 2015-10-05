@@ -34,14 +34,14 @@ Or install from source:
     make test
     make install
 
-# Building up swat test harness
+# Write your swat story 
 
 Swat test stories always answer on 2 type of questions:
 
 - _What kind of_ http request should be send
-- _What kind of_ http response should be recieved
+- _What kind of_ http response should be received
 
-As swat is web test oriented tool it deals with some http related stuff as 
+As swat is a web test oriented tool it deals with some http related stuff as:
 
 - http methods
 - http resourses 
@@ -56,7 +56,7 @@ _HTTP resourse is just a directory_. You have to create a directory to define a 
     mkdir foo/
     mkdir -p bar/baz
 
-This code define two http resourses of a tested application - 'foo/' and 'bar/baz'
+This code define two http resourses for your application - 'foo/' and 'bar/baz'
 
 ## HTTP methods
 
@@ -66,9 +66,9 @@ _HTTP method is just a file_. You have to create a file to define a http method.
     touch foo/put.txt
     touch bar/baz/post.txt
 
-It's obvious that \`http methods' files should be located at \`http resourse' directories.
+Obviously \`http methods' files should be located at \`http resourse' directories.
 
-All the code above defines a three http methods for two http resources:
+The code above defines a three http methods for two http resources:
 
     - GET /foo
     - PUT /foo
@@ -83,20 +83,20 @@ Here is the list of _predifened_ file names for a http methods files:
 
 # Hostname / IP Address
 
-You need to define hostname or ip address of the application to send request to. The easiest way to do this
-is to write hostname or ip address to a file. Swat looks for a file named \`host' to get know web application address:
+You need to define hostname or ip address of a application to send request to. The easiest way to do this
+is to write up a hostname or ip address to a file. Swat uses file named \`host' for this purpose:
 
     echo 'app.local' > host
 
-As swat uses curl to make http requests, the host name just need to be compilant with curl requrements, this
-for exmaple means you may define a http schema or port here:
+As swat uses curl to make http requests, the host name only should be complaint with curl requrements, this
+for example means you may define a http schema or port here:
 
     echo 'https://app.local' >> host
     echo 'app.local:8080' >> host
 
 ## HTTP Response
 
-Swat makes request to a given http resourses with a given http methods and then validates repsonse.
+Swat makes request to a given http resourses with a given http methods and then validates response.
 Swat does this with the help so called _check lists_ defined at http method files.
 
 Check list is just a list of strings a response should match. It might be plain string or regular expressions:
