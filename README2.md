@@ -99,7 +99,7 @@ for example means you may define a http schema or port here:
 Swat makes request to a given http resourses with a given http methods and then validates response.
 Swat does this with the help so called _check lists_ defined at http method files.
 
-Check list is just a list of strings a response should match. It might be plain string or regular expressions:
+Check list is just a list of strings a response should match. It might be plain strings or regular expressions:
 
     echo 200 OK > foo/get.txt
     echo 'Hello I am foo' >> foo/get.txt
@@ -111,9 +111,10 @@ The code above defines two test asserts for response returned from \`GET /foo':
 
 Of cousre as I told you may add some regular expressions checks here:
 
+    # for example check if we got something like 'date':
     echo 'regexp: \d\d\d\d-\d\d-\d\d' >> foo/get.txt
 
-# Swat stories
+# Bringing all together
 
 Bringing all together we have a basic entity for swat test harness - a _swat story_.
 
@@ -126,7 +127,7 @@ Swat story is a very simple test plan, which could be expressed in a cucumber la
     And I should have response matches 'Hello I am foo'
     And I should have response matches '\d\d\d\d-\d\d-\d\d'
 
-From other hand a swat stories is always 3 related things:
+From other hand a swat story is always 3 related things:
 
 - http method - the method file
 - http resourse - the directory where \`method file\` located in
@@ -134,10 +135,10 @@ From other hand a swat stories is always 3 related things:
 
 ## Swat Project
 
-Swat project is sereval related swat stories kept under a single directory. It does not realy matter the name of such a directory,
-swat just looks up swat stories files there and then "execute" them ( see ["Swat to Test::Harness Compilation"](#swat-to-test-harness-compilation) section on how swat executes test stories ).
+Swat project is a several related swat stories kept under a single directory. The of the directory dies not that matter, 
+swat just looks up swat story files in it and then "execute" them ( see ["Swat to Test::Harness Compilation"](#swat-to-test-harness-compilation) section on how swat To do this ).
 
-This is example of a swat project:
+This is an example of a swat project:
 
     $ tree my/swat/project
     my/swat/project
