@@ -448,7 +448,7 @@ till the end of your swat story, which is probably not you want:
     we are in `text block` mode
 
 
-=over *
+=item *
 
 B<perl expressions>
 
@@ -508,7 +508,7 @@ As you may noticed perl expressions are executed in a I<string eval> manner, ple
 Follow L<http://perldoc.perl.org/functions/eval.html> to get know about perl eval function restrictions.
 
 
-=over *
+=item *
 
 B<generators>
 
@@ -577,7 +577,7 @@ Swat adds B<$project_root_directory/lib> path to PERL5LIB, so this is convenient
     # now it is possible to use Foo::Bar::Baz
     code: use Foo::Bar::Baz; # etc ...
 
-=over *
+=item *
 
 B<multiline expressions>
 
@@ -707,6 +707,7 @@ Every swat story comes with some settings you may define to alter story executio
 These type of settings could be defined at swat ini files.
 
 Swat ini files are file called "swat.ini" and located at resources directory:
+
      foo/bar/get.txt
      foo/bar/swat.ini
 
