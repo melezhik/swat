@@ -694,14 +694,11 @@ You also may use C<capture()> function to get a I<first element> of captures arr
 
 =head1 Swat ini files
 
+Every swat story comes with some settings you may define to alter story execution. One of the usual cases is to add http data when making POST or PUT requests.
 
-Every swat story comes with some settings you may define to alter story execution. One of the usual cases add http data when making POST or PUT requests.
+These type of settings could be defined at swat ini files.
 
-These type of settings could be done at swat ini files.
-
-Swat ini files are file called "swat.ini" and located at resources directory. Swat.ini file defines additional settings for a requested http resourse:
-
-
+Swat ini files are file called "swat.ini" and located at resources directory:
      foo/bar/get.txt
      foo/bar/swat.ini
 
@@ -710,13 +707,13 @@ The content of swat ini file is the list of variables definitions in bash format
     $name=value
 
 
-All swat ini variables could be devided on two groups:
+All swat variables could be devided on two groups:
 
 =over 
 
 =item *
 
-B<common settings>
+B<common swat settings>
 
 =item *
 
@@ -724,10 +721,9 @@ B<http parameters>
 
 =back
 
+=head2 common swat settings
 
-=head2 common settings
-
-Coomon settings are way to adjust the behaviour/output of swat test runner.
+Common swat settings is a way to adjust I<common> swat behaviour/output.
 
 Here is the list of such varibles which brief explanation:
 
@@ -735,66 +731,61 @@ Here is the list of such varibles which brief explanation:
 
 =item *
 
-C<debug> - set to C<1,2> if you want to see some debug information in output, default value is C<0>
+C<debug> - set to C<1,2> if you want to see some debug information in output, default value is C<0>.
 
 =item *
 
-C<debug_bytes> - number of bytes of http response  to be dumped out when debug is on. default value is C<500>
+C<debug_bytes> - number of bytes of http response  to be dumped out when debug is on. default value is C<500>.
 
 =item *
 
-C<swat_debug> - run swat in debug mode, default value is C<0>
-
-
-=item *
-
-C<ignore_http_err> - ignore http errors, if this parameters is off (set to C<1>) I<error http codes> in response will not result in test fails,
-useful when one need to test something with response differ from  2**,3** http codes. Default value is C<0>
-
+C<swat_debug> - run swat in debug mode, default value is C<0>.
 
 =item *
 
-C<try_num> - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is C<2>
-
+C<ignore_http_err> - ignore http errors, if this parameters is set to `1' swat does not raise a test failure when 
+unsuccessfull http codes (! 2**,3** ) return. Default value is C<0>. 
 
 =item *
 
-C<prove_options> - prove options, default value is C<-v>
+C<prove_options> - prove options to be passed to prove runner,  default value is C<-v>.
 
 =back
 
-=head2 curl parameters
+=head2 http parameters
 
-=over
+Setting  http paramters alter http request logic, most of these parameters are refered to curl.
+
+=item *
+
+C<try_num> - number of http requests attempts in case of none successful http code return, default value is C<2>.
 
 
 =item *
 
-C<-d> - Post data sending by html form submit.
+C<curl_params> - additional curl parameters being add to http requests, default value is C<"">, follow curl documentation for variety of values for this.
+These are some examples:
 
-     # Place this in swat.ini file or sets as env variable:
+=over
+
+=item *
+
+C<-d> - Post data sending as html form submit.
+
      curl_params='-d name=daniel -d skill=lousy'
-
 
 =item *
 
 C<--data-binary> - Post data sending as is.
 
-
-     # Place this in swat.ini file or sets as env variable:
      curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
      curl_params="${curl_params} -H 'Content-Type: application/json'"
 
-
-=item *
-
-C<curl_params> - additional curl parameters being add to http requests, default value is C<"">, follow curl documentation for variety of values for this
-
+=back
 
 =item *
 
 C<curl_connect_timeout> - follow curl documentation
-
 
 =item *
 
@@ -808,9 +799,9 @@ C<port>  - http port of tested host, default value is C<80>
 
 =back
 
+=head2 Alternative swat ini files locations
 
-
-Swat checks files named C<swat.ini> in the following directories
+Similiary to resourse based swat.ini files you may have swat settings at these locations:
 
 =over
 
@@ -824,87 +815,23 @@ B<$project_root_directory/swat.ini> -  project based settings
 
 =item *
 
-B<$route_directory/swat.ini> - route based settings
-
-=item *
-
 B<$cwd/swat.my> - custom settings
 
 =back
 
-Here are examples of locations of swat.ini files:
-
-
-     ~/swat.ini # home directory settings
-     my-app/swat.ini # project based settings
-     my-app/hello/get.txt
-     my-app/hello/swat.ini # route based settings ( route hello )
-     my-app/hello/world/get.txt
-     my-app/hello/world/swat.ini # route based settings ( route hello/world )
-
-
-Once file exists at any location swat simply B<bash sources it> to apply settings.
-
-Thus swat.ini file should be bash file with swat variables definitions. Here is example:
-
-    # the content of swat.ini file:
-    curl_params="-H 'Content-Type: text/html'"
-    debug=1
-    try_num=3
-
 =head2 Settings priority table
 
-This table describes all the settings with priority levels, the settings with higher priority are applied after settings
-with lower priority.
+This table describes all possible locations for swat ini files. Swat applies settings from
+files in order, so settings defined at last found ini files wins.
 
 
-    | context                 | location                   | settings type        | priority  level |
-    | ------------------------|--------------------------- | -------------------- | --------------- |
-    | swat.ini file           | ~/swat.ini                 | home directory       |       1         |
-    | swat.ini file           | project root directory     | project based        |       2         |
-    | swat.my  file           | current working directory  | custom settings      |       3         |
-    | swat.ini file           | route directory            | route based          |       4         |
-    | environment variables   | ---                        | session              |       5         |
-
-
-=head1 Settings merge algorithm
-
-Thus swat applies settings in order for every route:
-
-=over
-
-=item *
-
-Home directory settings are applied if exist.
-
-=item *
-
-Project based settings are applied if exist.
-
-=item *
-
-Custom settings are applied if exist.
-
-=item *
-
-Route based settings are applied if exist.
-
-=item *
-
-And finally environment settings are applied if exist.
-
-=back
-
-=head2 Custom Settings
-
-Custom settings are way to customize settings for existed swat package. This file should be located at current working directory,
-where you run swat from. For example:
-
-    # override http port
-    $ echo port=8080 > swat.my
-    $ swat swat::nginx 127.0.0.1
-
-Follow section L<"Swat Packages"> to get more about portable swat tests.
+    | location                               | order N     |
+    | ---------------------------------------------------- |
+    | ~/swat.ini                             | 1           |
+    | project_root_directory/swat.ini        | 2           | 
+    | http resourse directrory/swat.ini file | 3           |
+    | curent working direcroy/swat.my  file  | 4           |
+    | environment variables                  | 5           |
 
 =head1 Hooks
 
@@ -1080,15 +1007,15 @@ B<project>
 
  - Execute *global startup bash hook*
  - Start of swat compilation phase
- - For every route gets compiled:
+ - For every swat story found:
     -- Merge swat settings
      -- Set predefined variables
      -- Execute *project based bash hook*
      -- Execute *route based bash hook*
-     -- Compile route test
+     -- Compile swat story into Test::Harness test
  - The end of swat compilation phase
  - Start of swat execution phase.
- - For every route test gets executed:
+ - For every Test::Harness gets executed:
      -- Execute *project based perl startup hook*
      -- Execute *route based perl startup hook*
      -- Execute route test
