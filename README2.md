@@ -13,7 +13,7 @@ Swat just passes all curl related parameter as is to curl and let curl do it's j
 - Swat is text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does
 not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep
 in old good unix way. Does this sound suspiseosly simple? Sometimes most of things could be tested in a simple way.
-- Swar is extendable by adding custom perl code, this is where you may add deisred complexity to your test stories.
+- Swat is extendable by adding custom perl code, this is where you may add deisred complexity to your test stories.
 - And finally swat relies on prove as internal test runner, this has many, many good results:
     - swat transparently pass all it's arguments to prove which make it simple to adjust swat runner behavior in a prove way
     - swat tests might be easily embedded as unit tests into a cpan distributions.
