@@ -147,7 +147,7 @@ for exmaple means you may define a http schema or port here:
 Swat makes request to a given http resourses with a given http methods and then validates repsonse.
 Swat does this with the help so called I<check lists> defined at http method files.
 
-Check list is just a list of strings the response should match. It might be plain strings or regular expressions matchers:
+Check list is just a list of strings a response should match. It might be plain string or regular expressions:
 
 
     echo 200 OK > foo/get.txt
@@ -173,9 +173,9 @@ Swat story is a very simple test plan, which could be expressed in a cucumber la
     Given I have web application 'http://my.cool.app:80'
     And I have http method 'GET'
     And make http request 'GET /foo'
-    Then I should response matched '200 OK'
-    And I should have response matched 'Hello I am foo'
-    And I should have response matched '\d\d\d\d-\d\d-\d\d'
+    Then I should have response matches '200 OK'
+    And I should have response matches 'Hello I am foo'
+    And I should have response matches '\d\d\d\d-\d\d-\d\d'
 
 From other hand a swat stories is always 3 related things:
 
@@ -242,7 +242,7 @@ Now lets go for swat DSL for describing check lists.
 
 =head1 Check lists
 
-Swat parses http response and try to match it with a next items from the check list:
+Swat parses http response and determine if it matches to the expressions from the check list:
 
     # http response
     200 OK
@@ -258,32 +258,32 @@ Swat parses http response and try to match it with a next items from the check l
 
 
     # swat output
-    200 OK matched
-    HELLO matched
-    regexp: \d\d\d\d-\d\d-\d\d matched
+    200 OK matches
+    HELLO matches
+    regexp: \d\d\d\d-\d\d-\d\d matches
 
-Note, that swat does not care whether more than one lines of response were matched by check list matchers.
-It just ok if only one line is matched. However there is possiblity to accumulate all matching lines for further processing, see the L</"captures"> section for this.
+Note, that swat does not care when more than one lines of response matches to a single expression from check list.
+It just ok if only one line from respose matches check list experssion. However it is possible to accumulate all matching lines for further processing, see the L</"captures"> section.
 
 Another important thing about check lists is that internally they are represented as Test::More asserts:
 
-=head2 Swat to Test::Harness Compilation
+=head1 Swat to Test::Harness compilation
 
-Swat parses swat stories and creates a Test::Harness files to be run under the prove.
+Swat parses swat stories and creates a Test::Harness files to be executed recursively by the prove.
 
-Let's we have 3 swat stories:
+Let we have 3 swat stories:
 
     user/get.txt # GET /user
     user/post.txt # POST /user
     users/list/get.txt # GET /users/list
 
-As the result of compilation there is 3 Test::Harness test files:
+As the result of compilation there are 3 Test::Harness test files here:
 
     user/get.t
     user/post.t
     users/get.txt
 
-The swat check list for every swat story is then converted into the list of the Test::More asserts:
+The swat check list for every swat story is converted into the list of the Test::More asserts:
 
     # cat user/get.txt
 
@@ -293,10 +293,11 @@ The swat check list for every swat story is then converted into the list of the 
 
     # cat user/get.t
 
-    ok($status,'response matches 200 OK'); # will pass if content includes string '200 OK'
-    ok($status,'response matches name: \w+'); # will pass if content has strings matched to /name: \w+/ regexp
-    ok($status,'response matches age: \d+'); # etc
-
+    SKIP {
+        ok($status,'response matches 200 OK'); # will pass if response includes string '200 OK'
+        ok($status,'response matches name: \w+'); # will pass if response has strings matched to /name: \w+/ regexp
+        ok($status,'response matches age: \d+'); # etc
+    }
 
 
 Thus swat stories execution consists of two parts:
@@ -305,34 +306,35 @@ Thus swat stories execution consists of two parts:
 
 =item *
 
-B<Compilation phase> where swat stories are converted into Test::Harness format
+B<Compilation phase> where swat stories are converted into Test::Harness format.
 
 =item *
 
-B<Execution phase> where test harness tests are executed by prove
+B<Execution phase> where test harness tests are executed by prove.
 
 =back
 
-Let's get back to DSL for defining check list. Every item of check list is I<string> representing one of four things:
-
+Let's get back to DSL for defining check list. Every item of check list is I<string> might represent different things:
 
 =over
 
 =item *
 
-B<plain string matcher>
+B<plain string>
 
     200 OK
     HELLO SWAT
     
+This just ask swat to check if http response has a lines matches to '200 OK' and 'HELLO SWAT' strings.
+
 
 =over
 
 =item *
 
-B<regular expression matcher>
+B<regular expression>
 
-Regular expression matchers shpould start with C<regexp:> marker:
+Similar to plain strings, you may ask swat to check if http response has a lines matches to a regular expressions.
 
 
     regexp: \d\d\d\d-\d\d-\d\d # date in format of YYYY-MM-DD
@@ -340,7 +342,8 @@ Regular expression matchers shpould start with C<regexp:> marker:
     regexp: (red|green|blue) # one of three colors
     regexp: App Version Number: \d+\.\d+\.\d+ # version number
 
-You may use C<(>,C<)> to capture subparts of matched strings, the captured chunks will be saved and could be used further, see L</"captures"> section for this.
+Regular expression should start with C<regexp:> marker.
+You may use C<(>,C<)> to capture subparts of matching strings, the captured chunks will be saved and could be used further, see L</"captures"> section for this.
 
     regexp: Hello, my name is (\w+)
 
@@ -349,7 +352,7 @@ You may use C<(>,C<)> to capture subparts of matched strings, the captured chunk
 
 B<comments>
     
-Comments entries start with C<#> symbol, swat ignore comments chunks when parse swat stories
+Comment lines start with C<#> symbol, swat ignore comments chunks when parse swat stories
 
     # comments could be represented at a distinct line, like here
     200 OK
@@ -361,7 +364,7 @@ Comments entries start with C<#> symbol, swat ignore comments chunks when parse 
 B<blank lines>
 
 
-Blank lines found at swat stories files are ignored. You may use blamk lines to improve code readability:
+Blank lines found are ignored. You may use blank lines to improve code readability:
 
     # check http header
     200 OK
@@ -389,7 +392,7 @@ Blank lines found at swat stories files are ignored. You may use blamk lines to 
 
 B<matching text blocks>
 
-Sometimes it is very helpful to match a reponse against a C<block of strings> goes consequentially, like here:
+Sometimes it is very helpful to match a response against a C<block of strings> goes consequentially, like here:
 
 
     # this text block
@@ -441,7 +444,7 @@ till the end of your swat story, which is probably not you want:
 
 B<perl expressions>
 
-Perl expressions are just a pieces of perl code to I<get evaled> by prove when executing swat stories. This is how it works:
+Perl expressions are just a pieces of perl code to I<get evaled> inside your swat story. This is how it works:
 
     # this is my swat story
     200 OK
@@ -450,9 +453,9 @@ Perl expressions are just a pieces of perl code to I<get evaled> by prove when e
 
 
 
-The piece of code above will be executed in two phases according to L</"Swat to Test::Harness Compilation"> specification:
+The piece of code above will be processed in two phases according to L</"Swat to Test::Harness Compilation"> specification:
 
-First swat convert swat story into Test::Harness test:
+First swat converts swat story into Test::Harness test, and adds eval "{code}" line into it:
 
 
     ok($status,"response matches 200 OK");
@@ -460,10 +463,13 @@ First swat convert swat story into Test::Harness test:
     ok($status,"content matches That's OK"); # etc
 
 
-Then prove execute a generated code. 
+Then prove execute a generated code with a eval expression.
+ 
 
-The example with 'print "hello world"' is quite meanignless, there any ways how you code use perl expressions in your swat stories, one of
-obvious one, as swat depends on Test::More module is to leverages to some Test::More functions to adjust execution phase logic:
+The example with 'print "hello world"' is quite meanignless, there are of course more effective ways how you code use perl expressions in your swat stories.
+
+One of the obvious way to use swat perl expressions is too call Test::More functions to adjust execution phase logic:
+( dependency of Test::More module is already here and need not to be `used' )
 
 
     # skip tests
@@ -491,7 +497,7 @@ obvious one, as swat depends on Test::More module is to leverages to some Test::
 
 
 As you may noticed perl expressions are executed in a I<string eval> manner, please be aware of this.
-Follow L<http://perldoc.perl.org/functions/eval.html> to get know about perl eval function.
+Follow L<http://perldoc.perl.org/functions/eval.html> to get know about perl eval function restrictions.
 
 
 =over *
@@ -522,7 +528,7 @@ parser for dynamic check list generation. Here is a simple exmaple:
     baz
 
 
-Generators entries start with C<:generator> marker. Here is more example:
+Generators expressions start with C<:generator> marker. Here is more example:
 
 
     # you could you any perl constrution in generator code
@@ -553,28 +559,44 @@ What about to validate web application content with sqlite database entries?
     [ map { $_->[0] } @${results} ]
 
 
-Take a look at working example at examples/swat-generators-sqlite3 directory.
 
+Note about B<PERL5LIB>.
+
+Swat adds B<$project_root_directory/lib> path to PERL5LIB, so this is convenient to place here custom perl modules could be used inside swat stories:
+
+    my-app/lib/Foo/Bar/Baz.pm
+
+    # now it is possible to use Foo::Bar::Baz
+    code: use Foo::Bar::Baz; # etc ...
 
 =over *
 
 B<multiline expressions>
 
-As long as swat deals with matchers ( both plain strings or regular expressions ) it works in a single line mode, that means
-it does not make a sense about multilne strings here:
+As long as swat deals with matching expressions ( both plain strings or regular expressions ) it works in a single line mode, that means
+it does not make a sense to tell about multilne strings here:
 
-    200 OK
-    Yet another strings
+    # swat story
+    Yet another 
+    new string here
+        
+
+    # http response
+    Yet another\nstring here
+    
  
-Often there is no need to operate on multiline string mode, as with the helo of text blocks matchers it is possible to express very
-complicated matchers. But 
+    # swat put output
+
+    Yet another - matched by "Yet another"
+    new string here - matched by "tring here"
 
 
+Often there is no need to operate on multiline string mode, as with the help of text blocks it is possible to express very
+complicated matching expressions.
 
-Sometimes code looks more readable when you split it on separate chunks. When swat parser meets  C<\> symbols it postpone entry execution and
-add next line to buffer. This is repeated till no C<\> found on next. Finally swat execute I<"accumulated"> swat entity.
 
-Here are some examples:
+However as long as talk about perl expressions and generators it is convininet to use multiline code here. It is possible with a C<\> delimiters:
+
 
     # this is a generator
     # with multiline code
@@ -586,55 +608,28 @@ Here are some examples:
     };                          \
     [                                               \
         map  { ( "# $_", "$data{$_}" )  } keys %d   \
-    ]                                               \
-
-    # this is also a generator
-    # with a code consists of many lines
-    generator: [            \
-            map {           \
-            uc($_)          \
-        } qw( foo bar baz ) \
-    ]
-
-    code:                                                       \
-    if $ENV{'debug'} == 1  { # conditionally skip this check    \
-        skip('next test is skipped',1)                          \
-    }
-    HELLO SWAT
-
-Multiline expressions are only allowable for perl expressions and generators.
-
-=head3 Generators and Perl Expressions Scope
-
-Swat uses I<perl string eval> when process generators and perl expressions code, be aware of this.
-
-=head3 PERL5LIB
-
-Swat adds B<$project_root_directory/lib> to PERL5LIB , so this is convenient convenient to place here custom perl modules:
+    ]                                               
 
 
-    example/my-app/lib/Foo/Bar/Baz.pm
-
-Take a look at examples/swat-generators-with-lib/ for working example
 
 
-=head3 Captures
+=head1 Captures
 
-Captures are pieces of data get captured when swat match content against check expressions using I<regexps>:
+Captures are pieces of data get captured when swat matches response against regular expressions:
 
-    # here is content returned.
+    # here is response data.
     # it is just my family ages.
     alex    38
     julia   25
     jan     2
 
 
-    # here is swat data
-
+    # here is check list
+    # with regular experssion check
     regexp: /(\w+)\s+(\d+)/
 
 
-A check expression above will result in a captured data as perl array reference:
+I<After> swat execute last regular expression check it captured I<all found> sub parts and stored into array:
 
     [
         ['alex',    38 ]
@@ -643,7 +638,7 @@ A check expression above will result in a captured data as perl array reference:
     ]
 
 
-Now captures might be accessed by code generators to get some extra checks:
+Now captures might be accessed by code generators to define some extra checks:
 
 
     code:                               \
@@ -656,11 +651,11 @@ Now captures might be accessed by code generators to get some extra checks:
 
 Thus perl expressions and code generators access captures data calling C<captures()> function.
 
-Captures() returns an array reference holding all data captured during I<latest regexp check>.
+Captures() returns an array reference holding all data captured during I<latest regular expression check>.
 
 Here some more examples:
 
-    # check if output contains numbers
+    # check if response contains numbers
     # calculate total amount
     # it should be greater then ten
 
@@ -673,7 +668,7 @@ Here some more examples:
     cmp_ok( $total,'>',10,"total amount is greater than 10" );
 
 
-    # check if output contains lines
+    # check if response contains lines
     # with date formatted as `date: YYYY-MM-DD`
     # check if first date found is yesterday
 
@@ -689,146 +684,52 @@ Here some more examples:
 You also may use C<capture()> function to get a I<first element> of captures array:
 
 
-    # check if output contains numbers
+    # check if response contains numbers
     # a first number should be greater then ten
 
     regexp: (\d+)
     code: cmp_ok( capture()->[0],'>',10,"first number is greater than 10" );
 
 
-=head1 Anatomy of swat
 
-Once swat runs it goes through some steps to get job done. Here is description of such a steps executed in orders
-
-=head2 Run iterator over swat data files
-
-Swat iterator look for all files named get.txt or post.txt or put.txt under project root directory. Actually this is simple bash find loop.
-
-=head2 Parse swat data file
-
-For every swat data file find by iterator parsing process starts. Swat parse data file line by line, at the end of such a process
-I<a list of Test::More asserts> is generated. Finally asserts list and other input parameters are serialized as Test::More test scenario
-written into into proper *.t file.
-
-=head2 Give it a run by prove
-
-Once swat finish parsing all the swat data files there is a whole bunch of *.t files kept under a designated  temporary directory,
-thus every swat route maps into Test::More test file with the list of asserts. Now all is ready for prove run. Internally `prove -r `
-command is issued to run tests and generate TAP report. That is it.
+=head1 Swat ini files
 
 
-Below is example how this looks like
+Every swat story comes with some settings you may define to alter story execution. One of the usual cases add http data when making POST or PUT requests.
 
-=head3 project structure
+These type of settings could be done at swat ini files.
 
-
-    $ tree examples/anatomy/
-    examples/anatomy/
-    |----FOO
-    |-----|----BARs
-    |           |---- post.txt
-    |--- FOOs
-          |--- get.txt
-
-    3 directories, 2 files
-
-=head3 swat data files
-
-    # /FOOs
-    FOO
-    FOO2
-    generator: | %w{ FOO3 FOO4 }|
-
-    # /FOO/BARs
-    BAR
-    BAR2
-    generator: | %w{ BAR3 BAR4 }|
-    code: skip('skip next 2 tests',2);
-    BAR5
-    BAR6
-    BAR7
+Swat ini files are file called "swat.ini" and located at resources directory. Swat.ini file defines additional settings for a requested http resourse:
 
 
-=head3 Test::More Asserts list
+     foo/bar/get.txt
+     foo/bar/swat.ini
+
+The content of swat ini file is the list of variables definitions in bash format:
+
+    $name=value
 
 
-    # /FOOs/0.t
-    SKIP {
-        ok($status, "successful response from GET $host/FOOs")
-        ok($status, "GET /FOOs returns FOO")
-        ok($status, "GET /FOOs returns FOO2")
-        ok($status, "GET /FOOs returns FOO3")
-        ok($status, "GET /FOOs returns FOO4")
-    }
+All swat ini variables could be devided on two groups:
 
-    # /FOO/BARs0.t
-    SKIP {
-        ok($status, "successful response from POST $host/FOO/BARs")
-        ok($status, "POST /FOO/BARs returns BAR")
-        ok($status, "POST /FOO/BARs returns BAR")
-        ok($status, "POST /FOO/BARs returns BAR3")
-        ok($status, "POST /FOO/BARs returns BAR4")
-        skip('skip next 2 tests',2);
-        ok($status, "POST /FOO/BARs returns BAR5")
-        ok($status, "POST /FOO/BARs returns BAR6")
-        ok($status, "POST /FOO/BARs returns BAR7")
-    }
-
-
-=head1 POST/PUT requests
-
-Name swat data file as post.txt (put.txt) to make http POST (PUT) requests.
-
-    echo 200 OK >> my-app/hello/post.txt
-    echo 200 OK >> my-app/hello/world/post.txt
-
-You may use curl_params setting ( follow L</"Swat Settings"> section for details ) to define post data, there are some examples:
-
-=over
+=over 
 
 =item *
 
-C<-d> - Post data sending by html form submit.
-
-
-     # Place this in swat.ini file or sets as env variable:
-     curl_params='-d name=daniel -d skill=lousy'
-
+B<common settings>
 
 =item *
 
-C<--data-binary> - Post data sending as is.
-
-
-     # Place this in swat.ini file or sets as env variable:
-     curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
-     curl_params="${curl_params} -H 'Content-Type: application/json'"
-
+B<http parameters>
 
 =back
 
 
-=head1 Swat Settings
+=head2 common settings
 
-Swat comes with settings defined in two contexts:
+Coomon settings are way to adjust the behaviour/output of swat test runner.
 
-=over
-
-=item *
-
-Environment variables ( session settings )
-
-=item *
-
-swat.ini files ( home directory , project based, route based and custom settings  )
-
-
-=back
-
-
-=head2 Environment variables
-
-Following variables define a proper swat settings.
+Here is the list of such varibles which brief explanation:
 
 =over
 
@@ -847,13 +748,42 @@ C<swat_debug> - run swat in debug mode, default value is C<0>
 
 =item *
 
-C<ignore_http_err> - ignore http errors, if this parameters is off (set to C<1>) returned  I<error http codes> will not result in test fails,
+C<ignore_http_err> - ignore http errors, if this parameters is off (set to C<1>) I<error http codes> in response will not result in test fails,
 useful when one need to test something with response differ from  2**,3** http codes. Default value is C<0>
 
 
 =item *
 
 C<try_num> - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is C<2>
+
+
+=item *
+
+C<prove_options> - prove options, default value is C<-v>
+
+=back
+
+=head2 curl parameters
+
+=over
+
+
+=item *
+
+C<-d> - Post data sending by html form submit.
+
+     # Place this in swat.ini file or sets as env variable:
+     curl_params='-d name=daniel -d skill=lousy'
+
+
+=item *
+
+C<--data-binary> - Post data sending as is.
+
+
+     # Place this in swat.ini file or sets as env variable:
+     curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
+     curl_params="${curl_params} -H 'Content-Type: application/json'"
 
 
 =item *
@@ -875,16 +805,10 @@ C<curl_max_time> - follow curl documentation
 
 C<port>  - http port of tested host, default value is C<80>
 
-=item *
-
-C<prove_options> - prove options, default value is C<-v>
-
-
 
 =back
 
 
-=head2 Swat.ini files
 
 Swat checks files named C<swat.ini> in the following directories
 
