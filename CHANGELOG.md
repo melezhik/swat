@@ -1,12 +1,16 @@
 # 0.1.55
 - rewrote documentation completely
-- set_server_response feature
-- swat_modules feature - todo: add to doc
-- blank lines matchers
-- allow DELETE requests
-- set project_root to `pwd` if project_root or swat_package is not set
-- test_file now is treated as usual unix file path, not only location  of certain swat data file 
-- breaking changes - parameterized (curl) requests instead of dynamic routes 
+- new features: 
+  - set_server_response
+  - swat_modules 
+  - blank lines matchers
+  - DELETE http methods
+  - project_root default value is `pwd`
+  - test_file is now http resourse path
+- breaking changes 
+  - dynamic routes are deprecated
+  - bash hooks are deprecated
+  - perl cleanup, startup, project based hooks are deprecated
 
 # 0.1.54
 - just a documentation release - various fixes at documentation
