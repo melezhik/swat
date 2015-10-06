@@ -208,46 +208,6 @@ Note, that swat does not care about how many times a given expression is matched
 
 However it is possible to accumulate all matching lines for further processing, see the ["captures"](#captures) section.
 
-Another important thing about check lists is that internally they are represented as Test::More asserts:
-
-# Swat to Test::Harness compilation
-
-Swat parses swat stories and then creates a Test::Harness files to be executed recursively by the prove.
-
-Let's have 3 swat stories:
-
-    user/get.txt # GET /user
-    user/post.txt # POST /user
-    users/list/get.txt # GET /users/list
-
-Then swat _compiles_ them into Test::Harness stuff, as the result of compilation we have 3 Test::Harness files here:
-
-    user/get.t
-    user/post.t
-    users/get.txt
-
-With check lists converted into the list of the Test::More asserts:
-
-    # cat user/get.txt
-
-    200 OK
-    regexp: name: \w+
-    regexp: age: \d+
-
-    # cat user/get.t
-
-    SKIP {
-        ok($status,'response matches 200 OK'); # will pass if response includes string '200 OK'
-        ok($status,'response matches name: \w+'); # will pass if response has strings matched to /name: \w+/ regexp
-        ok($status,'response matches age: \d+'); # etc
-    }
-
-Thus swat stories runner hits consequentiallн two phases:
-
-- **Compilation phase** where swat stories are converted into Test::Harness format.
-- **Execution phase** where test harness tests are executed by prove.
-
-For detailed schema of swat runner workflow see ["swat runner workflow"](#swat-runner-workflow) section.
 
 Now let's get back to DSL for describing check list. 
 
@@ -757,9 +717,50 @@ List of variables one may rely upon when writing perl/bash hooks:
 - **route\_dir**
 - **project**
 
+Another important thing about check lists is that internally they are represented as Test::More asserts:
+
 # Swat runner workflow
 
-This is detailed plan how swat runner execute swat test stories:
+This is detailed plan how swat runner execute swat test stories.
+
+## Swat to Test::Harness compilation
+
+Swat parses swat stories and then creates a Test::Harness files to be executed recursively by the prove.
+
+Let's have 3 swat stories:
+
+    user/get.txt # GET /user
+    user/post.txt # POST /user
+    users/list/get.txt # GET /users/list
+
+Then swat _compiles_ them into Test::Harness stuff, as the result of compilation we have 3 Test::Harness files here:
+
+    user/get.t
+    user/post.t
+    users/get.txt
+
+With check lists converted into the list of the Test::More asserts:
+
+    # cat user/get.txt
+
+    200 OK
+    regexp: name: \w+
+    regexp: age: \d+
+
+    # cat user/get.t
+
+    SKIP {
+        ok($status,'response matches 200 OK'); # will pass if response includes string '200 OK'
+        ok($status,'response matches name: \w+'); # will pass if response has strings matched to /name: \w+/ regexp
+        ok($status,'response matches age: \d+'); # etc
+    }
+
+Thus swat stories runner hits consequentiallн two phases:
+
+- **Compilation phase** where swat stories are converted into Test::Harness format.
+- **Execution phase** where test harness tests are executed by prove.
+
+## Workflow 
 
     - Hit swat compilation phase
     - For every swat story found:
