@@ -141,7 +141,7 @@ From other hand a swat story is always 3 related things:
 ## Swat Project
 
 Swat project is a related swat stories kept under a single directory. The directory name does not that matter, 
-swat just looks swat stories files into it and then "execute" them ( see ["Swat to Test::Harness Compilation"](#swat-to-test-harness-compilation) section on how swat to do this ).
+swat just looks swat stories files into it and then "execute" them ( see ["Swat to Test::Harness Compilation"](#swat-to-testharness-compilation) section on how swat to do this ).
 
 This is an example swat project layout:
 
@@ -183,7 +183,7 @@ Now lets go for swat DSL for describing check lists.
 
 # Check lists
 
-Swat parses http response and determine if it matches to the expressions from the check list:
+Swat checks http response and determine if it matches to the _expressions_ from the check list:
 
     # http response
     200 OK
@@ -203,28 +203,30 @@ Swat parses http response and determine if it matches to the expressions from th
     HELLO matches
     regexp: \d\d\d\d-\d\d-\d\d matches
 
-Note, that swat does not care when more than one lines of response matches to a single expression from check list.
-It just ok if only one line from respose matches check list experssion. However it is possible to accumulate all matching lines for further processing, see the ["captures"](#captures) section.
+Every expession is just a line of text to represent what is expected to get in response.
+Note, that swat does not care about how many times a given expression is matched by response, for test will pass it should match at least one time.
+
+However it is possible to accumulate all matching lines for further processing, see the ["captures"](#captures) section.
 
 Another important thing about check lists is that internally they are represented as Test::More asserts:
 
 # Swat to Test::Harness compilation
 
-Swat parses swat stories and creates a Test::Harness files to be executed recursively by the prove.
+Swat parses swat stories and then creates a Test::Harness files to be executed recursively by the prove.
 
-Let we have 3 swat stories:
+Let's have 3 swat stories:
 
     user/get.txt # GET /user
     user/post.txt # POST /user
     users/list/get.txt # GET /users/list
 
-As the result of compilation there are 3 Test::Harness test files here:
+Then swat _compiles_ them into Test::Harness stuff, as the result of compilation we have 3 Test::Harness files here:
 
     user/get.t
     user/post.t
     users/get.txt
 
-The swat check list for every swat story is converted into the list of the Test::More asserts:
+With check lists converted into the list of the Test::More asserts:
 
     # cat user/get.txt
 
@@ -240,12 +242,16 @@ The swat check list for every swat story is converted into the list of the Test:
         ok($status,'response matches age: \d+'); # etc
     }
 
-Thus swat stories execution consists of two parts:
+Thus swat stories runner hits consequentiallн two phases:
 
 - **Compilation phase** where swat stories are converted into Test::Harness format.
 - **Execution phase** where test harness tests are executed by prove.
 
-Let's get back to DSL for defining check list. Every item of check list is _string_ might represent different things:
+For detailed schema of swat runner workflow see ["swat runner workflow"](#swat-runner-workflow) section.
+
+Now let's get back to DSL for describing check list. 
+
+Every item of check list is _string_ might represent different things:
 
 - **plain string**
 
@@ -751,26 +757,23 @@ List of variables one may rely upon when writing perl/bash hooks:
 - **route\_dir**
 - **project**
 
-# Swat Compile and Runtime
+# Swat runner workflow
 
-    - Execute *global startup bash hook*
-    - Start of swat compilation phase
+This is detailed plan how swat runner execute swat test stories:
+
+    - Hit swat compilation phase
     - For every swat story found:
-       -- Merge swat settings
-        -- Set predefined variables
-        -- Execute *project based bash hook*
-        -- Execute *route based bash hook*
+        -- Calculate and merge swat settings come from different locations
         -- Compile swat story into Test::Harness test
     - The end of swat compilation phase
-    - Start of swat execution phase.
-    - For every Test::Harness gets executed:
-        -- Execute *project based perl startup hook*
-        -- Execute *route based perl startup hook*
-        -- Execute route test
-        -- Execute *route based perl cleanup hook*
-        -- Execute *project based perl cleanup hook*
-    - The end of swat compilation phase
-    - Execute *global cleanup bash hook*
+    - Hit swat execution phase - actualy runs \`prove' recurisively on a directory with a Test::Harness files
+    - For every Test::Harness test gets executed:
+        -- Require hook.pm if exists
+        -- Generate next item from Test::More asserts list
+        -- Execute Test::More assert
+        -- Yield assert status in TAP format
+    - The end of swat execution phase
+    
 
 # TAP
 
