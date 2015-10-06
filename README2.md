@@ -61,7 +61,7 @@ _HTTP resourse is just a directory_. You have to create a directory to define a 
     mkdir foo/
     mkdir -p bar/baz
 
-This code define two http resourses for your application - 'foo/' and 'bar/baz'
+This code defines two http resourses for your application - 'foo/' and 'bar/baz'
 
 ## HTTP methods
 
@@ -88,12 +88,12 @@ Here is the list of _predifened_ file names for a http methods files:
 
 # Hostname / IP Address
 
-You need to define hostname or ip address of a application to send request to. The easiest way to do this
-is to write up a hostname or ip address to a file. Swat uses file named \`host' for this purpose:
+You need to define hostname or ip address of an application to send request to. The easiest way to do this
+is to write up a hostname or ip address to a file. Swat uses a special file named \`host' for this:
 
     echo 'app.local' > host
 
-As swat uses curl to make http requests, the host name only should be complaint with curl requrements, this
+As swat makes http requests with the help of curl, the host name only should be complaint with curl requrements, this
 for example means you may define a http schema or port here:
 
     echo 'https://app.local' >> host
@@ -104,24 +104,24 @@ for example means you may define a http schema or port here:
 Swat makes request to a given http resourses with a given http methods and then validates response.
 Swat does this with the help so called _check lists_ defined at http method files.
 
-Check list is just a list of strings a response should match. It might be plain strings or regular expressions:
+Check list is just a list of strings a response should match. It might be a plain strings or regular expressions:
 
     echo 200 OK > foo/get.txt
     echo 'Hello I am foo' >> foo/get.txt
 
-The code above defines two test asserts for response returned from \`GET /foo':
+The code above defines two test asserts for response from \`GET /foo':
 
     - it should contain "200 OK"
     - it should contain "Hello I am foo"
 
-Of cousre as I told you may add some regular expressions checks here:
+Of cousre you may add some regular expressions checks as well:
 
     # for example check if we got something like 'date':
     echo 'regexp: \d\d\d\d-\d\d-\d\d' >> foo/get.txt
 
 # Bringing all together
 
-Bringing all together we have a basic entity for swat test harness - a _swat story_.
+All these things http method, http resourse and check list define a basic swat entity called a _swat story_.
 
 Swat story is a very simple test plan, which could be expressed in a cucumber language as follows:
 
@@ -140,23 +140,23 @@ From other hand a swat story is always 3 related things:
 
 ## Swat Project
 
-Swat project is a several related swat stories kept under a single directory. The of the directory dies not that matter, 
-swat just looks up swat story files in it and then "execute" them ( see ["Swat to Test::Harness Compilation"](#swat-to-test-harness-compilation) section on how swat To do this ).
+Swat project is a related swat stories kept under a single directory. The directory name does not that matter, 
+swat just looks swat stories files into it and then "execute" them ( see ["Swat to Test::Harness Compilation"](#swat-to-test-harness-compilation) section on how swat to do this ).
 
-This is an example of a swat project:
+This is an example swat project layout:
 
     $ tree my/swat/project
-    my/swat/project
-    |--- host
-    |----FOO
-    |-----|----BAR
-    |           |---- post.txt
-    |--- FOO
-          |--- get.txt
+      my/swat/project
+      |--- host
+      |----FOO
+      |-----|----BAR
+      |           |---- post.txt
+      |--- FOO
+            |--- get.txt
 
     3 directories, 3 files
 
-When you ask swat to run swat stories you need to point it a project root directory or \`cd' to it and just run swat without arguments:
+When you ask swat to execute swat stories you have to point it a project root directory or \`cd' to it and just run swat without arguments:
 
     swat my/swat/project
 
@@ -164,18 +164,20 @@ When you ask swat to run swat stories you need to point it a project root direct
 
     cd my/swat/project && swat
 
-Note, that project root directory path will be removed from pathes for http resourses during execution:
+Note, that project root directory path will be removed from http resourses  during execution:
 
     - GET FOO
     - POST FOO/BAR
 
-It is possible to run a subset of swat test stories using a `test_file` variable:
+It is also possible to run a subset of swat stories using a `test_file` variable:
 
     # run a single test
     test_file=FOO/get swat example/my-app 127.0.0.1
 
     # run all `FOO/*' stories:
     test_file=FOO/ swat example/my-app 127.0.0.1
+
+Test\_file variable should point to a resourse(s) path and be relative to project root dir, also it should not contain \`http method' file extension \`.txt'
 
 Now lets go for swat DSL for describing check lists.
 
@@ -804,15 +806,6 @@ Sometimes it is helpful to not setup host as command line parameter but define i
 
 set `swat_debug` environment variable to 1
 
-## Running a subset of tests
-
-It is possible to run a subset of swat test setting a `test_file` variable:
-
-`test_file`={unix file path} . Test\_file path might be relative or absolute unix file path, internally swat just try to find all proper files using a trivial `unix find`
-construction:
-
-    find $test_file -name  -type f -name get.txt -o -name post.txt -o -name put.txt
-
 ## Prove settings
 
 Swat utilize [prove utility](http://search.cpan.org/perldoc?prove) to run tests, so all the swat options _are passed as is to prove utility_.
@@ -821,51 +814,9 @@ Default value for prove options is  `-v`. Here is another examples:
 
 - `-q -s` -  run tests in random and quite mode
 
-# Swat Packages
-
-Swat packages is portable archives of swat tests. It's easy to create your own swat packages and share with other.
-
-This is mini how-to on creating swat packages:
-
-## Create swat package
-
-Swat packages are _just cpan modules_. So all you need is to create cpan module distribution archive and upload it to CPAN.
-
-The only requirement for installer is that swat data files should be installed into _cpan module directory_ at the end of install process.
-[File::ShareDir::Install](http://search.cpan.org/perldoc?File%3A%3AShareDir%3A%3AInstall) allows you to install
-read-only data files from a distribution and considered as best practice for such a things.
-
-Here is example of Makefile.PL for [swat::mongodb package](https://github.com/melezhik/swat-packages/tree/master/mongodb-http):
-
-    use inc::Module::Install;
-
-    # Define metadata
-    name           'swat-mongodb';
-    all_from       'lib/swat/mongodb.pm';
-
-    # Specific dependencies
-    requires       'swat'         => '0.1.28';
-    test_requires  'Test::More'   => '0';
-
-    install_share  'module' => 'swat::mongodb', 'share';
-
-    license 'perl';
-
-    WriteAll;
-
-Here we create a swat package swat::mongodb with swat data files kept in the project\_root directory ./share and get installed into
-`auto/share/module/swat-mongodb` directory.
-
-Once we uploaded a module to CPAN repository we can use it:
-
-    $ cpan install swat::mongodb
-    $ swat swat::mongodb 127.0.0.1:28017
-
-Check out existed swat packages here - https://github.com/melezhik/swat-packages/
-
 # Examples
 
-./examples directory contains examples of swat tests for different cases. Follow README.md files for details.
+Look at ./examples directory - there are plenty of intersting examples here.
 
 # AUTHOR
 
