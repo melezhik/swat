@@ -553,10 +553,15 @@ Common swat settings is a way to adjust _common_ swat behaviour/output.
 Here is the list of such varibles which brief explanation:
 
 - `debug` - set to `1,2` if you want to see some debug information in output, default value is `0`.
+
 - `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is `500`.
+
+- `swat_debug` - set to `1' to enable swat debug mode, a lot of low level information will be out on a screen, default value is `0'
+
 - `swat_debug` - run swat in debug mode, default value is `0`.
-- `ignore_http_err` - ignore http errors, if this parameters is set to \`1' swat does not raise a test failure when 
-unsuccessfull http codes (! 2\*\*,3\*\* ) return. Default value is `0`. 
+
+- `ignore_http_err` - set to \`1' if you want to ignore unsuccessful http codes (! 2\*\*,3\*\* ) in a response, in other case a test failure will be raised. Default value is `0`. 
+
 - `prove_options` - prove options to be passed to prove runner,  default value is `-v`.
 
 ## http parameters
@@ -564,8 +569,8 @@ unsuccessfull http codes (! 2\*\*,3\*\* ) return. Default value is `0`.
 Setting  http paramters alter http request logic, most of these parameters are refered to curl.
 
 - `try_num` - number of http requests attempts in case of none successful http code return, default value is `2`.
-- `curl_params` - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this.
-These are some examples:
+
+- `curl_params` - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this. These are some examples:
     - `-d` - Post data sending as html form submit.
 
              curl_params='-d name=daniel -d skill=lousy'
@@ -574,13 +579,16 @@ These are some examples:
 
              curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
              curl_params="${curl_params} -H 'Content-Type: application/json'"
-- `curl_connect_timeout` - follow curl documentation
-- `curl_max_time` - follow curl documentation
+
+- `curl_connect_timeout` - maximum time in seconds that you allow the connection to the server to take, follow curl documentation for full explanation
+
+- `curl_max_time` - maximum time in seconds that you allow the whole operation to take, follow curl documentation for full explanation
+
 - `port`  - http port of tested host, default value is `80`
 
 ## Alternative swat ini files locations
 
-Similiary to resourse based swat.ini files you may have swat settings at these locations:
+Similary to resourse based swat.ini files you may have swat settings files at these locations:
 
 - **~/swat.ini** - home directory settings
 - **$project\_root\_directory/swat.ini** -  project based settings
@@ -598,6 +606,11 @@ files in order, so settings defined at last found ini files wins.
     | http resourse directrory/swat.ini file | 3           |
     | curent working direcroy/swat.my  file  | 4           |
     | environment variables                  | 5           |
+
+
+What happnes if you defined the same swat varibale twice? Say you have: `curl_params="-H 'Foo: Bar'"` in a ~/swat.ini and have `curl_params="-H 'Bar: Baz'"` in a project_root_directory/swat.ini ?
+
+According to settings priority table project_root_directory/swat.ini will win and resulted value for curl_params will be "-H 'Bar: Baz'"
 
 # Swat story hooks
 
@@ -722,13 +735,11 @@ Default value for prove options is  `-v`. Here is another examples:
 
 - `-q -s` -  run tests in random and quite mode
 
-## Debugging
 
-set `swat_debug` environment variable to 1
 
 # Examples
 
-Look at ./examples directory - there are plenty of intersting examples here.
+Look at ./examples directory - there is plenty of intersting examples there.
 
 # AUTHOR
 
@@ -740,7 +751,7 @@ https://github.com/melezhik/swat
 
 # Thanks
 
-To the authors of ( see list ) without who swat would not appear to light 
+To the authors of ( see list ) without who swat would not appear to light:
 
 - perl
 - curl
