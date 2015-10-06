@@ -224,15 +224,14 @@ Actually there are two type of swat check expressions - plain strings and regula
 
 - **regular expression**
 
-    Similar to plain strings, you may ask swat to check if http response has a lines matches to a regular expressions.
+Similar to plain strings, you may ask swat to check if http response has a lines matches to a regular expressions.
 
         regexp: \d\d\d\d-\d\d-\d\d # date in format of YYYY-MM-DD
         regexp: 20\d # successful http status 200, 201 etc
         regexp: (red|green|blue) # one of three colors
         regexp: App Version Number: \d+\.\d+\.\d+ # version number
 
-    Regular expression should start with `regexp:` marker.
-    You may use `(`,`)` to capture subparts of matching strings, the captured chunks will be saved and could be used further, see ["captures"](#captures) section for this.
+Regular expression should start with `regexp:` marker. You may use `(`,`)` to capture subparts of matching strings, the captured chunks will be saved and could be used further, see ["captures"](#captures) section for this.
 
         regexp: Hello, my name is (\w+)
 
@@ -256,7 +255,7 @@ Actually there are two type of swat check expressions - plain strings and regula
         # then another check
         HELLO WORLD
 
-    ... But you **can't ignore** blank lines in a `text block matching` context ( see next point ), use `:blank_line` marker to match blank lines:
+But you **can't ignore** blank lines in a `text block matching` context ( see next point ), use `:blank_line` marker to match blank lines:
 
         # :blank_line marker matches blank lines
         # this is especially useful
@@ -270,7 +269,7 @@ Actually there are two type of swat check expressions - plain strings and regula
 
 - **text blocks**
 
-    Sometimes it is very helpful to match a response against a `block of strings` goes consequentially, like here:
+Sometimes it is very helpful to match a response against a `block of strings` goes consequentially, like here:
 
         # this text block
         # consists of 5 strings
@@ -288,7 +287,7 @@ Actually there are two type of swat check expressions - plain strings and regula
             at the very end
         end:
 
-    This test will pass when running against this chunk:
+This test will pass when running against this chunk:
 
         this string followed by
         that string followed by
@@ -296,7 +295,7 @@ Actually there are two type of swat check expressions - plain strings and regula
         with that string
         at the very end.
 
-    But **won't** pass for this chunk:
+But **won't** pass for this chunk:
 
         that string followed by
         this string followed by
@@ -304,10 +303,9 @@ Actually there are two type of swat check expressions - plain strings and regula
         with that string
         at the very end.
 
-    `begin:` `end:` markers decorate \`text blocks\` content. `:being|:end` markers should not be followed by any text at the same line.
+`begin:` `end:` markers decorate \`text blocks\` content. `:being|:end` markers should not be followed by any text at the same line.
 
-    Also be aware if you leave "dangling" `begin:` marker without closing `end`: somewhere else swat will remain in a \`text block\` mode 
-    till the end of your swat story, which is probably not you want:
+Also be aware if you leave "dangling" `begin:` marker without closing `end`: somewhere else swat will remain in a \`text block\` mode till the end of your swat story, which is probably not you want:
 
         begin:
         here we begin
@@ -316,15 +314,14 @@ Actually there are two type of swat check expressions - plain strings and regula
 
 ## Perl expressions
 
-
-    Perl expressions are just a pieces of perl code to _get evaled_ inside your swat story. This is how it works:
+Perl expressions are just a pieces of perl code to _get evaled_ inside your swat story. This is how it works:
 
         # this is my swat story
         200 OK
         code: print "hello world"
         That's OK
 
-    The piece of code above will be processed in two phases according to ["Swat runner  workflow"](#swat-runner-workflow) specification:
+The piece of code above will be processed in two phases according to ["Swat runner  workflow"](#swat-runner-workflow) specification:
 
     First swat converts swat story into Test::Harness test, and then adds eval "{code}" line into it:
 
@@ -334,10 +331,9 @@ Actually there are two type of swat check expressions - plain strings and regula
 
     Then prove execute a generated code with a eval expression.
 
-    The example with 'print "hello world"' is quite meanignless, there are of course more effective ways how you code use perl expressions in your swat stories.
+The example with 'print "hello world"' is quite meanignless, there are of course more effective ways how you code use perl expressions in your swat stories.
 
-    One of the obvious thing is to call Test::More functions to adjust swat execution phase logic:
-    ( dependency on Test::More module is already done and need not to be \`used' )
+One of the obvious thing is to call Test::More functions to adjust swat execution phase logic: ( dependency on Test::More module is already done and need not to be \`used' )
 
         # skip tests
         code: skip('next 3 checks are skipped',3) # skip three next checks forever
@@ -361,16 +357,15 @@ Actually there are two type of swat check expressions - plain strings and regula
         number:two
         number:three
 
-    As you may noticed perl expressions are executed in a _string eval_ way, please be aware of this.
-    Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get know about perl eval function restrictions.
+
+As you may noticed perl expressions are executed in a _string eval_ way, please be aware of this. Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get know about perl eval function restrictions.
 
 ## Generators
 
 
-    Swat generators is the way to _create swat check lists  on the fly_. Swat generators like perl expressions is just a piece of perl code 
-    executed the same way. The only difference with perl expressions is that swat generators code should return _an array reference_.
-    An array returned by generator code should contain _strings_ representing new check list items. Thus new check list will passed back to swat
-    parser for dynamic check list generation. Here is a simple exmaple:
+Swat generators is the way to _create swat check lists  on the fly_. Swat generators like perl expressions is just a piece of perl code executed the same way. The only difference with perl expressions is that swat generators code should return _an array reference_.
+
+An array returned by generator code should contain _strings_ representing new check list items. Thus new check list will passed back to swat parser for dynamic check list generation. Here is a simple exmaple:
 
         # this is `static' check list
         200 OK
@@ -393,7 +388,7 @@ Actually there are two type of swat check expressions - plain strings and regula
 
         # you could you any perl constrution in generator code
         # unless it return an array reference
-        generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ]
+        generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d ]
 
 
         # the resulted check list will be:
@@ -403,7 +398,7 @@ Actually there are two type of swat check expressions - plain strings and regula
         # bar
         bar value
 
-    Writting generator code there is no limit for you! Use any code you want with only requirement - it should return array reference.
+Writting generator code there is no limit for you! Use any code you want with only requirement - it should return array reference.
 
     What about to validate web application content with sqlite database entries?
 
@@ -419,7 +414,7 @@ Actually there are two type of swat check expressions - plain strings and regula
 
     Note about **PERL5LIB**.
 
-    Swat adds **$project\_root\_directory/lib** path to PERL5LIB, so this is convenient to place here custom perl modules could be used inside swat stories:
+Swat adds **$project\_root\_directory/lib** path to PERL5LIB, so this is convenient to place here custom perl modules could be used inside swat stories:
 
         my-app/lib/Foo/Bar/Baz.pm
 
@@ -428,8 +423,7 @@ Actually there are two type of swat check expressions - plain strings and regula
 
 - **multiline expressions**
 
-    As long as swat deals with matching expressions ( both plain strings or regular expressions ) it works in a single line mode, that means
-    it does not make a sense to tell about multilne strings here:
+As long as swat deals with matching expressions ( both plain strings or regular expressions ) it works in a single line mode, that means it does not make a sense to tell about multilne strings here:
 
            # swat story
            Yet another 
@@ -445,10 +439,9 @@ Actually there are two type of swat check expressions - plain strings and regula
            Yet another - matched by "Yet another"
            new string here - matched by "tring here"
 
-    Often there is no need to operate on multiline string mode, as with the help of text blocks it is possible to express very
-    complicated matching expressions.
+Often there is no need to operate on multiline string mode, as with the help of text blocks it is possible to express very complicated matching expressions.
 
-    However as long as talk about perl expressions and generators it is convininet to use multiline code here. It is possible with a `\` delimiters:
+However as long as talk about perl expressions and generators it is convininet to use multiline code here. It is possible with a `\` delimiters:
 
         # this is a generator
         # with multiline code
@@ -606,50 +599,12 @@ files in order, so settings defined at last found ini files wins.
     | curent working direcroy/swat.my  file  | 4           |
     | environment variables                  | 5           |
 
-# Hooks
+# Swat story hooks
 
-Hooks are extension points you may implement to hack into swat compile / runtime workflow. There are two types of hooks:
+Hooks are extension points you may implement to hack into swat runtime phase.  Hooks are resourse specific, that means that hooks are required as perl files _in the beginning/end of a swat story ( Test::Harness file )_. Hooks should be located at \`resourse directory' and named \`hook.pm'. Here is example:
 
-- Perl hooks
-- Bash Hooks
-
-## Perl hooks
-
-Perl hooks are files with perl code \`required\` _in the beginning/end of a swat test_. There are four types of perl hooks:
-
-- **project based perl startup hook**
-
-    File located at `$project_root_directory/hook.pm`.
-
-    Project based startup hooks are \`required\` _in the beginning_ of a swat test and applied for every route in project
-    and thus could be used for _project initialization_ procedures.
-
-    For example one could define common generators here:
-
-        # place this in hook.pm file:
-        sub list1 { | %w{ foo bar baz } | }
-        sub list2 { | %w{ red green blue } | }
-
-
-        # now we could use it in swat data file
-        generator:  list()
-        generator:  list2()
-
-- **project based perl cleanup hook**
-
-    File located at `$project_root_directory/cleanup.pm`.
-
-    This hooks is similar to startup hook but \`required\` _in the end_ of a swat test.
-
-- **route based perl startup hooks**
-
-    Files located at `$route_directory/hook.pm`.
-
-    Routes based startup hooks are applied for every route in project and thus could be used for _route initialization_ procedures.
-
-    For example one could define route specific generators here:
-
-        # place this in hook.pm file:
+        # place this in hook.pm file
+        # one could define some generators here:
         # notices that we could tell GET from POST http methods here
         # using predefined $method variable
 
@@ -668,67 +623,28 @@ Perl hooks are files with perl code \`required\` _in the beginning/end of a swat
         }
 
 
-        # now we could use it in swat data file
+        # now we could use it in swat check list
         generator:  list()
 
-- **route based perl cleanup hooks**
 
-    Files located at `$route_directory/cleanup.pm`.
+## Predefined hook variables
 
-    This hooks is similar to route based startup hooks but \`required\` _in the end_ of a swat test.
-
-## Bash hooks
-
-Similar to perl hooks bash hooks are just a bash files \`sourced\` _before compilation_ of a swat test.
-
-There are 4 types of bash hooks:
-
-- **project based bash hook**
-
-    File located at `$project_root_directory/hook.bash`.
-
-    Project based bash hooks are applied for every route in project and could be used for _project initialization_ procedures.
-
-- **route based bash hooks**
-
-    Files located at `$project_root_directory/$route_directory/hook.bash`.
-
-    Routes based bash hooks are route specific hooks and could be used for _route initialization_ procedures.
-
-- **global startup bash hook**
-
-    File located at `$project_root_directory/startup.bash`.
-
-    Startup hook is executed before swat tests gets compiled, at the very beginning, at could be used for _global initialization_ procedures.
-
-- **global cleanup bash hook**
-
-    File located at `$project_root_directory/cleanup.bash`.
-
-    Cleanup hook is executed _after swat tests are executed_, at the very end, and could be used for _global cleanup_ procedures.
-
-It is important to note that bash hooks are executed _after swat settings merge done_ , see  ["Swat Settings"](#swat-settings) section to get more
-about swat settings.
-
-## Predefined variables
-
-List of variables one may rely upon when writing perl/bash hooks:
+List of variables one may rely upon when writing perl hooks:
 
 - **http\_url**
 - **curl\_params**
-- **http\_meth** - `GET|POST|HEAD`
+- **http\_meth**
 - **route\_dir**
 - **project**
 
-Another important thing about check lists is that internally they are represented as Test::More asserts:
 
 # Swat runner workflow
 
-This is detailed plan how swat runner execute swat test stories.
+This is detailed explanation of how swat runner compiles and then executes swat test stories.
 
 ## Swat to Test::Harness compilation
 
-Swat parses swat stories and then creates a Test::Harness files to be executed recursively by the prove.
+One important thing about check lists is that internally they are represented as Test::More asserts. Swat parses swat stories and then creates a Test::Harness files to be executed recursively by the prove.
 
 Let's have 3 swat stories:
 
@@ -792,26 +708,11 @@ See also ["Prove settings"](#prove-settings) section.
 
 Swat is shipped as cpan package, once it's installed ( see ["Install"](#install) section ) you have a command line tool called **swat**, this is usage info on it:
 
-    swat <project_root_dir|swat_package> <host:port> <prove settings>
+    swat <project_root_dir> <host:port> <prove settings>
 
 - **host** - is base url for web application you run tests against, you also have to define swat routes, see DSL section.
 - **project\_dir** - is a project root directory
-- **swat\_package** - the name of swat package, see ["Swat Packages"](#swat-packages) section
 
-## Default Host
-
-Sometimes it is helpful to not setup host as command line parameter but define it at $project\_root/host file. For example:
-
-    # let's create a default host for foo/bar project
-
-    $ cat foo/bar/host
-    foo.bar.com
-
-    $ swat foo/bar/ # will run tests for foo.bar.com
-
-## Debugging
-
-set `swat_debug` environment variable to 1
 
 ## Prove settings
 
@@ -820,6 +721,10 @@ Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for v
 Default value for prove options is  `-v`. Here is another examples:
 
 - `-q -s` -  run tests in random and quite mode
+
+## Debugging
+
+set `swat_debug` environment variable to 1
 
 # Examples
 
