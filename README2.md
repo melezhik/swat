@@ -203,15 +203,16 @@ Swat checks http response and determine if it matches to the _expressions_ from 
     HELLO matches
     regexp: \d\d\d\d-\d\d-\d\d matches
 
-Every expession is just a line of text to represent what is expected to get in response.
-Note, that swat does not care about how many times a given expression is matched by response, for test will pass it should match at least one time.
-
-However it is possible to accumulate all matching lines for further processing, see the ["captures"](#captures) section.
+In most cases every expession is just a line of text to represent what is expected to get in response. There are also other types of expressions - perl expressions and generators, they will be descrabed later.
 
 
-Now let's get back to DSL for describing check list. 
+Ok, let's start with a check expressions.
 
-Every item of check list is _string_ might represent different things:
+## Check expressions
+
+Note, that swat does not care about how many times a given check expression is matched by response, for test will pass it should match at least one time. However it is possible to accumulate all matching lines for further processing, see the ["captures"](#captures) section.
+
+Actually there are two type of swat check expressions - plain strings and regular expressions. It's also conventient to say here about comments and blank lines.
 
 - **plain string**
 
@@ -267,7 +268,7 @@ Every item of check list is _string_ might represent different things:
             :blank_line
         end:
 
-- **matching text blocks**
+- **text blocks**
 
     Sometimes it is very helpful to match a response against a `block of strings` goes consequentially, like here:
 
@@ -313,7 +314,8 @@ Every item of check list is _string_ might represent different things:
         and till the very end of test
         we are in `text block` mode
 
-- **perl expressions**
+## Perl expressions
+
 
     Perl expressions are just a pieces of perl code to _get evaled_ inside your swat story. This is how it works:
 
@@ -322,9 +324,9 @@ Every item of check list is _string_ might represent different things:
         code: print "hello world"
         That's OK
 
-    The piece of code above will be processed in two phases according to ["Swat to Test::Harness Compilation"](#swat-to-test-harness-compilation) specification:
+    The piece of code above will be processed in two phases according to ["Swat runner  workflow"](#swat-runner-workflow) specification:
 
-    First swat converts swat story into Test::Harness test, and adds eval "{code}" line into it:
+    First swat converts swat story into Test::Harness test, and then adds eval "{code}" line into it:
 
         ok($status,"response matches 200 OK");
         eval 'print "hello world"';
@@ -334,8 +336,8 @@ Every item of check list is _string_ might represent different things:
 
     The example with 'print "hello world"' is quite meanignless, there are of course more effective ways how you code use perl expressions in your swat stories.
 
-    One of the obvious way to use swat perl expressions is too call Test::More functions to adjust execution phase logic:
-    ( dependency of Test::More module is already here and need not to be \`used' )
+    One of the obvious thing is to call Test::More functions to adjust swat execution phase logic:
+    ( dependency on Test::More module is already done and need not to be \`used' )
 
         # skip tests
         code: skip('next 3 checks are skipped',3) # skip three next checks forever
@@ -359,10 +361,11 @@ Every item of check list is _string_ might represent different things:
         number:two
         number:three
 
-    As you may noticed perl expressions are executed in a _string eval_ manner, please be aware of this.
+    As you may noticed perl expressions are executed in a _string eval_ way, please be aware of this.
     Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get know about perl eval function restrictions.
 
-- **generators**
+## Generators
+
 
     Swat generators is the way to _create swat check lists  on the fly_. Swat generators like perl expressions is just a piece of perl code 
     executed the same way. The only difference with perl expressions is that swat generators code should return _an array reference_.
