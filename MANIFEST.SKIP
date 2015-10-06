@@ -9,3 +9,5 @@ blib
 \.tmp
 swat-.*\.gz
 swat\.my
+^MYMETA\.
+^Makefile$
