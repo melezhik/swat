@@ -623,11 +623,11 @@ According to settings priority table project_root_directory/swat.ini will win an
 
 and 
 
-    curl_params="$curl_params -H 'Bar: Baz'"` # in a project_root_directory/swat.ini 
+    curl_params="$curl_params -H 'Bar: Baz'" # in a project_root_directory/swat.ini 
     
 This will result in `"-H 'Foo: Bar' -H 'Bar: Baz'"` value for $curl_param variable
 
-## Defautl values
+## Default values
 
 One also may define a default value for swat variable which will be set only if has not been set by  _previously_ applied swat ini files:
 
@@ -647,9 +647,9 @@ Hooks are extension points you may implement to hack into swat runtime phase.  H
 
             my $list;
 
-            if ($method eq 'GET') {
+            if ($http_method eq 'GET') {
                 $list = | %w{ GET_foo GET_bar GET_baz } |
-            }elsif($method eq 'POST'){
+            }elsif($http_method eq 'POST'){
                 $list = | %w{ POST_foo POST_bar POST_baz } |
             }else{
                 die "method $method is not supported"
