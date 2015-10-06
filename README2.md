@@ -607,10 +607,32 @@ files in order, so settings defined at last found ini files wins.
     | curent working direcroy/swat.my  file  | 4           |
     | environment variables                  | 5           |
 
+## Merge settings
 
-What happnes if you defined the same swat varibale twice? Say you have: `curl_params="-H 'Foo: Bar'"` in a ~/swat.ini and have `curl_params="-H 'Bar: Baz'"` in a project_root_directory/swat.ini ?
+What happnes if you defined the same swat varibale twice? Say you have: 
 
-According to settings priority table project_root_directory/swat.ini will win and resulted value for curl_params will be "-H 'Bar: Baz'"
+    curl_params="-H 'Foo: Bar'" # in a ~/swat.ini 
+
+and 
+
+    curl_params="-H 'Bar: Baz'" # in a project_root_directory/swat.ini 
+
+According to settings priority table project_root_directory/swat.ini will win and resulted value for curl_params will be `"-H 'Bar: Baz'"`. This is probably you don't want. As swat ini files are just a bash scripts, you may levegare a common bash way to achieve merging:
+
+    curl_params="-H 'Foo: Bar'" # in a ~/swat.ini 
+
+and 
+
+    curl_params="$curl_params -H 'Bar: Baz'"` # in a project_root_directory/swat.ini 
+    
+This will result in `"-H 'Foo: Bar' -H 'Bar: Baz'"` value for $curl_param variable
+
+## Defautl values
+
+One also may define a default value for swat variable which will be set only if has not been set by  _previously_ applied swat ini files:
+
+    port=${port:=80} # in a ~/swat.ini 
+
 
 # Swat story hooks
 
