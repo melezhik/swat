@@ -12,6 +12,7 @@ requires    'Test::Harness';
 requires    'File::ShareDir'; 
 requires    'File::Temp';
 license     'perl';
+repository  'https://github.com/melezhik/swat';
 
 install_script 'bin/swat';
 no_index    directory => 'examples';
