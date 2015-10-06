@@ -5,16 +5,21 @@ Web automated testing framework.
 # Description
 
 - Swat is a powerful and yet simple and flexible tool for rapid web automated testing development.
+
 - Swat is a web applicaton oriented test framework, this means that it equipes you with nothing more than you need
 to automatcaly test your web application, it is light weighted  and easy to use tool not burdened by many other "generic" things that you probably won't ever use.
+
 - Swat does not carry all heavy load on it's shoulder, with the help of it's "older brother" - curl
 swat makes a http requests in a smart way. This means if you know and love curl swat might be easy way to go.
 Swat just passes all curl related parameter as is to curl and let curl do it's job.
+
 - Swat is text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does
 not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep
 in old good unix way. Does this sound suspiseosly simple? Sometimes most of things could be tested in a simple way.
+
 - Swat is extendable by adding custom perl code, this is where you may add deisred complexity to your test stories.
-- And finally swat relies on prove as internal test runner, this has many, many good results:
+
+- And finally swat relies on prove as internal test runner - this has many, many good results:
     - swat transparently pass all it's arguments to prove which make it simple to adjust swat runner behavior in a prove way
     - swat tests might be easily embedded as unit tests into a cpan distributions.
     - test reports are emitted in a TAP format which is portable and easy to read.
@@ -872,7 +877,7 @@ https://github.com/melezhik/swat
 
 # Thanks
 
-To the authors of ( see list ) without who swat would not appear to light
+To the authors of ( see list ) without who swat would not appear to light 
 
 - perl
 - curl
