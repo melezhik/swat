@@ -673,6 +673,7 @@ You should named your hook file as \`hook.pm' and place it into \`resource' dire
 There are lot of reasons why you might need a hooks. To say a few:
 
 - create swat generators
+- redefine http responses ( see later )
 - redefine http resources ( see later )
 - call swat modules ( see later )
 - other custom code 
@@ -680,15 +681,32 @@ There are lot of reasons why you might need a hooks. To say a few:
 
 # Hooks API
 
-TODO:
+Swat hooks have API to dynamicly changes some swat objects.
+
+## Redefine http responses
+
+*set_server_response(STRING)*
+
+This is helpful feature when you need to mock up http responses instead of having them requested from a real web application.
+For example in absense of an access to a tested application or if response is too slow or it involves too much data 
+which make it hard to execute a swat stories often. 
+
+This is an example of setting server response inside swat hook:
+
+    # hook.pm
+    set_server_response("THIS IS I FAKE \n HELLO WORLD");
+
+    # get.txt
+    THIS IS FAKE
+    HELLO WORLD
+
+
+
 
 ## Redefine http resouces
 
 TODO:
 
-## Redefine http responses
-
-TODO:
 
 # Swat modules
 
