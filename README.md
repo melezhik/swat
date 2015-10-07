@@ -716,9 +716,9 @@ Swat parse every story and the creates a perl test file for it:
 
     # user/get.t
     SKIP {
-        ok($status,'response matches 200 OK'); # will pass if response includes string '200 OK'
-        ok($status,'response matches name: \w+'); # will pass if response has strings matched to /name: \w+/ regexp
-        ok($status,'response matches age: \d+'); # etc
+        ok($status,'response matches 200 OK'); 
+        ok($status,'response matches name: \w+');
+        ok($status,'response matches age: \d+');
     }
 ```    
      
