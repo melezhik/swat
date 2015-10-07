@@ -1,361 +1,493 @@
 # SYNOPSIS
 
-SWAT is Simple Web Application Test ( Tool )
+Web automated testing framework.
 
-    $  swat examples/google/ google.ru
-    /home/vagrant/.swat/reports/google.ru/00.t ..
-    # start swat for google.ru/
-    # try num 2
-    ok 1 - successful response from GET google.ru/
-    # data file: /home/vagrant/.swat/reports/google.ru/content.GET.txt
-    ok 2 - GET / returns 200 OK
-    ok 3 - GET / returns Google
-    1..3
-    ok
-    All tests successful.
-    Files=1, Tests=3, 12 wallclock secs ( 0.00 usr  0.00 sys +  0.02 cusr  0.00 csys =  0.02 CPU)
-    Result: PASS
+# Description
 
-# WHY
+- Swat is a powerful and yet simple and flexible tool for rapid web automated testing development.
 
-I know there are a lot of test tools and frameworks, but let me  briefly tell _why_ I created swat.
-As devops, I update dozens of web application weekly, sometimes I just have _no time_ to sit and wait, 
-while dev guys or QA team ensure that deployment is fine and nothing breaks on the road. 
-So I need a **tool to run smoke tests against web applications**. 
-Not just a tool, but the way to **create such tests from scratch in a way that's easy and fast enough**. 
+- Swat is a web application oriented test framework, this means that it equips you with all you need for a web test development 
+and yet it's not burdened by many other "generic" things that you probably won't ever use.
 
-So this is how I came up with the idea of swat. 
+- Swat does not carry all heavy load on it's shoulders, with the help of it's "elder brother" - curl 
+swat makes a http requests in a smart way. This means if you know and love curl swat might be easy way to go.
+Swat just passes all curl related parameter as is to curl and let curl do it's job.
 
-# Key features
+- Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does
+not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep
+in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
 
-SWAT:
+- Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories.
 
-- is a very pragmatic tool, designed for the job to be done in a fast and simple way
-- has simple and yet flexible DSL with low price mastering ( see my tutorial )
-- produces [TAP](https://testanything.org/) output
-- leverages famous [perl prove](http://search.cpan.org/perldoc?prove) and [curl](http://curl.haxx.se/) utilities
+- And finally swat relies on prove as internal test runner - this has many, many good results:
+
+    - swat transparently passes all it's arguments to prove which makes it simple to adjust swat runner behavior in a prove way
+    - swat tests might be easily embedded as unit tests into a cpan distributions.
+    - test reports are emitted in a TAP format which is portable and easy to read.
+
+Ok, now I hope you are ready to dive into swat tutorial! :)
 
 # Install
 
-Swat relies on curl utility to make http requests. Thus first you need to install curl:
-
     $ sudo apt-get install curl
+    $ sudo cpanm swat
 
-Also swat client is a bash script so you need bash. 
+Or install from source:
 
-Then you install swat cpan module:
-
-    sudo cpan install swat
-
-## Install from source
-
-    # useful for contributors
+    # useful for contributors and developers
     perl Makefile.PL
     make
     make test
     make install
 
-# Swat mini tutorial
+# Write your swat story 
 
-For those who love to make long story short ...
+Swat test stories always answers on 2 type of questions:
 
-## Create tests
+- _What kind of_ http request should be send.
+- _What kind of_ http response should be received.
 
-    mkdir  my-app/ # create a project root directory to contain tests
+As swat is a web test oriented tool it deals with some http related stuff as:
 
-    # define http URIs application should response to
+- http methods
+- http resources 
+- http responses
 
-    mkdir -p my-app/hello # GET /hello
-    mkdir -p my-app/hello/world # GET /hello/world
+Swat leverages unix file system to build an _analogy_ for these things:
 
-    # define the content to return by URIs
+## HTTP Resources
 
-    echo 200 OK >> my-app/hello/get.txt
-    echo 200 OK >> my-app/hello/world/get.txt
+_HTTP resource is just a directory_. You have to create a directory to define a http resource:
 
-    echo 'This is hello' >> my-app/hello/get.txt
-    echo 'This is hello world' >> my-app/hello/world/get.txt
+    mkdir foo/
+    mkdir -p bar/baz
 
-## Run tests
+This code defines two http resources for your application - 'foo/' and 'bar/baz'
 
-    swat ./my-app http://127.0.0.1
+## HTTP methods
 
-# DSL
+_HTTP method is just a file_. You have to create a file to define a http method.
 
-Swat DSL consists of 2 parts. Routes and Swat Data.
+    touch foo/get.txt
+    touch foo/put.txt
+    touch bar/baz/post.txt
 
-## Routes
+Obviously \`http methods' files should be located at \`http resource' directories.
 
-Routes are http resources a tested web application should have.
+The code above defines a three http methods for two http resources:
 
-Swat utilize file system to get know about routes. Let we have a following project layout:
+    - GET /foo
+    - PUT /foo
+    - POST bar/baz
 
-    example/my-app/
-    example/my-app/hello/
-    example/my-app/hello/get.txt
-    example/my-app/hello/world/get.txt
+Here is the list of _predefined_ file names for a http methods files:
 
-When you give swat a run
+    get.txt --> GET method
+    post.txt --> POST method
+    put.txt --> PUT method
+    delete.txt --> DELETE method
 
-    swat example/my-app 127.0.0.1
+# Hostname / IP Address
 
-It will find all the _directories with get.txt or post.txt or put.txt files inside_ and "create" routes:
+You need to define hostname or ip address to send request to. Just write it up to a special file  called \`host' and swat will use it.
 
-    GET hello/
-    GET hello/world
+    echo 'app.local' > host
 
-It is possible to run a subset of swat tests using a `test_file` variable:
+As swat makes http requests with the help of curl, the host name should be complaint with curl requirements, this
+for example means you may define a http schema or port here:
 
-    # run a single `hello/world/get.txt' test
-    test_file=example/my-app/hello/world/get.txt swat example/my-app 127.0.0.1
+    echo 'https://app.local' >> host
+    echo 'app.local:8080' >> host
 
-    # the same as above but in less precise maner:
-    test_file=example/my-app/hello/world/ swat example/my-app 127.0.0.1
+## HTTP Response
 
-    # run all `hello' tests:
-    test_file=example/my-app/hello/ swat example/my-app 127.0.0.1
+Swat makes request to a given http resources with a given http methods and then validates a response. 
+Swat does this with the help so called _check lists_, Check lists are defined at \`http methods' files.
 
-Ok, when we are done with routes we need to setup swat data.
 
-## Swat data
+Check list is just a list of expressions a response should match. It might be a plain strings or regular expressions:
 
-Swat data is DSL to describe/generate validation checks you apply to content returned from web application.
+    echo 200 OK > foo/get.txt
+    echo 'Hello I am foo' >> foo/get.txt
 
-Swat data is stored in swat data files, named get.txt or post.txt or put.txt. 
+The code above defines two checks for response from \`GET /foo':
 
-The validation process looks like:
+    - it should contain "200 OK"
+    - it should contain "Hello I am foo"
 
-- Swat recursively find files named **get.txt** or **post.txt** or **put.txt** in the project root directory to get swat data.
-- Swat parse swat data file and _execute_ entries found. At the end of this process swat creates a _final check list_ with 
-["Check Expressions"](#check-expressions).
-- For every route swat makes http requests to web application and store content into text file 
-- Every line of text file is validated by every item in a _final check list_
+You may add some regular expressions checks as well:
 
-_Objects_ found in test data file are called _swat entries_. There are _3 basic type_ of swat entries:
+    # for example check if we got something like 'date':
+    echo 'regexp: \d\d\d\d-\d\d-\d\d' >> foo/get.txt
 
-- Check Expressions
-- Comments
-- Perl Expressions and Generators
+# Bringing all together
 
-### Check Expressions
+All these things http method, http resource and check list comprise into essential swat entity called a _swat story_.
 
-This is most usable type of entries you  may define at swat data file. _It's just a string should be returned_ when swat request a given URI. Here are examples:
+Swat story is a very simple test plan, which could be expressed in a cucumber language as follows:
 
+    Given I have web application 'http://my.cool.app:80'
+    And I have http method 'GET'
+    And make http request 'GET /foo'
+    Then I should have response matches '200 OK'
+    And I should have response matches 'Hello I am foo'
+    And I should have response matches '\d\d\d\d-\d\d-\d\d'
+
+From the file system point of view swat story is a:
+
+- http method - the \`http method' file
+- http resource - the directory where \`http method file' located in
+- check list - the content of a \`http method' file
+
+## Swat Project
+
+Swat project is a bunch of a related swat stories kept under a single directory. This directory is called _project root directory_.
+The project root directory name does not that matter, swat just looks up swat story files into it and then "execute" them.
+See [swat runner workflow](#swat-runner-workflow) section for full explanation of this process.
+
+This is an example swat project layout:
+
+    $ tree my/swat/project
+      my/swat/project
+      |--- host
+      |----FOO
+      |-----|----BAR
+      |           |---- post.txt
+      |--- FOO
+            |--- get.txt
+
+    3 directories, 3 files
+
+When you ask swat to execute swat stories you have to point it a project root directory or \`cd' to it and run swat without arguments:
+
+    swat my/swat/project
+
+    # or
+
+    cd my/swat/project && swat
+
+Note, that project root directory path will be removed from http resources paths during execution:
+
+    - GET FOO
+    - POST FOO/BAR
+
+Use \`test_file' variable to execute a subset of swat stories:
+
+    # run a single story
+    test_file=FOO/get swat example/my-app 127.0.0.1
+
+    # run all `FOO/*' stories:
+    test_file=FOO/ swat example/my-app 127.0.0.1
+
+Test\_file variable should point to a resource(s) path and be relative to project root dir, also it should not contain extension part - \`.txt'
+
+
+Let's describe swat DSL for check lists expressions.
+
+# Check lists
+
+So, swat check list is list of check expressions, indeed not only check expressions, there are some - comments, 
+blank lines, text blocks , perl expressions and generators we will talk about it later.
+
+Let's start with check expressions.
+
+
+## Check expressions
+
+Swat check expressions declares _what should be_ in a response: 
+
+    # http response
     200 OK
-    Hello World
-    <head><title>Hello World</title></head>
-
-Using regexps.
-
-Regexps are check expressions with the usage of &lt;perl regular expressions> instead of plain strings checks.
-Everything started with `regexp:` marker would be treated as perl regular expression.
-
-    # this is example of regexp check
-    regexp: App Version Number: (\d+\.\d+\.\d+)
-
-### Comments
-
-Comments entries are lines started with `#` symbol, swat will ignore comments when parse swat data file. Here are examples.
-
-    # this http status is expected
-    200 OK
-    Hello World # this string should be in the response
-    <head><title>Hello World</title></head> # and it should be proper html code
-
-### Blank lines
-
-Blank lines found swat data files are ignored. You may use any of them just to improve readability:
-
-    # check http header
-    200 OK
-    # then 2 blank lines
-
-
-    # then another check
+    HELLO
     HELLO WORLD
-    
+    My birth day is: 1977-04-16
 
-... But you **can't ignore** blank lines in a `text block matching` context ( see next section ), use `:blank_line` marker to match blank lines:
 
-       # :blank_line marker matches blank lines
-       # this is especially useful 
-       # when match in text blocks context:
+    # check list
+    200 OK
+    HELLO
+    regexp: \d\d\d\d-\d\d-\d\d
 
-       begin:
-           this line followed by 2 blank lines
-           :blank_line
-           :blank_line
-       end:
-    
 
-### Matching text blocks
+    # swat output
+    200 OK matches
+    HELLO matches
+    regexp: \d\d\d\d-\d\d-\d\d matches
 
-Sometimes it is very helpful match a content _not against a single string_, but against a `block of strings` goes consequentially, like here:
 
-    # this text block
-    # consists of 5 strings 
-    # goes consequentially 
-    # line by line:
 
-    begin:
-        # plain strings
+There are two type of check expressions - plain strings and regular expressions. 
+
+** plain string **
+
+        200 OK
+        HELLO SWAT
+        
+
+The code above declares that http response should have lines matches to '200 OK' and 'HELLO SWAT'.
+
+- ** regular expression **
+
+Similarly to plain strings, you may ask swat to check if http response has a lines matching to a regular expressions:
+
+        regexp: \d\d\d\d-\d\d-\d\d # date in format of YYYY-MM-DD
+        regexp: 20\d # successful http status 200, 201 etc
+        regexp: App Version Number: \d+\.\d+\.\d+ # version number
+
+Regular expression should start with \`regexp:' marker.
+ 
+You may use \`(,)' symbols to capture subparts of matching strings, the captured chunks will be saved and could be used further, 
+
+- ** captures **
+
+Note, that swat does not care about how many times a given check expression is matched by response, 
+swat "assumes" it at least should be matched once. However swat is able to accumulate 
+all matching lines and save them for further processing, just use \`(,)' symbols to capture subparts of matching strings:
+
+        regexp: Hello, my name is (\w+)
+
+See ["captures"](#captures) section for full explanation of a swat captures:
+
+
+## Comments, blank lines and text blocks 
+
+- **comments**
+
+    Comment lines start with \`#' symbol, swat ignore comments chunks when parse swat stories
+
+        # comments could be represented at a distinct line, like here
+        200 OK
+        Hello World # or could be added to existed matchers to the left, like here
+
+- **blank lines**
+
+    Blank lines are ignored. You may use blank lines to improve code readability:
+
+        # check http header
+        200 OK
+        # then 2 blank lines
+
+
+        # then another check
+        HELLO WORLD
+
+But you **can't ignore** blank lines in a \`text block matching' context ( see \`text blocks' subsection ), use \`:blank_line' marker to match blank lines:
+
+        # :blank_line marker matches blank lines
+        # this is especially useful
+        # when match in text blocks context:
+
+        begin:
+            this line followed by 2 blank lines
+            :blank_line
+            :blank_line
+        end:
+
+- **text blocks**
+
+Sometimes it is very helpful to match a response against a \`block of strings' goes consequentially, like here:
+
+        # this text block
+        # consists of 5 strings
+        # goes consequentially
+        # line by line:
+
+        begin:
+            # plain strings
+            this string followed by
+            that string followed by
+            another one
+            # regexps patterns:
+        regexp: with (this|that)
+            # and the last one in a block
+            at the very end
+        end:
+
+This check list will succeed when gets executed against this chunk:
+
         this string followed by
         that string followed by
-        another one
-        # regexps patterns:
-    regexp: with (this|that)
-        # and the last one in a block
-        at the very end
-    end: 
+        another one string
+        with that string
+        at the very end.
 
-This test will pass when running against this chunk:
+But **will not** for this chunk:
 
-    this string followed by
-    that string followed by
-    another one string
-    with that string
-    at the very end.
+        that string followed by
+        this string followed by
+        another one string
+        with that string
+        at the very end.
 
-But **won't** pass for this chunk:
+\`begin:' \`end:' markers decorate \`text blocks' content. \`:being|:end' markers should not be followed by any text at the same line.
 
-    that string followed by
-    this string followed by
-    another one string
-    with that string
-    at the very end.
+Also be aware if you leave "dangling" \`begin:' marker without closing \`end': somewhere else 
+swat will remain in a \`text block' mode till the end of your swat story, which is probably not you want:
 
-`begin:` `end:` markers decorate \`text blocks\` content. Markers should not be followed by any text at the same line.
+        begin:
+            here we begin
+            and till the very end of test
+            we are in `text block` mode
 
-Also be aware if you leave "dangling" begin: marker without closing end: somewhere else this will
-result in \`text block\` mode till the end of your test, which is probably not you want:
+## Perl expressions
 
-    begin:
-    here we begin
-    and till the very end of test
-    we are in `text block` mode    
+Perl expressions are just a pieces of perl code to _get evaled_ inside your swat story. This is how it works:
 
-### Perl Expressions
-
-Perl expressions are just a pieces of perl code to _get evaled_ by swat when parsing test data files.
-
-Everything started with `code:` marker would be treated by swat as perl code to execute.
-There are a _lot of possibilities_! Please follow [Test::More](https://metacpan.org/pod/search.cpan.org#perldoc-Test::More) documentation to get more info about useful function you may call here.
-
-    code: skip('next test is skipped',1) # skip next check forever
-    HELLO WORLD
+        # this is my swat story
+        200 OK
+        code: print "hello world"
+        That's OK
 
 
-    code: skip('next test is skipped',1) unless $ENV{'debug'} == 1  # conditionally skip this check
-    HELLO SWAT
+First swat converts swat story into perl code with eval "{code}" chunk added into it, this is called compilation phase:
 
-### Generators
+        ok($status,"response matches 200 OK");
+        eval 'print "hello world"';
+        ok($status,"content matches That's OK"); # etc
 
-Swat entries generators is the way to _create new swat entries on the fly_. Technically speaking it's just a perl code which should return an array reference:
-Generators are very close to perl expressions ( generators code is also get evaled ) with major difference:
+Then prove execute the code above.
 
-Value returned from generator's code should be  array reference. The array is passed back to swat parser so it can create new swat entries from it. 
+Follow ["Swat runner  workflow"](#swat-runner-workflow) to know how swat compile stories into a perl code.
 
-Generators entries start with `:generator` marker. Here is example:
+Anyway, the example with 'print "hello world"' is quite useless, there are of course more effective ways how you code use perl expressions in your swat stories.
 
-    generator: [ qw{ foo bar baz } ]
+One of useful thing you could with perl expressions is to call some Test::More functions to modify test workflow:
 
-This generator will generate 3 swat entries:
+        # skip tests
 
-    foo
-    bar
-    baz
+        code: skip('next 3 checks are skipped',3) # skip three next checks forever
+        color: red
+        color: blue
+        color: green
 
-As you can guess an array returned by generator should contain _perl strings_ representing swat entries, here is another example:
-with generator producing still 3 swat entities 'foo', 'bar', 'baz' :
+        number:one
+        number:two
+        number:three
 
-    generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d  ] 
+        # skip tests conditionally
 
-This generator will generate 3 swat entities:
+        color: red
+        color: blue
+        color: green
 
-    # foo
-    foo value
-    # bar
-    bar value
+        code: skip('numbers checks are skipped',3)  if $ENV{'skip_numbers'} # skip three next checks if skip_numbers set 
 
-There is no limit for you! Use any code you want with only requirement - it should return array reference. 
-What about to validate web application content with sqlite database entries?
+        number:one
+        number:two
+        number:three
 
-    generator:                                                          \
-    
-    use DBI;                                                            \
-    my $dbh = DBI->connect("dbi:SQLite:dbname=t/data/test.db","","");   \
-    my $sth = $dbh->prepare("SELECT name from users");                  \
-    $sth->execute();                                                    \
-    my $results = $sth->fetchall_arrayref;                              \
-    
-    [ map { $_->[0] } @${results} ]
 
-As an example take a loot at examples/swat-generators-sqlite3 project
+Perl expressions are executed by perl eval function, please take this into account.
+Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get know more about perl eval.
 
-### Multiline expressions
+## Generators
 
-Sometimes code looks more readable when you split it on separate chunks. When swat parser meets  `\` symbols it postpone entry execution and
-add next line to buffer. This is repeated till no `\` found on next. Finally swat execute _"accumulated"_ swat entity.
 
-Here are some examples:
+Swat generators is the way to _create swat check lists  on the fly_. Swat generators like perl expressions are just a piece of perl code
+with the only difference that generator code should always return _an array reference_.
 
-    # this is a generator
-    # with multiline code
-    generator:                  \
-    my %d = {                   \
-        'foo' => 'foo value',   \
-        'bar' => 'bar value',   \
-        'baz' => 'baz value'    \
-    };                          \
-    [                                               \
-        map  { ( "# $_", "$data{$_}" )  } keys %d   \
-    ]                                               \
+An array returned by generator code should contain check list items, _serialized_ as perl strings.
+New check list items are passed back to swat parser and will be appended to a current check list. Here is a simple example:
 
-    # this is also a generator
-    # with a code consists of many lines
-    generator: [            \
-            map {           \
-            uc($_)          \
-        } qw( foo bar baz ) \
-    ]
+        # original check list
 
-    code:                                                       \
-    if $ENV{'debug'} == 1  { # conditionally skip this check    \
-        skip('next test is skipped',1)                          \ 
-    } 
-    HELLO SWAT
+        200 OK
+        HELLO
+        
+        # this generator generates plain string check expressions:
+        # new items will be appended into check list
 
-Multiline expressions are only allowable for perl expressions and generators.
+        generator: [ qw{ foo bar baz } ]
 
-### Generators and Perl Expressions Scope
 
-Swat uses _perl string eval_ when process generators and perl expressions code, be aware of this. 
-Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get more on this.
+        # final check list:
 
-### PERL5LIB
+        200 OK
+        HELLO
+        foo
+        bar
+        baz
 
-Swat adds **$project\_root\_directory/lib** to PERL5LIB , so this is convenient convenient to place here custom perl modules:
+Generators expressions start with \`:generator' marker. Here is more example:
 
-    example/my-app/lib/Foo/Bar/Baz.pm
+        # this generator generates comment lines 
+        # and plain string check expressions:
 
-Take a look at examples/swat-generators-with-lib/ for working example
+        generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d ]
 
-### Captures
 
-Captures are pieces of data get captured when swat match content against check expressions using _regexps_:
+        # final check list:
 
-    # here is content returned.
-    # it is just my family ages.
+            # foo
+            foo value
+            # bar
+            bar value
+
+Note about **PERL5LIB**. 
+
+Swat adds \`project_root_directory/lib' path to PERL5LIB path, so you may perl modules here and then \`use' them:
+
+        my-app/lib/Foo/Bar/Baz.pm
+
+        # now it is possible to use Foo::Bar::Baz
+        code: use Foo::Bar::Baz; # etc ...
+
+- **multiline expressions**
+
+As long as swat deals with check expressions ( both plain strings or regular expressions ) it works in a single line mode, 
+that means that check expressions are single line strings and response is checked in line by line way:
+
+           # swat story
+           Multiline
+           string
+           here    
+           regexp: Multiline \n string \n here    
+
+           # http response
+           Multiline \n string \n here
+           
+        
+           # swat output
+           "Multiline" matched
+           "string" matched
+           "here" matched
+           "Multiline \n string \n here" not matched
+
+
+Use text blocks instead if you want to achieve multiline checks.
+
+However when writing perl expressions or generators one could use multilines there.  \`\' delimiters breaks a single line text on a multi lines:
+
+
+        # What about to validate response
+        # With sqlite database entries?
+
+        generator:                                                          \
+
+        use DBI;                                                            \
+        my $dbh = DBI->connect("dbi:SQLite:dbname=t/data/test.db","","");   \
+        my $sth = $dbh->prepare("SELECT name from users");                  \
+        $sth->execute();                                                    \
+        my $results = $sth->fetchall_arrayref;                              \
+
+        [ map { $_->[0] } @${results} ]
+
+
+# Captures
+
+Captures are pieces of data get captured when swat checks response with regular expressions:
+
+    # here is response data.
+    # it's my family ages.
     alex    38
     julia   25
     jan     2
-    
-    
-    # here is swat data
 
+
+    # let's capture name and age chunks
     regexp: /(\w+)\s+(\d+)/
 
-A check expression above will result in a captured data as perl array reference:
+_After_ this regular expression check gets executed captured data will stored into a array:
 
     [
         ['alex',    38 ]
@@ -363,38 +495,35 @@ A check expression above will result in a captured data as perl array reference:
         ['jan',     2  ]
     ]
 
-Now captures might be accessed by code generators to get some extra checks:
+Then captured data might be accessed for example by code generator to define some extra checks:
 
     code:                               \
     my $total=0;                        \
     for my $c (@{captures()}) {         \
-        $total+=$c->[0];                \         
+        $total+=$c->[0];                \
     }                                   \
     cmp_ok( $total,'==',72,"total age of my family" );
-    
 
-Thus perl expressions and code generators access captures data calling `captures()` function.
-
-Captures() returns an array reference holding all data captured during _latest regexp check_.
+\`captures()' function is used to access captured data array, it returns an array reference holding all chunks captured during _latest regular expression check_.
 
 Here some more examples:
 
-    # check if output contains numbers
-    # calculate total amount 
-    # it should be greater then ten
+    # check if response contains numbers,
+    # then calculate total amount
+    # and check if it is greater then 10
 
     regexp: (\d+)
     code:                               \
     my $total=0;                        \
     for my $c (@{captures()}) {         \
-        $total+=$c->[0];                \         
+        $total+=$c->[0];                \
     }                                   \
     cmp_ok( $total,'>',10,"total amount is greater than 10" );
 
 
-    # check if output contains lines 
-    # with date formatted as `date: YYYY-MM-DD`
-    # check if first date found is yesterday
+    # check if response contains lines
+    # with date formatted as date: YYYY-MM-DD
+    # and then check if first date found is yesterday
 
     regexp: date: (\d\d\d\d)-(\d\d)-(\d\d)
     code:                               \
@@ -404,423 +533,240 @@ Here some more examples:
     my $yesterday = DateTime->now->subtract( days =>  1 );     \
     cmp_ok( DateTime->compare($dt, $yesterday),'==',0,"first day found is - $dt and this is a yesterday" );
 
-You also may use `capture()` function to get a _first element_ of captures array:
+You also may use \`capture()' function to get a _first element_ of captures array:
 
-    # check if output contains numbers
+    # check if response contains numbers
     # a first number should be greater then ten
 
     regexp: (\d+)
     code: cmp_ok( capture()->[0],'>',10,"first number is greater than 10" );
 
-# Anatomy of swat 
+# Swat ini files
 
-Once swat runs it goes through some steps to get job done. Here is description of such a steps executed in orders
+Every swat story comes with some settings you may define to adjust swat behavior.
+These type of settings could be defined at swat ini files.
 
-## Run iterator over swat data files
+Swat ini files are file called "swat.ini" and located at \`resources' directory:
 
-Swat iterator look for all files named get.txt or post.txt or put.txt under project root directory. Actually this is simple bash find loop.
+     foo/bar/get.txt
+     foo/bar/swat.ini
 
-## Parse swat data file
+The content of swat ini file is the list of variables definitions in bash format:
 
-For every swat data file find by iterator parsing process starts. Swat parse data file line by line, at the end of such a process
-_a list of Test::More asserts_ is generated. Finally asserts list and other input parameters are serialized as Test::More test scenario 
-written into into proper \*.t file.
+    $name=value
 
-## Give it a run by prove
+As swat ini files is bash scripts you may use bash expressions here:
 
-Once swat finish parsing all the swat data files there is a whole bunch of \*.t files kept under a designated  temporary directory,
-thus every swat route maps into Test::More test file with the list of asserts. Now all is ready for prove run. Internally \`prove -r \`
-command is issued to run tests and generate TAP report. That is it.
 
-Below is example how this looks like
+if [ some condition ]; then
+    $name=value
+fi
 
-### project structure
+Following is the list of swat variables you may define at swat ini files, the could be divided on two groups:
 
-    $ tree examples/anatomy/
-    examples/anatomy/
-    |----FOO
-    |-----|----BARs
-    |           |---- post.txt
-    |--- FOOs
-          |--- get.txt
+- **generic settings**
+- **curl parameters**
 
-    3 directories, 2 files
+## generic settings
 
-### swat data files
+Generic settings define swat  basic configuration, like logging mode, prove runner settings, etc. Here is the list:
 
-    # /FOOs 
-    FOO
-    FOO2
-    generator: | %w{ FOO3 FOO4 }|
+- `debug` - set to \`1,2' if you want to see some debug information in output, default value is \`0'.
 
-    # /FOO/BARs
-    BAR
-    BAR2
-    generator: | %w{ BAR3 BAR4 }|
-    code: skip('skip next 2 tests',2);
-    BAR5
-    BAR6
-    BAR7
+- `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is \`500'.
 
-### Test::More Asserts list
+- `swat_debug` - set to \`1' to enable swat debug mode, a lot of low level information will be printed on console, default value is \`0'.
 
-    # /FOOs/0.t
-    SKIP {
-        ok($status, "successful response from GET $host/FOOs") 
-        ok($status, "GET /FOOs returns FOO")
-        ok($status, "GET /FOOs returns FOO2")
-        ok($status, "GET /FOOs returns FOO3")
-        ok($status, "GET /FOOs returns FOO4")
-    }
+- `swat_debug` - run swat in debug mode, default value is \`0`.
 
-    # /FOO/BARs0.t
-    SKIP {
-        ok($status, "successful response from POST $host/FOO/BARs") 
-        ok($status, "POST /FOO/BARs returns BAR")
-        ok($status, "POST /FOO/BARs returns BAR")
-        ok($status, "POST /FOO/BARs returns BAR3")
-        ok($status, "POST /FOO/BARs returns BAR4")
-        skip('skip next 2 tests',2);
-        ok($status, "POST /FOO/BARs returns BAR5")
-        ok($status, "POST /FOO/BARs returns BAR6")
-        ok($status, "POST /FOO/BARs returns BAR7")
-    }
+- `ignore_http_err` - set to \`1' if you want to ignore unsuccessful http codes (! 2\*\*,3\*\* ).
 
-# POST/PUT requests
+- `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings]("#prove-settings") section.
 
-Name swat data file as post.txt (put.txt) to make http POST (PUT) requests.
+## curl parameters
 
-    echo 200 OK >> my-app/hello/post.txt
-    echo 200 OK >> my-app/hello/world/post.txt
+Curl parameters relates to curl client. Here is the list:
 
-You may use curl\_params setting ( follow ["Swat Settings"](#swat-settings) section for details ) to define post data, there are some examples:
+- `try_num` - a number of requests to be send in case curl get unsuccessful return,  similar to curl \`--retry' , default value is \`2'.
 
-- `-d` - Post data sending by html form submit.
+- `curl_params` - additional curl parameters being add to http requests, default value is `""`. Here are some examples:
 
-         # Place this in swat.ini file or sets as env variable:
-         curl_params='-d name=daniel -d skill=lousy'
+             # -d curl parameter
+             curl_params='-d name=daniel -d skill=lousy' # post data sending via form submit.
 
-- `--data-binary` - Post data sending as is.
+             # --data-binary curl parameter
+             curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
 
-         # Place this in swat.ini file or sets as env variable:
-         curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
-         curl_params="${curl_params} -H 'Content-Type: application/json'"
+             # set http header
+             curl_params="-H 'Content-Type: application/json'"
 
-# Swat Settings
 
-Swat comes with settings defined in two contexts:
+Follow curl documentation to get more examples.
 
-- Environment variables ( session settings )
-- swat.ini files ( home directory , project based, route based and custom settings  )
+- `curl_connect_timeout` - maximum time in seconds that you allow the connection to the server to take, follow curl documentation for full explanation.
 
-## Environment variables
+- `curl_max_time` - maximum time in seconds that you allow the whole operation to take, follow curl documentation for full explanation.
 
-Following variables define a proper swat settings.
+- `port`  - http port of tested host, default value is \`80'.
 
-- `debug` - set to `1,2` if you want to see some debug information in output, default value is `0`
-- `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is `500`
-- `swat_debug` - run swat in debug mode, default value is `0`
-- `ignore_http_err` - ignore http errors, if this parameters is off (set to `1`) returned  _error http codes_ will not result in test fails, 
-useful when one need to test something with response differ from  2\*\*,3\*\* http codes. Default value is `0`
-- `try_num` - number of http requests  attempts before give it up ( useless for resources with slow response  ), default value is `2`
-- `curl_params` - additional curl parameters being add to http requests, default value is `""`, follow curl documentation for variety of values for this
-- `curl_connect_timeout` - follow curl documentation
-- `curl_max_time` - follow curl documentation
-- `port`  - http port of tested host, default value is `80`
-- `prove_options` - prove options, default value is `-v`
+## Alternative swat ini files locations
 
-## Swat.ini files
+Swat  try to find swat ini files at these locations ( listed in order )
 
-Swat checks files named `swat.ini` in the following directories
+- **~/swat.ini** - home directory
 
-- **~/swat.ini** - home directory settings
-- **$project\_root\_directory/swat.ini** -  project based settings 
-- **$route\_directory/swat.ini** - route based settings 
-- **$cwd/swat.my** - custom settings 
+- **$project\_root\_directory/swat.ini** -  project root directory
 
-Here are examples of locations of swat.ini files:
-
-     ~/swat.ini # home directory settings 
-     my-app/swat.ini # project based settings
-     my-app/hello/get.txt
-     my-app/hello/swat.ini # route based settings ( route hello )
-     my-app/hello/world/get.txt
-     my-app/hello/world/swat.ini # route based settings ( route hello/world )
-
-Once file exists at any location swat simply **bash sources it** to apply settings.
-
-Thus swat.ini file should be bash file with swat variables definitions. Here is example:
-
-    # the content of swat.ini file:
-    curl_params="-H 'Content-Type: text/html'"
-    debug=1
-    try_num=3
+- **$cwd/swat.my** - custom settings, swat.my should be located at current working directory
 
 ## Settings priority table
 
-This table describes all the settings with priority levels, the settings with higher priority are applied after settings
-with lower priority.
+This table describes all possible locations for swat ini files. Swat try to find swat ini files in order:
 
-    | context                 | location                   | settings type        | priority  level |
-    | ------------------------|--------------------------- | -------------------- | --------------- |
-    | swat.ini file           | ~/swat.ini                 | home directory       |       1         |
-    | swat.ini file           | project root directory     | project based        |       2         |
-    | swat.my  file           | current working directory  | custom settings      |       3         |
-    | swat.ini file           | route directory            | route based          |       4         |
-    | environment variables   | ---                        | session              |       5         |
+    | location                                  | order N     |
+    | --------------------------------------------------------|
+    | ~/swat.ini                                | 1           |
+    | `project_root_directory'/swat.ini         | 2           | 
+    | `http resource' directory/swat.ini file   | 3           |
+    | current working directory/swat.my file    | 4           |
+    | environment variables                     | 5           |
 
-# Settings merge algorithm
 
-Thus swat applies settings in order for every route:
+In case the same variable is defined more than once at swat ini files with different locations, the file loaded last win:
 
-- Home directory settings are applied if exist.
-- Project based settings are applied if exist.
-- Custom settings are applied if exist.
-- Route based settings are applied if exist.
-- And finally environment settings are applied if exist.
+    curl_params="-H 'Foo: Bar'" # in a ~/swat.ini 
+    curl_params="-H 'Bar: Baz'" # in a project_root_directory/swat.ini 
 
-## Custom Settings
+    # actual curl_params value:
+    "-H 'Bar: Baz'"
 
-Custom settings are way to customize settings for existed swat package. This file should be located at current working directory,
-where you run swat from. For example:
+If you need achieve concatenation mode, use name="$name value" expression:
 
-    # override http port
-    $ echo port=8080 > swat.my
-    $ swat swat::nginx 127.0.0.1
 
-Follow section ["Swat Packages"](#swat-packages) to get more about portable swat tests.
+
+    curl_params="-H 'Foo: Bar'" # in a ~/swat.ini 
+    curl_params="$curl_params -H 'Bar: Baz'" # in a project_root_directory/swat.ini 
+
+    # actual curl_params value:
+    "-H 'Foo: Bar' -H 'Bar: Baz'"
+
+In case you need provide default value for some variable use name=${name default_value} expression:
+
+    # port will be set 80 unless it's not set somewhere else
+    port=${port:=80} # in a ~/swat.ini 
 
 # Hooks
 
-Hooks are extension points you may implement to hack into swat compile / runtime workflow. There are two types of hooks:
+Hooks are extension points to hack into swat runtime phase. It's just files with perl code gets executed in the beginning of swat story.
+You should named your hook file as \`hook.pm' and place it into \`resource' directory:
 
-- Perl hooks
-- Bash Hooks
+    foo/get.txt
+    foo/hook.pm
 
-## Perl hooks
-
-Perl hooks are files with perl code \`required\` _in the beginning/end of a swat test_. There are four types of perl hooks:
-
-- **project based perl startup hook**
-
-    File located at `$project_root_directory/hook.pm`. 
-
-    Project based startup hooks are \`required\` _in the beginning_ of a swat test and applied for every route in project 
-    and thus could be used for _project initialization_ procedures. 
-
-    For example one could define common generators here:
-
-        # place this in hook.pm file:
-        sub list1 { | %w{ foo bar baz } | }
-        sub list2 { | %w{ red green blue } | }
+    # foo/hook.pm
 
 
-        # now we could use it in swat data file
-        generator:  list() 
-        generator:  list2()    
+    diag "hello, I am swat hook";
+    sub red_green_blue_generator { [ qw /red green blue/ ] }
+    
 
-- **project based perl cleanup hook**
+    # foo/get.txt
+    generator: red_gree_blue_generator()
+ 
 
-    File located at `$project_root_directory/cleanup.pm`. 
+There are lot of reasons why you might need a hooks. To say a few:
 
-    This hooks is similar to startup hook but \`required\` _in the end_ of a swat test.
+- create swat generators
+- redefine http resources ( see later )
+- defined swat template variables ( see later )
+- call swat modules ( see later )
+- create other custom code 
 
-- **route based perl startup hooks**
+# Swat runner workflow
 
-    Files located at `$route_directory/hook.pm`. 
+This is detailed explanation of how swat runner compiles and then executes swat test stories.
 
-    Routes based startup hooks are applied for every route in project and thus could be used for _route initialization_ procedures.
+Swat consequentially hits two phases when execute swat stories:
 
-    For example one could define route specific generators here:
+- **Compilation phase** where swat stories are converted into Test::Harness format.
+- **Execution phase** where perl test files are recursively executed by prove.
 
-        # place this in hook.pm file:
-        # notices that we could tell GET from POST http methods here
-        # using predefined $method variable
+## Swat to Test::Harness compilation
 
-        sub list1 { 
+One important thing about check lists is that internally they are represented as Test::More asserts. This is how it work: 
 
-            my $list;
+Let's have 3 swat stories:
 
-            if ($method eq 'GET') {
-                $list = | %w{ GET_foo GET_bar GET_baz } | 
-            }elsif($method eq 'POST'){
-                $list = | %w{ POST_foo POST_bar POST_baz } | 
-            }else{
-                die "method $method is not supported"
-            }
-            $list;
-        }
+    user/get.txt # GET /user
+    user/post.txt # POST /user
+    users/list/get.txt # GET /users/list
+
+Swat parse every story and the creates a perl test file for it:
+
+    user/get.t
+    user/post.t
+    users/get.txt
+
+- Every check lists is converted into the list of the Test::More asserts:
+
+    # user/get.txt
+
+    200 OK
+    regexp: name: \w+
+    regexp: age: \d+
+
+    # user/get.t
+
+    SKIP {
+        ok($status,'response matches 200 OK'); # will pass if response includes string '200 OK'
+        ok($status,'response matches name: \w+'); # will pass if response has strings matched to /name: \w+/ regexp
+        ok($status,'response matches age: \d+'); # etc
+    }
 
 
-        # now we could use it in swat data file
-        generator:  list() 
+This is a time diagram for swat runner workflow:
 
-- **route based perl cleanup hooks**
-
-    Files located at `$route_directory/cleanup.pm`.
-
-    This hooks is similar to route based startup hooks but \`required\` _in the end_ of a swat test.
-
-## Bash hooks
-
-Similar to perl hooks bash hooks are just a bash files \`sourced\` _before compilation_ of a swat test. 
-
-There are 4 types of bash hooks:
-
-- **project based bash hook**
-
-    File located at `$project_root_directory/hook.bash`. 
-
-    Project based bash hooks are applied for every route in project and could be used for _project initialization_ procedures.
-
-- **route based bash hooks**
-
-    Files located at `$project_root_directory/$route_directory/hook.bash`. 
-
-    Routes based bash hooks are route specific hooks and could be used for _route initialization_ procedures.
-
-- **global startup bash hook**
-
-    File located at `$project_root_directory/startup.bash`. 
-
-    Startup hook is executed before swat tests gets compiled, at the very beginning, at could be used for _global initialization_ procedures.
-
-- **global cleanup bash hook**
-
-    File located at `$project_root_directory/cleanup.bash`. 
-
-    Cleanup hook is executed _after swat tests are executed_, at the very end, and could be used for _global cleanup_ procedures.
-
-It is important to note that bash hooks are executed _after swat settings merge done_ , see  ["Swat Settings"](#swat-settings) section to get more
-about swat settings.
-
-## Predefined variables 
-
-List of variables one may rely upon when writing perl/bash hooks:
-
-- **http\_url**
-- **curl\_params**
-- **http\_meth** - `GET|POST|HEAD`
-- **route\_dir**
-- **project**
-
-# Swat Compile and Runtime 
-
-    - Execute *global startup bash hook*
-    - Start of swat compilation phase
-    - For every route gets compiled:
-       -- Merge swat settings
-        -- Set predefined variables
-        -- Execute *project based bash hook*
-        -- Execute *route based bash hook*
-        -- Compile route test
+    - Hits swat compilation phase
+    - For every swat story found:
+        - Calculates swat settings comes from various swat ini files
+        - Creates a perl test file at Test::Harness format
     - The end of swat compilation phase
-    - Start of swat execution phase. 
-    - For every route test gets executed:
-        -- Execute *project based perl startup hook*
-        -- Execute *route based perl startup hook*
-        -- Execute route test
-        -- Execute *route based perl cleanup hook*
-        -- Execute *project based perl cleanup hook*
-    - The end of swat compilation phase
-    - Execute *global cleanup bash hook*
+    - Hits swat execution phase - runs \`prove' recursively on a directory with a perl test files
+    - For every perl test file gets executed:
+        - Require hook.pm if exists
+        - Iterate over Test::More asserts
+            - Execute Test::More assert
+        - The end of Test::More asserts iterator
+    - The end of swat execution phase
+    
 
 # TAP
 
-Swat produces output in [TAP](https://testanything.org/) format , that means you may use your favorite tap parsers to bring result to
-another test / reporting systems, follow TAP documentation to get more on this. Here is example for converting swat tests into JUNIT format
+Swat produces output in [TAP](https://testanything.org/) format, that means you may use your favorite tap parsers to bring result to
+another test / reporting systems, follow TAP documentation to get more on this. 
 
-    swat <project_root> <host> --formatter TAP::Formatter::JUnit
+Here is example for converting swat tests into JUNIT format:
 
-See also ["Prove settings"](#prove-settings) section.
+    swat --formatter TAP::Formatter::JUnit
 
-# Command line tool
+# Prove settings
 
-Swat is shipped as cpan package, once it's installed ( see ["Install"](#install) section ) you have a command line tool called **swat**, this is usage info on it:
+Swat utilize [prove utility](http://search.cpan.org/perldoc?prove) to run tests, all prove related parameters are passed as is to prove.
+Here are some examples:
 
-    swat <project_root_dir|swat_package> <host:port> <prove settings>
+    swat -Q # don't show anythings unless test summary
+    swat -q -s # run prove tests in random and quite mode
 
-- **host** - is base url for web application you run tests against, you also have to define swat routes, see DSL section.
-- **project\_dir** - is a project root directory
-- **swat\_package** - the name of swat package, see ["Swat Packages"](#swat-packages) section
 
-## Default Host
+# Swat client
 
-Sometimes it is helpful to not setup host as command line parameter but define it at $project\_root/host file. For example:
+Once swat is installed you get swat client at the \`PATH':
 
-    # let's create a default host for foo/bar project
-
-    $ cat foo/bar/host
-    foo.bar.com
-
-    $ swat foo/bar/ # will run tests for foo.bar.com
-
-## Debugging
-
-set `swat_debug` environment variable to 1
-
-## Running a subset of tests
-
-It is possible to run a subset of swat test setting a `test_file` variable:
-
-`test_file`={unix file path} . Test\_file path might be relative or absolute unix file path, internally swat just try to find all proper files using a trivial `unix find` 
-construction:
-
-    find $test_file -name  -type f -name get.txt -o -name post.txt -o -name put.txt
-
-## Prove settings
-
-Swat utilize [prove utility](http://search.cpan.org/perldoc?prove) to run tests, so all the swat options _are passed as is to prove utility_.
-Follow [prove](http://search.cpan.org/perldoc?prove) utility documentation for variety of values you may set here.
-Default value for prove options is  `-v`. Here is another examples:
-
-- `-q -s` -  run tests in random and quite mode
-
-# Swat Packages
-
-Swat packages is portable archives of swat tests. It's easy to create your own swat packages and share with other. 
-
-This is mini how-to on creating swat packages:
-
-## Create swat package
-
-Swat packages are _just cpan modules_. So all you need is to create cpan module distribution archive and upload it to CPAN.
-
-The only requirement for installer is that swat data files should be installed into _cpan module directory_ at the end of install process. 
-[File::ShareDir::Install](http://search.cpan.org/perldoc?File%3A%3AShareDir%3A%3AInstall) allows you to install 
-read-only data files from a distribution and considered as best practice for such a things.
-
-Here is example of Makefile.PL for [swat::mongodb package](https://github.com/melezhik/swat-packages/tree/master/mongodb-http):
-
-    use inc::Module::Install;
-
-    # Define metadata
-    name           'swat-mongodb';
-    all_from       'lib/swat/mongodb.pm';
-
-    # Specific dependencies
-    requires       'swat'         => '0.1.28';
-    test_requires  'Test::More'   => '0';
-
-    install_share  'module' => 'swat::mongodb', 'share';    
-
-    license 'perl';
-
-    WriteAll;
-
-Here we create a swat package swat::mongodb with swat data files kept in the project\_root directory ./share and get installed into
-`auto/share/module/swat-mongodb` directory.
-
-Once we uploaded a module to CPAN repository we can use it: 
-
-    $ cpan install swat::mongodb
-    $ swat swat::mongodb 127.0.0.1:28017
-
-Check out existed swat packages here - https://github.com/melezhik/swat-packages/
+    swat <project_root_dir> <host:port> <prove settings>
 
 # Examples
 
-./examples directory contains examples of swat tests for different cases. Follow README.md files for details.
+There is plenty of examples at ./examples directory
 
 # AUTHOR
 
@@ -832,13 +778,14 @@ https://github.com/melezhik/swat
 
 # Thanks
 
-To the authors of ( see list ) without who swat would not appear to light
+All the stuff that swat relies upon, thanks to those authors:
 
+- linux
 - perl
 - curl
 - TAP
 - Test::More
-- prove
+- Test::Harness
 
 # COPYRIGHT
 
