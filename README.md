@@ -708,22 +708,20 @@ Swat parse every story and the creates a perl test file for it:
     users/get.txt
 
 - Every check lists is converted into the list of the Test::More asserts:
-
+```
     # user/get.txt
-
     200 OK
     regexp: name: \w+
     regexp: age: \d+
 
     # user/get.t
-
     SKIP {
         ok($status,'response matches 200 OK'); # will pass if response includes string '200 OK'
         ok($status,'response matches name: \w+'); # will pass if response has strings matched to /name: \w+/ regexp
         ok($status,'response matches age: \d+'); # etc
     }
-
-
+```    
+     
 This is a time diagram for swat runner workflow:
 
     - Hits swat compilation phase
