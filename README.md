@@ -674,9 +674,27 @@ There are lot of reasons why you might need a hooks. To say a few:
 
 - create swat generators
 - redefine http resources ( see later )
-- defined swat template variables ( see later )
 - call swat modules ( see later )
-- create other custom code 
+- other custom code 
+
+
+# Hooks API
+
+TODO:
+
+## Redefine http resouces
+
+TODO:
+
+## Redefine http responses
+
+TODO:
+
+# Swat modules
+
+
+TODO:
+
 
 # Swat runner workflow
 
