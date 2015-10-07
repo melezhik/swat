@@ -660,12 +660,8 @@ In case you need provide default value for some variable use name=${name default
 Hooks are extension points to hack into swat runtime phase. It's just files with perl code gets executed in the beginning of swat story.
 You should named your hook file as \`hook.pm' and place it into \`resource' directory:
 
-    foo/get.txt
-    foo/hook.pm
 
     # foo/hook.pm
-
-
     diag "hello, I am swat hook";
     sub red_green_blue_generator { [ qw /red green blue/ ] }
     
