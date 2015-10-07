@@ -681,7 +681,7 @@ There are lot of reasons why you might need a hooks. To say a few:
 
 # Hooks API
 
-Swat hooks have API to dynamicly changes some swat objects.
+Swat hooks API allow to changes some swat objects on runtime.
 
 ## Redefine http responses
 
@@ -694,10 +694,10 @@ which make it hard to execute a swat stories often.
 This is an example of setting server response inside swat hook:
 
     # hook.pm
-    set_server_response("THIS IS I FAKE \n HELLO WORLD");
+    set_server_response("THIS IS I FAKE RESPONSE\n HELLO WORLD");
 
     # get.txt
-    THIS IS FAKE
+    THIS IS FAKE RESPONSE
     HELLO WORLD
 
 
