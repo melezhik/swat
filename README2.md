@@ -171,7 +171,7 @@ Note, that project root directory path will be removed from http resources pathe
     - GET FOO
     - POST FOO/BAR
 
-Use `test_file` variable to execute a subset of swat stories:
+Use \`test_file' variable to execute a subset of swat stories:
 
     # run a single story
     test_file=FOO/get swat example/my-app 127.0.0.1
@@ -234,15 +234,15 @@ Similarly to plain strings, you may ask swat to check if http response has a lin
         regexp: 20\d # successful http status 200, 201 etc
         regexp: App Version Number: \d+\.\d+\.\d+ # version number
 
-Regular expression should start with `regexp:` marker.
+Regular expression should start with \`regexp:' marker.
  
-You may use `(`,`)` symbols to capture subparts of matching strings, the captured chunks will be saved and could be used further, 
+You may use \`(,)' symbols to capture subparts of matching strings, the captured chunks will be saved and could be used further, 
 
 - ** captures **
 
 Note, that swat does not care about how many times a given check expression is matched by response, 
 swat "assumes" it at least should be matched once. However swat is able to accumulate 
-all matching lines and save them for further processing, just use `(`,`)` symbols to capture subparts of matching strings:
+all matching lines and save them for further processing, just use \`(,)' symbols to capture subparts of matching strings:
 
         regexp: Hello, my name is (\w+)
 
@@ -253,7 +253,7 @@ See ["captures"](#captures) section for full explanation of a swat captures:
 
 - **comments**
 
-    Comment lines start with `#` symbol, swat ignore comments chunks when parse swat stories
+    Comment lines start with \`#' symbol, swat ignore comments chunks when parse swat stories
 
         # comments could be represented at a distinct line, like here
         200 OK
@@ -271,7 +271,7 @@ See ["captures"](#captures) section for full explanation of a swat captures:
         # then another check
         HELLO WORLD
 
-But you **can't ignore** blank lines in a `text block matching` context ( see \`text blocks' subsection ), use `:blank_line` marker to match blank lines:
+But you **can't ignore** blank lines in a \`text block matching' context ( see \`text blocks' subsection ), use \`:blank_line' marker to match blank lines:
 
         # :blank_line marker matches blank lines
         # this is especially useful
@@ -285,7 +285,7 @@ But you **can't ignore** blank lines in a `text block matching` context ( see \`
 
 - **text blocks**
 
-Sometimes it is very helpful to match a response against a `block of strings` goes consequentially, like here:
+Sometimes it is very helpful to match a response against a \`block of strings' goes consequentially, like here:
 
         # this text block
         # consists of 5 strings
@@ -319,10 +319,10 @@ But **will not** for this chunk:
         with that string
         at the very end.
 
-`begin:` `end:` markers decorate \`text blocks\` content. `:being|:end` markers should not be followed by any text at the same line.
+\`begin:' \`end:' markers decorate \`text blocks' content. \`:being|:end' markers should not be followed by any text at the same line.
 
-Also be aware if you leave "dangling" `begin:` marker without closing `end`: somewhere else 
-swat will remain in a \`text block\` mode till the end of your swat story, which is probably not you want:
+Also be aware if you leave "dangling" \`begin:' marker without closing \`end': somewhere else 
+swat will remain in a \`text block' mode till the end of your swat story, which is probably not you want:
 
         begin:
             here we begin
@@ -378,7 +378,7 @@ One of usefull thing you could with perl expressions is to call some Test::More 
 
 
 Perl expressions are executed by perl eval function, please take this into account.
-follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get know more about perl eval.
+Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get know more about perl eval.
 
 ## Generators
 
@@ -408,7 +408,7 @@ New check list items are passed back to swat parser and will be appended to a cu
         bar
         baz
 
-Generators expressions start with `:generator` marker. Here is more example:
+Generators expressions start with \`:generator' marker. Here is more example:
 
         # this generator generates comment lines 
         # and plain string check expressions:
@@ -466,7 +466,7 @@ As long as swat deals with matching expressions ( both plain strings or regular 
 
 Often there is no need to operate on multiline string mode, as with the help of text blocks it is possible to express very complicated matching expressions.
 
-However as long as talk about perl expressions and generators it is convenient to use multiline code here. It is possible with a `\` delimiters:
+However as long as talk about perl expressions and generators it is convenient to use multiline code here. It is possible with a \`\' delimiters:
 
         # this is a generator
         # with multiline code
@@ -512,7 +512,7 @@ Now captures might be accessed by code generators to define some extra checks:
     }                                   \
     cmp_ok( $total,'==',72,"total age of my family" );
 
-Thus perl expressions and code generators access captures data calling `captures()` function.
+Thus perl expressions and code generators access captures data calling \`captures()' function.
 
 Captures() returns an array reference holding all data captured during _latest regular expression check_.
 
@@ -532,7 +532,7 @@ Here some more examples:
 
 
     # check if response contains lines
-    # with date formatted as `date: YYYY-MM-DD`
+    # with date formatted as date: YYYY-MM-DD
     # check if first date found is yesterday
 
     regexp: date: (\d\d\d\d)-(\d\d)-(\d\d)
@@ -543,7 +543,7 @@ Here some more examples:
     my $yesterday = DateTime->now->subtract( days =>  1 );     \
     cmp_ok( DateTime->compare($dt, $yesterday),'==',0,"first day found is - $dt and this is a yesterday" );
 
-You also may use `capture()` function to get a _first element_ of captures array:
+You also may use \`capture()' function to get a _first element_ of captures array:
 
     # check if response contains numbers
     # a first number should be greater then ten
