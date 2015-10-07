@@ -6,21 +6,22 @@ Web automated testing framework.
 
 - Swat is a powerful and yet simple and flexible tool for rapid web automated testing development.
 
-- Swat is a web application oriented test framework, this means that it equips you with nothing more than you need
-to automatically test your web application, it is light weighted  and easy to use tool not burdened by many other "generic" things that you probably won't ever use.
+- Swat is a web application oriented test framework, this means that it equips you with all you need for a web test development 
+and yet it's not burdened by many other "generic" things that you probably won't ever use.
 
-- Swat does not carry all heavy load on it's shoulder, with the help of it's "older brother" - curl
+- Swat does not carry all heavy load on it's shoulders, with the help of it's "elder brother" - curl 
 swat makes a http requests in a smart way. This means if you know and love curl swat might be easy way to go.
 Swat just passes all curl related parameter as is to curl and let curl do it's job.
 
-- Swat is text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does
+- Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does
 not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep
-in old good unix way. Does this sound suspiciously simple? Sometimes most of things could be tested in a simple way.
+in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
 
-- Swat is extendable by adding custom perl code, this is where you may add desired complexity to your test stories.
+- Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories.
 
 - And finally swat relies on prove as internal test runner - this has many, many good results:
-    - swat transparently pass all it's arguments to prove which make it simple to adjust swat runner behavior in a prove way
+
+    - swat transparently passes all it's arguments to prove which makes it simple to adjust swat runner behavior in a prove way
     - swat tests might be easily embedded as unit tests into a cpan distributions.
     - test reports are emitted in a TAP format which is portable and easy to read.
 
@@ -41,10 +42,10 @@ Or install from source:
 
 # Write your swat story 
 
-Swat test stories always answer on 2 type of questions:
+Swat test stories always answers on 2 type of questions:
 
-- _What kind of_ http request should be send
-- _What kind of_ http response should be received
+- _What kind of_ http request should be send.
+- _What kind of_ http response should be received.
 
 As swat is a web test oriented tool it deals with some http related stuff as:
 
@@ -88,12 +89,11 @@ Here is the list of _predefined_ file names for a http methods files:
 
 # Hostname / IP Address
 
-You need to define hostname or ip address of an application to send request to. The easiest way to do this
-is to write up a hostname or ip address to a file. Swat uses a special file named \`host' for this:
+You need to define hostname or ip address to send request to. Just write it up to a special file  called \`host' and swat will use it.
 
     echo 'app.local' > host
 
-As swat makes http requests with the help of curl, the host name only should be complaint with curl requirements, this
+As swat makes http requests with the help of curl, the host name should be complaint with curl requirements, this
 for example means you may define a http schema or port here:
 
     echo 'https://app.local' >> host
@@ -101,27 +101,28 @@ for example means you may define a http schema or port here:
 
 ## HTTP Response
 
-Swat makes request to a given http resources with a given http methods and then validates response.
-Swat does this with the help so called _check lists_ defined at http method files.
+Swat makes request to a given http resources with a given http methods and then validates a response. 
+Swat does this with the help so called _check lists_, Check lists are defined at \`http methods' files.
 
-Check list is just a list of strings a response should match. It might be a plain strings or regular expressions:
+
+Check list is just a list of expressions a response should match. It might be a plain strings or regular expressions:
 
     echo 200 OK > foo/get.txt
     echo 'Hello I am foo' >> foo/get.txt
 
-The code above defines two test asserts for response from \`GET /foo':
+The code above defines two checks for response from \`GET /foo':
 
     - it should contain "200 OK"
     - it should contain "Hello I am foo"
 
-Of course you may add some regular expressions checks as well:
+You may add some regular expressions checks as well:
 
     # for example check if we got something like 'date':
     echo 'regexp: \d\d\d\d-\d\d-\d\d' >> foo/get.txt
 
 # Bringing all together
 
-All these things http method, http resource and check list define a basic swat entity called a _swat story_.
+All these things http method, http resource and check list comprise into essential swat entity called a _swat story_.
 
 Swat story is a very simple test plan, which could be expressed in a cucumber language as follows:
 
@@ -132,16 +133,17 @@ Swat story is a very simple test plan, which could be expressed in a cucumber la
     And I should have response matches 'Hello I am foo'
     And I should have response matches '\d\d\d\d-\d\d-\d\d'
 
-From other hand a swat story is always 3 related things:
+From the file system point of view swat story is a:
 
-- http method - the method file
-- http resource - the directory where \`method file\` located in
-- check list - the content of method file
+- http method - the \`http method' file
+- http resource - the directory where \`http method file' located in
+- check list - the content of a \`http method' file
 
 ## Swat Project
 
-Swat project is a related swat stories kept under a single directory. The directory name does not that matter, 
-swat just looks swat stories files into it and then "execute" them ( see ["Swat to Test::Harness Compilation"](#swat-to-testharness-compilation) section on how swat to do this ).
+Swat project is a bunch of a related swat stories kept under a single directory. This directory is called _project root directory_.
+The project root directory name does not that matter, swat just looks up swat story files into it and then "execute" them.
+See [swat runner workflow](#swat-runner-workflow) section for full explanation of this proccess.
 
 This is an example swat project layout:
 
@@ -156,7 +158,7 @@ This is an example swat project layout:
 
     3 directories, 3 files
 
-When you ask swat to execute swat stories you have to point it a project root directory or \`cd' to it and just run swat without arguments:
+When you ask swat to execute swat stories you have to point it a project root directory or \`cd' to it and run swat without arguments:
 
     swat my/swat/project
 
@@ -164,26 +166,35 @@ When you ask swat to execute swat stories you have to point it a project root di
 
     cd my/swat/project && swat
 
-Note, that project root directory path will be removed from http resources  during execution:
+Note, that project root directory path will be removed from http resources pathes during execution:
 
     - GET FOO
     - POST FOO/BAR
 
-It is also possible to run a subset of swat stories using a `test_file` variable:
+Use `test_file` variable to execute a subset of swat stories:
 
-    # run a single test
+    # run a single story
     test_file=FOO/get swat example/my-app 127.0.0.1
 
     # run all `FOO/*' stories:
     test_file=FOO/ swat example/my-app 127.0.0.1
 
-Test\_file variable should point to a resource(s) path and be relative to project root dir, also it should not contain \`http method' file extension \`.txt'
+Test\_file variable should point to a resource(s) path and be relative to project root dir, also it should not contain extension part - \`.txt'
 
-Now lets go for swat DSL for describing check lists.
+
+Let's describe swat DSL for check lists expressions.
 
 # Check lists
 
-Swat checks http response and determine if it matches to the _expressions_ from the check list:
+So, swat check list is list of check expressions, indeed not only check expressions, there are some - comments, 
+blank lines, text blocks , perl expressions and generators we will talk about it later.
+
+Let's start with check expressions.
+
+
+## Check expressions
+
+Swat check expressions declares _what should be_ in a response: 
 
     # http response
     200 OK
@@ -203,37 +214,42 @@ Swat checks http response and determine if it matches to the _expressions_ from 
     HELLO matches
     regexp: \d\d\d\d-\d\d-\d\d matches
 
-In most cases every expression is just a line of text to represent what is expected to get in response. There are also other types of expressions - perl expressions and generators, they will be described later.
 
 
-Ok, let's start with a check expressions.
+There are two type of check expressions - plain strings and regular expressions. 
 
-## Check expressions
-
-Note, that swat does not care about how many times a given check expression is matched by response, for test will pass it should match at least one time. However it is possible to accumulate all matching lines for further processing, see the ["captures"](#captures) section.
-
-Actually there are two type of swat check expressions - plain strings and regular expressions. It's also reasonable to say here about comments and blank lines.
-
-- **plain string**
+** plain string**
 
         200 OK
         HELLO SWAT
         
 
-    This just ask swat to check if http response has a lines matches to '200 OK' and 'HELLO SWAT' strings.
+The code above declares that http response should have lines matches to '200 OK' and 'HELLO SWAT'.
 
 - **regular expression**
 
-Similar to plain strings, you may ask swat to check if http response has a lines matches to a regular expressions.
+Similarly to plain strings, you may ask swat to check if http response has a lines matching to a regular expressions:
 
         regexp: \d\d\d\d-\d\d-\d\d # date in format of YYYY-MM-DD
         regexp: 20\d # successful http status 200, 201 etc
-        regexp: (red|green|blue) # one of three colors
         regexp: App Version Number: \d+\.\d+\.\d+ # version number
 
-Regular expression should start with `regexp:` marker. You may use `(`,`)` to capture subparts of matching strings, the captured chunks will be saved and could be used further, see ["captures"](#captures) section for this.
+Regular expression should start with `regexp:` marker.
+ 
+You may use `(`,`)` symbols to capture subparts of matching strings, the captured chunks will be saved and could be used further, 
+
+- ** captures **
+
+Note, that swat does not care about how many times a given check expression is matched by response, 
+swat "assumes" it at least should be matched once. However swat is able to accumulate 
+all matching lines and save them for further processing, just use `(`,`)` symbols to capture subparts of matching strings:
 
         regexp: Hello, my name is (\w+)
+
+See ["captures"](#captures) section for full explanation of a swat captures:
+
+
+## Comments, blank lines and text blocks 
 
 - **comments**
 
@@ -245,7 +261,7 @@ Regular expression should start with `regexp:` marker. You may use `(`,`)` to ca
 
 - **blank lines**
 
-    Blank lines found are ignored. You may use blank lines to improve code readability:
+    Blank lines are ignored. You may use blank lines to improve code readability:
 
         # check http header
         200 OK
@@ -255,7 +271,7 @@ Regular expression should start with `regexp:` marker. You may use `(`,`)` to ca
         # then another check
         HELLO WORLD
 
-But you **can't ignore** blank lines in a `text block matching` context ( see next point ), use `:blank_line` marker to match blank lines:
+But you **can't ignore** blank lines in a `text block matching` context ( see \`text blocks' subsection ), use `:blank_line` marker to match blank lines:
 
         # :blank_line marker matches blank lines
         # this is especially useful
@@ -287,7 +303,7 @@ Sometimes it is very helpful to match a response against a `block of strings` go
             at the very end
         end:
 
-This test will pass when running against this chunk:
+This check list will succeed when gets executed against this chunk:
 
         this string followed by
         that string followed by
@@ -295,7 +311,7 @@ This test will pass when running against this chunk:
         with that string
         at the very end.
 
-But **won't** pass for this chunk:
+But **will not** for this chunk:
 
         that string followed by
         this string followed by
@@ -305,12 +321,13 @@ But **won't** pass for this chunk:
 
 `begin:` `end:` markers decorate \`text blocks\` content. `:being|:end` markers should not be followed by any text at the same line.
 
-Also be aware if you leave "dangling" `begin:` marker without closing `end`: somewhere else swat will remain in a \`text block\` mode till the end of your swat story, which is probably not you want:
+Also be aware if you leave "dangling" `begin:` marker without closing `end`: somewhere else 
+swat will remain in a \`text block\` mode till the end of your swat story, which is probably not you want:
 
         begin:
-        here we begin
-        and till the very end of test
-        we are in `text block` mode
+            here we begin
+            and till the very end of test
+            we are in `text block` mode
 
 ## Perl expressions
 
@@ -321,21 +338,23 @@ Perl expressions are just a pieces of perl code to _get evaled_ inside your swat
         code: print "hello world"
         That's OK
 
-The piece of code above will be processed in two phases according to ["Swat runner  workflow"](#swat-runner-workflow) specification:
 
-    First swat converts swat story into Test::Harness test, and then adds eval "{code}" line into it:
+First swat converts swat story into perl code with eval "{code}" chunk addet into it, this is called compilation phase:
 
         ok($status,"response matches 200 OK");
         eval 'print "hello world"';
         ok($status,"content matches That's OK"); # etc
 
-    Then prove execute a generated code with a eval expression.
+Then prove execute the code above.
 
-The example with 'print "hello world"' is quite meaningless, there are of course more effective ways how you code use perl expressions in your swat stories.
+Follow ["Swat runner  workflow"](#swat-runner-workflow) to know how swat compile stories into a perl code.
 
-One of the obvious thing is to call Test::More functions to adjust swat execution phase logic: ( dependency on Test::More module is already done and need not to be \`used' )
+Anyway, the example with 'print "hello world"' is quite useless, there are of course more effective ways how you code use perl expressions in your swat stories.
+
+One of usefull thing you could with perl expressions is to call some Test::More functions to modify test workflow:
 
         # skip tests
+
         code: skip('next 3 checks are skipped',3) # skip three next checks forever
         color: red
         color: blue
@@ -345,7 +364,7 @@ One of the obvious thing is to call Test::More functions to adjust swat executio
         number:two
         number:three
 
-        # skip tests under conditions
+        # skip tests conditionaly
 
         color: red
         color: blue
@@ -358,45 +377,51 @@ One of the obvious thing is to call Test::More functions to adjust swat executio
         number:three
 
 
-As you may noticed perl expressions are executed in a _string eval_ way, please be aware of this. Follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get know about perl eval function restrictions.
+Perl expressions are executed by perl eval function, please take this into account.
+follow [http://perldoc.perl.org/functions/eval.html](http://perldoc.perl.org/functions/eval.html) to get know more about perl eval.
 
 ## Generators
 
 
-Swat generators is the way to _create swat check lists  on the fly_. Swat generators like perl expressions is just a piece of perl code executed the same way. The only difference with perl expressions is that swat generators code should return _an array reference_.
+Swat generators is the way to _create swat check lists  on the fly_. Swat generators like perl expressions are just a piece of perl code
+with the only difference that generator code should always return _an array reference_.
 
-An array returned by generator code should contain _strings_ representing new check list items. Thus new check list will passed back to swat parser for dynamic check list generation. Here is a simple example:
+An array returned by generator code should contain check list items, _serialized_ as perl strings.
+New check list items are passed back to swat parser and will be appended to a current check list. Here is a simple example:
 
-        # this is `static' check list
+        # original check list
+
         200 OK
         HELLO
         
-        # and this is simple swat generator
-        # to append new items 
-        # to the check list
+        # this generator generates plain string check expressions:
+        # new items will be appended into check list
+
         generator: [ qw{ foo bar baz } ]
 
 
-        # the resulted check list will be
+        # final check list:
+
         200 OK
         HELLO
         foo
         bar
         baz
 
-    Generators expressions start with `:generator` marker. Here is more example:
+Generators expressions start with `:generator` marker. Here is more example:
 
-        # you could you any perl construction in generator code
-        # unless it return an array reference
+        # this generator generates comment lines 
+        # and plain string check expressions:
+
         generator: my %d = { 'foo' => 'foo value', 'bar' => 'bar value' }; [ map  { ( "# $_", "$data{$_}" )  } keys %d ]
 
 
-        # the resulted check list will be:
+        # final check list:
 
-        # foo
-        foo value
-        # bar
-        bar value
+            # foo
+            foo value
+            # bar
+            bar value
 
 Writing generator code there is no limit for you! Use any code you want with only requirement - it should return array reference.
 
