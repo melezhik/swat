@@ -218,7 +218,7 @@ Swat check expressions declares _what should be_ in a response:
 
 There are two type of check expressions - plain strings and regular expressions. 
 
-** plain string **
+- **plain string**
 
         200 OK
         HELLO SWAT
@@ -226,7 +226,7 @@ There are two type of check expressions - plain strings and regular expressions.
 
 The code above declares that http response should have lines matches to '200 OK' and 'HELLO SWAT'.
 
-- ** regular expression **
+- **regular expression**
 
 Similarly to plain strings, you may ask swat to check if http response has a lines matching to a regular expressions:
 
@@ -238,7 +238,7 @@ Regular expression should start with \`regexp:' marker.
  
 You may use \`(,)' symbols to capture subparts of matching strings, the captured chunks will be saved and could be used further, 
 
-- ** captures **
+- **captures**
 
 Note, that swat does not care about how many times a given check expression is matched by response, 
 swat "assumes" it at least should be matched once. However swat is able to accumulate 
