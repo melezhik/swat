@@ -707,7 +707,8 @@ Swat parse every story and the creates a perl test file for it:
     user/post.t
     users/get.txt
 
-- Every check lists is converted into the list of the Test::More asserts:
+Every check lists is converted into the list of the Test::More asserts:
+
 ```
     # user/get.txt
     200 OK
