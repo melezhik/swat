@@ -681,10 +681,10 @@ You should named your hook file as \`hook.pm' and place it into \`resource' dire
 
 There are lot of reasons why you might need a hooks. To say a few:
 
-- create swat generators
-- redefine http responses ( see later )
-- redefine http resources ( see later )
-- call swat modules ( see later )
+- define swat generators
+- redefine http responses 
+- redefine http resources 
+- call swat modules 
 - other custom code 
 
 
@@ -710,9 +710,14 @@ This is an example of setting server response inside swat hook:
     HELLO WORLD
 
 
+Another intresting idea about set_response feature is a _conditional_ http requests. Let say we have \`POST /login' action to enable user authentication, this is a simple swat story for it:
 
+    # login/post.txt
+    200 OK
+    
+Good. But what if I need skip authentication phase under some conditions, like if I have already done it somewhere before?
 
-## Redefine http resouces
+# Redefine http resouces
 
 *modify_resource(ref to sub)*
 
