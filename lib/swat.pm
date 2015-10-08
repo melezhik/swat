@@ -14,53 +14,46 @@ sub version {
 1;
 
 package main;
+
 use strict;
 use Test::More;
 use Data::Dumper;
 use File::Temp qw/ tempfile /;
+use swat::story;
 
  
-our ($project);
-our ($curl_cmd);
-our ($http_url, $path, $route_dir, $http_meth); 
-our ($debug, $ignore_http_err, $try_num, $debug_bytes);
-our ($is_swat_package);
-our ($set_server_response);
-our ($test_root_dir);
-our ($server_response);
+#our ($project);
+#our ($curl_cmd);
+#our ($http_url, $path, $route_dir, $http_meth); 
+#our ($debug, $ignore_http_err, $try_num, $debug_bytes);
+#our ($is_swat_package);
+#our ($set_server_response);
+#our ($test_root_dir);
+#our ($server_response);
 
-our $command_params = {};
+#our $command_params = {};
 
 $| = 1;
 
-our $context_populated;
-our $http_response;
-my @context = ();
-my @context_local = ();
-my $block_mode;
-my $captures = [];
+#our $context_populated;
+#our $http_response;
+#my @context = ();
+#my @context_local = ();
+#my $block_mode;
+#my $captures = [];
 
-for my $p ( keys %$command_params ){
-    my $v = $command_params->{$p};
-    diag "dynamic cmd parameter set: $p => $v" if debug_mod2();
-    my $re = "__".$p."__";
-    s{$re}[$v]g for $curl_cmd;
-    s{$re}[$v]g for $path;
-}
+#for my $p ( keys %$command_params ){
+#    my $v = $command_params->{$p};
+#    diag "dynamic cmd parameter set: $p => $v" if debug_mod2();
+#    my $re = "__".$p."__";
+#    s{$re}[$v]g for $curl_cmd;
+#    s{$re}[$v]g for $path;
+#}
 
 sub execute_with_retry {
 
     my $cmd = shift;
     my $try = shift || 1;
-
-    for my $p ( keys %$command_params ){
-        my $v = $command_params->{$p};
-        diag "dynamic cmd parameter set: $p => $v" if debug_mod2();
-        my $re = "__".$p."__";
-        s{$re}[$v]g for $cmd;
-        s{$re}[$v]g for $path;
-    }
-
 
     for my $i (1..$try){
         diag(1, "\nexecute cmd: $cmd\n attempt number: $i") if debug_mod2();
@@ -72,31 +65,32 @@ sub execute_with_retry {
 
 }
 
-sub set_server_response {
-    $server_response = shift;
-}
-
 sub make_http_request {
 
-    return $http_response if defined $http_response;
+    return get_prop('http_response') if defined get_prop('http_response');
 
-    my ($fh, $content_file) = tempfile( DIR => $test_root_dir);
+    my ($fh, $content_file) = tempfile( DIR => get_prop('test_root_dir') );
 
-    if ($set_server_response){
+    if (get_prop('response')){
 
-        ok(1,"response set somewhere else");
+        ok(1,"response is already set");
 
         open F, ">", $content_file or die $!;
-        print F $server_response;
+        print F get_prop('response');
         close F;
 
         ok(1,"response saved to $content_file");
 
     }else{
 
-        my $st = execute_with_retry("$curl_cmd > $content_file && test -s $content_file", $try_num);
-        if ($ignore_http_err){
-            ok(1, "@{[ $st ? 'succ': 'unsucc' ]}sessful response from $http_meth $http_url$path") 
+        my $curl_cmd = get_prop('curl_cmd');
+        my $st = execute_with_retry("$curl_cmd > $content_file && test -s $content_file", get_prop('try_num'));
+        my $http_method = get_prop('http_method'); 
+        my $hostname = get_prop('hostname');
+        my $resource = get_prop('resource');
+
+        if (get_prop('ignore_http_err')){
+            ok(1, "@{[ $st ? 'succ': 'unsucc' ]}sessful response from $http_meth $hostname$resource") 
         }else{
             ok($st, "successful response from $http_meth $http_url$path") 
         }
@@ -105,49 +99,41 @@ sub make_http_request {
     }
 
     open F, $content_file or die $!;
-    $http_response = '';
+    my $http_response = '';
     $http_response.= $_ while <F>;
     close F;
-    
+    set_prop( http_response => $http_response );
+
+    my $debug_bytes = get_prop('debug_bytes');
 
     diag `head -c $debug_bytes $content_file` if debug_mod2();
 
-    return $http_response;
+    return get_prop('http_response');
 }
 
 sub populate_context {
 
-    return if $context_populated;
+    return if context_populated();
 
     my $data = shift;
     my $i = 0;
 
-    @context = ();
+    my $context = [];
 
     for my $l ( split /\n/, $data ){
         chomp $l;
         $i++;
         $l=":blank_line" unless $l=~/\S/;
-        push @context, [$l, $i];        
+        push @$context, [$l, $i];        
     }
-    @context_local = @context;
+
+    set_prop('context',$context);
+    set_prop('context_local',$context);
+
     diag("context populated") if debug_mod2();
-    $context_populated=1;
-}
 
-sub hostname {
-    my $a = `hostname`;
-    chomp $a;
-    return $a;
-}
+    set_prop(context_populated => 1);
 
-sub captures {
-
-    $captures;
-}
-
-sub capture {
-    captures()->[0]
 }
 
 sub check_line {
@@ -155,16 +141,20 @@ sub check_line {
     my $pattern = shift;
     my $check_type = shift;
     my $message = shift;
-
     my $status = 0;
 
 
-    my @context_new = ();
-    $captures = [];
+    reset_captures();
+    my @captures;
 
     populate_context( make_http_request() );
 
     diag("lookup $pattern ...") if debug_mod2();
+
+    my @context         = @{get_prop('context')};
+    my @context_local   = @{get_prop('context_local')};
+    my @context_new     = ();
+
     if ($check_type eq 'default'){
         for my $c (@context_local){
             my $ln = $c->[0]; my $next_i = $c->[1];
@@ -181,7 +171,7 @@ sub check_line {
             my @foo = ($ln =~ /$re/g);
 
             if (scalar @foo){
-                push @{$captures}, [@foo];
+                push @captures, [@foo];
                 $status = 1;
                 push @context_new, $context[$next_i];
             }
@@ -195,7 +185,7 @@ sub check_line {
 
     if (debug_mod2()){
         my $k=0;
-        for my $ce (@{$captures}){
+        for my $ce (@captures){
             $k++;
             diag "captured item N $k";
             for  my $c (@{$ce}){
@@ -384,21 +374,6 @@ sub handle_plain {
     diag "handle_plain OK. $l" if $ENV{'swat_debug'};   
 }
 
-
-sub debug_mod1 {
-
-    $debug == 1
-}
-
-sub debug_mod2 {
-
-    $debug == 2
-}
-
-sub debug_mod12 {
-
-    debug_mod1() or debug_mod2()
-}
 
 sub run_swat_module {
 

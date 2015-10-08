@@ -562,14 +562,14 @@ if [ some condition ]; then
     $name=value
 fi
 
-Following is the list of swat variables you may define at swat ini files, the could be divided on two groups:
+Following is the list of swat variables you may define at swat ini files, it could be divided on two groups:
 
-- **generic settings**
+- **swat variables**
 - **curl parameters**
 
-## generic settings
+## swat variables
 
-Generic settings define swat  basic configuration, like logging mode, prove runner settings, etc. Here is the list:
+Swat variables define swat  basic configuration, like logging mode, prove runner settings, etc. Here is the list:
 
 - `debug` - set to \`1,2' if you want to see some debug information in output, default value is \`0'.
 
@@ -608,6 +608,15 @@ Follow curl documentation to get more examples.
 - `curl_max_time` - maximum time in seconds that you allow the whole operation to take, follow curl documentation for full explanation.
 
 - `port`  - http port of tested host, default value is \`80'.
+
+## other variables
+
+This is the list of helpful variables  you may use in swat ini files:
+
+- $resource
+- $test_root_dir
+- $hostname
+- $http_method
 
 ## Alternative swat ini files locations
 
@@ -681,11 +690,11 @@ There are lot of reasons why you might need a hooks. To say a few:
 
 # Hooks API
 
-Swat hooks API allow to changes some swat objects on runtime.
+Swat hooks API provides several functions to change swat story at runtime
 
 ## Redefine http responses
 
-*set_server_response(STRING)*
+*set_response(STRING)*
 
 This is helpful feature when you need to mock up http responses instead of having them requested from a real web application.
 For example in absense of an access to a tested application or if response is too slow or it involves too much data 
@@ -694,7 +703,7 @@ which make it hard to execute a swat stories often.
 This is an example of setting server response inside swat hook:
 
     # hook.pm
-    set_server_response("THIS IS I FAKE RESPONSE\n HELLO WORLD");
+    set_response("THIS IS I FAKE RESPONSE\n HELLO WORLD");
 
     # get.txt
     THIS IS FAKE RESPONSE
@@ -705,14 +714,22 @@ This is an example of setting server response inside swat hook:
 
 ## Redefine http resouces
 
-TODO:
+*modify_resource(ref to sub)*
 
+
+To modify existed resource use modify_resource function:
+
+    # foo/bar/baz/ - resource 
+    
+    # hook.pm
+    modify_resource( sub { my $resource = shift; s/bar/bbaarr/, s/baz/bbaazz/ for $resource  } );
+
+    # modified resource
+    foo/bbaarr/bbaazz
 
 # Swat modules
 
-
 TODO:
-
 
 # Swat runner workflow
 
