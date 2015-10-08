@@ -108,7 +108,7 @@ for f in `$find_cmd`; do
     unset port
     unset swat_module
 
-    http_meth=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
+    http_method=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
 
     test -f ~/$swat_ini_file && source ~/$swat_ini_file
     test -f $project/$swat_ini_file && source $project/$swat_ini_file
@@ -126,8 +126,8 @@ for f in `$find_cmd`; do
     curl_connect_timeout=${curl_connect_timeout:=20}
     swat_module=${swat_module:=0}
 
-    path=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $project $f`;
-    mkdir -p "${test_root_dir}/${path}";
+    resource=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $project $f`;
+    mkdir -p "${test_root_dir}/${resource}";
 
 
     if [ -n "${port}" ]; then
@@ -142,7 +142,7 @@ for f in `$find_cmd`; do
         touch $startup_lock_file
     fi
 
-    curl_cmd="curl -f -X $http_meth"
+    curl_cmd="curl -f -X $http_method"
 
     curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L --stderr -"
 
@@ -151,9 +151,9 @@ for f in `$find_cmd`; do
     fi
 
     if [ "$swat_module" -eq '0' ]; then
-        tfile="${test_root_dir}/${path}/00.${http_meth}.t"
+        tfile="${test_root_dir}/${resource}/00.${http_method}.t"
     else
-        tfile="${test_root_dir}/${path}/00.${http_meth}.m"
+        tfile="${test_root_dir}/${resource}/00.${http_method}.m"
     fi
 
     tt=$((tt+1))
@@ -182,13 +182,14 @@ for f in `$find_cmd`; do
     echo "new_story();"  >> $tfile
     echo >> $tfile
 
-    echo "set_prop( test_root_dir => q{$test_root_dir} );" >> $tfile
-    echo "set_prop( resource => q{$path} );" >> $tfile
-    echo "set_prop( project => q{$project} );" >> $tfile
-    echo "set_prop( http_method => q{$http_meth} );" >> $tfile
     echo "set_prop( hostname => q{$host} );" >> $tfile
-
+    echo "set_prop( resource => q{$resource} );" >> $tfile
+    echo "set_prop( http_method => q{$http_method} );" >> $tfile
     echo "set_prop( curl_cmd => q{$curl_cmd} );" >> $tfile
+
+    echo "set_prop( project => q{$project} );" >> $tfile
+    echo "set_prop( test_root_dir => q{$test_root_dir} );" >> $tfile
+
 
     echo "set_prop( debug => $debug );" >> $tfile
     echo "set_prop( debug_bytes => $debug_bytes );" >> $tfile
