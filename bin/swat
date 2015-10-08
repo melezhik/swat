@@ -179,6 +179,7 @@ for f in `$find_cmd`; do
     echo >> $tfile
 
     echo "new_story();"  >> $tfile
+    echo >> $tfile
 
     echo "set_prop( test_root_dir => q{$test_root_dir} );" >> $tfile
     echo "set_prop( resource => q{$path} );" >> $tfile

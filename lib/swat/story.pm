@@ -26,7 +26,7 @@ sub new_story {
 
 }
 
-sub end_story {
+sub end_of_story {
 
     shift @stories;
 }
@@ -52,17 +52,17 @@ sub set_prop {
 
 
 sub context_populated {
-    _get_prop('context_populated')
+    get_prop('context_populated')
 }
 
 sub debug_mod1 {
 
-    _get_prop('debug') == 1
+    get_prop('debug') == 1
 }
 
 sub debug_mod2 {
 
-    _get_prop('debug') == 2
+    get_prop('debug') == 2
 }
 
 sub debug_mod12 {
@@ -71,7 +71,7 @@ sub debug_mod12 {
 }
 
 sub set_response {
-    _set_prop('response', shift());
+    set_prop('response', shift());
 }
 
 sub captures {
