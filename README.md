@@ -774,7 +774,7 @@ someonelse's story should call it.
 
 - story executing other story is called upstream story.  
 
-- use run_swat_module(method,resourse,variables) function to execute swat module, upstream story hook is a 
+- use \'run_swat_module(method,resourse,variables)' function to execute swat module, upstream story hook is a 
 proper place for run_swat_module calls. 
 
 - you can call many swat stories from the one upstream story, and you can call the same story more than once: 
@@ -789,10 +789,13 @@ proper place for run_swat_module calls.
 
 - swat modules have a variables, you can pass them into module via third parameter of run_swat_module function:
 
+```
     run_swat_module( GET => '/foo', { var1 => 'value1', var2 => 'value2', var3=>'value3'   }  ) 
- 
+```
+
 - swat _interpolate_ modules variables into curl_params value:
 
+```
     # swat.ini
     # initial value of curl_params variable:
     curl_params='-d var1=%var1% -d var2=%var2% -d var3=%var3%'
@@ -800,8 +803,9 @@ proper place for run_swat_module calls.
     # real value of curl_params variable
     # during execution:
     curl_param='-d var1=value1 -d var2=value2 -d var3=value3'
+```
 
-- use %[\w\d_]+% placeholders to insert module variables into curl_params value
+- use `%[\w\d_]+%` placeholders to insert module variables into curl_params value
 
 - you may access swat module varibales inside your swat module using \`module_variable' function:
 
