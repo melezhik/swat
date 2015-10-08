@@ -779,10 +779,13 @@ proper place for run_swat_module calls.
 
 - you can call many swat stories from the one upstream story, and you can call the same story more than once: 
 
+```
     # hook.pm
     run_swat_module( GET => '/foo/' )
     run_swat_module( POST => '/foo/bar' )
     run_swat_module( GET => '/foo/' )
+
+```
 
 - swat modules have a variables, you can pass them into module via third parameter of run_swat_module function:
 
@@ -802,10 +805,12 @@ proper place for run_swat_module calls.
 
 - you may access swat module varibales inside your swat module using \`module_variable' function:
 
+```
     # hook.pm
     module_variable('var1');
     module_variable('var2');
-     
+
+```     
 
 # Swat runner workflow
 
