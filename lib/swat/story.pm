@@ -23,6 +23,11 @@ our @EXPORT = qw{
     modify_resource
 
 
+    project_root_dir
+    test_root_dir
+    resource
+    http_method
+    hostname
 };
 
 our @stories = ();
@@ -66,6 +71,26 @@ sub set_prop {
 
     _story()->{props}->{$name} =  $value;
     
+}
+
+sub project_root_dir {
+    get_prop('project_root_dir');
+}
+
+sub test_root_dir {
+    get_prop('test_root_dir');
+}
+
+sub hostname {
+    get_prop('hostname');
+}
+
+sub resource {
+    get_prop('resource');
+}
+
+sub http_method {
+    get_prop('http_method');
 }
 
 
