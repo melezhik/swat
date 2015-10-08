@@ -57,10 +57,11 @@ sub make_http_request {
     }else{
 
         my $curl_cmd = get_prop('curl_cmd');
-        my $st = execute_with_retry("$curl_cmd > $content_file && test -s $content_file", get_prop('try_num'));
-        my $http_method = get_prop('http_method'); 
         my $hostname = get_prop('hostname');
         my $resource = get_prop('resource');
+        my $http_method = get_prop('http_method'); 
+
+        my $st = execute_with_retry("$curl_cmd $hostname$resource > $content_file && test -s $content_file", get_prop('try_num'));
 
         if (get_prop('ignore_http_err')){
             ok(1, "@{[ $st ? 'succ': 'unsucc' ]}sessful response from $http_method $hostname$resource") 
