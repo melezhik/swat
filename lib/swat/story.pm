@@ -112,7 +112,7 @@ sub unset_block_mode {
 }
 
 sub in_block_mode {
-    get_prop(block_mode());
+    get_prop('block_mode');
 }
 
 
@@ -120,9 +120,9 @@ sub run_swat_module {
 
     my $http_method = uc(shift());
     my $resource = shift;
-    my $test_root_dir = get_prop('test_root_dir');
+    %main::template_variables = %{shift || {}};
 
-    $main::template_variables = shift || {};
+    my $test_root_dir = get_prop('test_root_dir');
 
     my $module_file = "$test_root_dir/$resource/00.$http_method.m";
 
@@ -133,7 +133,7 @@ sub run_swat_module {
 
     my $test_root_dir = get_prop('test_root_dir');
 
-    do $module_file;
+    require $module_file;
 
 }
 
@@ -142,7 +142,7 @@ sub insert_template_variables {
 
     for my $name ( keys %main::template_variables ){
 
-        my $v = get_prop('template_variables')->{$name};
+        my $v = $main::template_variables{$name};
 
         my $re = "%".$name."%";
 
@@ -171,7 +171,7 @@ sub modify_resource {
 
     my $resource = get_prop('resource');
     my $new_resource = $sub->($resource);
-    Test::More::ok(1,"modify_resource: $resource => $new_resource") if debug12();
+    Test::More::ok(1,"modify_resource: $resource => $new_resource") if debug_mod12();
     set_prop( resource => $new_resource );
 
 }
@@ -183,24 +183,4 @@ sub _story {
 1;
 
 __END__
-
-our ($project);
-our ($curl_cmd);
-our ($http_url, $path, $route_dir, $http_meth);
-our ($debug, $ignore_http_err, $try_num, $debug_bytes);
-our ($is_swat_package);
-our ($set_server_response);
-our ($test_root_dir);
-our ($server_response);
-
-our $command_params = {};
-
-$| = 1;
-
-our $context_populated;
-our $http_response;
-my @context = ();
-my @context_local = ();
-my $block_mode;
-my $captures = [];
 

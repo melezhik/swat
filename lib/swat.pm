@@ -184,15 +184,16 @@ sub header {
         my $project = get_prop('project');
         my $hostname = get_prop('hostname');
         my $resource = get_prop('resource');
-        my $project = get_prop('project');
+        my $curl_cmd = get_prop('curl_cmd');
         my $debug = get_prop('debug');
         my $try_num = get_prop('try_num');
         my $ignore_http_err = get_prop('ignore_http_err');
 
         ok(1, "swat version: $swat::VERSION");
         ok(1, "project: $project");
-        ok(1, "url: $hostname/$resource");
-        ok(1, "resource: $resource ");
+        ok(1, "hostname: $hostname");
+        ok(1, "resource: $resource");
+        ok(1, "curl_cmd: $curl_cmd");
         ok(1, "debug: $debug");
         ok(1, "try num: $try_num");
         ok(1, "ignore http errors: $ignore_http_err");

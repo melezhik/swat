@@ -150,18 +150,19 @@ for f in `$find_cmd`; do
        curl_cmd="$curl_cmd ${curl_params}"
     fi
 
-    curl_cmd="$curl_cmd $host"
-
     if [ "$swat_module" -eq '0' ]; then
         tfile="${test_root_dir}/${path}/00.${http_meth}.t"
     else
         tfile="${test_root_dir}/${path}/00.${http_meth}.m"
     fi
 
-
     tt=$((tt+1))
 
-    echo 'BEGIN { push @INC, q{'$project'/lib}; }'  > $tfile
+    echo > $tfile
+    echo "package main;"  >> $tfile
+    echo >> $tfile
+
+    echo 'BEGIN { push @INC, q{'$project'/lib}; }'  >> $tfile
 
     echo >> $tfile
     echo "use strict;"  >> $tfile
