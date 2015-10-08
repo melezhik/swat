@@ -168,6 +168,8 @@ sub check_line {
         }
     }
 
+    set_prop( captures => [ @captures ] );
+
     if (in_block_mode()){
         set_prop( context_local => [@context_new] ); 
     }

@@ -1,4 +1,4 @@
-set_server_response("
+set_response("
 hello
 world
 jan
