@@ -649,9 +649,7 @@ In case the same variable is defined more than once at swat ini files with diffe
     # actual curl_params value:
     "-H 'Bar: Baz'"
 
-If you need achieve concatenation mode, use name="$name value" expression:
-
-
+If you want concatenation mode use name="$name value" expression:
 
     curl_params="-H 'Foo: Bar'" # in a ~/swat.ini 
     curl_params="$curl_params -H 'Bar: Baz'" # in a project_root_directory/swat.ini 
@@ -696,7 +694,9 @@ Swat hooks API provides several functions to change swat story at runtime
 
 *set_response(STRING)*
 
-This is helpful feature when you need to mock up http responses instead of having them requested from a real web application.
+Using set_response means that you never make a real request to a web application, but instead set response on your own side.
+
+This feature is helpful when you need to mock up http responses instead of having them requested from a real web application.
 For example in absense of an access to a tested application or if response is too slow or it involves too much data 
 which make it hard to execute a swat stories often. 
 
@@ -710,17 +710,30 @@ This is an example of setting server response inside swat hook:
     HELLO WORLD
 
 
-Another intresting idea about set_response feature is a _conditional_ http requests. Let say we have \`POST /login' action to enable user authentication, this is a simple swat story for it:
+Another intresting idea about set_response feature is a _conditional_ http requests. 
+
+Let say we have \`POST /login' request for user authentication, this is a simple swat story for it:
 
     # login/post.txt
     200 OK
     
-Good. But what if I need skip authentication phase under some conditions, like if I have already done it somewhere before?
+Good. But what if you need to skip authentication under some conditions, like if you are already logged in before?
+We could write such a code:
+
+    # login/post.txt
+    generator:
+    $logged_in ? [ 'I am already logged in' : '200 OK' ]
+
+    # login/hook.pm
+    if ( ... check if user is logged in .... ){
+        set_response('I am already logged in');
+    }
+
+
 
 # Redefine http resouces
 
-*modify_resource(ref to sub)*
-
+*modify_resource(CODEREF)*
 
 To modify existed resource use modify_resource function:
 
@@ -732,9 +745,67 @@ To modify existed resource use modify_resource function:
     # modified resource
     foo/bbaarr/bbaazz
 
+
 # Swat modules
 
-TODO:
+Swat modules are reusable swat stories. Swat never execute swat modules directly, instead you have to to call ones
+from your swat story. Let's recal and example with user login. Now we need to ensure that user is logged in before
+doing some other action, like checking email list:
+
+    # email/list/get.txt
+    200 OK
+    email list
+
+    # email/list/hook.pm
+    run_swat_module( POST => '/login', { user => 'alex', password => 'swat' } )    
+
+    # and finaly this is
+    # login/post.txt
+    200 OK
+
+    # login/swat.ini
+    swat_module=1 # this story is a swat module
+    curl_params="-d 'user=%user%' -d 'password=%password%'"
+
+Here are the brief comments to pretty self explanatory example:
+
+- \`set_module=1' declare swat story as swat module; now swat will never execute this story directly, 
+someonelse's story should call it.
+
+- story executing other story is called upstream story.  
+
+- use run_swat_module(method,resourse,variables) function to execute swat module, upstream story hook is a 
+proper place for run_swat_module calls. 
+
+- you can call many swat stories from the one upstream story, and you can call the same story more than once: 
+
+    # hook.pm
+    run_swat_module( GET => '/foo/' )
+    run_swat_module( POST => '/foo/bar' )
+    run_swat_module( GET => '/foo/' )
+
+- swat modules have a variables, you can pass them into module via third parameter of run_swat_module function:
+
+    run_swat_module( GET => '/foo', { var1 => 'value1', var2 => 'value2', var3=>'value3'   }  ) 
+ 
+- swat _interpolate_ modules variables into curl_params value:
+
+    # swat.ini
+    # initial value of curl_params variable:
+    curl_params='-d var1=%var1% -d var2=%var2% -d var3=%var3%'
+
+    # real value of curl_params variable
+    # during execution:
+    curl_param='-d var1=value1 -d var2=value2 -d var3=value3'
+
+- use %[\w\d_]+% placeholders to insert module variables into curl_params value
+
+- you may access swat module varibales inside your swat module using \`module_variable' function:
+
+    # hook.pm
+    module_variable('var1');
+    module_variable('var2');
+     
 
 # Swat runner workflow
 
