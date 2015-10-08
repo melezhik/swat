@@ -40,9 +40,16 @@ sub new_story {
 
 sub end_of_story {
 
-    shift @stories;
+    if (debug_mod12()){
+        Test::More::ok(1,"end of story: ".(get_prop('check_list')));
+    }
+    delete $stories[-1];
+
 }
 
+sub _story {
+    @stories[-1];
+}
 
 sub get_prop {
 
@@ -179,9 +186,6 @@ sub modify_resource {
 
 }
 
-sub _story {
-    @stories[-1];
-}
 
 1;
 
