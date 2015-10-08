@@ -9,7 +9,8 @@ our @EXPORT = qw{
     set_response
     context_populated
     captures capture reset_captures
-    set_block_mode unset_block_mode block_mode
+    set_block_mode unset_block_mode in_block_mode
+    insert_template_variables
 };
 
 our @stories = ();
@@ -20,6 +21,7 @@ sub new_story {
         context_populated => 0,
         captures => [],
         block_mode => 0,
+        template_variables => {}
     };
 
 }
@@ -96,10 +98,30 @@ sub unset_block_mode {
     
 }
 
-sub block_mode {
+sub in_block_mode {
     get_prop(block_mode);
 }
 
+
+sub insert_template_variables {
+
+    for my $name ( keys %{get_prop('template_variables')} ){
+
+        my $v = get_prop('template_variables')->{$name};
+
+        my $re = "%".$p."%";
+
+        my $curl_cmd = get_prop('curl_cmd');
+        my $resource = get_prop('resource');
+
+        s{$re}[$v]g for $curl_cmd;
+        s{$re}[$v]g for $resource;
+
+        set_prop( curl_cmd => $curl_cmd );
+        set_prop( resource => $resource );
+    }
+    
+}
 
 sub _story {
     @stories[-1];

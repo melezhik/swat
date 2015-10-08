@@ -21,26 +21,7 @@ use Data::Dumper;
 use File::Temp qw/ tempfile /;
 use swat::story;
 
- 
-#our ($project);
-#our ($curl_cmd);
-#our ($http_url, $path, $route_dir, $http_meth); 
-#our ($debug, $ignore_http_err, $try_num, $debug_bytes);
-#our ($is_swat_package);
-#our ($set_server_response);
-#our ($test_root_dir);
-#our ($server_response);
-
-#our $command_params = {};
-
 $| = 1;
-
-#our $context_populated;
-#our $http_response;
-#my @context = ();
-#my @context_local = ();
-#my $block_mode;
-#my $captures = [];
 
 #for my $p ( keys %$command_params ){
 #    my $v = $command_params->{$p};
@@ -194,8 +175,8 @@ sub check_line {
         }
     }
 
-    if ($block_mode){
-        @context_local = @context_new; 
+    if (block_mode()){
+        set_prop( context_local, [@context_new] ); 
     }
 
     return
@@ -206,11 +187,19 @@ sub check_line {
 sub header {
 
     if (debug_mod12()) {
+
+        my $project = get_prop('project');
+        my $hostname = get_prop('hostname');
+        my $resource = get_prop('resource');
+        my $project = get_prop('project');
+        my $debug = get_prop('debug');
+        my $try_num = get_prop('try_num');
+        my $ignore_http_err = get_prop('ignore_http_err');
+
         ok(1, "swat version: $swat::VERSION");
         ok(1, "project: $project");
-        ok(1, "is swat package: $is_swat_package");
-        ok(1, "url: $http_url/$path");
-        ok(1, "route: $path ");
+        ok(1, "url: $hostname/$resource");
+        ok(1, "resource: $resource ");
         ok(1, "set server response: $set_server_response");
         ok(1, "debug: $debug");
         ok(1, "try num: $try_num");
