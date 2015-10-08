@@ -722,7 +722,7 @@ To modify existed resource use modify_resource function:
     # foo/bar/baz/ - resource 
     
     # hook.pm
-    modify_resource( sub { my $resource = shift; s/bar/bbaarr/, s/baz/bbaazz/ for $resource  } );
+    modify_resource( sub { my $resource = shift; s/bar/bbaarr/, s/baz/bbaazz/ for $resource; $resource  } );
 
     # modified resource
     foo/bbaarr/bbaazz

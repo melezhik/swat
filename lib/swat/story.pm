@@ -1,16 +1,29 @@
 package swat::story;
 
+use strict;
 use base 'Exporter';
 
 our @EXPORT = qw{ 
+
     new_story end_of_story 
     get_prop set_prop 
+
     debug_mod1 debug_mod2 debug_mod12
+
     set_response
+
     context_populated
+
     captures capture reset_captures
+
     set_block_mode unset_block_mode in_block_mode
-    run_swat_module insert_template_variables
+
+    run_swat_module 
+
+    insert_template_variables get_template_variable
+
+    modify_resource
+
 };
 
 our @stories = ();
@@ -36,7 +49,7 @@ sub get_prop {
 
     my $name = shift;
 
-    _story->{props}->{$name};
+    _story()->{props}->{$name};
     
 }
 
@@ -45,7 +58,7 @@ sub set_prop {
     my $name = shift;
     my $value = shift;
 
-    _story->{props}->{$name} =  $value;
+    _story()->{props}->{$name} =  $value;
     
 }
 
@@ -99,7 +112,7 @@ sub unset_block_mode {
 }
 
 sub in_block_mode {
-    get_prop(block_mode);
+    get_prop(block_mode());
 }
 
 
@@ -107,13 +120,20 @@ sub run_swat_module {
 
     my $http_method = uc(shift());
     my $resource = shift;
+    my $test_root_dir = get_prop('test_root_dir');
+
     $main::template_variables = shift || {};
 
-    ok(1,"run swat module: $http_method => $resource") if debug_mod12();
+    my $module_file = "$test_root_dir/$resource/00.$http_method.m";
+
+    if (debug_mod12()){
+        Test::More::ok(1,"run swat module: $http_method => $resource"); 
+        Test::More::ok(1,"load module file: $module_file");
+    }
 
     my $test_root_dir = get_prop('test_root_dir');
 
-    require "$test_root_dir/$resource/00.$http_method.m";
+    do $module_file;
 
 }
 
@@ -124,7 +144,7 @@ sub insert_template_variables {
 
         my $v = get_prop('template_variables')->{$name};
 
-        my $re = "%".$p."%";
+        my $re = "%".$name."%";
 
         my $curl_cmd = get_prop('curl_cmd');
         my $resource = get_prop('resource');
@@ -136,6 +156,24 @@ sub insert_template_variables {
         set_prop( resource => $resource );
     }
     
+}
+
+sub get_template_variable {
+
+    my $name = shift;
+    %main::template_variables{$name};
+
+}
+
+sub modify_resource {
+
+    my $sub = shift;
+
+    my $resource = get_prop('resource');
+    my $new_resource = $sub->($resource);
+    Test::More::ok(1,"modify_resource: $resource => $new_resource") if debug12();
+    set_prop( resource => $new_resource );
+
 }
 
 sub _story {
