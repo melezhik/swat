@@ -23,14 +23,6 @@ use swat::story;
 
 $| = 1;
 
-#for my $p ( keys %$command_params ){
-#    my $v = $command_params->{$p};
-#    diag "dynamic cmd parameter set: $p => $v" if debug_mod2();
-#    my $re = "__".$p."__";
-#    s{$re}[$v]g for $curl_cmd;
-#    s{$re}[$v]g for $path;
-#}
-
 sub execute_with_retry {
 
     my $cmd = shift;
@@ -71,9 +63,9 @@ sub make_http_request {
         my $resource = get_prop('resource');
 
         if (get_prop('ignore_http_err')){
-            ok(1, "@{[ $st ? 'succ': 'unsucc' ]}sessful response from $http_meth $hostname$resource") 
+            ok(1, "@{[ $st ? 'succ': 'unsucc' ]}sessful response from $http_method $hostname$resource") 
         }else{
-            ok($st, "successful response from $http_meth $http_url$path") 
+            ok($st, "successful response from $http_method  $hostname$resource") 
         }
         ok(1,"response saved to $content_file");
 
@@ -175,8 +167,8 @@ sub check_line {
         }
     }
 
-    if (block_mode()){
-        set_prop( context_local, [@context_new] ); 
+    if (in_block_mode()){
+        set_prop( context_local => [@context_new] ); 
     }
 
     return
@@ -200,7 +192,6 @@ sub header {
         ok(1, "project: $project");
         ok(1, "url: $hostname/$resource");
         ok(1, "resource: $resource ");
-        ok(1, "set server response: $set_server_response");
         ok(1, "debug: $debug");
         ok(1, "try num: $try_num");
         ok(1, "ignore http errors: $ignore_http_err");
@@ -245,14 +236,14 @@ sub generate_asserts {
 
         if ($l=~ /^\s*begin:\s*$/) { # begin: block marker
             diag("begin: block") if debug_mod2();
-            $block_mode=1;
+            set_block_mode();
             next ENTRY;
         }
         if ($l=~ /^\s*end:\s*$/) { # end: block marker
-            $block_mode=0;
+            unset_block_mode();
             populate_context( make_http_request() );
             diag("end: block") if debug_mod2();
-            $context_populated=0; # flush current context
+            set_prop( context_populated => 0); # flush current context
             next ENTRY;
         }
 
@@ -349,7 +340,11 @@ sub handle_generator {
 sub handle_regexp {
 
     my $re = shift;
-    my $message = $block_mode ? "$http_meth $path matches | $re" : "$http_meth $path matches $re";
+
+    my $http_method = get_prop('http_method');
+    my $resource = get_prop('resource');
+
+    my $message = in_block_mode() ? "$http_method $resource matches | $re" : "$http_method $resource matches $re";
     check_line($re, 'regexp', $message);
     diag "handle_regexp OK. $re" if $ENV{'swat_debug'};
     
@@ -358,36 +353,16 @@ sub handle_regexp {
 sub handle_plain {
 
     my $l = shift;
-    my $message = $block_mode ? "$http_meth $path returns | $l" : "$http_meth $path returns $l";
+
+    my $http_method = get_prop('http_method');
+    my $resource = get_prop('resource');
+
+    my $message = in_block_mode() ? "$http_method $resource returns | $l" : "$http_method $resource returns $l";
     check_line($l, 'default', $message);
     diag "handle_plain OK. $l" if $ENV{'swat_debug'};   
 }
 
 
-sub run_swat_module {
-
-    my $http_method = uc(shift());
-    my $path = shift;
-    my $params = shift || {};
-
-    undef($context_populated);
-    undef($http_response);
-
-    $command_params = $params;
-
-    ok(1,"run swat module: $http_method => $path") if debug_mod12();
-
-    do "$test_root_dir/$path/00.$http_method.m";
-
-    undef($context_populated);
-    undef($http_response);
-
-    $command_params = {};
-
-}
-
 1;
-
-__END__
 
 

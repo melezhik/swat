@@ -3,14 +3,14 @@ package swat::story;
 use base 'Exporter';
 
 our @EXPORT = qw{ 
-    new_story end_story 
+    new_story end_of_story 
     get_prop set_prop 
     debug_mod1 debug_mod2 debug_mod12
     set_response
     context_populated
     captures capture reset_captures
     set_block_mode unset_block_mode in_block_mode
-    insert_template_variables
+    run_swat_module insert_template_variables
 };
 
 our @stories = ();
@@ -103,9 +103,24 @@ sub in_block_mode {
 }
 
 
+sub run_swat_module {
+
+    my $http_method = uc(shift());
+    my $resource = shift;
+    $main::template_variables = shift || {};
+
+    ok(1,"run swat module: $http_method => $resource") if debug_mod12();
+
+    my $test_root_dir = get_prop('test_root_dir');
+
+    require "$test_root_dir/$resource/00.$http_method.m";
+
+}
+
+
 sub insert_template_variables {
 
-    for my $name ( keys %{get_prop('template_variables')} ){
+    for my $name ( keys %main::template_variables ){
 
         my $v = get_prop('template_variables')->{$name};
 
