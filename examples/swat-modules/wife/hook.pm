@@ -1,6 +1,6 @@
 modify_resource( sub {
     my $r = shift;
-    my $path = get_template_variable('path');
+    my $path = module_variable('path');
     $r = $path;
     $r;
 });

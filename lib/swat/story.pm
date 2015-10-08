@@ -18,11 +18,10 @@ our @EXPORT = qw{
 
     set_block_mode unset_block_mode in_block_mode
 
-    run_swat_module 
-
-    insert_template_variables get_template_variable
+    run_swat_module apply_module_variables module_variable
 
     modify_resource
+
 
 };
 
@@ -120,7 +119,9 @@ sub run_swat_module {
 
     my $http_method = uc(shift());
     my $resource = shift;
-    %main::template_variables = %{shift || {}};
+    my $module_variables = shift || {};
+
+    $main::module_variables = $module_variables;
 
     my $test_root_dir = get_prop('test_root_dir');
 
@@ -138,11 +139,13 @@ sub run_swat_module {
 }
 
 
-sub insert_template_variables {
+sub apply_module_variables {
 
-    for my $name ( keys %main::template_variables ){
+    set_prop( module_variables => $main::module_variables );
 
-        my $v = $main::template_variables{$name};
+    for my $name ( keys %{ get_prop( 'module_variables' ) } ){
+
+        my $v = module_variable($name);
 
         my $re = "%".$name."%";
 
@@ -158,10 +161,10 @@ sub insert_template_variables {
     
 }
 
-sub get_template_variable {
+sub module_variable {
 
     my $name = shift;
-    %main::template_variables{$name};
+    get_prop( 'module_variables' )->{$name};
 
 }
 
