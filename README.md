@@ -620,7 +620,7 @@ This is the list of helpful variables  you may use in swat ini files:
 
 ## Alternative swat ini files locations
 
-Swat  try to find swat ini files at these locations ( listed in order )
+Swat try to find swat ini files at these locations ( listed in order )
 
 - **~/swat.ini** - home directory
 
@@ -697,7 +697,7 @@ Swat hooks API provides several functions to change swat story at runtime
 Using set_response means that you never make a real request to a web application, but instead set response on your own side.
 
 This feature is helpful when you need to mock up http responses instead of having them requested from a real web application.
-For example in absense of an access to a tested application or if response is too slow or it involves too much data 
+For example in abcense of an access to a tested application or if response is too slow or it involves too much data 
 which make it hard to execute a swat stories often. 
 
 This is an example of setting server response inside swat hook:
@@ -710,7 +710,7 @@ This is an example of setting server response inside swat hook:
     HELLO WORLD
 
 
-Another intresting idea about set_response feature is a _conditional_ http requests. 
+Another interesting idea about set_response feature is a _conditional_ http requests. 
 
 Let say we have \`POST /login' request for user authentication, this is a simple swat story for it:
 
@@ -731,7 +731,7 @@ We could write such a code:
 
 
 
-## Redefine http resouces
+## Redefine http resources
 
 *modify_resource(CODEREF)*
 
@@ -751,7 +751,7 @@ To modify existed resource use modify_resource function:
 Swat allow you to call one story from another, using notion of swat modules.
 
 Swat modules are reusable swat stories. Swat never execute swat modules directly, instead you have to to call ones
-from your swat story. Story calling another story is a _upstream story_, story is being called is a _downsream_ story.
+from your swat story. Story calling another story is a _upstream story_, story is being called is a _downstream_ story.
 ( This kind of analogy is taken from Jenkins CI ) 
 
 
@@ -765,7 +765,7 @@ doing some other action, like checking email list:
     # email/list/hook.pm
     run_swat_module( POST => '/login', { user => 'alex', password => 'swat' } )    
 
-    # and finaly this is
+    # and finally this is
     # login/post.txt
     200 OK
 
@@ -776,10 +776,10 @@ doing some other action, like checking email list:
 Here are the brief comments to pretty self explanatory example:
 
 - \`set_module=1' declare swat story as swat module; now swat will never execute this story directly, 
-someonelse's story should call it.
+someone's else story should call it.
 
 
-- use \'run_swat_module(method,resourse,variables)' function to execute swat module, upstream story hook is a 
+- use \'run_swat_module(method,resource,variables)' function to execute swat module, upstream story hook is a 
 proper place for run_swat_module function calls. 
 
 - you can call as many swat stories from the one upstream story as you need
@@ -815,9 +815,9 @@ proper place for run_swat_module function calls.
     curl_param='-d var1=value1 -d var2=value2 -d var3=value3'
 ```
 
-Use `%[\w\d_]+%` placeholders in a curl_params varibale to insert module variables here
+Use `%[\w\d_]+%` placeholders in a curl_params variable to insert module variables here
 
-- you may access swat module varibales inside your swat module using \`module_variable' function:
+- you may access swat module variables inside your swat module using \`module_variable' function:
 
 ```
     # hook.pm
@@ -827,22 +827,22 @@ Use `%[\w\d_]+%` placeholders in a curl_params varibale to insert module variabl
 ``` 
 - swat modules could call other swat modules
 
-- you can't use module varibales in a story which is not a swat_module
+- you can't use module variables in a story which is not a swat_module
 
 
 One word about sharing state between upstream story and swat modules. As swat modules get executed in the same process
-as upstream story there is no magic about sharing data between upstream and downstream strories. 
+as upstream story there is no magic about sharing data between upstream and downstream stories. 
 The straitforward way to share state is to use global variables :
 
-    # upstrem story hook:
+    # upstream story hook:
     my $state = [ 'this is upstream story' ]
 
     # downstream story hook:
     push @$state, 'I was here'
     
-Of course more proper aproaches for state sharing could be used as singletones or something else.
+Of course more proper approaches for state sharing could be used as singeltones or something else.
 
-## Swat variable accessors
+## Swat variables accessors
 
 There are some accessors to a common swat variables:
 
@@ -852,7 +852,7 @@ There are some accessors to a common swat variables:
     http_method()
     hostname()
 
-Be awared that these are readers not setters.
+Be aware of that these are readers not setters.
 
 
 # Swat runner workflow
