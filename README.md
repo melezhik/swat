@@ -579,8 +579,6 @@ Swat variables define swat  basic configuration, like logging mode, prove runner
 
 - `swat_debug` - run swat in debug mode, default value is \`0`.
 
-- `ignore_http_err` - set to \`1' if you want to ignore unsuccessful http codes (! 2\*\*,3\*\* ).
-
 - `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings]("#prove-settings") section.
 
 ## curl parameters

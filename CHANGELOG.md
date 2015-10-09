@@ -11,6 +11,7 @@
   - dynamic routes are deprecated
   - bash hooks are deprecated
   - perl cleanup, startup, project based hooks are deprecated
+  - ignore_http_err depricated
 
 # 0.1.54
 - just a documentation release - various fixes at documentation

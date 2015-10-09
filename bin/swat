@@ -53,10 +53,6 @@ if [ -n "${port}" ]; then
     echo "port=$port" >> $session_file
 fi
 
-if [ -n "${ignore_http_err}" ]; then
-    echo "ignore_http_err=$ignore_http_err" >> $session_file
-fi
-
 if [ -n "${try_num}" ]; then
     echo "try_num=$try_num" >> $session_file
 fi
@@ -98,7 +94,6 @@ find_cmd="find $project -type f -name get.txt -o -name post.txt -o -name put.txt
 for f in `$find_cmd`; do
     resource_dir=`perl -MFile::Spec -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print File::Spec->rel2abs($sp)' $f`;
 
-    unset ignore_http_err
     unset try_num
     unset debug_bytes
     unset debug
@@ -118,7 +113,6 @@ for f in `$find_cmd`; do
     source $session_file
 
     # set defaults
-    ignore_http_err=${ignore_http_err:=0}
     try_num=${try_num:=2}
     debug=${debug:=0}
     debug_bytes=${debug_bytes:=500}
@@ -142,7 +136,7 @@ for f in `$find_cmd`; do
         touch $startup_lock_file
     fi
 
-    curl_cmd="curl -f -X $http_method"
+    curl_cmd="curl -X $http_method"
 
     curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L --stderr -"
 
@@ -194,7 +188,6 @@ for f in `$find_cmd`; do
 
     echo "set_prop( debug => $debug );" >> $tfile
     echo "set_prop( debug_bytes => $debug_bytes );" >> $tfile
-    echo "set_prop( ignore_http_err => $ignore_http_err );" >> $tfile
     echo "set_prop( try_num => $try_num );" >> $tfile
 
     echo "set_prop( swat_module => $swat_module );" >> $tfile
