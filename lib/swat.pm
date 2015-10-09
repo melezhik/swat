@@ -195,7 +195,11 @@ sub header {
         ok(1, "project: $project");
         ok(1, "hostname: $hostname");
         ok(1, "resource: $resource");
-        ok(1, "curl_cmd: $curl_cmd");
+        if ( get_prop('response' )){
+            ok(1, 'response is set, so we do not use curl')
+        }else{
+            ok(1, "curl run: $curl_cmd $hostname$resource");
+        }
         ok(1, "debug: $debug");
         ok(1, "try num: $try_num");
         ok(1, "ignore http errors: $ignore_http_err");
