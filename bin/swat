@@ -238,27 +238,13 @@ export port
 
 if [ -z "${rest_args}" ] && [ -n "${prove_options}" ]; then
     rest_args=("$prove_options")
-    cmd="prove -m -r $rest_args  $test_root_dir/$test_file";
-    eval $cmd
-    status=$?
+    prove -m -r $rest_args  "$test_root_dir/$test_file";
 elif [ -n "${rest_args}"  ]; then
-    cmd="prove -m -r  $rest_args $test_root_dir/$test_file";
-    eval $cmd
-    status=$?
+    prove -m -r  $rest_args "$test_root_dir/$test_file";
 else
-    cmd="prove -m -r -v $test_root_dir/$test_file";
-    eval $cmd
-    status=$?
+    prove -m -r -v "$test_root_dir/$test_file";
 fi
 
-
-# execute cleanup hook
-if test -f $project/cleanup.bash ; then 
-    source $project/cleanup.bash || exit 1
-    exit $status
-else
-    exit $status
-fi
 
 
 

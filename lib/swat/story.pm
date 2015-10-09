@@ -173,8 +173,14 @@ sub run_swat_module {
 
     my $test_root_dir = get_prop('test_root_dir');
 
-    require $module_file or die $!;
+    my $return;
+    unless ($return = do $module_file) {
+        die "couldn't parse $module_file: $@" if $@;
+        die "couldn't do $module_file: $!"    unless defined $return;
+        die "couldn't run $module_file"       unless $return;
+    }
 
+    
 }
 
 
