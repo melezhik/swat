@@ -557,10 +557,9 @@ The content of swat ini file is the list of variables definitions in bash format
 
 As swat ini files is bash scripts you may use bash expressions here:
 
-
-if [ some condition ]; then
-    $name=value
-fi
+    if [ some condition ]; then
+        $name=value
+    fi
 
 Following is the list of swat variables you may define at swat ini files, it could be divided on two groups:
 
