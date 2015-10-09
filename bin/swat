@@ -96,7 +96,7 @@ tt=1
 find_cmd="find $project -type f -name get.txt -o -name post.txt -o -name put.txt -o -name delete.txt"
 
 for f in `$find_cmd`; do
-    route_dir=`perl -MFile::Spec -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print File::Spec->rel2abs($sp)' $f`;
+    resource_dir=`perl -MFile::Spec -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print File::Spec->rel2abs($sp)' $f`;
 
     unset ignore_http_err
     unset try_num
@@ -113,7 +113,7 @@ for f in `$find_cmd`; do
     test -f ~/$swat_ini_file && source ~/$swat_ini_file
     test -f $project/$swat_ini_file && source $project/$swat_ini_file
     test -f 'swat.my' && source 'swat.my'
-    test -f $route_dir/$swat_ini_file && source $route_dir/$swat_ini_file
+    test -f $resource_dir/$swat_ini_file && source $resource_dir/$swat_ini_file
 
     source $session_file
 
@@ -189,6 +189,7 @@ for f in `$find_cmd`; do
 
     echo "set_prop( project => q{$project} );" >> $tfile
     echo "set_prop( test_root_dir => q{$test_root_dir} );" >> $tfile
+    echo "set_prop( resource_dir => q{$resource_dir} );" >> $tfile
 
 
     echo "set_prop( debug => $debug );" >> $tfile
@@ -208,7 +209,7 @@ for f in `$find_cmd`; do
     echo >> $tfile
     echo >> $tfile
 
-    test -f $route_dir/hook.pm && echo "require '${route_dir}/hook.pm';"  >> $tfile
+    test -f $resource_dir/hook.pm && echo "require '${resource_dir}/hook.pm';"  >> $tfile
 
     echo >> $tfile
 

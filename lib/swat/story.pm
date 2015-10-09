@@ -23,11 +23,14 @@ our @EXPORT = qw{
     modify_resource
 
 
+    hostname
+
     project_root_dir
     test_root_dir
-    resource
+
+    resource resource_dir
+
     http_method
-    hostname
 };
 
 our @stories = ();
@@ -87,6 +90,10 @@ sub hostname {
 
 sub resource {
     get_prop('resource');
+}
+
+sub resource_dir {
+    get_prop('resource_dir');
 }
 
 sub http_method {

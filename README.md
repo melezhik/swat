@@ -614,6 +614,7 @@ Follow curl documentation to get more examples.
 This is the list of helpful variables  you may use in swat ini files:
 
 - $resource
+- $resource_dir
 - $test_root_dir
 - $hostname
 - $http_method
@@ -848,7 +849,10 @@ There are some accessors to a common swat variables:
 
     project_root_dir()
     test_root_dir()
+
     resource()
+    resource_dir()
+
     http_method()
     hostname()
 
