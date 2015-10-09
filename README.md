@@ -682,7 +682,7 @@ There are lot of reasons why you might need a hooks. To say a few:
 - define swat generators
 - redefine http responses 
 - redefine http resources 
-- call swat modules 
+- call downstream stories
 - other custom code 
 
 
@@ -731,7 +731,7 @@ We could write such a code:
 
 
 
-# Redefine http resouces
+## Redefine http resouces
 
 *modify_resource(CODEREF)*
 
@@ -746,10 +746,16 @@ To modify existed resource use modify_resource function:
     foo/bbaarr/bbaazz
 
 
-# Swat modules
+## Upstream and downstream stories
+
+Swat allow you to call one story from another, using notion of swat modules.
 
 Swat modules are reusable swat stories. Swat never execute swat modules directly, instead you have to to call ones
-from your swat story. Let's recal and example with user login. Now we need to ensure that user is logged in before
+from your swat story. Story calling another story is a _upstream story_, story is being called is a _downsream_ story.
+( This kind of analogy is taken from Jenkins CI ) 
+
+
+Let show how this work on a previous \`login' example. We need to ensure that user is logged in before
 doing some other action, like checking email list:
 
     # email/list/get.txt
@@ -772,12 +778,14 @@ Here are the brief comments to pretty self explanatory example:
 - \`set_module=1' declare swat story as swat module; now swat will never execute this story directly, 
 someonelse's story should call it.
 
-- story executing other story is called upstream story.  
 
 - use \'run_swat_module(method,resourse,variables)' function to execute swat module, upstream story hook is a 
-proper place for run_swat_module calls. 
+proper place for run_swat_module function calls. 
 
-- you can call many swat stories from the one upstream story, and you can call the same story more than once: 
+- you can call as many swat stories from the one upstream story as you need
+
+- you can call the same downstream story more than once from the same upstream story 
+
 
 ```
     # hook.pm
@@ -787,25 +795,27 @@ proper place for run_swat_module calls.
 
 ```
 
-- swat modules have a variables, you can pass them into module via third parameter of run_swat_module function:
+- swat modules have a variables hash passed into a module as third parameter of run_swat_module function:
 
 ```
     run_swat_module( GET => '/foo', { var1 => 'value1', var2 => 'value2', var3=>'value3'   }  ) 
 ```
 
-- swat _interpolate_ modules variables into curl_params value:
+- swat _interpolate_ module variables into \`curl_params' variable in swat module story:
 
 ```
+    # swat module 
     # swat.ini
+    swat_module=1
     # initial value of curl_params variable:
     curl_params='-d var1=%var1% -d var2=%var2% -d var3=%var3%'
 
     # real value of curl_params variable
-    # during execution:
+    # during execution of swat module:
     curl_param='-d var1=value1 -d var2=value2 -d var3=value3'
 ```
 
-- use `%[\w\d_]+%` placeholders to insert module variables into curl_params value
+Use `%[\w\d_]+%` placeholders in a curl_params varibale to insert module variables here
 
 - you may access swat module varibales inside your swat module using \`module_variable' function:
 
@@ -814,7 +824,36 @@ proper place for run_swat_module calls.
     module_variable('var1');
     module_variable('var2');
 
-```     
+``` 
+- swat modules could call other swat modules
+
+- you can't use module varibales in a story which is not a swat_module
+
+
+One word about sharing state between upstream story and swat modules. As swat modules get executed in the same process
+as upstream story there is no magic about sharing data between upstream and downstream strories. 
+The straitforward way to share state is to use global variables :
+
+    # upstrem story hook:
+    my $state = [ 'this is upstream story' ]
+
+    # downstream story hook:
+    push @$state, 'I was here'
+    
+Of course more proper aproaches for state sharing could be used as singletones or something else.
+
+## Swat variable accessors
+
+There are some accessors to a common swat variables:
+
+    project_root_dir()
+    test_root_dir()
+    resource()
+    http_method()
+    hostname()
+
+Be awared that these are readers not setters.
+
 
 # Swat runner workflow
 
