@@ -199,7 +199,6 @@ sub header {
         }
         ok(1, "debug: $debug");
         ok(1, "try num: $try_num");
-        ok(1, "ignore http errors: $ignore_http_err");
     }
 }
 
