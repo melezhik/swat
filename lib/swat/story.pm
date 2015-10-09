@@ -173,7 +173,7 @@ sub run_swat_module {
 
     my $test_root_dir = get_prop('test_root_dir');
 
-    require $module_file;
+    require $module_file or die $!;
 
 }
 
@@ -216,8 +216,13 @@ sub modify_resource {
     my $sub = shift;
 
     my $resource = get_prop('resource');
+
+    Test::More::ok(1,"try to modify_resource: $resource ") if debug_mod12();
+
     my $new_resource = $sub->($resource);
-    Test::More::ok(1,"modify_resource: $resource => $new_resource") if debug_mod12();
+
+    Test::More::ok(1,"modify_resource ok: $resource => $new_resource") if debug_mod12();
+
     set_prop( resource => $new_resource );
 
 }

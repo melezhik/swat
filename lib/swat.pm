@@ -62,13 +62,13 @@ sub make_http_request {
         my $http_method = get_prop('http_method'); 
 
         my $st = execute_with_retry("$curl_cmd $hostname$resource > $content_file && test -s $content_file", get_prop('try_num'));
+        ok(1,"response saved to $content_file");
 
         if (get_prop('ignore_http_err')){
             ok(1, "@{[ $st ? 'succ': 'unsucc' ]}sessful response from $http_method $hostname$resource") 
         }else{
             ok($st, "successful response from $http_method  $hostname$resource") 
         }
-        ok(1,"response saved to $content_file");
 
     }
 

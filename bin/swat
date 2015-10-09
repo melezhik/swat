@@ -209,7 +209,7 @@ for f in `$find_cmd`; do
     echo >> $tfile
     echo >> $tfile
 
-    test -f $resource_dir/hook.pm && echo "require '${resource_dir}/hook.pm';"  >> $tfile
+    test -f $resource_dir/hook.pm && echo "do '${resource_dir}/hook.pm';"  >> $tfile
 
     echo >> $tfile
 
