@@ -34,7 +34,7 @@ if [ -n "${host}"  ] ; then
     rm -rf $cache_dir
     mkdir -p $cache_dir
     session_file=$cache_dir/session.ini
-    startup_lock_file=$cache_dir/startup.lock
+    bash_hook_lock_file=$cache_dir/bash.hook.lock
 else
     echo "usage: swat project HOST:port prove-options"
     exit 1
@@ -43,7 +43,7 @@ fi
 
 # save environment settings to session file
 echo > $session_file
-rm -rf $startup_lock_file
+rm -rf $bash_hook_lock_file
 
 if [ -n "${curl_params}" ]; then
     echo "curl_params=$curl_params" >> $session_file
@@ -133,12 +133,12 @@ for f in `$find_cmd`; do
         $host="$host:$port"
     fi
 
-    # execute startup hook
-    if test -f $startup_lock_file; then
+    # execute swat project bash hook
+    if test -f $bash_hook_lock_file; then
         :
     else
-        test -f $project/startup.bash && source $project/startup.bash
-        touch $startup_lock_file
+        test -f $project/hook.bash && source $project/hook.bash
+        touch $bash_hook_lock_file
     fi
 
     curl_cmd="curl -f -X $http_method"
