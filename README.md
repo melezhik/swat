@@ -576,7 +576,7 @@ Swat variables define swat  basic configuration, like logging mode, prove runner
 
 - `swat_debug` - set to \`1' to enable swat debug mode, a lot of low level information will be printed on console, default value is \`0'.
 
-- `swat_debug` - run swat in debug mode, default value is \`0`.
+- `ignore_http_err` - do not consider curl unsuccessful exit code as error, default value is \`1` ( consider ).
 
 - `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings]("#prove-settings") section.
 
@@ -672,7 +672,7 @@ You should named your hook file as \`hook.pm' and place it into \`resource' dire
     
 
     # foo/get.txt
-    generator: red_gree_blue_generator()
+    generator: red_green_blue_generator()
  
 
 There are lot of reasons why you might need a hooks. To say a few:
@@ -852,6 +852,8 @@ There are some accessors to a common swat variables:
 
     http_method()
     hostname()
+
+    ignore_http_err()
 
 Be aware of that these are readers not setters.
 
