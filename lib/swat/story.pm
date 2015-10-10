@@ -204,7 +204,7 @@ sub apply_module_variables {
         s{$re}[$v]g for $curl_cmd;
         s{$re}[$v]g for $resource;
 
-        if (debug_mod12()){
+        if (debug_mod2()){
             Test::More::ok(1,"apply module variable: $name => $v");
         }
 

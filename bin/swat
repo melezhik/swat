@@ -124,6 +124,7 @@ for f in `$find_cmd`; do
     curl_max_time=${curl_max_time:=20}
     curl_connect_timeout=${curl_connect_timeout:=20}
     swat_module=${swat_module:=0}
+    ignore_http_err=${ignore_http_err:=0}
 
     resource=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $project $f`;
     mkdir -p "${test_root_dir}/${resource}";

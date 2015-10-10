@@ -193,22 +193,22 @@ sub header {
         my $project = get_prop('project');
         my $hostname = get_prop('hostname');
         my $resource = get_prop('resource');
+        my $http_method = get_prop('http_method');
         my $curl_cmd = get_prop('curl_cmd');
         my $debug = get_prop('debug');
         my $try_num = get_prop('try_num');
         my $ignore_http_err = get_prop('ignore_http_err');
 
-        ok(1, "swat version: $swat::VERSION");
         ok(1, "project: $project");
         ok(1, "hostname: $hostname");
         ok(1, "resource: $resource");
+        ok(1, "http method: $http_method");
         if ( get_prop('response' )){
             ok(1, 'response is set, so we do not use curl')
-        }else{
-            ok(1, "curl run: $curl_cmd $hostname$resource");
         }
         ok(1, "debug: $debug");
         ok(1, "try num: $try_num");
+        ok(1, "ignore http errors: $ignore_http_err");
     }
 }
 
