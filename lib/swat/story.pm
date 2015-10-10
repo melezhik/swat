@@ -23,7 +23,7 @@ our @EXPORT = qw{
     modify_resource
 
 
-    hostname
+    hostname ignore_http_err
 
     project_root_dir
     test_root_dir
@@ -86,6 +86,10 @@ sub test_root_dir {
 
 sub hostname {
     get_prop('hostname');
+}
+
+sub ignore_http_err {
+    get_prop('ignore_http_err');
 }
 
 sub resource {

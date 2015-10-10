@@ -49,6 +49,10 @@ if [ -n "${curl_params}" ]; then
     echo "curl_params=$curl_params" >> $session_file
 fi
 
+if [ -n "${ignore_http_err}" ]; then
+    echo "ignore_http_err=$ignore_http_err" >> $session_file
+fi
+
 if [ -n "${port}" ]; then
     echo "port=$port" >> $session_file
 fi
@@ -102,6 +106,7 @@ for f in `$find_cmd`; do
     unset curl_params
     unset port
     unset swat_module
+    unset ignore_http_err
 
     http_method=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
 
@@ -136,7 +141,7 @@ for f in `$find_cmd`; do
         touch $startup_lock_file
     fi
 
-    curl_cmd="curl -X $http_method"
+    curl_cmd="curl -f -X $http_method"
 
     curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L --stderr -"
 
@@ -180,6 +185,7 @@ for f in `$find_cmd`; do
     echo "set_prop( resource => q{$resource} );" >> $tfile
     echo "set_prop( http_method => q{$http_method} );" >> $tfile
     echo "set_prop( curl_cmd => q{$curl_cmd} );" >> $tfile
+    echo "set_prop( ignore_http_err => $ignore_http_err );" >> $tfile
 
     echo "set_prop( project => q{$project} );" >> $tfile
     echo "set_prop( test_root_dir => q{$test_root_dir} );" >> $tfile

@@ -61,9 +61,19 @@ sub make_http_request {
         my $resource = get_prop('resource');
         my $http_method = get_prop('http_method'); 
 
-        my $st = execute_with_retry("$curl_cmd $hostname$resource > $content_file", get_prop('try_num'));
+        my $st = execute_with_retry("$curl_cmd $hostname$resource > $content_file && test -f $content_file", get_prop('try_num'));
 
-        ok($st, "successful curl exit code");
+        if ($st) {
+            ok(1, "$http_method $hostname$resource succeeded");
+        }elsif(ignore_http_err()){
+            ok(1, "$http_method $hostname$resource failed, still continue due to ignore_http_err set to 1");
+        }else{
+            ok(0, "$http_method $hostname$resource succeeded");
+            open CNT, $content_file or die $!;
+            my $rdata = join "", <CNT>;
+            close CNT;
+            diag("$curl_cmd $hostname$resource\n===>\n$rdata");
+        }
 
         ok(1,"response saved to $content_file");
 
