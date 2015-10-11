@@ -748,8 +748,8 @@ To modify existed resource use modify_resource function:
 
 Swat allow you to call one story from another, using notion of swat modules.
 
-Swat modules are reusable swat stories. Swat never execute swat modules directly, instead you have to to call ones
-from your swat story. Story calling another story is a _upstream story_, story is being called is a _downstream_ story.
+Swat modules are reusable swat stories. Swat never executes swat modules directly, instead you have to call swat module from your swat story.
+Story calling another story is named a _upstream story_, story is being called is named a _downstream_ story.
 ( This kind of analogy is taken from Jenkins CI ) 
 
 
@@ -771,19 +771,17 @@ doing some other action, like checking email list:
     swat_module=1 # this story is a swat module
     curl_params="-d 'user=%user%' -d 'password=%password%'"
 
-Here are the brief comments to pretty self explanatory example:
+Here are the brief comments to the example above:
 
-- \`set_module=1' declare swat story as swat module; now swat will never execute this story directly, 
-someone's else story should call it.
+- \`set_module=1' declare swat story as swat module; now swat will never execute this story directly, upstream story should call it.
 
+- call \'run_swat_module(method,resource,variables)' function inside upstream story hook to run downstream story.
 
-- use \'run_swat_module(method,resource,variables)' function to execute swat module, upstream story hook is a 
-proper place for run_swat_module function calls. 
+- you can call as many downstearm stories as you wish.
 
-- you can call as many swat stories from the one upstream story as you need
+- you can call the same downstream story more than once. 
 
-- you can call the same downstream story more than once from the same upstream story 
-
+Here is an example code snippet:
 
 ```
     # hook.pm
