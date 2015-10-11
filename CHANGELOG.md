@@ -1,8 +1,7 @@
 # 0.1.55
-- rewrote documentation completely
+- documentation rewritten completely
 - new features: 
-  - set_server_response
-  - swat_modules 
+  - perl hooks api: modify_resourse, accessors, stories, swat_modules, set_server_response  
   - blank lines matchers
   - DELETE http methods
   - project_root default value is `pwd`
@@ -10,8 +9,7 @@
 - breaking changes 
   - dynamic routes are deprecated
   - bash hooks are deprecated
-  - perl cleanup, startup, project based hooks are deprecated
-  - ignore_http_err depricated
+  - project based and cleanup perl hooks are depricated
 
 # 0.1.54
 - just a documentation release - various fixes at documentation
