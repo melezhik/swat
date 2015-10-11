@@ -10,7 +10,8 @@
   - dynamic routes are deprecated
   - bash hooks are deprecated
   - project based and cleanup perl hooks are depricated
-
+  - swat packages are deprecated
+  
 # 0.1.54
 - just a documentation release - various fixes at documentation
 
