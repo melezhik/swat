@@ -214,7 +214,7 @@ for f in `$find_cmd`; do
     echo >> $tfile
 
     echo "SKIP: {" >> $tfile
-    echo -e "\tgenerate_asserts(q{$f},1)" >> $tfile;
+    echo -e "\t eval { generate_asserts(q{$f},1) };" >> $tfile;
     echo >> $tfile
     echo "}" >> $tfile
 

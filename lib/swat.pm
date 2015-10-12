@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.55';
+our $VERSION = '0.1.56';
 
 use base 'Exporter'; 
 
@@ -191,6 +191,7 @@ sub header {
     if (debug_mod12()) {
 
         my $project = get_prop('project');
+        my $swat_module = get_prop('swat_module');
         my $hostname = get_prop('hostname');
         my $resource = get_prop('resource');
         my $http_method = get_prop('http_method');
@@ -206,6 +207,7 @@ sub header {
         if ( get_prop('response' )){
             ok(1, 'response is set, so we do not use curl')
         }
+        ok(1,"swat module: $swat_module");
         ok(1, "debug: $debug");
         ok(1, "try num: $try_num");
         ok(1, "ignore http errors: $ignore_http_err");
@@ -236,7 +238,6 @@ sub generate_asserts {
 
 
 
-  
     ENTRY: for my $l (@ents){
 
         chomp $l;
@@ -335,18 +336,17 @@ sub handle_code {
 sub handle_generator {
 
     my $code = shift;
-
     unless (ref $code){
         my $arr_ref = eval $code;
         die "generator entry eval error, code:$code , error: $@" if $@;
+        diag "handle_generator OK. $code" if $ENV{'swat_debug'};
         generate_asserts($arr_ref,0);
-        diag "handle_code OK. $code" if $ENV{'swat_debug'};
     } else {
         my $code_to_eval = join "\n", @$code;
         my $arr_ref = eval $code_to_eval;
-        generate_asserts($arr_ref,0);
-        die "code entry eval error, code:$code_to_eval , error: $@" if $@;
+        die "generator entry eval error, code:$code_to_eval , error: $@" if $@;
         diag "handle_generator OK. multiline. $code_to_eval" if $ENV{'swat_debug'};
+        generate_asserts($arr_ref,0);
     }
     
 }

@@ -1,3 +1,7 @@
+# 0.1.56
+- handle errors from generate_asserts() - so end_of_story() always runs
+
+
 # 0.1.55
 - documentation rewritten completely
 - new features: 
