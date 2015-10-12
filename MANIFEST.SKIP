@@ -11,3 +11,4 @@ swat-.*\.gz
 swat\.my
 ^MYMETA\.
 ^Makefile$
+swat-

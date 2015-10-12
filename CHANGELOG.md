@@ -1,3 +1,6 @@
+# 0.1.57
+- add META.yml to cpan distribution
+
 # 0.1.56
 - handle errors from files loaded by do() function()
 
