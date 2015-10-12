@@ -52,7 +52,7 @@ sub make_http_request {
         print F get_prop('response');
         close F;
 
-        ok(1,"response saved to $content_file");
+        diag "response saved to $content_file";
 
     }else{
 
@@ -75,7 +75,7 @@ sub make_http_request {
             diag("$curl_cmd $hostname$resource\n===>\n$rdata");
         }
 
-        ok(1,"response saved to $content_file");
+        diag "response saved to $content_file";
 
     }
 

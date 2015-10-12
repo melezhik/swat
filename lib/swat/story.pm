@@ -19,6 +19,7 @@ our @EXPORT = qw{
     set_block_mode unset_block_mode in_block_mode
 
     run_swat_module apply_module_variables module_variable
+    do_perl_file
 
     modify_resource
 
@@ -177,14 +178,24 @@ sub run_swat_module {
 
     my $test_root_dir = get_prop('test_root_dir');
 
-    my $return;
-    unless ($return = do $module_file) {
-        die "couldn't parse $module_file: $@" if $@;
-        die "couldn't do $module_file: $!"    unless defined $return;
-        die "couldn't run $module_file"       unless $return;
-    }
-
+    do_perl_file($module_file);
     
+}
+
+sub do_perl_file {
+
+    my $file = shift;
+
+    {
+    package main;
+    my $return;
+    unless ($return = do $file) {
+        die "couldn't parse $file: $@" if $@;
+        die "couldn't do $file: $!"    unless defined $return;
+        die "couldn't run $file"       unless $return;
+    }
+    }
+    return 1;
 }
 
 

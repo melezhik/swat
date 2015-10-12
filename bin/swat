@@ -209,12 +209,12 @@ for f in `$find_cmd`; do
     echo >> $tfile
     echo >> $tfile
 
-    test -f $resource_dir/hook.pm && echo "do '${resource_dir}/hook.pm';"  >> $tfile
+    test -f $resource_dir/hook.pm && echo "do_perl_file('${resource_dir}/hook.pm');"  >> $tfile
 
     echo >> $tfile
 
     echo "SKIP: {" >> $tfile
-    echo -e "\t eval { generate_asserts(q{$f},1) };" >> $tfile;
+    echo -e "\t eval { generate_asserts(q{$f},1) }; die \$@ if \$@;" >> $tfile;
     echo >> $tfile
     echo "}" >> $tfile
 

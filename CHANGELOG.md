@@ -1,5 +1,5 @@
 # 0.1.56
-- handle errors from generate_asserts() - so end_of_story() always runs
+- handle errors from files loaded by do() function()
 
 
 # 0.1.55
