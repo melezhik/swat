@@ -1,3 +1,6 @@
+# 0.1.59
+- documentation improvements
+
 # 0.1.57-58
 - add META.yml to cpan distribution
 

@@ -831,10 +831,10 @@ as upstream story there is no magic about sharing data between upstream and down
 The straitforward way to share state is to use global variables :
 
     # upstream story hook:
-    my $state = [ 'this is upstream story' ]
+    our $state = [ 'this is upstream story' ]
 
     # downstream story hook:
-    push @$state, 'I was here'
+    push our @$state, 'I was here'
     
 Of course more proper approaches for state sharing could be used as singeltones or something else.
 
