@@ -61,7 +61,7 @@ sub make_http_request {
         my $resource = get_prop('resource');
         my $http_method = get_prop('http_method'); 
 
-        my $st = execute_with_retry("$curl_cmd $hostname$resource > $content_file && test -f $content_file", get_prop('try_num'));
+        my $st = execute_with_retry("$curl_cmd '$hostname$resource' > $content_file && test -f $content_file", get_prop('try_num'));
 
         if ($st) {
             ok(1, "$http_method $hostname$resource succeeded");

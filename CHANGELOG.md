@@ -1,5 +1,6 @@
 # 0.1.59
 - documentation improvements
+- curl <host/resource> parameter now is single quoted
 
 # 0.1.57-58
 - add META.yml to cpan distribution
