@@ -1,3 +1,6 @@
+# 0.1.60
+- removed old dependencies from Makefile.PL
+
 # 0.1.59
 - documentation improvements
 - curl <host/resource> parameter now is single quoted

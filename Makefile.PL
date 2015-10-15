@@ -9,7 +9,6 @@ all_from       'lib/swat.pm';
 # Specific dependencies
 requires    'Test::More';
 requires    'Test::Harness';
-requires    'File::ShareDir'; 
 requires    'File::Temp';
 license     'perl';
 repository  'https://github.com/melezhik/swat';
