@@ -29,7 +29,7 @@ sub execute_with_retry {
     my $try = shift || 1;
 
     for my $i (1..$try){
-        diag(1, "\nexecute cmd: $cmd\n attempt number: $i") if debug_mod2();
+        diag("\nexecute cmd: $cmd\n attempt number: $i") if debug_mod2();
         return $i if system($cmd) == 0;
         sleep $i**2;
     }

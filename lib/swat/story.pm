@@ -78,7 +78,7 @@ sub set_prop {
 }
 
 sub project_root_dir {
-    get_prop('project_root_dir');
+    get_prop('project');
 }
 
 sub test_root_dir {
