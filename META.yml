@@ -20,11 +20,10 @@ no_index:
     - inc
     - t
 requires:
-  File::ShareDir: 0
   File::Temp: 0
   Test::Harness: 0
   Test::More: 0
 resources:
   license: http://dev.perl.org/licenses/
   repository: https://github.com/melezhik/swat
-version: 0.1.59
+version: 0.1.60

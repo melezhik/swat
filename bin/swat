@@ -96,6 +96,7 @@ tt=1
 find_cmd="find $project -type f -name get.txt -o -name post.txt -o -name put.txt -o -name delete.txt"
 
 for f in `$find_cmd`; do
+
     resource_dir=`perl -MFile::Spec -e '$sp=$ARGV[0]; s{\w+\.txt$}[] for $sp; chomp $sp; print File::Spec->rel2abs($sp)' $f`;
 
     unset try_num
@@ -127,8 +128,8 @@ for f in `$find_cmd`; do
     ignore_http_err=${ignore_http_err:=0}
 
     resource=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $project $f`;
-    mkdir -p "${test_root_dir}/${resource}";
 
+    mkdir -p "${test_root_dir}/${resource}";
 
     if [ -n "${port}" ]; then
         $host="$host:$port"
@@ -184,13 +185,13 @@ for f in `$find_cmd`; do
 
     echo "set_prop( hostname => q{$host} );" >> $tfile
     echo "set_prop( resource => q{$resource} );" >> $tfile
+    echo "set_prop( resource_dir => q{$resource_dir} );" >> $tfile
     echo "set_prop( http_method => q{$http_method} );" >> $tfile
     echo "set_prop( curl_cmd => q{$curl_cmd} );" >> $tfile
     echo "set_prop( ignore_http_err => $ignore_http_err );" >> $tfile
 
     echo "set_prop( project => q{$project} );" >> $tfile
     echo "set_prop( test_root_dir => q{$test_root_dir} );" >> $tfile
-    echo "set_prop( resource_dir => q{$resource_dir} );" >> $tfile
 
 
     echo "set_prop( debug => $debug );" >> $tfile
