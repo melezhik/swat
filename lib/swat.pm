@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.60';
+our $VERSION = '0.1.61';
 
 use base 'Exporter'; 
 
@@ -358,7 +358,7 @@ sub handle_regexp {
     my $http_method = get_prop('http_method');
     my $resource = get_prop('resource');
 
-    my $message = in_block_mode() ? "$http_method $resource matches | $re" : "$http_method $resource matches $re";
+    my $message = in_block_mode() ? "response matches | $re" : "respons matches $re";
     check_line($re, 'regexp', $message);
     diag "handle_regexp OK. $re" if $ENV{'swat_debug'};
     
@@ -368,11 +368,16 @@ sub handle_plain {
 
     my $l = shift;
 
+    my $shortened = substr( $l, 0, get_prop('match_l') );
+
     my $http_method = get_prop('http_method');
+
     my $resource = get_prop('resource');
 
-    my $message = in_block_mode() ? "$http_method $resource returns | $l" : "$http_method $resource returns $l";
+    my $message = in_block_mode() ? "response has | $shortened ... " : "response has $shortened ... ";
+
     check_line($l, 'default', $message);
+
     diag "handle_plain OK. $l" if $ENV{'swat_debug'};   
 }
 

@@ -73,6 +73,10 @@ if [ -n "${debug_bytes}" ]; then
     echo "debug_bytes=$debug_bytes" >> $session_file
 fi
 
+if [ -n "${match_l}" ]; then
+    echo "match_l=$match_l" >> $session_file
+fi
+
 if [ -n "${curl_max_time}" ]; then
     echo "curl_max_time=$curl_max_time" >> $session_file
 fi
@@ -108,6 +112,7 @@ for f in `$find_cmd`; do
     unset port
     unset swat_module
     unset ignore_http_err
+    unset match_l
 
     http_method=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
 
@@ -126,6 +131,7 @@ for f in `$find_cmd`; do
     curl_connect_timeout=${curl_connect_timeout:=20}
     swat_module=${swat_module:=0}
     ignore_http_err=${ignore_http_err:=0}
+    match_l=${match_l:=30}
 
     resource=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $project $f`;
 
@@ -197,6 +203,7 @@ for f in `$find_cmd`; do
     echo "set_prop( debug => $debug );" >> $tfile
     echo "set_prop( debug_bytes => $debug_bytes );" >> $tfile
     echo "set_prop( try_num => $try_num );" >> $tfile
+    echo "set_prop( match_l => $match_l );" >> $tfile
 
     echo "set_prop( swat_module => $swat_module );" >> $tfile
     echo "set_prop( check_list => q{$f} );" >> $tfile

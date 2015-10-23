@@ -563,22 +563,24 @@ As swat ini files is bash scripts you may use bash expressions here:
 
 Following is the list of swat variables you may define at swat ini files, it could be divided on two groups:
 
-- **swat variables**
-- **curl parameters**
+* **swat variables**
+* **curl parameters**
 
 ## swat variables
 
 Swat variables define swat  basic configuration, like logging mode, prove runner settings, etc. Here is the list:
 
-- `debug` - set to \`1,2' if you want to see some debug information in output, default value is \`0'.
+* `debug` - set to \`1,2' if you want to see some debug information in output, default value is \`0'.
 
-- `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is \`500'.
+* `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is \`500'.
 
-- `swat_debug` - set to \`1' to enable swat debug mode, a lot of low level information will be printed on console, default value is \`0'.
+* `swat_debug` - set to \`1' to enable swat debug mode, a lot of low level information will be printed on console, default value is \`0'.
 
-- `ignore_http_err` - do not consider curl unsuccessful exit code as error, default value is \`1` ( consider ).
+* `ignore_http_err` - do not consider curl unsuccessful exit code as error, default value is \`1` ( consider ).
 
-- `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings]("#prove-settings") section.
+* `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings]("#prove-settings") section.
+
+* `match_l` - in TAP output truncate matching strings to {match_l} bytes;  default value is \`30'.
 
 ## curl parameters
 
