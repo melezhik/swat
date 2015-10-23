@@ -1,5 +1,5 @@
 bin/swat
-CHANGELOG.md
+Changes
 data.txt
 examples/anatomy/FOO/BARs/post.txt
 examples/anatomy/FOOs/get.txt
