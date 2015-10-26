@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.61';
+our $VERSION = '0.1.62';
 
 use base 'Exporter'; 
 
@@ -181,7 +181,7 @@ sub check_line {
         set_prop( context_local => [@context_new] ); 
     }
 
-    return
+    return $status
 
 }
 
@@ -358,7 +358,7 @@ sub handle_regexp {
     my $http_method = get_prop('http_method');
     my $resource = get_prop('resource');
 
-    my $message = in_block_mode() ? "response matches | $re" : "respons matches $re";
+    my $message = in_block_mode() ? "response matches | $re" : "response matches $re";
     check_line($re, 'regexp', $message);
     diag "handle_regexp OK. $re" if $ENV{'swat_debug'};
     
