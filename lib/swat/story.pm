@@ -2,22 +2,19 @@ package swat::story;
 
 use strict;
 use base 'Exporter';
+use Outthentic::DSL;
 
 our @EXPORT = qw{ 
 
     new_story end_of_story 
+
     get_prop set_prop 
 
     debug_mod1 debug_mod2 debug_mod12
 
     set_response
 
-    context_populated
-
-    captures capture reset_captures
-
-    set_block_mode unset_block_mode in_block_mode  
-    set_within_mode unset_within_mode in_within_mode  
+    dsl captures capture
 
     run_swat_module apply_module_variables module_variable
 
@@ -25,10 +22,10 @@ our @EXPORT = qw{
 
     modify_resource
 
-
     hostname ignore_http_err
 
     project_root_dir
+
     test_root_dir
 
     resource resource_dir
@@ -41,11 +38,8 @@ our @stories = ();
 sub new_story {
     
     push @stories, {
-        context_populated => 0,
-        captures => [],
-        block_mode => 0,
-        within_mode => 0,
-        template_variables => {}
+        template_variables => {},
+        props => { dsl => Outthentic::DSL->new() },
     };
 
 }
@@ -133,49 +127,18 @@ sub set_response {
     set_prop('response', shift());
 }
 
+sub dsl {
+    get_prop('dsl')
+}
+
 sub captures {
 
-    get_prop('captures');
+    dsl()->{captures}
 }
 
 sub capture {
-    captures()->[0]
+    dsl()->{captures}->[0]
 }
-
-
-sub reset_captures {
-    set_prop(captures => []);
-}
-
-sub set_block_mode {
-    set_prop(block_mode => 1);
-    
-}
-
-sub unset_block_mode {
-    set_prop(block_mode => 0);
-    
-}
-
-sub in_block_mode {
-    get_prop('block_mode');
-}
-
-
-sub set_within_mode {
-    set_prop(within_mode => 1);
-    
-}
-
-sub unset_within_mode {
-    set_prop(within_mode => 0);
-    
-}
-
-sub in_within_mode {
-    get_prop('within_mode');
-}
-
 
 sub run_swat_module {
 
@@ -205,14 +168,11 @@ sub do_perl_file {
     my $file = shift;
 
     {
-    package main;
-    my $return;
-    unless ($return = do $file) {
+        package main;
+        do $file;
         die "couldn't parse $file: $@" if $@;
-        die "couldn't do $file: $!"    unless defined $return;
-        die "couldn't run $file"       unless $return;
     }
-    }
+
     return 1;
 }
 
@@ -246,6 +206,7 @@ sub apply_module_variables {
 sub module_variable {
 
     my $name = shift;
+
     get_prop( 'module_variables' )->{$name};
 
 }

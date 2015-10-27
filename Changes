@@ -2,6 +2,7 @@
 # 0.1.62 
 * new feature - within_mode  
 * refactored examples
+* use Outthentic::DSL
 
 # 0.1.61 2015-10-23
 

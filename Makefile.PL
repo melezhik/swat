@@ -10,6 +10,8 @@ all_from       'lib/swat.pm';
 requires    'Test::More';
 requires    'Test::Harness';
 requires    'File::Temp';
+requires    'Outthentic::DSL';
+
 license     'perl';
 repository  'https://github.com/melezhik/swat';
 
