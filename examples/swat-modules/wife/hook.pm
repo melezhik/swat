@@ -1,9 +1,6 @@
-modify_resource( sub {
-    my $r = shift;
-    my $path = module_variable('path');
-    $r = $path;
-    $r;
-});
+set_response('julia');
+
+
 1;
 
 

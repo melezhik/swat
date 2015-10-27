@@ -580,7 +580,7 @@ Swat variables define swat  basic configuration, like logging mode, prove runner
 
 * `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings]("#prove-settings") section.
 
-* `match_l` - in TAP output truncate matching strings to {match_l} bytes;  default value is \`30'.
+* `match_l` - in TAP output truncate matching strings to {match_l} bytes;  default value is \`40'.
 
 ## curl parameters
 

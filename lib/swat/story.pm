@@ -16,9 +16,11 @@ our @EXPORT = qw{
 
     captures capture reset_captures
 
-    set_block_mode unset_block_mode in_block_mode
+    set_block_mode unset_block_mode in_block_mode  
+    set_within_mode unset_within_mode in_within_mode  
 
     run_swat_module apply_module_variables module_variable
+
     do_perl_file
 
     modify_resource
@@ -42,6 +44,7 @@ sub new_story {
         context_populated => 0,
         captures => [],
         block_mode => 0,
+        within_mode => 0,
         template_variables => {}
     };
 
@@ -156,6 +159,21 @@ sub unset_block_mode {
 
 sub in_block_mode {
     get_prop('block_mode');
+}
+
+
+sub set_within_mode {
+    set_prop(within_mode => 1);
+    
+}
+
+sub unset_within_mode {
+    set_prop(within_mode => 0);
+    
+}
+
+sub in_within_mode {
+    get_prop('within_mode');
 }
 
 

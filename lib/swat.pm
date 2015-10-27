@@ -126,6 +126,7 @@ sub check_line {
 
 
     reset_captures();
+
     my @captures;
 
     populate_context( make_http_request() );
@@ -138,23 +139,34 @@ sub check_line {
 
     if ($check_type eq 'default'){
         for my $c (@context_local){
-            my $ln = $c->[0]; my $next_i = $c->[1];
+
+            my $ln = $c->[0]; 
+            my $next_i = $c->[1];
+
+            push @context_new, $context[$next_i]  if in_block_mode();
+
             if ( index($ln,$pattern) != -1){
                 $status = 1;
-                push @context_new, $context[$next_i];
+                push @context_new, $c if in_within_mode();
+                set_prop('last_match_line',$ln);
             }
         }
     }elsif($check_type eq 'regexp'){
         for my $c (@context_local){
+
             my $re = qr/$pattern/;
-            my $ln = $c->[0]; my $next_i = $c->[1];
+            my $ln = $c->[0]; 
+            my $next_i = $c->[1];
 
             my @foo = ($ln =~ /$re/g);
+
+            push @context_new, $context[$next_i]  if in_block_mode();
 
             if (scalar @foo){
                 push @captures, [@foo];
                 $status = 1;
-                push @context_new, $context[$next_i];
+                push @context_new, $c if in_within_mode();
+                set_prop('last_match_line',$ln);
             }
         }
     }else {
@@ -162,6 +174,8 @@ sub check_line {
     }
 
     ok($status,$message);
+
+    set_prop('last_check_status',$status);
 
 
     if (debug_mod2()){
@@ -177,9 +191,13 @@ sub check_line {
 
     set_prop( captures => [ @captures ] );
 
-    if (in_block_mode()){
+    if ( in_block_mode() ){
+        set_prop( context_local => [@context_new] ); 
+    }elsif( in_within_mode() and $status ){
         set_prop( context_local => [@context_new] ); 
     }
+
+
 
     return $status
 
@@ -290,6 +308,11 @@ sub generate_asserts {
             my $re=$1;
             undef $ent_type;
             handle_regexp($re);
+        }elsif($l=~/^\s*within:\s*(.*)/){
+            die "unterminated entity found: $ents_ok[-1]" if defined($ent_type);
+            my $re=$1;
+            undef $ent_type;
+            handle_within($re);
         }elsif(defined($ent_type)){
             if ($l=~s/\\\s*$//) {
                 push @ents_ok, $l;
@@ -355,26 +378,69 @@ sub handle_regexp {
 
     my $re = shift;
 
-    my $http_method = get_prop('http_method');
-    my $resource = get_prop('resource');
+    my $message;
 
-    my $message = in_block_mode() ? "response matches | $re" : "response matches $re";
+    if (in_within_mode()) {
+        unset_within_mode();
+        if (get_prop('last_check_status')){
+            my $l = get_prop('last_match_line');
+            my $shortened = substr( $l, 0, get_prop('match_l') );
+            $message = "<$shortened ...> matches <$re>";
+        }else{
+            $message = "response matches <$re>";
+        }
+    }else{
+        $message = in_block_mode() ? "response matches | <$re>" : "response matches <$re>";
+    }
+
+
     check_line($re, 'regexp', $message);
+
     diag "handle_regexp OK. $re" if $ENV{'swat_debug'};
     
 }
+
+sub handle_within {
+
+    my $re = shift;
+
+    my $message = "response matches <$re>";
+
+    set_within_mode();
+
+    check_line($re, 'regexp', $message);
+
+    diag "handle_regexp OK. $re" if $ENV{'swat_debug'};
+    
+}
+
+
 
 sub handle_plain {
 
     my $l = shift;
 
-    my $shortened = substr( $l, 0, get_prop('match_l') );
+    my $message;
 
-    my $http_method = get_prop('http_method');
+    if (in_within_mode()) {
+        unset_within_mode();
+        if (get_prop('last_check_status')){
 
-    my $resource = get_prop('resource');
+            my $lml = get_prop('last_match_line');
 
-    my $message = in_block_mode() ? "response has | $shortened ... " : "response has $shortened ... ";
+            my $shortened = substr( $l, 0, get_prop('match_l') );
+            my $shortened2 = substr( $lml, 0, get_prop('match_l') );
+
+            $message = "<$shortened2 ...> has <$shortened>";
+        }else{
+            my $shortened = substr( $l, 0, get_prop('match_l') );
+            $message = "response has <$shortened";
+        }
+    }else{
+        my $shortened = substr( $l, 0, get_prop('match_l') );
+        $message = in_block_mode() ? "response has | $shortened ... " : "response has <$shortened> ... ";
+    }
+
 
     check_line($l, 'default', $message);
 
