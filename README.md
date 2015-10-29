@@ -225,6 +225,30 @@ You may use regular expressions as well:
     # swat output
     OK - output matches /\d\d\d\d-\d\d-\d\d/
 
+* generators
+
+Yes you may generate new check list on run time:
+
+    # original check list
+    
+    Say
+    HELLO
+    
+    # this generator creates 3 new check expressions:
+    
+    generator: [ qw{ say hello again } ]
+    
+    # final check list:
+    
+    Say
+    HELLO
+    say
+    hello
+    again 
+
+Follow [https://github.com/melezhik/outthentic-dsl#generators](https://github.com/melezhik/outthentic-dsl#generators)
+to know more.
+    
 * inline perl code
 
 What about inline arbitrary perl code? Well, it's easy!
