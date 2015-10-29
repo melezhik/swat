@@ -345,7 +345,9 @@ Curl parameters relates to curl client. Here is the list:
 
 * `try_num` - a number of requests to be send in case curl get unsuccessful return,  similar to curl \`--retry' , default value is \`2'.
 
-* `curl_params` - additional curl parameters being add to http requests, default value is `""`. Here are some examples:
+* `curl_params` - additional curl parameters being add to http requests, default value is `""`. 
+
+Here are some examples:
 
     # -d curl parameter
     curl_params='-d name=daniel -d skill=lousy' # post data sending via form submit.
@@ -371,7 +373,7 @@ This is the list of helpful variables  you may use in swat ini files:
 
 * $resource
 * $resource_dir
-* $test_root_dir
+* $test\_root\_dir
 * $hostname
 * $http_method
 

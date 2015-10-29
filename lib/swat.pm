@@ -682,26 +682,22 @@ C<try_num> - a number of requests to be send in case curl get unsuccessful retur
 
 =item *
 
-C<curl_params> - additional curl parameters being add to http requests, default value is C<"">. Here are some examples:
-
-
-=head1 -d curl parameter
-
-curl_params='-d name=daniel -d skill=lousy' # post data sending via form submit.
-
-
-=head1 --data-binary curl parameter
-
-curl_params=C<echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'">
-
-
-=head1 set http header
-
-curl_params="-H 'Content-Type: application/json'"
+C<curl_params> - additional curl parameters being add to http requests, default value is C<"">. 
 
 
 
 =back
+
+Here are some examples:
+
+    # -d curl parameter
+    curl_params='-d name=daniel -d skill=lousy' # post data sending via form submit.
+    
+    # --data-binary curl parameter
+    curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
+    
+    # set http header
+    curl_params="-H 'Content-Type: application/json'"
 
 Follow curl documentation to get more examples.
 
@@ -746,7 +742,7 @@ $resource_dir
 
 =item *
 
-$testI<root>dir
+$test_root_dir
 
 
 =item *
