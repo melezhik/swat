@@ -16,7 +16,10 @@ if test -n "${1}"; then
     host=$1
     shift;
 elif test -f $project/host; then
-    host=${host:=`cat $project/host`}
+    host=`cat $project/host`
+else
+    echo "usage: swat project HOST:port prove-options"
+    exit 1
 fi
 
 rest_args=$@

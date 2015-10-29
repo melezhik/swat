@@ -1,6 +1,5 @@
 bin/swat
 Changes
-data.txt
 examples/anatomy/FOO/BARs/post.txt
 examples/anatomy/FOOs/get.txt
 examples/block-of-text/get.txt
@@ -23,6 +22,9 @@ examples/my-app/swat.ini
 examples/post-request/host
 examples/post-request/posts/post.txt
 examples/post-request/posts/swat.ini
+examples/within-mode/get.txt
+examples/within-mode/hook.pm
+examples/within-mode/host
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
