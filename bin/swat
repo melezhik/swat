@@ -1,45 +1,32 @@
 #!/bin/bash
 
-project=$1
-host=$2
-shift;
-shift;
-rest_args=$@
-
 swat_ini_file='swat.ini'
 
-project=${project:=`pwd`}
-
-if [ \(  -n "${project}"  \) -a \( -d "${project}" \) ]; then
-    :
+if test -n "${1}"  && test -d "${1}" ; then
+    project=$1;
+    shift;
 else
-    echo "usage: swat project HOST:port prover-options"
-    exit 1
+    project=`pwd`
 fi
 
 project=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project`
 safe_project=project
-cache_dir=~/.swat/.cache/$$
 
-test -f $project/host && host=${host:=`cat $project/host`}
-
-if [ -n "${host}"  ] ; then
-
-    # host validation; it should not contain '../'
-    if perl -e '$l=shift(); $l=~/\.\.\// or exit 1' "${host}"; then
-        echo "bad host: ${host}"
-        exit 1
-    fi
-
-    rm -rf $cache_dir
-    mkdir -p $cache_dir
-    session_file=$cache_dir/session.ini
-    bash_hook_lock_file=$cache_dir/bash.hook.lock
-else
-    echo "usage: swat project HOST:port prove-options"
-    exit 1
+if test -n "${1}"; then
+    host=$1
+    shift;
+elif test -f $project/host; then
+    host=${host:=`cat $project/host`}
 fi
 
+rest_args=$@
+
+cache_dir=~/.swat/.cache/$$
+
+rm -rf $cache_dir
+mkdir -p $cache_dir
+session_file=$cache_dir/session.ini
+bash_hook_lock_file=$cache_dir/bash.hook.lock
 
 # save environment settings to session file
 echo > $session_file
