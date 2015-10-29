@@ -296,11 +296,10 @@ Following is the list of swat variables you may define at swat ini files, it cou
 
 Swat variables define swat  basic configuration, like logging mode, prove runner settings, etc. Here is the list:
 
-* `debug` - set to \`1,2' if you want to see some debug information in output, default value is \`0'.
+* `debug` - set to \`1,2,3' if you want to see debug information in output, default value is \`0'. 
+Increasing debug value means more low level information appeared at console.
 
 * `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is \`500'.
-
-* `swat_debug` - set to \`1' to enable swat debug mode, a lot of low level information will be printed on console, default value is \`0'.
 
 * `ignore_http_err` - do not consider curl unsuccessful exit code as error, default value is \`1` ( consider ).
 
@@ -593,7 +592,7 @@ Swat consequentially hits two phases when execute swat stories:
 - **Compilation phase** where swat stories are converted into Test::Harness format.
 - **Execution phase** where perl test files are recursively executed by prove.
 
-## Swat to Test::Harness compilation
+## Swat to perl compilation
 
 One important thing about check lists is that internally they are represented as Test::More asserts. This is how it work: 
 
@@ -619,9 +618,9 @@ Every check lists is converted into the list of the Test::More asserts:
 
     # user/get.t
     SKIP {
-        ok($status,'response matches 200 OK'); 
-        ok($status,'response matches name: \w+');
-        ok($status,'response matches age: \d+');
+        ok($status,'response matches "200 OK"'); 
+        ok($status,'response matches /name: \w+/');
+        ok($status,'response matches /age: \d+/');
     }
 ```    
      
