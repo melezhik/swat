@@ -190,8 +190,19 @@ Check list is just a list of expressions a response should match. It might be a 
 
 The code above defines two checks for response from `GET /foo':
 
-    * it should contain "200 OK"
-    * it should contain "Hello I am foo"
+=over
+
+=item *
+
+it should contain "200 OK"
+
+
+=item *
+
+it should contain "Hello I am foo"
+
+
+=back
 
 You may add some regular expressions checks as well:
 
@@ -263,8 +274,19 @@ When you ask swat to execute swat stories you have to point it a project root di
 
 Note, that project root directory path will be removed from http resources paths during execution:
 
-    * GET FOO
-    * POST FOO/BAR
+=over
+
+=item *
+
+GET FOO
+
+
+=item *
+
+POST FOO/BAR
+
+
+=back
 
 Use `test_file' variable to execute a subset of swat stories:
 
@@ -282,6 +304,8 @@ Test_file variable should point to a resource(s) path and be relative to project
 Swat check lists complies L<Outthentic DSL|https://github.com/melezhik/outthentic-dsl> format. 
 
 There are lot of possibilites here! 
+
+( For full explanation of outthentic DSL please follow L<documentation|https://github.com/melezhik/outthentic-dsl>. )
 
 A few examples:
 
@@ -424,8 +448,6 @@ Need to valiade that some lines goes in response successively ?
 Follow L<https://github.com/melezhik/outthentic-dsl#comments-blank-lines-and-text-blocks|https://github.com/melezhik/outthentic-dsl#comments-blank-lines-and-text-blocks>
 to know more.
 
-For full explanation of outthentic DSL please follow L<dumentation|https://github.com/melezhik/outthentic-dsl>.
-
 
 =head1 Swat ini files
 
@@ -520,14 +542,20 @@ C<try_num> - a number of requests to be send in case curl get unsuccessful retur
 
 C<curl_params> - additional curl parameters being add to http requests, default value is C<"">. Here are some examples:
 
-         # -d curl parameter
-         curl_params='-d name=daniel -d skill=lousy' # post data sending via form submit.
-    
-         # --data-binary curl parameter
-         curl_params=`echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'"`
-    
-         # set http header
-         curl_params="-H 'Content-Type: application/json'"
+
+=head1 -d curl parameter
+
+curl_params='-d name=daniel -d skill=lousy' # post data sending via form submit.
+
+
+=head1 --data-binary curl parameter
+
+curl_params=C<echo -E "--data-binary '{\"name\":\"alex\",\"last_name\":\"melezhik\"}'">
+
+
+=head1 set http header
+
+curl_params="-H 'Content-Type: application/json'"
 
 
 
@@ -815,73 +843,56 @@ you can call the same downstream story more than once.
 
 Here is an example code snippet:
 
-```
     # hook.pm
     run_swat_module( GET => '/foo/' )
     run_swat_module( POST => '/foo/bar' )
     run_swat_module( GET => '/foo/' )
 
-```
-
 =over
 
 =item *
 
-swat modules have a variables hash passed into a module as third parameter of runI<swat>module function:
+swat modules have a variables 
 
 
 =back
 
- 
-     run_swat_module( GET => '/foo', { var1 => 'value1', var2 => 'value2', var3=>'value3'   }  ) 
+Use hash passed as third parameter of runI<swat>module function:
 
+    run_swat_module( GET => '/foo', { var1 => 'value1', var2 => 'value2', var3=>'value3'   }  ) 
 
-=over
+Swat I<interpolates> module variables into `curl_params' variable in swat module story:
 
-=item *
-
-swat I<interpolate> module variables into `curl_params' variable in swat module story:
-
-
-=back
-
-```
     # swat module 
     # swat.ini
     swat_module=1
     # initial value of curl_params variable:
     curl_params='-d var1=%var1% -d var2=%var2% -d var3=%var3%'
-
+    
     # real value of curl_params variable
     # during execution of swat module:
     curl_param='-d var1=value1 -d var2=value2 -d var3=value3'
 
-```
-
 Use C<%[\w\d_]+%> placeholders in a curl_params variable to insert module variables here
 
-=over
+Access to a module variables is provided by `module_variable' function:
 
-=item *
-
-you may access swat module variables inside your swat module using `module_variable' function:
-
-
-=back
-
-```
     # hook.pm
     module_variable('var1');
     module_variable('var2');
 
-```
-* swat modules could call other swat modules
-
 =over
 
 =item *
 
+swat modules could call other swat modules
+
+
+
+=item *
+
 you can't use module variables in a story which is not a swat_module
+
 
 
 =back
@@ -969,20 +980,17 @@ Swat parse every story and the creates a perl test file for it:
 
 Every check lists is converted into the list of the Test::More asserts:
 
-```
     # user/get.txt
     200 OK
     regexp: name: \w+
     regexp: age: \d+
-
+    
     # user/get.t
     SKIP {
         ok($status,'response matches "200 OK"'); 
         ok($status,'response matches /name: \w+/');
         ok($status,'response matches /age: \d+/');
     }
-
-```
 
 This is a time diagram for swat runner workflow:
 
