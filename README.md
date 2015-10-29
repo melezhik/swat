@@ -182,8 +182,90 @@ Use \`test_file' variable to execute a subset of swat stories:
 Test\_file variable should point to a resource(s) path and be relative to project root dir, also it should not contain extension part - \`.txt'
 
 
-Swat check lists complies [outthentic DSL](https://github.com/melezhik/outthentic-dsl) format. Please follow
-outthentic DSL documentation to get know how to create check list usign this language.
+# Swat check lists
+
+Swat check lists complies [Outthentic DSL](https://github.com/melezhik/outthentic-dsl) format. 
+
+There are lot of possibilites here! 
+
+A few examples:
+
+* plain strings checks
+
+Often all you need is to ensure that http response has some strings in:
+
+
+    # http response
+    200 OK
+    HELLO
+    HELLO WORLD
+
+
+    # check list
+    200 OK
+    HELLO
+
+    # swat output
+    OK - output matches '200 OK'
+    OK - output matches 'HELLO'
+
+* regular expressions
+
+You may use regular expressions as well:
+
+
+    # http response
+    My birth day is: 1977-04-16
+
+
+    # check list
+    regexp: \d\d\d\d-\d\d-\d\d
+
+
+    # swat output
+    OK - output matches /\d\d\d\d-\d\d-\d\d/
+
+* inline perl code
+
+What about inline arbitrary perl code? Well, it's easy!
+
+
+    # check list
+    regexp: number: (\d+)
+    code: cmp_ok( capture()->[0], '>=', 0, 'got none zero number');
+
+* text blocks
+
+Need to valiade that some lines goes in response successively ?
+
+        # http response 
+
+        this string followed by
+        that string followed by
+        another one string
+        with that string
+        at the very end.
+
+
+        # check list
+        # this text block
+        # consists of 5 strings
+        # goes consequentially
+        # line by line:
+
+        begin:
+            # plain strings
+            this string followed by
+            that string followed by
+            another one
+            # regexps patterns:
+        regexp: with (this|that)
+            # and the last one in a block
+            at the very end
+        end:
+
+Please follow [DSL documentation](https://github.com/melezhik/outthentic-dsl) to get more 
+on how to create check lists using outthentic DSL.
 
 # Swat ini files
 
