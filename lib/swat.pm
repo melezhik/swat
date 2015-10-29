@@ -961,7 +961,7 @@ Here are the brief comments to the example above:
 
 =item *
 
-call \'runI<swat>module(method,resource,variables)' function inside upstream story hook to run downstream story.
+call `run_swat_module(method,resource,variables)' function inside upstream story hook to run downstream story.
 
 
 

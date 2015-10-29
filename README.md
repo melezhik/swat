@@ -536,7 +536,7 @@ Here are the brief comments to the example above:
 
 * \`set_module=1' declare swat story as swat module; now swat will never execute this story directly, upstream story should call it.
 
-* call \'run_swat_module(method,resource,variables)' function inside upstream story hook to run downstream story.
+* call \`run\_swat\_module(method,resource,variables)' function inside upstream story hook to run downstream story.
 
 * you can call as many downstearm stories as you wish.
 
