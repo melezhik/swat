@@ -4,26 +4,26 @@ Web automated testing framework.
 
 # Description
 
-- Swat is a powerful and yet simple and flexible tool for rapid web automated testing development.
+* Swat is a powerful and yet simple and flexible tool for rapid web automated testing development.
 
-- Swat is a web application oriented test framework, this means that it equips you with all you need for a web test development 
+* Swat is a web application oriented test framework, this means that it equips you with all you need for a web test development 
 and yet it's not burdened by many other "generic" things that you probably won't ever use.
 
-- Swat does not carry all heavy load on it's shoulders, with the help of it's "elder brother" - curl 
+* Swat does not carry all heavy load on it's shoulders, with the help of it's "elder brother" - curl 
 swat makes a http requests in a smart way. This means if you know and love curl swat might be easy way to go.
 Swat just passes all curl related parameter as is to curl and let curl do it's job.
 
-- Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does
+* Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does
 not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep
 in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
 
-- Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories.
+* Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories.
 
-- And finally swat relies on prove as internal test runner - this has many, many good results:
+* And finally swat relies on prove as internal test runner - this has many, many good results:
 
-    - swat transparently passes all it's arguments to prove which makes it simple to adjust swat runner behavior in a prove way
-    - swat tests might be easily embedded as unit tests into a cpan distributions.
-    - test reports are emitted in a TAP format which is portable and easy to read.
+    * swat transparently passes all it's arguments to prove which makes it simple to adjust swat runner behavior in a prove way
+    * swat tests might be easily embedded as unit tests into a cpan distributions.
+    * test reports are emitted in a TAP format which is portable and easy to read.
 
 Ok, now I hope you are ready to dive into swat tutorial! :)
 
@@ -44,14 +44,14 @@ Or install from source:
 
 Swat test stories always answers on 2 type of questions:
 
-- _What kind of_ http request should be send.
-- _What kind of_ http response should be received.
+* _What kind of_ http request should be send.
+* _What kind of_ http response should be received.
 
 As swat is a web test oriented tool it deals with some http related stuff as:
 
-- http methods
-- http resources 
-- http responses
+* http methods
+* http resources 
+* http responses
 
 Swat leverages unix file system to build an _analogy_ for these things:
 
@@ -76,9 +76,9 @@ Obviously \`http methods' files should be located at \`http resource' directorie
 
 The code above defines a three http methods for two http resources:
 
-    - GET /foo
-    - PUT /foo
-    - POST bar/baz
+    * GET /foo
+    * PUT /foo
+    * POST bar/baz
 
 Here is the list of _predefined_ file names for a http methods files:
 
@@ -112,8 +112,8 @@ Check list is just a list of expressions a response should match. It might be a 
 
 The code above defines two checks for response from \`GET /foo':
 
-    - it should contain "200 OK"
-    - it should contain "Hello I am foo"
+    * it should contain "200 OK"
+    * it should contain "Hello I am foo"
 
 You may add some regular expressions checks as well:
 
@@ -135,9 +135,9 @@ Swat story is a very simple test plan, which could be expressed in a cucumber la
 
 From the file system point of view swat story is a:
 
-- http method - the \`http method' file
-- http resource - the directory where \`http method file' located in
-- check list - the content of a \`http method' file
+* http method - the \`http method' file
+* http resource - the directory where \`http method file' located in
+* check list - the content of a \`http method' file
 
 ## Swat Project
 
@@ -168,8 +168,8 @@ When you ask swat to execute swat stories you have to point it a project root di
 
 Note, that project root directory path will be removed from http resources paths during execution:
 
-    - GET FOO
-    - POST FOO/BAR
+    * GET FOO
+    * POST FOO/BAR
 
 Use \`test_file' variable to execute a subset of swat stories:
 
@@ -225,6 +225,9 @@ You may use regular expressions as well:
     # swat output
     OK - output matches /\d\d\d\d-\d\d-\d\d/
 
+Follow [https://github.com/melezhik/outthentic-dsl#comments-blank-lines-and-text-blocks](https://github.com/melezhik/outthentic-dsl#comments-blank-lines-and-text-blocks)
+to know more.
+
 * generators
 
 Yes you may generate new check list on run time:
@@ -258,6 +261,9 @@ What about inline arbitrary perl code? Well, it's easy!
     regexp: number: (\d+)
     code: cmp_ok( capture()->[0], '>=', 0, 'got none zero number');
 
+Follow [https://github.com/melezhik/outthentic-dsl#perl-expressions](https://github.com/melezhik/outthentic-dsl#perl-expressions)
+to know more.
+
 * text blocks
 
 Need to valiade that some lines goes in response successively ?
@@ -288,8 +294,10 @@ Need to valiade that some lines goes in response successively ?
             at the very end
         end:
 
-Please follow [DSL documentation](https://github.com/melezhik/outthentic-dsl) to get more 
-on how to create check lists using outthentic DSL.
+Follow [https://github.com/melezhik/outthentic-dsl#comments-blank-lines-and-text-blocks](https://github.com/melezhik/outthentic-dsl#comments-blank-lines-and-text-blocks)
+to know more.
+
+For full explanation of outthentic DSL please follow [dumentation](https://github.com/melezhik/outthentic-dsl).
 
 # Swat ini files
 
@@ -335,9 +343,9 @@ Increasing debug value means more low level information appeared at console.
 
 Curl parameters relates to curl client. Here is the list:
 
-- `try_num` - a number of requests to be send in case curl get unsuccessful return,  similar to curl \`--retry' , default value is \`2'.
+* `try_num` - a number of requests to be send in case curl get unsuccessful return,  similar to curl \`--retry' , default value is \`2'.
 
-- `curl_params` - additional curl parameters being add to http requests, default value is `""`. Here are some examples:
+* `curl_params` - additional curl parameters being add to http requests, default value is `""`. Here are some examples:
 
              # -d curl parameter
              curl_params='-d name=daniel -d skill=lousy' # post data sending via form submit.
@@ -351,31 +359,31 @@ Curl parameters relates to curl client. Here is the list:
 
 Follow curl documentation to get more examples.
 
-- `curl_connect_timeout` - maximum time in seconds that you allow the connection to the server to take, follow curl documentation for full explanation.
+* `curl_connect_timeout` - maximum time in seconds that you allow the connection to the server to take, follow curl documentation for full explanation.
 
-- `curl_max_time` - maximum time in seconds that you allow the whole operation to take, follow curl documentation for full explanation.
+* `curl_max_time` - maximum time in seconds that you allow the whole operation to take, follow curl documentation for full explanation.
 
-- `port`  - http port of tested host, default value is \`80'.
+* `port`  - http port of tested host, default value is \`80'.
 
 ## other variables
 
 This is the list of helpful variables  you may use in swat ini files:
 
-- $resource
-- $resource_dir
-- $test_root_dir
-- $hostname
-- $http_method
+* $resource
+* $resource_dir
+* $test_root_dir
+* $hostname
+* $http_method
 
 ## Alternative swat ini files locations
 
 Swat try to find swat ini files at these locations ( listed in order )
 
-- **~/swat.ini** - home directory
+* **~/swat.ini** * home directory
 
-- **$project\_root\_directory/swat.ini** -  project root directory
+* **$project\_root\_directory/swat.ini** -  project root directory
 
-- **$cwd/swat.my** - custom settings, swat.my should be located at current working directory
+* **$cwd/swat.my** - custom settings, swat.my should be located at current working directory
 
 ## Settings priority table
 
@@ -428,11 +436,11 @@ You should named your hook file as \`hook.pm' and place it into \`resource' dire
 
 There are lot of reasons why you might need a hooks. To say a few:
 
-- define swat generators
-- redefine http responses 
-- redefine http resources 
-- call downstream stories
-- other custom code 
+* define swat generators
+* redefine http responses 
+* redefine http resources 
+* call downstream stories
+* other custom code 
 
 
 # Hooks API
@@ -524,13 +532,13 @@ doing some other action, like checking email list:
 
 Here are the brief comments to the example above:
 
-- \`set_module=1' declare swat story as swat module; now swat will never execute this story directly, upstream story should call it.
+* \`set_module=1' declare swat story as swat module; now swat will never execute this story directly, upstream story should call it.
 
-- call \'run_swat_module(method,resource,variables)' function inside upstream story hook to run downstream story.
+* call \'run_swat_module(method,resource,variables)' function inside upstream story hook to run downstream story.
 
-- you can call as many downstearm stories as you wish.
+* you can call as many downstearm stories as you wish.
 
-- you can call the same downstream story more than once. 
+* you can call the same downstream story more than once. 
 
 Here is an example code snippet:
 
@@ -542,13 +550,13 @@ Here is an example code snippet:
 
 ```
 
-- swat modules have a variables hash passed into a module as third parameter of run_swat_module function:
+* swat modules have a variables hash passed into a module as third parameter of run_swat_module function:
 
 ```
     run_swat_module( GET => '/foo', { var1 => 'value1', var2 => 'value2', var3=>'value3'   }  ) 
 ```
 
-- swat _interpolate_ module variables into \`curl_params' variable in swat module story:
+* swat _interpolate_ module variables into \`curl_params' variable in swat module story:
 
 ```
     # swat module 
@@ -564,7 +572,7 @@ Here is an example code snippet:
 
 Use `%[\w\d_]+%` placeholders in a curl_params variable to insert module variables here
 
-- you may access swat module variables inside your swat module using \`module_variable' function:
+* you may access swat module variables inside your swat module using \`module_variable' function:
 
 ```
     # hook.pm
@@ -572,9 +580,9 @@ Use `%[\w\d_]+%` placeholders in a curl_params variable to insert module variabl
     module_variable('var2');
 
 ``` 
-- swat modules could call other swat modules
+* swat modules could call other swat modules
 
-- you can't use module variables in a story which is not a swat_module
+* you can't use module variables in a story which is not a swat_module
 
 
 One word about sharing state between upstream story and swat modules. As swat modules get executed in the same process
@@ -607,14 +615,27 @@ There are some accessors to a common swat variables:
 Be aware of that these are readers not setters.
 
 
+## PERL5LIB
+
+Swat adds \`project_root_directory/lib' path to PERL5LIB path, which make it easy to add some modules and use them:
+
+    # my-app/lib/Foo/Bar/Baz.pm
+    package Foo::Bar::Baz;
+    ...
+    
+    # hook.pm
+    use Foo::Bar::Baz;
+    ...
+    
+
 # Swat runner workflow
 
 This is detailed explanation of how swat runner compiles and then executes swat test stories.
 
 Swat consequentially hits two phases when execute swat stories:
 
-- **Compilation phase** where swat stories are converted into Test::Harness format.
-- **Execution phase** where perl test files are recursively executed by prove.
+* **Compilation phase** where swat stories are converted into Test::Harness format.
+* **Execution phase** where perl test files are recursively executed by prove.
 
 ## Swat to perl compilation
 
@@ -650,18 +671,18 @@ Every check lists is converted into the list of the Test::More asserts:
      
 This is a time diagram for swat runner workflow:
 
-    - Hits swat compilation phase
-    - For every swat story found:
-        - Calculates swat settings comes from various swat ini files
-        - Creates a perl test file at Test::Harness format
-    - The end of swat compilation phase
-    - Hits swat execution phase - runs \`prove' recursively on a directory with a perl test files
-    - For every perl test file gets executed:
-        - Require hook.pm if exists
-        - Iterate over Test::More asserts
-            - Execute Test::More assert
-        - The end of Test::More asserts iterator
-    - The end of swat execution phase
+    * Hits swat compilation phase
+    * For every swat story found:
+        * Calculates swat settings comes from various swat ini files
+        * Creates a perl test file at Test::Harness format
+    * The end of swat compilation phase
+    * Hits swat execution phase - runs \`prove' recursively on a directory with a perl test files
+    * For every perl test file gets executed:
+        * Require hook.pm if exists
+        * Iterate over Test::More asserts
+            * Execute Test::More assert
+        * The end of Test::More asserts iterator
+    * The end of swat execution phase
     
 
 # TAP
@@ -702,14 +723,16 @@ https://github.com/melezhik/swat
 
 # Thanks
 
+* to God as - *For the LORD giveth wisdom: out of his mouth cometh knowledge and understanding. (Proverbs 2:6)*
+
 All the stuff that swat relies upon, thanks to those authors:
 
-- linux
-- perl
-- curl
-- TAP
-- Test::More
-- Test::Harness
+* linux
+* perl
+* curl
+* TAP
+* Test::More
+* Test::Harness
 
 # COPYRIGHT
 
