@@ -1,7 +1,12 @@
 
-# 0.1.62 
+# 0.1.62 2015-10-13
+
+* Outthentic::DSL - now is a distinct module
+* made use of Outthentic::DSL
+* documentation changed for the sake of usage of Outthentic::DSL
 * refactored examples
-* use Outthentic::DSL
+* bin/swat minor changes
+
 
 # 0.1.61 2015-10-23
 
