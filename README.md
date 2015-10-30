@@ -326,14 +326,26 @@ Following is the list of swat variables you may define at swat ini files, it cou
 
 Swat variables define swat  basic configuration, like logging mode, prove runner settings, etc. Here is the list:
 
-* `debug` - set to \`1,2,3' if you want to see debug information in output, default value is \`0'.
-Increasing debug value means more low level information appeared at console.
+* `skip_story` - skip story, default value is \`0'. Set to \`1' if you want skip store for some reasons.
 
-* `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is \`500'.
+For example:
+
+    # swat.ini
+    # assume that we set profile variable somewhere else
+    # 
+
+    if test "${profile}" = 'production'; then
+        skip_story=1 # we don't want this one for production
+    fi
 
 * `ignore_http_err` - do not consider curl unsuccessful exit code as error, default value is \`1` ( consider ).
 
 * `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings]("#prove-settings") section.
+
+* `debug` - set to \`1,2,3' if you want to see debug information in output, default value is \`0'.
+Increasing debug value means more low level information appeared at console.
+
+* `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is \`500'.
 
 * `match_l` - in TAP output truncate matching strings to {match_l} bytes;  default value is \`40'.
 
