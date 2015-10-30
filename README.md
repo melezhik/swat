@@ -612,7 +612,7 @@ Be aware of that these are readers not setters.
 
 ## PERL5LIB
 
-Swat adds \`project_root_directory/lib' path to PERL5LIB path, which make it easy to add some modules and use them:
+Swat adds \`project\_root\_directory/lib' path to PERL5LIB path, which make it easy to add some modules and use them:
 
     # my-app/lib/Foo/Bar/Baz.pm
     package Foo::Bar::Baz;
@@ -625,59 +625,44 @@ Swat adds \`project_root_directory/lib' path to PERL5LIB path, which make it eas
 
 # Swat runner workflow
 
-This is detailed explanation of how swat runner compiles and then executes swat test stories.
+# Story runner
 
-Swat consequentially hits two phases when execute swat stories:
+This is detailed explanation of swat runner life cycle.
 
-* **Compilation phase** where swat stories are converted into Test::Harness format.
-* **Execution phase** where perl test files are recursively executed by prove.
+Swat runner script consequentially hits two phases:
 
-## Swat to perl compilation
+* swat stories are converted into perl test files ( compilation phase )
+* perl test files are recursively executed by prove ( execution phase )
 
-One important thing about check lists is that internally they are represented as Test::More asserts. This is how it work:
+Generating Test::More asserts sequence
 
-Let's have 3 swat stories:
+* for every swat story found:
 
-    user/get.txt # GET /user
-    user/post.txt # POST /user
-    users/list/get.txt # GET /users/list
+    * new instance of Outthentic::DSL object (ODO) is created 
+    * check list file passed to ODO
+    * http request is exected and response passed to ODO
+    * ODO makes validation of given stdout against given check list
+    * validation results in a _sequence_ of Test::More ok() asserts
 
-Swat parse every story and the creates a perl test file for it:
+## Time diagram
 
-    user/get.t
-    user/post.t
-    users/get.txt
+This is a time diagram for swat runner life cycle:
 
-Every check lists is converted into the list of the Test::More asserts:
+* Hits compilation phase
 
-    # user/get.txt
-    200 OK
-    regexp: name: \w+
-    regexp: age: \d+
+* For every swat story found:
 
-    # user/get.t
-    SKIP {
-        ok($status,'response matches "200 OK"');
-        ok($status,'response matches /name: \w+/');
-        ok($status,'response matches /age: \d+/');
-    }
+ * Creates a perl test file
 
-   
-This is a time diagram for swat runner workflow:
+* The end of compilation phase
 
-    * Hits swat compilation phase
-    * For every swat story found:
-        * Calculates swat settings comes from various swat ini files
-        * Creates a perl test file at Test::Harness format
-    * The end of swat compilation phase
-    * Hits swat execution phase - runs \`prove' recursively on a directory with a perl test files
-    * For every perl test file gets executed:
-        * Require hook.pm if exists
-        * Iterate over Test::More asserts
-            * Execute Test::More assert
-        * The end of Test::More asserts iterator
-    * The end of swat execution phase
-   
+* Hits execution phase - runs \`prove' recursively on a directory with a perl test files
+
+* For every perl test file gets executed:
+
+ * Test::More asserts sequence is generated
+
+* The end of execution phase
 
 # TAP
 
