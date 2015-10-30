@@ -47,6 +47,7 @@ MANIFEST			This list of files
 META.yml
 README.md
 run_examples.bash
+t/data/test.db
 t/data/test.sql
 t/swat.t
 todo.list.md
