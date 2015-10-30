@@ -103,6 +103,7 @@ for f in `$find_cmd`; do
     unset swat_module
     unset ignore_http_err
     unset match_l
+    unset skip_story
 
     http_method=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
 
@@ -122,6 +123,11 @@ for f in `$find_cmd`; do
     swat_module=${swat_module:=0}
     ignore_http_err=${ignore_http_err:=0}
     match_l=${match_l:=40}
+    skip_story=${skip_story:=0}
+
+    if test "$skip_story" -eq 1; then
+        continue
+    fi
 
     resource=`perl -e '$sp=$ARGV[0]; $p=$ARGV[1]; s{^$sp}[], s{\w+\.txt}[], s{/$}[] for $p; chomp $p; $p = "/"  unless $p; print $p' $project $f`;
 
