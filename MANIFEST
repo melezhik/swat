@@ -1,7 +1,10 @@
 bin/swat
 Changes
+examples/anatomy/FOO/BARs/hook.pm
 examples/anatomy/FOO/BARs/post.txt
 examples/anatomy/FOOs/get.txt
+examples/anatomy/FOOs/hook.pm
+examples/anatomy/host
 examples/block-of-text/get.txt
 examples/block-of-text/hook.pm
 examples/block-of-text/host
@@ -17,7 +20,10 @@ examples/multilines/host
 examples/multilines/posts/post.txt
 examples/multilines/posts/swat.ini
 examples/my-app/hello/get.txt
+examples/my-app/hello/hook.pm
 examples/my-app/hello/world/get.txt
+examples/my-app/hello/world/hook.pm
+examples/my-app/host
 examples/my-app/swat.ini
 examples/post-request/host
 examples/post-request/posts/post.txt
@@ -41,7 +47,5 @@ MANIFEST			This list of files
 META.yml
 README.md
 run_examples.bash
-t/data/test.db
-t/data/test.sql
 t/swat.t
 todo.list.md
