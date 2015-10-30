@@ -625,8 +625,6 @@ Swat adds \`project\_root\_directory/lib' path to PERL5LIB path, which make it e
 
 # Swat runner workflow
 
-# Story runner
-
 This is detailed explanation of swat runner life cycle.
 
 Swat runner script consequentially hits two phases:

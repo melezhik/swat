@@ -1079,9 +1079,6 @@ Swat adds `project_root_directory/lib' path to PERL5LIB path, which make it easy
 
 =head1 Swat runner workflow
 
-
-=head1 Story runner
-
 This is detailed explanation of swat runner life cycle.
 
 Swat runner script consequentially hits two phases:
