@@ -6,16 +6,14 @@ Web automated testing framework.
 
 * Swat is a powerful and yet simple and flexible tool for rapid web automated testing development.
 
-* Swat is a web application oriented test framework, this means that it equips you with all you need for a web test development 
+* Swat is a web application oriented test framework, this means that it equips you with all you need for a web test development
 and yet it's not burdened by many other "generic" things that you probably won't ever use.
 
-* Swat does not carry all heavy load on it's shoulders, with the help of it's "elder brother" - curl 
+* Swat does not carry all heavy load on it's shoulders, with the help of it's "elder brother" - curl
 swat makes a http requests in a smart way. This means if you know and love curl swat might be easy way to go.
 Swat just passes all curl related parameter as is to curl and let curl do it's job.
 
-* Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does
-not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep
-in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
+* Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
 
 * Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories.
 
@@ -40,7 +38,7 @@ Or install from source:
     make test
     make install
 
-# Write your swat story 
+# Write your swat story
 
 Swat test stories always answers on 2 type of questions:
 
@@ -50,7 +48,7 @@ Swat test stories always answers on 2 type of questions:
 As swat is a web test oriented tool it deals with some http related stuff as:
 
 * http methods
-* http resources 
+* http resources
 * http responses
 
 Swat leverages unix file system to build an _analogy_ for these things:
@@ -101,7 +99,7 @@ for example means you may define a http schema or port here:
 
 ## HTTP Response
 
-Swat makes request to a given http resources with a given http methods and then validates a response. 
+Swat makes request to a given http resources with a given http methods and then validates a response.
 Swat does this with the help so called _check lists_, Check lists are defined at \`http methods' files.
 
 
@@ -184,9 +182,9 @@ Test\_file variable should point to a resource(s) path and be relative to projec
 
 # Swat check lists
 
-Swat check lists complies [Outthentic DSL](https://github.com/melezhik/outthentic-dsl) format. 
+Swat check lists complies [Outthentic DSL](https://github.com/melezhik/outthentic-dsl) format.
 
-There are lot of possibilites here! 
+There are lot of possibilities here!
 
 ( For full explanation of outthentic DSL please follow [documentation](https://github.com/melezhik/outthentic-dsl). )
 
@@ -235,25 +233,25 @@ to know more.
 Yes you may generate new check list on run time:
 
     # original check list
-    
+   
     Say
     HELLO
-    
+   
     # this generator creates 3 new check expressions:
-    
+   
     generator: [ qw{ say hello again } ]
-    
+   
     # final check list:
-    
+   
     Say
     HELLO
     say
     hello
-    again 
+    again
 
 Follow [https://github.com/melezhik/outthentic-dsl#generators](https://github.com/melezhik/outthentic-dsl#generators)
 to know more.
-    
+   
 * inline perl code
 
 What about inline arbitrary perl code? Well, it's easy!
@@ -270,7 +268,7 @@ to know more.
 
 Need to valiade that some lines goes in response successively ?
 
-        # http response 
+        # http response
 
         this string followed by
         that string followed by
@@ -328,7 +326,7 @@ Following is the list of swat variables you may define at swat ini files, it cou
 
 Swat variables define swat  basic configuration, like logging mode, prove runner settings, etc. Here is the list:
 
-* `debug` - set to \`1,2,3' if you want to see debug information in output, default value is \`0'. 
+* `debug` - set to \`1,2,3' if you want to see debug information in output, default value is \`0'.
 Increasing debug value means more low level information appeared at console.
 
 * `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is \`500'.
@@ -345,7 +343,7 @@ Curl parameters relates to curl client. Here is the list:
 
 * `try_num` - a number of requests to be send in case curl get unsuccessful return,  similar to curl \`--retry' , default value is \`2'.
 
-* `curl_params` - additional curl parameters being add to http requests, default value is `""`. 
+* `curl_params` - additional curl parameters being add to http requests, default value is `""`.
 
 Here are some examples:
 
@@ -394,7 +392,7 @@ This table describes all possible locations for swat ini files. Swat try to find
     | location                                  | order N     |
     | --------------------------------------------------------|
     | ~/swat.ini                                | 1           |
-    | `project_root_directory'/swat.ini         | 2           | 
+    | `project_root_directory'/swat.ini         | 2           |
     | `http resource' directory/swat.ini file   | 3           |
     | current working directory/swat.my file    | 4           |
     | environment variables                     | 5           |
@@ -402,16 +400,16 @@ This table describes all possible locations for swat ini files. Swat try to find
 
 In case the same variable is defined more than once at swat ini files with different locations, the file loaded last win:
 
-    curl_params="-H 'Foo: Bar'" # in a ~/swat.ini 
-    curl_params="-H 'Bar: Baz'" # in a project_root_directory/swat.ini 
+    curl_params="-H 'Foo: Bar'" # in a ~/swat.ini
+    curl_params="-H 'Bar: Baz'" # in a project_root_directory/swat.ini
 
     # actual curl_params value:
     "-H 'Bar: Baz'"
 
 If you want concatenation mode use name="$name value" expression:
 
-    curl_params="-H 'Foo: Bar'" # in a ~/swat.ini 
-    curl_params="$curl_params -H 'Bar: Baz'" # in a project_root_directory/swat.ini 
+    curl_params="-H 'Foo: Bar'" # in a ~/swat.ini
+    curl_params="$curl_params -H 'Bar: Baz'" # in a project_root_directory/swat.ini
 
     # actual curl_params value:
     "-H 'Foo: Bar' -H 'Bar: Baz'"
@@ -419,7 +417,7 @@ If you want concatenation mode use name="$name value" expression:
 In case you need provide default value for some variable use name=${name default_value} expression:
 
     # port will be set 80 unless it's not set somewhere else
-    port=${port:=80} # in a ~/swat.ini 
+    port=${port:=80} # in a ~/swat.ini
 
 # Hooks
 
@@ -430,7 +428,7 @@ You should named your hook file as \`hook.pm' and place it into \`resource' dire
     # foo/hook.pm
     diag "hello, I am swat hook";
     sub red_green_blue_generator { [ qw /red green blue/ ] }
-    
+   
 
     # foo/get.txt
     generator: red_green_blue_generator()
@@ -439,10 +437,10 @@ You should named your hook file as \`hook.pm' and place it into \`resource' dire
 There are lot of reasons why you might need a hooks. To say a few:
 
 * define swat generators
-* redefine http responses 
-* redefine http resources 
+* redefine http responses
+* redefine http resources
 * call downstream stories
-* other custom code 
+* other custom code
 
 
 # Hooks API
@@ -456,8 +454,8 @@ Swat hooks API provides several functions to change swat story at runtime
 Using set_response means that you never make a real request to a web application, but instead set response on your own side.
 
 This feature is helpful when you need to mock up http responses instead of having them requested from a real web application.
-For example in abcense of an access to a tested application or if response is too slow or it involves too much data 
-which make it hard to execute a swat stories often. 
+For example in absence of an access to a tested application or if response is too slow or it involves too much data
+which make it hard to execute a swat stories often.
 
 This is an example of setting server response inside swat hook:
 
@@ -469,13 +467,13 @@ This is an example of setting server response inside swat hook:
     HELLO WORLD
 
 
-Another interesting idea about set_response feature is a _conditional_ http requests. 
+Another interesting idea about set_response feature is a _conditional_ http requests.
 
 Let say we have \`POST /login' request for user authentication, this is a simple swat story for it:
 
     # login/post.txt
     200 OK
-    
+   
 Good. But what if you need to skip authentication under some conditions, like if you are already logged in before?
 We could write such a code:
 
@@ -496,8 +494,8 @@ We could write such a code:
 
 To modify existed resource use modify_resource function:
 
-    # foo/bar/baz/ - resource 
-    
+    # foo/bar/baz/ - resource
+   
     # hook.pm
     modify_resource( sub { my $resource = shift; s/bar/bbaarr/, s/baz/bbaazz/ for $resource; $resource  } );
 
@@ -511,7 +509,7 @@ Swat allow you to call one story from another, using notion of swat modules.
 
 Swat modules are reusable swat stories. Swat never executes swat modules directly, instead you have to call swat module from your swat story.
 Story calling another story is named a _upstream story_, story is being called is named a _downstream_ story.
-( This kind of analogy is taken from Jenkins CI ) 
+( This kind of analogy is taken from Jenkins CI )
 
 
 Let show how this work on a previous \`login' example. We need to ensure that user is logged in before
@@ -522,7 +520,7 @@ doing some other action, like checking email list:
     email list
 
     # email/list/hook.pm
-    run_swat_module( POST => '/login', { user => 'alex', password => 'swat' } )    
+    run_swat_module( POST => '/login', { user => 'alex', password => 'swat' } )  
 
     # and finally this is
     # login/post.txt
@@ -540,7 +538,7 @@ Here are the brief comments to the example above:
 
 * you can call as many downstearm stories as you wish.
 
-* you can call the same downstream story more than once. 
+* you can call the same downstream story more than once.
 
 Here is an example code snippet:
 
@@ -550,16 +548,16 @@ Here is an example code snippet:
     run_swat_module( GET => '/foo/' )
 
 
-* swat modules have a variables 
+* swat modules have a variables
 
 Use hash passed as third parameter of run_swat_module function:
 
-    run_swat_module( GET => '/foo', { var1 => 'value1', var2 => 'value2', var3=>'value3'   }  ) 
+    run_swat_module( GET => '/foo', { var1 => 'value1', var2 => 'value2', var3=>'value3'   }  )
 
 Swat _interpolates_ module variables into \`curl_params' variable in swat module story:
 
 
-    # swat module 
+    # swat module
     # swat.ini
     swat_module=1
     # initial value of curl_params variable:
@@ -583,15 +581,15 @@ Access to a module variables is provided by \`module_variable' function:
 * you can't use module variables in a story which is not a swat_module
 
 One word about sharing state between upstream story and swat modules. As swat modules get executed in the same process
-as upstream story there is no magic about sharing data between upstream and downstream stories. 
-The straitforward way to share state is to use global variables :
+as upstream story there is no magic about sharing data between upstream and downstream stories.
+The straightforward way to share state is to use global variables :
 
     # upstream story hook:
     our $state = [ 'this is upstream story' ]
 
     # downstream story hook:
     push our @$state, 'I was here'
-    
+   
 Of course more proper approaches for state sharing could be used as singeltones or something else.
 
 ## Swat variables accessors
@@ -619,11 +617,11 @@ Swat adds \`project_root_directory/lib' path to PERL5LIB path, which make it eas
     # my-app/lib/Foo/Bar/Baz.pm
     package Foo::Bar::Baz;
     ...
-    
+   
     # hook.pm
     use Foo::Bar::Baz;
     ...
-    
+   
 
 # Swat runner workflow
 
@@ -636,7 +634,7 @@ Swat consequentially hits two phases when execute swat stories:
 
 ## Swat to perl compilation
 
-One important thing about check lists is that internally they are represented as Test::More asserts. This is how it work: 
+One important thing about check lists is that internally they are represented as Test::More asserts. This is how it work:
 
 Let's have 3 swat stories:
 
@@ -659,12 +657,12 @@ Every check lists is converted into the list of the Test::More asserts:
 
     # user/get.t
     SKIP {
-        ok($status,'response matches "200 OK"'); 
+        ok($status,'response matches "200 OK"');
         ok($status,'response matches /name: \w+/');
         ok($status,'response matches /age: \d+/');
     }
 
-     
+   
 This is a time diagram for swat runner workflow:
 
     * Hits swat compilation phase
@@ -679,12 +677,12 @@ This is a time diagram for swat runner workflow:
             * Execute Test::More assert
         * The end of Test::More asserts iterator
     * The end of swat execution phase
-    
+   
 
 # TAP
 
 Swat produces output in [TAP](https://testanything.org/) format, that means you may use your favorite tap parsers to bring result to
-another test / reporting systems, follow TAP documentation to get more on this. 
+another test / reporting systems, follow TAP documentation to get more on this.
 
 Here is example for converting swat tests into JUNIT format:
 
