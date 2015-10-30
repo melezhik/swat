@@ -492,16 +492,22 @@ Swat variables define swat  basic configuration, like logging mode, prove runner
 
 =item *
 
-C<debug> - set to `1,2,3' if you want to see debug information in output, default value is `0'.
-Increasing debug value means more low level information appeared at console.
+C<skip_story> - skip story, default value is `0'. Set to `1' if you want skip store for some reasons.
 
 
+=back
 
-=item *
+For example:
 
-C<debug_bytes> - number of bytes of http response  to be dumped out when debug is on. default value is `500'.
+    # swat.ini
+    # assume that we set profile variable somewhere else
+    # 
+    
+    if test "${profile}" = 'production'; then
+        skip_story=1 # we don't want this one for production
+    fi
 
-
+=over
 
 =item *
 
@@ -512,6 +518,19 @@ C<ignore_http_err> - do not consider curl unsuccessful exit code as error, defau
 =item *
 
 C<prove_options> - prove options to be passed to prove runner,  default value is `-v`. See [Prove settings]("#prove-settings") section.
+
+
+
+=item *
+
+C<debug> - set to `1,2,3' if you want to see debug information in output, default value is `0'.
+Increasing debug value means more low level information appeared at console.
+
+
+
+=item *
+
+C<debug_bytes> - number of bytes of http response  to be dumped out when debug is on. default value is `500'.
 
 
 
