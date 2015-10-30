@@ -650,7 +650,7 @@ This is a time diagram for swat runner life cycle:
 
 * For every swat story found:
 
- * Creates a perl test file
+    * Creates a perl test file
 
 * The end of compilation phase
 
@@ -658,7 +658,7 @@ This is a time diagram for swat runner life cycle:
 
 * For every perl test file gets executed:
 
- * Test::More asserts sequence is generated
+    * Test::More asserts sequence is generated
 
 * The end of execution phase
 

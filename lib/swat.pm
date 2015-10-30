@@ -1155,11 +1155,14 @@ Hits compilation phase
 
 For every swat story found:
 
-
+=over
 
 =item *
 
 Creates a perl test file
+
+
+=back
 
 
 
@@ -1179,11 +1182,14 @@ Hits execution phase - runs `prove' recursively on a directory with a perl test 
 
 For every perl test file gets executed:
 
-
+=over
 
 =item *
 
 Test::More asserts sequence is generated
+
+
+=back
 
 
 
