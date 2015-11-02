@@ -479,7 +479,7 @@ This is an example of setting server response inside swat hook:
     HELLO WORLD
 
 
-Another interesting idea about set_response feature is a _conditional_ http requests.
+Another interesting idea about set\_response feature is a _conditional_ http requests.
 
 Let say we have \`POST /login' request for user authentication, this is a simple swat story for it:
 

@@ -763,7 +763,7 @@ This is an example of setting server response inside swat hook:
     THIS IS FAKE RESPONSE
     HELLO WORLD
 
-Another interesting idea about setI<response feature is a >conditional_ http requests.
+Another interesting idea about set_response feature is a I<conditional> http requests.
 
 Let say we have `POST /login' request for user authentication, this is a simple swat story for it:
 
