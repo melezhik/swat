@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.64';
+our $VERSION = '0.1.65';
 
 use base 'Exporter'; 
 
@@ -20,6 +20,7 @@ use Test::More;
 use Data::Dumper;
 use File::Temp qw/ tempfile /;
 use swat::story;
+use Cwd;
 
 
 sub execute_with_retry {
@@ -120,20 +121,35 @@ sub header {
 
 sub generate_asserts {
 
+
     my $check_file = shift;
 
     header() if debug_mod12();
 
-    dsl->{debug_mod} = get_prop('debug');
+    dsl()->{debug_mod} = get_prop('debug');
 
     dsl()->{match_l} = get_prop('match_l');
 
     dsl()->{output} = make_http_request();
 
-    dsl()->generate_asserts($check_file);
+    dsl()->validate($check_file);
 
+    set_prop('story',get_prop('curl_cmd'));
+
+    for my $chk_item ( @{dsl()->check_list}){
+        ok($chk_item->{status}, $chk_item->{message})
+    }
+
+
+    if (@{dsl()->journal}){
+        open JOURNAL, ">>", cwd()."/swat.log" or die $!;
+        print JOURNAL "\n[@{[get_prop('story')]}]\n";
+        for my $r ( @{dsl()->journal}){
+            print JOURNAL $r->{message}, "\n"
+        }
+        close JOURNAL;
+    }
 }
-
 
 1;
 

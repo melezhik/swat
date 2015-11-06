@@ -342,8 +342,15 @@ For example:
 
 * `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings]("#prove-settings") section.
 
-* `debug` - set to \`1,2,3' if you want to see debug information in output, default value is \`0'.
-Increasing debug value means more low level information appeared at console.
+* `debug` - enable swat debugging
+
+    * Debugging information is stored at swat.log file at current working directory 
+
+    * Increasing debug value results in more low level information appeared at log file
+
+    * Default value is 0, which means no debugging
+
+    * Possible values: 0,1,2,3
 
 * `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is \`500'.
 
@@ -652,7 +659,7 @@ Generating Test::More asserts sequence
     * check list file passed to ODO
     * http request is exected and response passed to ODO
     * ODO makes validation of given stdout against given check list
-    * validation results in a _sequence_ of Test::More ok() asserts
+    * validation results are turned into a _sequence_ of Test::More ok() asserts
 
 ## Time diagram
 
