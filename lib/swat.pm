@@ -20,8 +20,7 @@ use Test::More;
 use Data::Dumper;
 use File::Temp qw/ tempfile /;
 use swat::story;
-use Cwd;
-
+use Carp;
 
 sub execute_with_retry {
 
@@ -140,21 +139,13 @@ sub generate_asserts {
 
     my $err = $@;
 
-    for my $chk_item ( @{dsl()->check_list}){
-        ok($chk_item->{status}, $chk_item->{message})
+    for my $r ( @{dsl()->results}){
+        ok($r->{status}, $r->{message}) if $r->{type} eq 'check_expression';
+        diag($r->{message}) if $r->{type} eq 'debug';
+
     }
 
-
-    if (@{dsl()->journal}){
-        open JOURNAL, ">>", cwd()."/swat.log" or die $!;
-        print JOURNAL "\n[@{[get_prop('story')]}]\n";
-        for my $r ( @{dsl()->journal}){
-            print JOURNAL $r->{message}, "\n"
-        }
-        close JOURNAL;
-    }
-
-    die $err if $err;
+    confess "parser error: $err" if $err;
 
 }
 
@@ -688,14 +679,35 @@ C<prove_options> - prove options to be passed to prove runner,  default value is
 
 =item *
 
-C<debug> - set to `1,2,3' if you want to see debug information in output, default value is `0'.
-Increasing debug value means more low level information appeared at console.
+C<debug> - enable swat debugging
+
+=over
+
+=item *
+
+Increasing debug value results in more low level information appeared at output
 
 
 
 =item *
 
-C<debug_bytes> - number of bytes of http response  to be dumped out when debug is on. default value is `500'.
+Default value is 0, which means no debugging
+
+
+
+=item *
+
+Possible values: 0,1,2,3
+
+
+
+=back
+
+
+
+=item *
+
+C<debug_bytes> - number of bytes of http response to be dumped out when debug is on. default value is `500'.
 
 
 
@@ -1171,7 +1183,7 @@ ODO makes validation of given stdout against given check list
 
 =item *
 
-validation results in a I<sequence> of Test::More ok() asserts
+validation results are turned into a I<sequence> of Test::More ok() asserts
 
 
 =back

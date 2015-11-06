@@ -344,15 +344,13 @@ For example:
 
 * `debug` - enable swat debugging
 
-    * Debugging information is stored at swat.log file at current working directory 
-
-    * Increasing debug value results in more low level information appeared at log file
+    * Increasing debug value results in more low level information appeared at output
 
     * Default value is 0, which means no debugging
 
     * Possible values: 0,1,2,3
 
-* `debug_bytes` - number of bytes of http response  to be dumped out when debug is on. default value is \`500'.
+* `debug_bytes` - number of bytes of http response to be dumped out when debug is on. default value is \`500'.
 
 * `match_l` - in TAP output truncate matching strings to {match_l} bytes;  default value is \`40'.
 
