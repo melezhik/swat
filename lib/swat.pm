@@ -132,9 +132,13 @@ sub generate_asserts {
 
     dsl()->{output} = make_http_request();
 
-    dsl()->validate($check_file);
-
     set_prop('story',get_prop('curl_cmd'));
+
+    eval {
+        dsl()->validate($check_file);
+    };
+
+    my $err = $@;
 
     for my $chk_item ( @{dsl()->check_list}){
         ok($chk_item->{status}, $chk_item->{message})
@@ -149,6 +153,9 @@ sub generate_asserts {
         }
         close JOURNAL;
     }
+
+    die $err if $err;
+
 }
 
 1;
