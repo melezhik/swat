@@ -225,8 +225,7 @@ You may use regular expressions as well:
     # swat output
     OK - output matches /\d\d\d\d-\d\d-\d\d/
 
-Follow [https://github.com/melezhik/outthentic-dsl#comments-blank-lines-and-text-blocks](https://github.com/melezhik/outthentic-dsl#comments-blank-lines-and-text-blocks)
-to know more.
+Follow [https://github.com/melezhik/outthentic-dsl#check-expressions](https://github.com/melezhik/outthentic-dsl#check-expressions) to know more.
 
 * generators
 
@@ -249,8 +248,7 @@ Yes you may generate new check list on run time:
     hello
     again
 
-Follow [https://github.com/melezhik/outthentic-dsl#generators](https://github.com/melezhik/outthentic-dsl#generators)
-to know more.
+Follow [https://github.com/melezhik/outthentic-dsl#generators](https://github.com/melezhik/outthentic-dsl#generators) to know more.
    
 * inline perl code
 
@@ -259,10 +257,9 @@ What about inline arbitrary perl code? Well, it's easy!
 
     # check list
     regexp: number: (\d+)
-    code: cmp_ok( capture()->[0], '>=', 0, 'got none zero number');
+    validator: [ ( capture()->[0] '>=' 0 ), 'got none zero number') ];
 
-Follow [https://github.com/melezhik/outthentic-dsl#perl-expressions](https://github.com/melezhik/outthentic-dsl#perl-expressions)
-to know more.
+Follow [https://github.com/melezhik/outthentic-dsl#validators](https://github.com/melezhik/outthentic-dsl#validators) to know more.
 
 * text blocks
 
@@ -480,7 +477,7 @@ This is an example of setting server response inside swat hook:
     set_response("THIS IS I FAKE RESPONSE\n HELLO WORLD");
 
     # get.txt
-    THIS IS FAKE RESPONSE
+    THIS IS A FAKE RESPONSE
     HELLO WORLD
 
 

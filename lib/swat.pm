@@ -131,8 +131,6 @@ sub generate_asserts {
 
     dsl()->{output} = make_http_request();
 
-    set_prop('story',get_prop('curl_cmd'));
-
     eval {
         dsl()->validate($check_file);
     };
@@ -510,8 +508,7 @@ You may use regular expressions as well:
     # swat output
     OK - output matches /\d\d\d\d-\d\d-\d\d/
 
-Follow L<https://github.com/melezhik/outthentic-dsl#comments-blank-lines-and-text-blocks|https://github.com/melezhik/outthentic-dsl#comments-blank-lines-and-text-blocks>
-to know more.
+Follow L<https://github.com/melezhik/outthentic-dsl#check-expressions|https://github.com/melezhik/outthentic-dsl#check-expressions> to know more.
 
 =over
 
@@ -541,8 +538,7 @@ Yes you may generate new check list on run time:
     hello
     again
 
-Follow L<https://github.com/melezhik/outthentic-dsl#generators|https://github.com/melezhik/outthentic-dsl#generators>
-to know more.
+Follow L<https://github.com/melezhik/outthentic-dsl#generators|https://github.com/melezhik/outthentic-dsl#generators> to know more.
 
 =over
 
@@ -557,10 +553,9 @@ What about inline arbitrary perl code? Well, it's easy!
 
     # check list
     regexp: number: (\d+)
-    code: cmp_ok( capture()->[0], '>=', 0, 'got none zero number');
+    validator: [ ( capture()->[0] '>=' 0 ), 'got none zero number') ];
 
-Follow L<https://github.com/melezhik/outthentic-dsl#perl-expressions|https://github.com/melezhik/outthentic-dsl#perl-expressions>
-to know more.
+Follow L<https://github.com/melezhik/outthentic-dsl#validators|https://github.com/melezhik/outthentic-dsl#validators> to know more.
 
 =over
 
@@ -937,7 +932,7 @@ This is an example of setting server response inside swat hook:
     set_response("THIS IS I FAKE RESPONSE\n HELLO WORLD");
     
     # get.txt
-    THIS IS FAKE RESPONSE
+    THIS IS A FAKE RESPONSE
     HELLO WORLD
 
 Another interesting idea about set_response feature is a I<conditional> http requests.
