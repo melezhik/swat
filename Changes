@@ -1,3 +1,7 @@
+# 0.1.66 2015-11-12
+
+* bin/swat - hostfix for host:port issue 
+
 # 0.1.65 2015-11-08
 
 * this version is fully compatible with the latest version of Outthentic::DSL (0.0.3)
