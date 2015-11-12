@@ -134,7 +134,9 @@ for f in `$find_cmd`; do
     mkdir -p "${test_root_dir}/${resource}";
 
     if [ -n "${port}" ]; then
-        host="$host:$port"
+        real_host="$host:$port"
+    else
+        real_host=$host
     fi
 
     # execute swat project bash hook
@@ -185,7 +187,7 @@ for f in `$find_cmd`; do
     echo "new_story();"  >> $tfile
     echo >> $tfile
 
-    echo "set_prop( hostname => q{$host} );" >> $tfile
+    echo "set_prop( hostname => q{$real_host} );" >> $tfile
     echo "set_prop( resource => q{$resource} );" >> $tfile
     echo "set_prop( resource_dir => q{$resource_dir} );" >> $tfile
     echo "set_prop( http_method => q{$http_method} );" >> $tfile

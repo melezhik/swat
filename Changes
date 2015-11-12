@@ -1,3 +1,7 @@
+# 0.1.67 2015-11-12
+
+* bin/swat - hostfix for host:port issue ( second try )
+
 # 0.1.66 2015-11-12
 
 * bin/swat - hostfix for host:port issue 
