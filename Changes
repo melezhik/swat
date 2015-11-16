@@ -1,3 +1,6 @@
+# 0.1.68 2015-11-16
+* swat_purge_cache: ability to remove swat cache directory after tests are done
+
 # 0.1.67 2015-11-12
 
 * bin/swat - hostfix for host:port issue ( second try )

@@ -245,11 +245,23 @@ export port
 if [ -z "${rest_args}" ] && [ -n "${prove_options}" ]; then
     rest_args=("$prove_options")
     prove -m -r $rest_args  "$test_root_dir/$test_file";
+    exit_code=$?
 elif [ -n "${rest_args}"  ]; then
     prove -m -r  $rest_args "$test_root_dir/$test_file";
+    exit_code=$?
 else
     prove -m -r -v "$test_root_dir/$test_file";
+    exit_code=$?
 fi
+
+
+swat_purge_cache=${swat_purge_cache:=0}
+
+if test $swat_purge_cache -eq 1; then
+    rm -rf $cache_dir
+fi
+
+exit $exit_code
 
 
 

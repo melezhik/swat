@@ -693,6 +693,12 @@ Here are some examples:
     swat -Q # don't show anythings unless test summary
     swat -q -s # run prove tests in random and quite mode
 
+# Misc settings
+
+* swat_clear_cache
+
+    * Set to \`1', in case you need to clear swat cache directory, useful when swat tests get run periodically and a lot of cache files are created.
+    * Default value is \`0' ( do not clear cache ).
 
 # Swat client
 

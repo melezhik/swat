@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.67';
+our $VERSION = '0.1.68';
 
 use base 'Exporter'; 
 
@@ -1268,6 +1268,33 @@ Here are some examples:
 
     swat -Q # don't show anythings unless test summary
     swat -q -s # run prove tests in random and quite mode
+
+
+=head1 Misc settings
+
+=over
+
+=item *
+
+swatI<clear>cache
+
+=over
+
+=item *
+
+Set to `1', in case you need to clear swat cache directory, useful when swat tests get run periodically and a lot of cache files are created.
+
+
+=item *
+
+Default value is `0' ( do not clear cache ).
+
+
+=back
+
+
+
+=back
 
 
 =head1 Swat client
