@@ -695,7 +695,7 @@ Here are some examples:
 
 # Misc settings
 
-* swat_clear_cache
+* swat_purge_cache
 
     * Set to \`1', in case you need to clear swat cache directory, useful when swat tests get run periodically and a lot of cache files are created.
     * Default value is \`0' ( do not clear cache ).
