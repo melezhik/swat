@@ -1276,7 +1276,7 @@ Here are some examples:
 
 =item *
 
-swatI<purge>cache
+swat_purge_cache
 
 =over
 
