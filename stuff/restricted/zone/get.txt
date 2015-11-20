@@ -1,1 +1,2 @@
 200 OK
+welcome to restricted area
