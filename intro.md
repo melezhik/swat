@@ -132,7 +132,9 @@ ok
 ```
 
 
-Now let's see what happening with unsuccessfull routes and try to determine reason they fail:
+Now let's see what happening with unsuccessfull routes and try to determine reason they fail. 
+Let's start with POST /login route. To run a single route we will utilize a test_file variable ( the value of test_file - login/00.POST.t is quite confusing, I am going to change this in the next versions of swat ):
+
 
 ```
 $ test_file=login/00.POST.t swat ./ 127.0.0.1:3000
