@@ -178,15 +178,38 @@ As it expected a login request failed as we did not provide credentials for succ
 ```
 $ nano login/swat.ini
 
-if test "${http_method}" = 'get'; then
-  curl_params="-d 'login=admin' -d 'password=123456' -c $test_root_directory/cookie.txt "
+if test "${http_method}" = 'POST'; then
+  curl_params="-d 'login=admin' -d 'password=123456' -c $test_root_dir/cookie.txt "
 fi
 
 ```
-Here we ask swat to do a couple of things. First to pass via POST /login request valid credentials , and then store a cookie returned by server into local file ( As we said before after successful authetication server return a "session" cookie ).
+Here we ask swat to do a couple of things. First to pass via POST /login request valid credentials , and then store a cookie returned by server into a local file in the directory where swat tests runs ( As we said before after successful authetication server return a "session" cookie ).
 
 Ok let's re-run our last test:
 
 ```
 $ test_file=login/00.POST.t swat ./ 127.0.0.1:3000
+
+vagrant@Debian-jessie-amd64-netboot:~/projects/myapp2/swat$ test_file=login/00.POST.t swat ./ 127.0.0.1:3000
+/home/vagrant/.swat/.cache/12669/prove/login/00.POST.t ..
+ok 1 - POST 127.0.0.1:3000/login succeeded
+# response saved to /home/vagrant/.swat/.cache/12669/prove/ap3_lyTGtf
+ok 2 - output match '200 OK'
+ok 3 - output match 'LOGIN OK'
+1..3
+ok
+All tests successful.
+Files=1, Tests=3,  0 wallclock secs ( 0.02 usr  0.00 sys +  0.05 cusr  0.00 csys =  0.07 CPU)
+Result: PASS
+vagrant@Debian-jessie-amd64-netboot:~/projects/myapp2/swat$
+
 ```
+
+Hurrah! Now its fine. We succeeded.  Some comments here regarding swat.ini file we just have used.
+
+* Swat ini files - are regular bash scripts
+* Generaly you may use them to adjust http requests parameters using curl options, as swat relies on curl when maling http requests
+* Curl_params varibale will be passed to curl 
+* Swat provides some useful varibles one may utilze - http_method, test_root_dir, etc
+
+
