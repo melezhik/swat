@@ -2,9 +2,10 @@
 
 Web application testing might be tedious, but we still need it. In this informal article I will try to introduce you a swat - simple web application test framework as an attempt to reduce test development complexity and speed up test development process.
 
-The idea behind swat is quite simple. Instead of going with unit tests and interact with your application in internal level one should look at application like black box. All we could with it - is to send some http requests and analyze an output.
+The idea behind swat is quite simple. Instead of going with unit tests and interact with your application in internal level one should look at application like at black box. All we could with it - is to send some http requests and analyze an output.
 
 As rough prototype think about this command:
+
 ```
   ( curl -f http://127.0.0.1 | grep 'hello world' )  && echo 'OK'
 ```
@@ -13,27 +14,33 @@ Swat is based on the same idea - _Make a request and anaylize given output_.
 
 # Swat VS unit tests
 
-To say it clear swat is not instead of unit tests at all. There are a lot of well known unit tests frameworks for a existed web applications, frameworks  - Plack::Test, Test::Mojo, Dancer::Test, Catalyst::Test, Kelp::Test, etc. and all of them are cool, really. But unit tests by it's nature have some limitations, here I try to list some which could be interesting for our talk:
+To say it clear swat is not instead of unit tests at all. There are a lot of well known unit tests frameworks for a existed web applications, frameworks  - Plack::Test, Test::Mojo, Dancer::Test, Catalyst::Test, Kelp::Test, etc. and all of them are cool, really. But unit tests by it's nature have some limitations, here I try to point one vital matter relating to our subject:
 
-* unit tests are usually fired before installation step
+* unit tests are heavily coupled with distribution and source code
  
-```
+ 
+This makes it difficuilt to run unit tests against already running application. And there is real reason for it - ( usually ) unit tests are fired _during_ installaton process:
+
+``` 
   make
   make test
   make install
 ```
- 
-This makes it difficult to run unit tests against existed application. This is unit tests nature, as they more relate to tested code that to existed application.
+No one cares about testing application once deploy is happened ( make install step ). Ok. This is fine for testing classes and objects but if consider integration testing this is not obviously enough. 
 
-* unit tests coupled with application source code, but decoupling testing logic from application sometimes is required
+To continue this idea - unit tests are coupled with application source code, but decoupling testing logic from application sometimes is required.
 
-I know there are props and cons of doing this. But sometimes I don't even have an application source to start writing unit tests for it. All I have a running application needs to be tested. With swat it's not a problem, as swat tests code base is always decoupled from the application source code.
+I know there are props and cons of doing this. But sometimes one don't even have an access to application source code or application could be written on programming language differ from your own native one. 
+
+After all I hav is running application needs to be tested. With swat it's not a problem, as swat tests code base is always decoupled from the application source code and treat application as black box.
+
+Ok, this is enough of theory :-) , let me show your some practice.
 
 
 # Hello world example
 
 
-Ok, let me show you how easy and fast one could write test for web application using swat. For the sake of simplicity let's have an mojolicious web [application](https://github.com/melezhik/swat/blob/master/stuff/myapp.pl) with the following set of http routes:
+This simple exmaple will show you how easy and fast one could write test for web application using swat. For the sake of simplicity let's have an mojolicious web [application](https://github.com/melezhik/swat/blob/master/stuff/myapp.pl) with the following set of http routes:
 
 route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
