@@ -33,7 +33,7 @@ I know there are props and cons of doing this. But sometimes I don't even have a
 # Hello world example
 
 
-Ok, let me show you how easy and fast one could write test for web application using swat. For the sake of simplicity let's have an application with the following set of http routes:
+Ok, let me show you how easy and fast one could write test for web application using swat. For the sake of simplicity let's have an mojolicious web [application](https://github.com/melezhik/swat/blob/master/stuff/myapp.pl) with the following set of http routes:
 
 route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
@@ -264,6 +264,5 @@ Fun testing with swat!
 
 
 Alexey Melezhik --  the author of swat.
-
 
 
