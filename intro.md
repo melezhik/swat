@@ -132,7 +132,7 @@ ok
 ```
 
 
-Now let's see what happening with unsuccessfull routes and try to determine reason they fail. 
+Now let's see what happening with unsuccessful routes and try to determine reason they fail.
 Let's start with POST /login route. To run a single route we will utilize a test_file variable ( the value of test_file - login/00.POST.t is quite confusing, I am going to change this in the next versions of swat ):
 
 
@@ -183,7 +183,7 @@ if test "${http_method}" = 'POST'; then
 fi
 
 ```
-Here we ask swat to do a couple of things. First to pass via POST /login request valid credentials , and then store a cookie returned by server into a local file in the directory where swat tests runs ( As we said before after successful authetication server return a "session" cookie ).
+Here we ask swat to do a couple of things. First to pass via POST /login request valid credentials , and then store a cookie returned by server into a local file in the directory where swat tests runs ( As we said before after successful authentication server return a "session" cookie ).
 
 Ok let's re-run our last test:
 
@@ -208,8 +208,7 @@ vagrant@Debian-jessie-amd64-netboot:~/projects/myapp2/swat$
 Hurrah! Now its fine. We succeeded.  Some comments here regarding swat.ini file we just have used.
 
 * Swat ini files - are regular bash scripts
-* Generaly you may use them to adjust http requests parameters using curl options, as swat relies on curl when maling http requests
-* Curl_params varibale will be passed to curl 
-* Swat provides some useful varibles one may utilze - http_method, test_root_dir, etc
-
+* Generally you may use them to adjust http requests parameters using curl options, as swat relies on curl when making http requests
+* Curl_params variable will be passed to curl
+* Swat provides some useful variables one may utilize - http_method, test_root_dir, etc
 
