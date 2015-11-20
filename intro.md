@@ -37,7 +37,7 @@ Ok, let me show you how easy and fast one could write test for web application u
 route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
 `GET /`           | hello world          | 200 OK        | landing page    
-`GET /login`      | login form           | 200 OK        | html login form
+`GET /login`      | <form action="/login" method="POST"> ...           | 200 OK        | html login form
 `POST /login`     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action    
 `GET /restricted/zone` | restricted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it
 
@@ -60,16 +60,16 @@ Ok, now having routes let's describe an output we expect to get when making requ
 
 ```
 
-echo 200 OK >> get.txt # this is for GET /
-echo hello world >> get.txt # and this one too
+echo 200 OK > get.txt # this is for GET /
+echo hello world >> get.txt 
 
-echo 200 OK >> login/get.txt
+echo 200 OK > login/get.txt # this one for GET /login
 echo '<form action="/login" method="POST">' >> login/get.txt
 
-echo 200 OK >> login/post.txt
+echo 200 OK > login/post.txt # this one for POST /login
 echo LOGIN OK >> login/post.txt
 
-echo 200 OK >> restricted/zone/get.txt
+echo 200 OK > restricted/zone/get.txt # this one for GET /restricted/zone
 
 ```
 
