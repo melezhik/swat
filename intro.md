@@ -77,8 +77,7 @@ No need explain more so far, as swat is pretty simple and intuitive in this way.
 
 
 ```
-echo 127.0.0.1:3000 > host
-prove_options=-q swat
+swat ./ 127.0.0.1:3000 -q
 ```
 
 The output will be:
@@ -104,5 +103,32 @@ Result: FAIL
 
 ```
 
+This results are quite predictable. First two routes succeeded - GET / and GET /login , another two routes failed - POST /login and GET /restriced/area. To not overwhelm this post with too many logs I run swat in \`quite' mode ( using `-q` options for prove which internally swat relies upon ), to see detailed output ( which is by default ) one may run swat as is without any options:
+
+
+
+```
+
+swat ./ 127.0.0.1:3000 
+  
+/home/vagrant/.swat/.cache/12289/prove/login/00.GET.t ............
+ok 1 - GET 127.0.0.1:3000/login succeeded
+# response saved to /home/vagrant/.swat/.cache/12289/prove/jcYWTNuUMM
+ok 2 - output match '200 OK'
+ok 3 - output match '<form action="/login" method="POST">'
+1..3
+ok
+/home/vagrant/.swat/.cache/12289/prove/00.GET.t ..................
+ok 1 - GET 127.0.0.1:3000/ succeeded
+# response saved to /home/vagrant/.swat/.cache/12289/prove/sWSUqQRfeV
+ok 2 - output match '200 OK'
+ok 3 - output match 'hello world'
+1..3
+ok
+
+
+... other output ...
+
+```
 
 
