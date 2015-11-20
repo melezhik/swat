@@ -81,4 +81,79 @@ echo 127.0.0.1:3000 > host
 swat
 ```
 
+The output will be:
+
+```
+vagrant@Debian-jessie-amd64-netboot:~/projects/myapp2/swat$ swat
+/home/vagrant/.swat/.cache/11408/prove/00.GET.t ..................
+ok 1 - GET 127.0.0.1:3000/ succeeded
+# response saved to /home/vagrant/.swat/.cache/11408/prove/A9evBOVFOw
+ok 2 - output match '200 OK'
+ok 3 - output match 'hello world'
+1..3
+ok
+/home/vagrant/.swat/.cache/11408/prove/login/00.GET.t ............
+ok 1 - GET 127.0.0.1:3000/login succeeded
+# response saved to /home/vagrant/.swat/.cache/11408/prove/s1q4S1KBkr
+ok 2 - output match '200 OK'
+ok 3 - output match '<form action="/login" method="POST">'
+1..3
+ok
+/home/vagrant/.swat/.cache/11408/prove/login/00.POST.t ...........
+not ok 1 - POST 127.0.0.1:3000/login succeeded
+
+#   Failed test 'POST 127.0.0.1:3000/login succeeded'
+#   at /usr/local/share/perl/5.20.2/swat.pm line 70.
+# curl -f -X POST -k --connect-timeout 20 -m 20 -D - -L --stderr - 127.0.0.1:3000/login
+# ===>
+#   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+#                                  Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (22) The requested URL returned error: 401 Unauthorized
+# response saved to /home/vagrant/.swat/.cache/11408/prove/FLe0FYY5q0
+not ok 2 - output match '200 OK'
+
+#   Failed test 'output match '200 OK''
+#   at /usr/local/share/perl/5.20.2/swat.pm line 141.
+not ok 3 - output match 'LOGIN OK'
+
+#   Failed test 'output match 'LOGIN OK''
+#   at /usr/local/share/perl/5.20.2/swat.pm line 141.
+1..3
+# Looks like you failed 3 tests of 3.
+Dubious, test returned 3 (wstat 768, 0x300)
+Failed 3/3 subtests
+/home/vagrant/.swat/.cache/11408/prove/restricted/zone/00.GET.t ..
+not ok 1 - GET 127.0.0.1:3000/restricted/zone succeeded
+
+#   Failed test 'GET 127.0.0.1:3000/restricted/zone succeeded'
+#   at /usr/local/share/perl/5.20.2/swat.pm line 70.
+# curl -f -X GET -k --connect-timeout 20 -m 20 -D - -L --stderr - 127.0.0.1:3000/restricted/zone
+# ===>
+#   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+#                                  Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (22) The requested URL returned error: 403 Forbidden
+# response saved to /home/vagrant/.swat/.cache/11408/prove/KlciaTqgAW
+not ok 2 - output match '200 OK'
+
+#   Failed test 'output match '200 OK''
+#   at /usr/local/share/perl/5.20.2/swat.pm line 141.
+1..2
+# Looks like you failed 2 tests of 2.
+Dubious, test returned 2 (wstat 512, 0x200)
+Failed 2/2 subtests
+
+Test Summary Report
+-------------------
+/home/vagrant/.swat/.cache/11408/prove/login/00.POST.t         (Wstat: 768 Tests: 3 Failed: 3)
+  Failed tests:  1-3
+  Non-zero exit status: 3
+/home/vagrant/.swat/.cache/11408/prove/restricted/zone/00.GET.t (Wstat: 512 Tests: 2 Failed: 2)
+  Failed tests:  1-2
+  Non-zero exit status: 2
+Files=4, Tests=11,  2 wallclock secs ( 0.03 usr  0.00 sys +  0.24 cusr  0.00 csys =  0.27 CPU)
+Result: FAIL
+
+```
+
+
 
