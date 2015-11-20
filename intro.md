@@ -9,7 +9,7 @@ As rough prototype think about this command:
   ( curl -f http://127.0.0.1 | grep 'hello world' )  && echo 'OK'
 ```
 
-Swat is based on the same idea. Make a request and anaylize given output.
+Swat is based on the same idea - _Make a request and anaylize given output_.
 
 # Swat VS unit tests
 
@@ -45,6 +45,8 @@ route             | returned content     | status code   | route description
 
 Now having application routes we could give it a run for swat.
 
+
+## Swat test harness
 
 First of all let's create a http routes. Doing things in swat way - routes are just a directories:
 
@@ -119,19 +121,10 @@ ok 2 - output match '200 OK'
 ok 3 - output match '<form action="/login" method="POST">'
 1..3
 ok
-/home/vagrant/.swat/.cache/12289/prove/00.GET.t ..................
-ok 1 - GET 127.0.0.1:3000/ succeeded
-# response saved to /home/vagrant/.swat/.cache/12289/prove/sWSUqQRfeV
-ok 2 - output match '200 OK'
-ok 3 - output match 'hello world'
-1..3
-ok
 
-
-... other output ...
+... skip  output ...
 
 ```
-
 
 Now let's see what happening with unsuccessful routes and try to determine reason they fail.
 Let's start with POST /login route. To run a single route we will utilize a test_file variable ( the value of test_file - login/00.POST.t is quite confusing, I am going to change this in the next versions of swat ):
@@ -214,6 +207,7 @@ Hurrah! Now its fine. We succeeded.  Some comments here regarding swat.ini file 
 * Swat provides some useful variables one may utilize - http_method, test_root_dir, etc
 
 
+## Code reuse
 
 Ok. Let go for another route recently failes is GET /restricted/zone. Let's re-run it on verbose mode:
 
@@ -253,8 +247,18 @@ Result: FAIL
 Well, as it expected request to GET /restricted/zone returns 403 status code. The solution is quite obvious - we need to gets logged in before doing this request. Ok, we already have login action successfuly tested before, This is POST /login route. But could we reuse it? Defenitely!
 
 
+```
+$ nano login/swat.ini
 
+if test "${http_method}" = 'POST'; then
+  curl_params="-d 'login=admin' -d 'password=123456' -c $test_root_dir/cookie.txt "
+  swat_module=1
+fi
 
+```
+
+Adding line with \`swat_module=1' we ask swat to treate route POST /login as _swat module_. In other words now we could call this route from s
+ 
 # Conclusion
 
 As you can see a few lines of perl code were dropped here, as most of things have been done without coding at all. Swat is designed to be as simple as possible, yet allowing you bring desired complexity if you realy need this - follow [swat](https://github.com/melezhik/swat/) documentation to get more on generators, validators, check expressions and outher powerful swat features "borrowed" from [outthentic](https://github.com/melezhik/outthentic-dsl) DSL. 
@@ -266,3 +270,4 @@ Fun testing with swat!
 Alexey Melezhik --  the author of swat.
 
 
+PS A sample application source code and swat tests mentioned at the article could be found here - [https://github.com/melezhik/swat/tree/master/stuff](https://github.com/melezhik/swat/tree/master/stuff)
