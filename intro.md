@@ -10,7 +10,7 @@ The idea behind swat is quite simple. Instead of going with unit tests and inter
 
 As rough prototype think about this command:
 ```
-  curl -f http://127.0.0.1  && echo 'OK'
+  ( curl -f http://127.0.0.1 | grep 'hello world' )  && echo 'OK'
 ``` 
 
 
