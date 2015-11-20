@@ -37,9 +37,9 @@ Ok, let me show you how easy and fast one could write test for web application u
 
 route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
-`GET /`           | hello world          | 200 OK        | landing page  
+`GET /`           | hello world          | 200 OK        | landing page
 `GET /login`      | \<form action="/login" method="POST"\> ...           | 200 OK        | html login form
-`POST /login`     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action, required a \`login' and \`password' parameters get passed via POST request. Valid credentials are *login=admin , password=123456 * . After successful authetication server return a "session" cookie.
+`POST /login`     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action, required a \`login' and \`password' parameters get passed via POST request. Valid credentials are *login=admin , password=123456 * . After successful authentication server return a "session" cookie.
 `GET /restricted/zone` | welcome to restricted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it
 
 
@@ -244,7 +244,7 @@ Result: FAIL
 
 ```
 
-Well, as it expected request to GET /restricted/zone returns 403 status code. The solution is quite obvious - we need to gets logged in before doing this request. Ok, we already have login action successfuly tested before, This is POST /login route. But could we reuse it? Defenitely!
+Well, as it expected request to GET /restricted/zone returns 403 status code. The solution is quite obvious - we need to gets logged in before doing this request. Ok, we already have login action successfully tested before, This is POST /login route. But could we reuse it? Definitely!
 
 
 ```
@@ -257,14 +257,15 @@ fi
 
 ```
 
-Adding line with \`swat_module=1' we ask swat to treate route POST /login as _swat module_. In other words now we could call this route before another one:
+Adding line with \`swat_module=1' we ask swat to treat route POST /login as _swat module_. In other words now we could call this route before another one:
  
  
 ```
 
 $ nano restricted/zone/swat.ini
 
-curl_params="-c $test_root_dir/cookie.txt" # we need a cookie to provide valid session to the server
+curl_params="-b $test_root_dir/cookie.txt" # we need provide a valid session via cookies
+                                           # get created by POST /login action
 
 $ nano restricted/zone/hook.pm
 
@@ -273,15 +274,64 @@ run_swat_module( POST => '/login');
 ```
 
 The code above is example of so called swat hook - a code snippet you could define to be running before a route get requested.
-As we said before. We call POST /login before calling main route - GET /resitricted/zone , which make it possible to access restricted resourse as we already have our session enabled via cookied gets recieved after successful authentication:
+As we said before. We call POST /login before calling main route - GET /restricted/zone , which make it possible to access restricted resource as we already have our session enabled via cookies get received after successful authentication:
 
 ```
+vagrant@Debian-jessie-amd64-netboot:~/projects/myapp2/swat$ test_file=restricted/zone/00.GET.t swat ./ 127.0.0.1:3000
+/home/vagrant/.swat/.cache/14509/prove/restricted/zone/00.GET.t ..
+ok 1 - POST 127.0.0.1:3000/login succeeded
+# response saved to /home/vagrant/.swat/.cache/14509/prove/OXQW6x3s3L
+ok 2 - output match '200 OK'
+ok 3 - output match 'LOGIN OK'
+ok 4 - GET 127.0.0.1:3000/restricted/zone succeeded
+# response saved to /home/vagrant/.swat/.cache/14509/prove/Sup0fKtkKA
+ok 5 - output match '200 OK'
+ok 6 - output match 'welcome to restricted area'
+1..6
+ok
+All tests successful.
+Files=1, Tests=6,  0 wallclock secs ( 0.02 usr  0.01 sys +  0.06 cusr  0.00 csys =  0.09 CPU)
+Result: PASS
+```
+
+Excelent, now request for restricted zone succeeded!  Finally let's run all the tests again and make it sure they all passes:
 
 ```
+$ swat ./ 127.0.0.1:3000
+/home/vagrant/.swat/.cache/14540/prove/login/00.GET.t ............
+ok 1 - GET 127.0.0.1:3000/login succeeded
+# response saved to /home/vagrant/.swat/.cache/14540/prove/lFkIPbrtnO
+ok 2 - output match '200 OK'
+ok 3 - output match '<form action="/login" method="POST">'
+1..3
+ok
+/home/vagrant/.swat/.cache/14540/prove/00.GET.t ..................
+ok 1 - GET 127.0.0.1:3000/ succeeded
+# response saved to /home/vagrant/.swat/.cache/14540/prove/Dte0FvMDES
+ok 2 - output match '200 OK'
+ok 3 - output match 'hello world'
+1..3
+ok
+/home/vagrant/.swat/.cache/14540/prove/restricted/zone/00.GET.t ..
+ok 1 - POST 127.0.0.1:3000/login succeeded
+# response saved to /home/vagrant/.swat/.cache/14540/prove/zBRaNpWjlw
+ok 2 - output match '200 OK'
+ok 3 - output match 'LOGIN OK'
+ok 4 - GET 127.0.0.1:3000/restricted/zone succeeded
+# response saved to /home/vagrant/.swat/.cache/14540/prove/yIYRRRwCo9
+ok 5 - output match '200 OK'
+ok 6 - output match 'welcome to restricted area'
+1..6
+ok
+All tests successful.
+Files=3, Tests=12,  0 wallclock secs ( 0.03 usr  0.00 sys +  0.15 cusr  0.01 csys =  0.19 CPU)
+Result: PASS
+```
+
 
 # Conclusion
 
-As you can see a few lines of perl code were dropped here, as most of things have been done without coding at all. Swat is designed to be as simple as possible, yet allowing you bring desired complexity if you realy need this - follow [swat](https://github.com/melezhik/swat/) documentation to get more on generators, validators, check expressions and outher powerful swat features "borrowed" from [outthentic](https://github.com/melezhik/outthentic-dsl) DSL. 
+As you can see a few lines of perl code were dropped here, as most of things have been done without coding at all. Swat is designed to be as simple as possible, yet allowing you bring desired complexity if you really need this - follow [swat](https://github.com/melezhik/swat/) documentation to get more on generators, validators, check expressions and other powerful swat features "borrowed" from [outthentic](https://github.com/melezhik/outthentic-dsl) DSL.
 
 
 Fun testing with swat!
