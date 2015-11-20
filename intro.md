@@ -38,7 +38,7 @@ route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
 `GET /`           | hello world          | 200 OK        | landing page    
 `GET /login`      | \<form action="/login" method="POST"\> ...           | 200 OK        | html login form
-`POST /login`     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action    
+`POST /login`     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action, required a \`login' and \`password' paramters get passed via POST request. Valid credentials are login=admin , password=123456    
 `GET /restricted/zone` | welcome to restricted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it
 
 
@@ -130,5 +130,48 @@ ok
 ... other output ...
 
 ```
+
+
+Now let's see what happening with unsuccessfull routes and try to determine reason they fail:
+
+```
+$ test_file=login/00.POST.t swat ./ 127.0.0.1:3000
+/home/vagrant/.swat/.cache/12437/prove/login/00.POST.t ..
+not ok 1 - POST 127.0.0.1:3000/login succeeded
+
+#   Failed test 'POST 127.0.0.1:3000/login succeeded'
+#   at /usr/local/share/perl/5.20.2/swat.pm line 70.
+# curl -f -X POST -k --connect-timeout 20 -m 20 -D - -L --stderr - 127.0.0.1:3000/login
+# ===>
+#   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+#                                  Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (22) The requested URL returned error: 401 Unauthorized
+# response saved to /home/vagrant/.swat/.cache/12437/prove/W3poOmDyfl
+not ok 2 - output match '200 OK'
+
+#   Failed test 'output match '200 OK''
+#   at /usr/local/share/perl/5.20.2/swat.pm line 141.
+not ok 3 - output match 'LOGIN OK'
+
+#   Failed test 'output match 'LOGIN OK''
+#   at /usr/local/share/perl/5.20.2/swat.pm line 141.
+1..3
+# Looks like you failed 3 tests of 3.
+Dubious, test returned 3 (wstat 768, 0x300)
+Failed 3/3 subtests
+
+Test Summary Report
+-------------------
+/home/vagrant/.swat/.cache/12437/prove/login/00.POST.t (Wstat: 768 Tests: 3 Failed: 3)
+  Failed tests:  1-3
+  Non-zero exit status: 3
+Files=1, Tests=3,  1 wallclock secs ( 0.02 usr  0.00 sys +  0.05 cusr  0.00 csys =  0.07 CPU)
+Result: FAIL
+```
+
+
+As it expected a login request failed as we did not provide credenatials for successfull login. Let's change out swat test:
+
+
 
 
