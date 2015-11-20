@@ -35,8 +35,9 @@ I know there are props and cons of doing this. But sometimes I don't even have a
 Ok, let me show you how easy and fast one could write test for web application using swat. For the sake of simplicity let's have an application with the following set of http routes:
 
 route             | returned content     | status code   | route description 
--------------------------------------------------------------------------------
+------------------|----------------------|---------------|--------------------
 `GET /`           | hello world          | 200 OK        | landing page     
-`POST /login`     | OK|BAD LOGIN         | 200 OK | 401  | login action     
+`GET /login`      | login form           | 200 OK        | html login form 
+`POST /login`     | OK \| BAD LOGIN      | 200 OK \| 401 | login action     
 
  
