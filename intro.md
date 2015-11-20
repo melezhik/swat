@@ -212,3 +212,43 @@ Hurrah! Now its fine. We succeeded.  Some comments here regarding swat.ini file 
 * Curl_params variable will be passed to curl
 * Swat provides some useful variables one may utilize - http_method, test_root_dir, etc
 
+
+
+Ok. Let go for another route recently failes is GET /restricted/zone. Let's re-run it on verbose mode:
+
+
+```
+$ test_file=restricted/zone/00.GET.t swat ./ 127.0.0.1:3000
+/home/vagrant/.swat/.cache/12763/prove/restricted/zone/00.GET.t ..
+not ok 1 - GET 127.0.0.1:3000/restricted/zone succeeded
+
+#   Failed test 'GET 127.0.0.1:3000/restricted/zone succeeded'
+#   at /usr/local/share/perl/5.20.2/swat.pm line 70.
+# curl -f -X GET -k --connect-timeout 20 -m 20 -D - -L --stderr - 127.0.0.1:3000/restricted/zone
+# ===>
+#   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+#                                  Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (22) The requested URL returned error: 403 Forbidden
+# response saved to /home/vagrant/.swat/.cache/12763/prove/zkAwzCxes4
+not ok 2 - output match '200 OK'
+
+#   Failed test 'output match '200 OK''
+#   at /usr/local/share/perl/5.20.2/swat.pm line 141.
+1..2
+# Looks like you failed 2 tests of 2.
+Dubious, test returned 2 (wstat 512, 0x200)
+Failed 2/2 subtests
+
+Test Summary Report
+-------------------
+/home/vagrant/.swat/.cache/12763/prove/restricted/zone/00.GET.t (Wstat: 512 Tests: 2 Failed: 2)
+  Failed tests:  1-2
+  Non-zero exit status: 2
+Files=1, Tests=2,  1 wallclock secs ( 0.03 usr  0.00 sys +  0.06 cusr  0.00 csys =  0.09 CPU)
+Result: FAIL
+
+```
+
+Well, as it expected request to GET /restricted/zone returns 403 status code. The solution is quite obvious - we need to gets logged in before doing this request. Ok, we already have login action successfuly tested before, This is POST /login route. But could we reuse it? Defenitely!
+
+
