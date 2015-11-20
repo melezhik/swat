@@ -16,7 +16,7 @@ To say it clear swat is not instead of unit tests at all. There are a lot of wel
 
 * unit tests usually are fired before installation step
  
-```  
+```
   make
   make test
   make install
@@ -36,9 +36,9 @@ Ok, let me show you how easy and fast one could write test for web application u
 
 route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
-`GET /`           | hello world          | 200 OK        | landing page    
+`GET /`           | hello world          | 200 OK        | landing page  
 `GET /login`      | \<form action="/login" method="POST"\> ...           | 200 OK        | html login form
-`POST /login`     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action, required a \`login' and \`password' paramters get passed via POST request. Valid credentials are login=admin , password=123456    
+`POST /login`     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action, required a \`login' and \`password' parameters get passed via POST request. Valid credentials are *login=admin , password=123456 * . After successful authetication server return a "session" cookie.
 `GET /restricted/zone` | welcome to restricted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it
 
 
@@ -61,7 +61,7 @@ Ok, now having routes let's describe an output we expect to get when making requ
 ```
 
 echo 200 OK > get.txt # this is for GET /
-echo hello world >> get.txt 
+echo hello world >> get.txt
 
 echo 200 OK > login/get.txt # this one for GET /login
 echo '<form action="/login" method="POST">' >> login/get.txt
@@ -70,10 +70,10 @@ echo 200 OK > login/post.txt # this one for POST /login
 echo LOGIN OK >> login/post.txt
 
 echo 200 OK > restricted/zone/get.txt # this one for GET /restricted/zone
-echo welcome to restricted area >> restricted/zone/get.txt 
+echo welcome to restricted area >> restricted/zone/get.txt
 ```
 
-No need explain more so far, as swat is pretty simple and intuitive in this way. Let's run our first swat tests assuing an aplication runs on 127.0.0.1:3000
+No need explain more so far, as swat is pretty simple and intuitive in this way. Let's run our first swat tests assuring an application runs on 127.0.0.1:3000
 
 
 ```
@@ -103,14 +103,14 @@ Result: FAIL
 
 ```
 
-This results are quite predictable. First two routes succeeded - GET / and GET /login , another two routes failed - POST /login and GET /restriced/area. To not overwhelm this post with too many logs I run swat in \`quite' mode ( using `-q` options for prove which internally swat relies upon ), to see detailed output ( which is by default ) one may run swat as is without any options:
+This results are quite predictable. First two routes succeeded - GET / and GET /login , another two routes failed - POST /login and GET /restricted/area. To not overwhelm this post with too many logs I run swat in \`quite' mode ( using `-q` options for prove which internally swat relies upon ), to see detailed output ( which is by default ) one may run swat as is without any options:
 
 
 
 ```
 
-swat ./ 127.0.0.1:3000 
-  
+swat ./ 127.0.0.1:3000
+ 
 /home/vagrant/.swat/.cache/12289/prove/login/00.GET.t ............
 ok 1 - GET 127.0.0.1:3000/login succeeded
 # response saved to /home/vagrant/.swat/.cache/12289/prove/jcYWTNuUMM
@@ -170,8 +170,15 @@ Result: FAIL
 ```
 
 
-As it expected a login request failed as we did not provide credenatials for successfull login. Let's change out swat test:
+As it expected a login request failed as we did not provide credentials for successful login. Let's change out swat test:
 
 
+```
+$ nano login/swat.ini
 
+if test "${http_method}" = 'get'; then
+  curl_params="-d 'login=admin' -d 'password=123456' -c $test_root_directory/cookie.txt "
+fi
 
+```
+Here we ask swat to do a couple of things. First to pass via POST /login request valid credentials , and then store a cookie returned by server into local file ( As we said before after successful authetication server return a "session" cookie ).
