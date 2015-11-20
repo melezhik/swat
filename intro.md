@@ -39,7 +39,7 @@ route             | returned content     | status code   | route description
 `GET /`           | hello world          | 200 OK        | landing page    
 `GET /login`      | \<form action="/login" method="POST"\> ...           | 200 OK        | html login form
 `POST /login`     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action    
-`GET /restricted/zone` | restricted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it
+`GET /restricted/zone` | welcome to restricted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it
 
 
 Now having application routes we could give it a run for swat.
@@ -70,7 +70,7 @@ echo 200 OK > login/post.txt # this one for POST /login
 echo LOGIN OK >> login/post.txt
 
 echo 200 OK > restricted/zone/get.txt # this one for GET /restricted/zone
-
+echo welcome to restricted area >> restricted/zone/get.txt 
 ```
 
 No need explain more so far, as swat is pretty simple and intuitive in this way. Let's run our first swat tests assuing an aplication runs on 127.0.0.1:3000
