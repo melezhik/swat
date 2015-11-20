@@ -1,6 +1,6 @@
 # Doing testing in swat way
 
-Web application testing might be tedious, but we still need it. In this informal article I will try to introduce a swat - simple web application test framework as an attempt to reduce test development complexity and speed up test development process.
+Web application testing might be tedious, but we still need it. In this informal article I will try to introduce you a swat - simple web application test framework as an attempt to reduce test development complexity and speed up test development process.
 
 The idea behind swat is quite simple. Instead of going with unit tests and interact with your application in internal level one should look at application like black box. All we could with it - is to send some http requests and analyze an output.
 
@@ -9,12 +9,13 @@ As rough prototype think about this command:
   ( curl -f http://127.0.0.1 | grep 'hello world' )  && echo 'OK'
 ```
 
+Swat is based on the same idea. Make a request and anaylize given output.
 
 # Swat VS unit tests
 
 To say it clear swat is not instead of unit tests at all. There are a lot of well known unit tests frameworks for a existed web applications, frameworks  - Plack::Test, Test::Mojo, Kelp::Test, etc. and all of them are cool, really. But unit tests by it's nature have some limitations, here I try to list some which could be interesting for our talk:
 
-* unit tests usually are fired before installation step
+* unit tests are usually fired before installation step
  
 ```
   make
