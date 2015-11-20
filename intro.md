@@ -38,6 +38,7 @@ route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
 `GET /`           | hello world          | 200 OK        | landing page     
 `GET /login`      | login form           | 200 OK        | html login form 
-`POST /login`     | OK \| BAD LOGIN      | 200 OK \| 401 | login action     
+`POST /login`     | OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action     
+`GET /restricted/zone` | restircted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it 
 
  
