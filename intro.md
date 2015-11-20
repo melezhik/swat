@@ -257,8 +257,23 @@ fi
 
 ```
 
-Adding line with \`swat_module=1' we ask swat to treate route POST /login as _swat module_. In other words now we could call this route from s
+Adding line with \`swat_module=1' we ask swat to treate route POST /login as _swat module_. In other words now we could call this route before another one:
  
+ 
+```
+$ nano restricted/zone/hook.pm
+
+call_swat_module('POST /login');
+
+```
+
+The code above is example of so called swat hook - a code snippet you could define to be running before a route get requested.
+As we said before. We call POST /login before calling main route - GET /resitricted/zone , which make it possible to access restricted resourse as we already have our session enabled via cookied gets recieved after successful authentication:
+
+```
+
+```
+
 # Conclusion
 
 As you can see a few lines of perl code were dropped here, as most of things have been done without coding at all. Swat is designed to be as simple as possible, yet allowing you bring desired complexity if you realy need this - follow [swat](https://github.com/melezhik/swat/) documentation to get more on generators, validators, check expressions and outher powerful swat features "borrowed" from [outthentic](https://github.com/melezhik/outthentic-dsl) DSL. 
@@ -270,4 +285,4 @@ Fun testing with swat!
 Alexey Melezhik --  the author of swat.
 
 
-PS A sample application source code and swat tests mentioned at the article could be found here - [https://github.com/melezhik/swat/tree/master/stuff](https://github.com/melezhik/swat/tree/master/stuff)
+PS. A sample application source code and swat tests mentioned at the article could be found here - [https://github.com/melezhik/swat/tree/master/stuff](https://github.com/melezhik/swat/tree/master/stuff)
