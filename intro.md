@@ -29,3 +29,14 @@ This makes it difficult to run unit tests against existed application. This is u
 I know there are props and cons of doing this. But sometimes I don't even have an application source to start writing unit tests for it. All I have a running application needs to be tested. With swat it's not a problem, as swat tests code base is always decoupled from the application source code.
 
 
+# Hello world example
+
+
+Ok, let me show you how easy and fast one could write test for web application using swat. For the sake of simplicity let's have an application with the following set of http routes:
+
+route             | returned content     | status code   | route description 
+-------------------------------------------------------------------------------
+`GET /`           | hello world          | 200 OK        | landing page     
+`POST /login`     | OK|BAD LOGIN         | 200 OK | 401  | login action     
+
+ 
