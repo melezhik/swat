@@ -261,9 +261,14 @@ Adding line with \`swat_module=1' we ask swat to treate route POST /login as _sw
  
  
 ```
+
+$ nano restricted/zone/swat.ini
+
+curl_params="-c $test_root_dir/cookie.txt" # we need a cookie to provide valid session to the server
+
 $ nano restricted/zone/hook.pm
 
-call_swat_module('POST /login');
+run_swat_module( POST => '/login');
 
 ```
 
