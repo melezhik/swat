@@ -253,3 +253,17 @@ Result: FAIL
 Well, as it expected request to GET /restricted/zone returns 403 status code. The solution is quite obvious - we need to gets logged in before doing this request. Ok, we already have login action successfuly tested before, This is POST /login route. But could we reuse it? Defenitely!
 
 
+
+
+# Conclusion
+
+As you can see a few lines of perl code were dropped here, as most of things have been done without coding at all. Swat is designed to be as simple as possible, yet allowing you bring desired complexity if you realy need this - follow [swat](https://github.com/melezhik/swat/) documentation to get more on generators, validators, check expressions and outher powerful swat features "borrowed" from [outthentic](https://github.com/melezhik/outthentic-dsl) DSL. 
+
+
+Fun testing with swat!
+
+
+Alexey Melezhik --  the author of swat.
+
+
+
