@@ -3,7 +3,7 @@ use Mojolicious::Lite;
 
 get '/' => sub {
   my $c = shift;
-  $c->render(text=> 'hello world');
+  $c->render(template => 'index');
 };
 
 get '/login' => sub {
@@ -20,7 +20,7 @@ post '/login' => sub {
 
   if ( $login eq 'admin' and $password eq '123456' ){
       $c->render(text => 'LOGIN OK');
-      $c->cookie( logged => '1', { expires => time + 60 });
+      $c->cookie( logged => 'OK');  
   }else{
       $c->render(text => 'BAD LOGIN', status => 401);
   }  
@@ -31,6 +31,7 @@ post '/login' => sub {
 get '/restricted/zone' => sub {
 
   my $c = shift;
+  use Data::Dumper;
 
   if ( $c->cookie('logged')){
       $c->render(text => 'welcome to restricted area');
@@ -42,6 +43,9 @@ get '/restricted/zone' => sub {
 
 app->start;
 __DATA__
+
+@@ index.html.ep
+hello world
 
 @@ login.html.ep
 <form action="/login" method="POST">
