@@ -184,3 +184,9 @@ fi
 
 ```
 Here we ask swat to do a couple of things. First to pass via POST /login request valid credentials , and then store a cookie returned by server into local file ( As we said before after successful authetication server return a "session" cookie ).
+
+Ok let's re-run our last test:
+
+```
+$ test_file=login/00.POST.t swat ./ 127.0.0.1:3000
+```
