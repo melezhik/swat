@@ -1,3 +1,7 @@
+# 0.1.69
+* swat_explicit_index: ability to add index.html explicitely for http requests
+* follow_redirect: ability to disable following redirects
+
 # 0.1.68 2015-11-16
 * swat_purge_cache: ability to remove swat cache directory after tests are done
 
