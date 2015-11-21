@@ -20,11 +20,20 @@ It means swat tries to behave as web client making http requests and analizing t
 I dare to say this could be enough for most of cases.
 
 When making requests swat does not try to interact with web application on UI/browser level like some other test systems do.
-Instead swat operates on lower http level using curl. 
+Instead swat operates on lower http level using curl. It's very handy. Every time you have your test failed you always
+face with two types of issues:
 
-Basic entity of swat test harness is a http request ( other valid terms are route, http resource or swat story ) opposite to
-\`*.t' file at abstract perl test framework. Speaking in language of http requests is more natural then 
-speaking on languare of arbitrary test files when dealing with web application testing. 
+* http code is not successful ( not 200 OK )
+* an output does not have an expected value(s)
+
+Practicaly this means that you can initiate request again with the usaul curl command and anylize situation deeper.
+ 
+
+Thus, the basic entity of swat test harness is a http request.
+Other valid terms for this are - route, http resource or swat story - but basicly that means the same.  
+
+Compare this approach with using \`*.t' files in an abstract perl test framework. Speaking in language of http requests 
+is more natural then speaking on languare of arbitrary test files when dealing with web application testing. 
 
 Swat http requests - stories - could tested re-used as whole unit. Swat support a sequential requests which make it possible
 to impliment complicated test cases.
