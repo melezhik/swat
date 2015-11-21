@@ -353,13 +353,11 @@ Result: PASS
 
 # Conclusion
 
-As you can see only a few lines of perl code have been dropped here and most of things have been done without coding at all. As I already told swat was designed to be as simple as possible, yet allowing you bring desired complexity if you really need this - follow [swat](https://github.com/melezhik/swat/) documentation to get more on generators, validators, check expressions and other powerful swat features "borrowed" from [outthentic DSL](https://github.com/melezhik/outthentic-dsl).
+As you can see only a few lines of perl code have been dropped here and most of things have been done without coding at all. As I already told swat was designed to be as simple as possible, yet allowing you bring desired complexity if you really need this - follow [swat](https://github.com/melezhik/swat/) documentation to get more on hooks api, response spoofing, generators, validators, check expressions and other swat features.
 
 
-Wish you fun and easy testing with swat!
+I wish you fun and easy testing with swat!
 
+-- Alexey Melezhik, the author of swat.
 
-Alexey Melezhik --  the author of swat.
-
-
-PS. A sample web application source code and swat tests mentioned at the article could be found here - [https://github.com/melezhik/swat/tree/master/stuff](https://github.com/melezhik/swat/tree/master/stuff)
+PS. A sample web application source code and swat tests used at this article could be found here - [https://github.com/melezhik/swat/tree/master/stuff](https://github.com/melezhik/swat/tree/master/stuff)
