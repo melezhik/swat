@@ -14,34 +14,43 @@ Swat is based on the same idea - _Make a request and anaylize given output_.
 
 # Request oriented design
 
-Swat tries to do the things as simple as possible. It means it tries to behave like web client issuing http requests and analizing the output.
+Swat tries to do the things as simple as possible. 
 
-Nothing more. I dare to say this enough for most of cases.
+It means swat tries to behave as web client making http requests and analizing the output. Nothing more. 
+I dare to say this could be enough for most of cases.
 
-Making requests swat does not try to interact with web application on UI/browser level as selenuim like system does
+When making requests swat does not try to interact with web application on UI/browser level like some other test systems do.
+Instead swat operates on lower http level using curl. 
 
-Swat operates on lower http level using curl.
+Basic entity of swat test harness is a http request ( other valid terms are route, http resource or swat story ) opposite to
+\`*.t' file at abstract perl test framework. Speaking in language of http requests is more natural then 
+speaking on languare of arbitrary test files when dealing with web application testing. 
+
+Swat http requests - stories - could tested re-used as whole unit. Swat support a sequential requests which make it possible
+to impliment complicated test cases.
+
+Swat tends to be declarative rather than emperative tool. One define a set of tested routes and declare expected output, using
+special [DSL](https://github.com/melezhik/outthentic-dsl). 
+
+This intentionally strict model results in more neat and simple test structure. You always look at web applicaion as s set of routes
+you may send a request to. This approach might be uncomfortable to go with at the begining, but eventually results in 
+many benefits. 
 
 
-From other hand swat test code is not just an imperative code like with many classic unit test system, Swat tends to be more declarative,
+Although it does meat swat is not agile, one may extend swat test scenarios regular perl code
+and start doing things in classic imperative way.
 
-yet allowing bring desired imperativity to your code.   
 
-This intentional strict model result in more neat and simple test structure. You always look at web applicaion like a set of routes
-you may send a request.   
+A following test example for real application possibly will give you more sense what I am talking about.
 
-So the basic entity of swat tests is http request, could tested re-used as whole unit.
-
-This approach might be uncomfotable to go with at the begining, but eventually one could see the benefits of it.
- 
-
-Ok, this is enough of theory :-) , let me show your some practice.
-
+So, meet swat - simple (smart) web application testing framework.
 
 # Hello world example
 
+This simple exmaple will show you how easy and fast one could write tests for web application using swat. 
 
-This simple exmaple will show you how easy and fast one could write test for web application using swat. For the sake of simplicity let's have an mojolicious web [application](https://github.com/melezhik/swat/blob/master/stuff/myapp.pl) with the following set of http routes:
+I have specially create a simple mojolicious web [application](https://github.com/melezhik/swat/blob/master/stuff/myapp.pl) 
+comprise of few http routes:
 
 route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
@@ -51,7 +60,7 @@ route             | returned content     | status code   | route description
 `GET /restricted/zone` | welcome to restricted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it
 
 
-Now having application routes we could give it a run for swat.
+Now having application routes we could map them into swat test harness.
 
 
 ## Swat test harness
@@ -66,8 +75,10 @@ mkdir restricted/
 mkdir restricted/zone
 ```
 
-
-Ok, now having routes let's describe an output we expect to get when making requests to routes. The rule is trivial - name your check file as `(get|post|head ...).txt`  and place it in a directory related to http route:
+Ok, now having routes let's describe an output we expect to get when making requests to routes.
+A files containing rules descibing expected output is called swat check files.
+The convention for  naming check file is trivial. File should be named by http method ( get or post or head , etc )
+with .txt extension. You ave to place check files at proper route directories:
 
 ```
 
