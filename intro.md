@@ -59,7 +59,7 @@ A source code of the application could be downloaded here -  [https://github.com
 route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
 GET /           | hello world          | 200 OK        | landing page
-GET /login      | \<form action="/login" method="POST"\> ...           | 200 OK        | html login form
+GET /login      | \<form action="/login" method="POST"\> ...           | 200 OK        | html form for login
 POST /login     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action, required a \`login' and \`password' parameters get passed via POST request. Valid credentials are login=admin , password=123456. After successful authentication server return a "session" cookie.
 GET /restricted/zone | welcome to restricted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it
 
