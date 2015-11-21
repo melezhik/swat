@@ -33,7 +33,7 @@ Thus, the basic entity of swat test harness is a *http request*. Other valid ter
 You may compare this approach with using arbitrary \`*.t' files in an abstract perl test framework. IMHO, speaking in language of http requests
 is more natural then speaking on language of test files when dealing with web application testing.
 
-Swat http requests aka [swat stories](https://github.com/melezhik/swat#bringing-all-together) - could tested re-used as whole unit. Swat support a sequential requests which make it possible to implement complicated test cases.
+Swat http requests aka [swat stories](https://github.com/melezhik/swat#bringing-all-together) - could be executed and|or re-used as whole units. Swat support a sequential requests which make it possible to implement complicated test cases.
 
 Swat tends to be declarative rather than imperative tool. One have to define a set of tested routes and then declare expected output, using
 special [DSL](https://github.com/melezhik/outthentic-dsl).
@@ -42,9 +42,9 @@ This intentionally strict model results in more neat and simple test structure. 
 you may send a request to. This approach might be uncomfortable to go with at the beginning, but eventually results in
 many benefits.
 
-Although it does meat swat is not agile, one may extend swat test scenarios regular perl code and start doing things in classic imperative way.
+Although it does not mean swat is not agile, one may extend swat test scenarios regular perl code and start doing things in classic imperative way.
 
-A following example I will try give you more sense what I am talking about in practice meaning.
+A following example I will try to give you more sense what I am talking about in practicle meaning.
 
 So, meet swat - simple (smart) web application testing framework.
 
@@ -52,7 +52,7 @@ So, meet swat - simple (smart) web application testing framework.
 
 This aim of this simple example to show how easy and fast one could use swat to bootstrap test harness for a web application.
 
-The application I use in this example is quite simple, but  hopefully will be enough to show common challenges one face when  writing tests for a web application.  
+The application I use in this example is quite simple, but  hopefully it will be enough to show common challenges one face when  writing tests for a web application.  Like sending data over various http requests, usgin cookies and handling http status codes.
 
 A source code of the application could be downloaded here -  [https://github.com/melezhik/swat/blob/master/stuff/myapp.pl](https://github.com/melezhik/swat/blob/master/stuff/myapp.pl) . This is tiny [mojo](https://metacpan.org/pod/Mojo) application with few http routes:
 
@@ -189,7 +189,7 @@ Result: FAIL
 ```
 
 
-As it expected a login request failed as we did not provide credentials for successful login. Let's change out swat test:
+As expected a login request failed as we did not provide credentials for successful login. Let's change request , adding necessary parameters:
 
 
 ```
@@ -227,7 +227,7 @@ Hurrah! Now its fine. We succeeded.  Some comments here regarding swat.ini file 
 * Swat ini files - are regular bash scripts
 * Generally you may use them to adjust http requests parameters using curl options, as swat relies on curl when making http requests
 * Curl_params variable will be passed to curl
-* Swat provides some useful variables one may utilize - http_method, test_root_dir, etc
+* Swat provides some useful [variables](https://github.com/melezhik/swat#swat-variables) one may utilize - http_method, test_root_dir, etc
 
 
 ## Code reuse
@@ -267,7 +267,7 @@ Result: FAIL
 
 ```
 
-Well, as it expected request to GET /restricted/zone returns 403 status code. The solution is quite obvious - we need to gets logged in before doing this request. Ok, we already have login action successfully tested before, This is POST /login route. But could we reuse it? Definitely!
+Well, as expected request to GET /restricted/zone returns 403 status code. The solution is quite obvious - we need to login _before_ doing this request. Ok, we already have login request successfully tested before, This is POST /login route. But could we reuse it? Definitely!
 
 
 ```
@@ -280,8 +280,7 @@ fi
 
 ```
 
-Adding line with \`swat_module=1' we ask swat to treat route POST /login as _swat module_. In other words now we could call this route before another one:
- 
+Adding line with \`swat_module=1' we ask swat to treat route POST /login as _swat module_. This means that now we could call this route before another one:
  
 ```
 
@@ -297,7 +296,7 @@ run_swat_module( POST => '/login');
 ```
 
 The code above is example of so called swat hook - a code snippet you could define to be running before a route get requested.
-As we said before. We call POST /login before calling main route - GET /restricted/zone , which make it possible to access restricted resource as we already have our session enabled via cookies get received after successful authentication:
+As we said before we call POST /login request before calling main route - GET /restricted/zone , which result in session data stored as cookie and make it possible access restricted resource:
 
 ```
 vagrant@Debian-jessie-amd64-netboot:~/projects/myapp2/swat$ test_file=restricted/zone/00.GET.t swat ./ 127.0.0.1:3000
@@ -354,7 +353,7 @@ Result: PASS
 
 # Conclusion
 
-As you can see a few lines of perl code were dropped here, as most of things have been done without coding at all. Swat is designed to be as simple as possible, yet allowing you bring desired complexity if you really need this - follow [swat](https://github.com/melezhik/swat/) documentation to get more on generators, validators, check expressions and other powerful swat features "borrowed" from [outthentic](https://github.com/melezhik/outthentic-dsl) DSL.
+As you can see only a few lines of perl code have been dropped here and most of things have been done without coding at all. As I already told swat was designed to be as simple as possible, yet allowing you bring desired complexity if you really need this - follow [swat](https://github.com/melezhik/swat/) documentation to get more on generators, validators, check expressions and other powerful swat features "borrowed" from [outthentic](https://github.com/melezhik/outthentic-dsl) DSL.
 
 
 Fun testing with swat!
@@ -363,4 +362,4 @@ Fun testing with swat!
 Alexey Melezhik --  the author of swat.
 
 
-PS. A sample application source code and swat tests mentioned at the article could be found here - [https://github.com/melezhik/swat/tree/master/stuff](https://github.com/melezhik/swat/tree/master/stuff)
+PS. A sample web application source code and swat tests mentioned at the article could be found here - [https://github.com/melezhik/swat/tree/master/stuff](https://github.com/melezhik/swat/tree/master/stuff)
