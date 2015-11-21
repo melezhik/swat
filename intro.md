@@ -12,27 +12,28 @@ As rough prototype think about this command:
 
 Swat is based on the same idea - _Make a request and anaylize given output_.
 
-# Swat VS unit tests
+# Request oriented design
 
-To say it clear swat is not instead of unit tests at all. There are a lot of well known unit tests frameworks for a existed web applications, frameworks  - Plack::Test, Test::Mojo, Dancer::Test, Catalyst::Test, Kelp::Test, etc. and all of them are cool, really. But unit tests by it's nature have some limitations, here I try to point one vital matter relating to our subject:
+Swat tries to do the things as simple as possible. It means it tries to behave like web client issuing http requests and analizing the output.
 
-* unit tests are heavily coupled with distribution and source code
+Nothing more. I dare to say this enough for most of cases.
+
+Making requests swat does not try to interact with web application on UI/browser level as selenuim like system does
+
+Swat operates on lower http level using curl.
+
+
+From other hand swat test code is not just an imperative code like with many classic unit test system, Swat tends to be more declarative,
+
+yet allowing bring desired imperativity to your code.   
+
+This intentional strict model result in more neat and simple test structure. You always look at web applicaion like a set of routes
+you may send a request.   
+
+So the basic entity of swat tests is http request, could tested re-used as whole unit.
+
+This approach might be uncomfotable to go with at the begining, but eventually one could see the benefits of it.
  
- 
-This makes it difficuilt to run unit tests against already running application. And there is real reason for it - ( usually ) unit tests are fired _during_ installaton process:
-
-``` 
-  make
-  make test
-  make install
-```
-No one cares about testing application once deploy is happened ( make install step ). Ok. This is fine for testing classes and objects but if consider integration testing this is not obviously enough. 
-
-To continue this idea - unit tests are coupled with application source code, but decoupling testing logic from application sometimes is required.
-
-I know there are props and cons of doing this. But sometimes one don't even have an access to application source code or application could be written on programming language differ from your own native one. 
-
-After all I hav is running application needs to be tested. With swat it's not a problem, as swat tests code base is always decoupled from the application source code and treat application as black box.
 
 Ok, this is enough of theory :-) , let me show your some practice.
 
