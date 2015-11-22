@@ -42,7 +42,7 @@ IMHO when dealing with web application test speaking in language of http request
 is more natural then speaking on language of test files 
 
 Swat http requests aka [swat stories](https://github.com/melezhik/swat#bringing-all-together) 
-could be executed, tested and|or re-used as whole units. 
+could be executed, tested and reused as whole units. 
 
 Swat support a sequential requests which make it possible to implement complicated test cases.
 
