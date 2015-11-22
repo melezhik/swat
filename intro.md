@@ -1,8 +1,13 @@
 # Doing testing in swat way
 
-Web application testing might be tedious, but we still need it. In this informal article I will try to introduce you a swat - simple web application test framework as an attempt to reduce test development complexity and speed up test development process.
+Web application testing might be tedious, but we still need it. 
+In this informal article I will try to introduce you a swat - simple web application test framework 
+as an attempt to reduce test development complexity and speed up test development process.
 
-The idea behind swat is quite simple. Instead of going with unit tests and interact with your application in internal level one should look at application like at black box. All we could with it - is to send some http requests and analyze an output.
+The idea behind swat is quite simple. Web application is considered as a black box.
+No knowledge about internal structure. No web application internally launched as part of your tests.
+No spoofing and mock up at all. No objects and methods coupled with application API. No API at all.
+No. It's just a black box all you could with is to send some http requests and analyze the output.
 
 As rough prototype think about this command:
 
@@ -19,42 +24,54 @@ Swat tries to do the things as simple as possible.
 It means swat tries to behave as web client making http requests and analyzing the output. Nothing more.
 I dare to say this could be enough for most of cases.
 
-When making requests swat does not try to interact with web application on UI/browser level like some other test systems do.
-Instead swat operates on lower http level using curl. It's very handy. Every time you have your test failed you always
-face with two types of issues:
+When making requests swat does not try to interact with web application on UI/browser level like some test systems do.
+Instead swat operates on lower http level using [curl](http://curl.haxx.se/). 
+It's very handy. Every time you have your test failed you always face with two types of issues:
 
 * http code is not successful ( not 200 OK )
 * an output does not have an expected value(s)
 
-Practically this means that you can repeat request manually with the usual curl command and then analyze output deeper.
+Practically this means that you can repeat your request manually and analyze an output in more presice way.
  
-Thus, the basic entity of swat test harness is a *http request*. Other valid terms for this are - route, http resource or swat story, this all about the same.
+Thus, the basic entity of swat test harness is a *http request*. Other valid terms for this are - 
+route, http resource or swat story, whatever you call it, it always mean the same - a piece of data send to server
+and the piece of data get back.
 
-You may compare this approach with using arbitrary \`*.t' files in an abstract perl test framework. IMHO, speaking in language of http requests
-is more natural then speaking on language of test files when dealing with web application testing.
+You may compare this approach with using arbitrary \`*.t' files in an abstract perl test framework. 
+IMHO when dealing with web application test speaking in language of http requests 
+is more natural then speaking on language of test files 
 
-Swat http requests aka [swat stories](https://github.com/melezhik/swat#bringing-all-together) - could be executed and|or re-used as whole units. Swat support a sequential requests which make it possible to implement complicated test cases.
+Swat http requests aka [swat stories](https://github.com/melezhik/swat#bringing-all-together) 
+could be executed, tested and|or re-used as whole units. 
 
-Swat tends to be declarative rather than imperative tool. One have to define a set of tested routes and then declare expected output, using
-special [DSL](https://github.com/melezhik/outthentic-dsl).
+Swat support a sequential requests which make it possible to implement complicated test cases.
+
+Swat tends to be declarative rather than imperative tool. One have to define a set of tested routes and then declare expected output, 
+using special [DSL](https://github.com/melezhik/outthentic-dsl).
 
 This intentionally strict model results in more neat and simple test structure. You always look at web application as s set of routes
-you may send a request to. This approach might be uncomfortable to go with at the beginning, but eventually results in
+you may send a request to. This approach might be uncomfortable to go with at the very beginning, but eventually results
 many benefits.
 
-Although it does not mean swat is not agile, one may extend swat test scenarios regular perl code and start doing things in classic imperative way.
+However it does not mean swat is not agile, one may extend swat test scenarios with regular perl code 
+and start doing things in classic imperative way.
 
 A following example I will try to give you more sense what I am talking about in practicle meaning.
 
-So, meet swat - simple (smart) web application testing framework.
+So, meet the swat - simple (smart) web application testing framework.
 
 # Hello world example
 
-This aim of this simple example to show how easy and fast one could use swat to bootstrap test harness for a web application.
+In a following example I will try to prove that I am talking about. Let's see how easy and fast 
+one could bootstrap test harness for a web application using swat.
 
-The application I use in this example is quite simple, but  hopefully it will be enough to show common challenges one face when  writing tests for a web application.  Like sending data over various http requests, usgin cookies and handling http status codes.
+The application I use in this example is quite simple, but  hopefully it will be enough 
+to show common tasks need to be solved by every one writing web application test - 
+like sending data over various http requests, using cookies and handling http status codes.
 
-A source code of the application could be downloaded here -  [https://github.com/melezhik/swat/blob/master/stuff/myapp.pl](https://github.com/melezhik/swat/blob/master/stuff/myapp.pl) . This is tiny [mojo](https://metacpan.org/pod/Mojo) application with few http routes:
+A source code of the application could be downloaded here - [https://github.com/melezhik/swat/blob/master/stuff/myapp.pl](https://github.com/melezhik/swat/blob/master/stuff/myapp.pl) . 
+
+This is tiny [mojo](https://metacpan.org/pod/Mojo) application with few http routes:
 
 route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
@@ -64,24 +81,26 @@ POST /login     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | logi
 GET /restricted/zone | welcome to restricted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it
 
 
-Now having application routes we could map them into swat test harness.
-
+Now having our application routes described we could map them into swat test harness.
 
 ## Swat test harness
 
-First of all let's create a http routes. Doing things in swat way - routes are just a directories:
+First of all let's create a http routes. Doing things in a swat way - routes are just a directories:
 
 
 ```
-# no need to create directory for '/' route
+# no need to create directory for '/' route as this one is CWD 
 mkdir login
 mkdir restricted/
 mkdir restricted/zone
 ```
 
 Ok, now having routes let's describe an output we expect to get when making requests to routes.
-A files containing rules describing expected output is called swat check files.
-The convention for  naming check file is trivial. File should be named by http method ( get or post or head , etc )
+A files containing rules for describing desired output is called swat check files. These are just regular text files
+containing expessions written on outthentic DSL language. To not overcomplicate this paper this is going to be
+a simple check expression, though outthentic DSL has more powerful constructins to validate any text output.
+
+The convention for  naming check file is trivial. File should be named by http method name ( get, post, delete, head  etc. )
 with .txt extension. You have to place check files at proper route directories:
 
 ```
@@ -99,7 +118,9 @@ echo 200 OK > restricted/zone/get.txt # this one for GET /restricted/zone
 echo welcome to restricted area >> restricted/zone/get.txt
 ```
 
-No need explain more so far, as swat is pretty simple and intuitive in this way. Let's run our first swat tests assuring an application runs on 127.0.0.1:3000
+No need explain more so far, as swat is pretty simple and intuitive in this way. 
+
+Let's run our first swat tests assuming tha application runs on 127.0.0.1:3000
 
 
 ```
@@ -129,8 +150,11 @@ Result: FAIL
 
 ```
 
-This results are quite predictable. First two routes succeeded - GET / and GET /login , another two routes failed - POST /login and GET /restricted/area. To not overwhelm this post with too many logs I run swat in \`quite' mode ( using `-q` options for prove which internally swat relies upon ), to see detailed output ( which is by default ) one may run swat as is without any options:
+This results are quite predictable. First two routes succeeded - GET / and GET /login , 
+another two ones failed - POST /login and GET /restricted/area. 
 
+Running swat in \`quite' mode ( using `-q` options for prove which internally swat relies upon )
+provides not many useful information, to get more detailed output run without any options:
 
 
 ```
@@ -149,8 +173,10 @@ ok
 
 ```
 
-Now let's see what happening with unsuccessful routes and try to determine reason they fail.
-Let's start with POST /login route. To run a single route we will utilize a test_file variable ( the value of test_file - login/00.POST.t is quite confusing, I am going to change this in the next versions of swat ):
+As I already told in the begining swat - is request oriented tool. The best way to start wrtting your tests
+is to focus only at one request per time. Let's run a single route using test_file variable. Let's start with
+the POST /login route ( the value of test_file - login/00.POST.t is quite confusing, I am going to change this in next versions )
+):
 
 
 ```
@@ -188,8 +214,8 @@ Files=1, Tests=3,  1 wallclock secs ( 0.02 usr  0.00 sys +  0.05 cusr  0.00 csys
 Result: FAIL
 ```
 
-
-As expected a login request failed as we did not provide credentials for successful login. Let's change request , adding necessary parameters:
+Now we've got the point - we did not provide credentials for successful login. 
+Ok, let's change request, adding necessary parameters for POST /login:
 
 
 ```
@@ -200,7 +226,10 @@ if test "${http_method}" = 'POST'; then
 fi
 
 ```
-Here we ask swat to do a couple of things. First to pass via POST /login request valid credentials , and then store a cookie returned by server into a local file in the directory where swat tests runs ( As we said before after successful authentication server return a "session" cookie ).
+Here we ask swat to do a couple of things. 
+Firstly we pass valid credentials via POST /login request, and secondly 
+store a cookie returned by server into a local file in the directory where swat tests runs.
+( After successful authentication server return a "session" cookie ).
 
 Ok let's re-run our last test:
 
@@ -222,17 +251,20 @@ vagrant@Debian-jessie-amd64-netboot:~/projects/myapp2/swat$
 
 ```
 
-Hurrah! Now its fine. We succeeded.  Some comments here regarding swat.ini file we just have used.
+Hurrah! We succeeded.  Some comments here regarding swat.ini file we have just used:
 
 * Swat ini files - are regular bash scripts
-* Generally you may use them to adjust http requests parameters using curl options, as swat relies on curl when making http requests
-* Curl_params variable will be passed to curl
-* Swat provides some useful [variables](https://github.com/melezhik/swat#swat-variables) one may utilize - http_method, test_root_dir, etc
+* Generally one define here additional http requests parameters ( curl_params variable )
+* Swat uses curl to make http requests
+* Swat provides some useful [variables](https://github.com/melezhik/swat#swat-variables) one may utilize 
+in swat.ini bash scripts f.e. http_method, test_root_dir, etc.
 
 
 ## Code reuse
 
-Ok. Lets go for another route recently failed is GET /restricted/zone. Let's re-run it on verbose mode:
+Ok. Lets go for another route got failed in first swat run. This is GET /restricted/zone. 
+
+Let's re-run it to analyze an output:
 
 
 ```
@@ -267,7 +299,9 @@ Result: FAIL
 
 ```
 
-Well, as expected request to GET /restricted/zone returns 403 status code. The solution is quite obvious - we need to login _before_ doing this request. Ok, we already have login request successfully tested before, This is POST /login route. But could we reuse it? Definitely!
+Well, the reason of failure is we are  unauthorized to access restricted/zone resource.
+The solution is quite obvious - we need to login _before_ doing this request. 
+Wait, ... we already have login request successfully tested before, could we just reuse it? Definitely!
 
 
 ```
@@ -280,13 +314,17 @@ fi
 
 ```
 
-Adding line with \`swat_module=1' we ask swat to treat route POST /login as _swat module_. This means that now we could call this route before another one:
+Adding line with \`swat_module=1' we ask swat to treat route POST /login as _swat module_. 
+This means that now we could call this route inside ( or before) another route.
+Like before GET /restricted/zone we need to POST to /login with valid credentials and have our session cookie:
+
+
  
 ```
 
 $ nano restricted/zone/swat.ini
 
-curl_params="-b $test_root_dir/cookie.txt" # we need provide a valid session via cookies
+curl_params="-b $test_root_dir/cookie.txt" # we need provide a valid session via cookie
                                            # get created by POST /login action
 
 $ nano restricted/zone/hook.pm
@@ -295,8 +333,12 @@ run_swat_module( POST => '/login');
 
 ```
 
-The code above is example of so called swat hook - a code snippet you could define to be running before a route get requested.
-As we said before we call POST /login request before calling main route - GET /restricted/zone , which result in session data stored as cookie and make it possible access restricted resource:
+Hook.pm file is so called [swat hook](https://github.com/melezhik/swat#hooks) - a code snippet 
+you could be running before a route get requested. Swat provides hooks API defining what methods you may invoke from here.
+run_swat_module - is function which call another swat module ( in this test we need to call POST login/ route ).
+
+Ok, we are ready to run our test again:
+
 
 ```
 vagrant@Debian-jessie-amd64-netboot:~/projects/myapp2/swat$ test_file=restricted/zone/00.GET.t swat ./ 127.0.0.1:3000
@@ -316,7 +358,9 @@ Files=1, Tests=6,  0 wallclock secs ( 0.02 usr  0.01 sys +  0.06 cusr  0.00 csys
 Result: PASS
 ```
 
-Excelent, now request for restricted zone succeeded!  Finally let's run all the tests again and make it sure they all passes:
+Excelent, now request for restricted zone succeeded!  
+
+Finally let's run all the tests again and make it sure they all passes:
 
 ```
 $ swat ./ 127.0.0.1:3000
@@ -350,14 +394,28 @@ Files=3, Tests=12,  0 wallclock secs ( 0.03 usr  0.00 sys +  0.15 cusr  0.01 csy
 Result: PASS
 ```
 
+Ok, our job is done. Now we could this test suite as part of continue intergation pipeline using travis or jenkins.
+Well this is beyond of our topic ;-) ...
 
 # Conclusion
 
-As you can see only a few lines of perl code have been dropped here and most of things have been done without coding at all. As I already told swat was designed to be as simple as possible, yet allowing you bring desired complexity if you really need this - follow [swat](https://github.com/melezhik/swat/) documentation to get more on hooks api, response spoofing, generators, validators, check expressions and other swat features.
+As you can see only with only a few lines of perl code have been dropped we tested a 4 routes. 
+It generaly took a 5-10 minutes. At the end we have a clean and simple test stucture.
+
+Of course swat is not fully covered in this article, there more things of interest, all of this could be found
+in the [documenation](https://github.com/melezhik/swat/) - 
+hooks api, response spoofing, generators, validators, check expressions and other swat features.
+
+# Swat examples list
+
+Here is list of example swat test projects, some of projects are obsolete some are actual.
+Let me know if you are interested in web test automation using swat and I will get back to you kindly!
+
 
 
 I wish you fun and easy testing with swat!
 
 -- Alexey Melezhik, the author of swat.
 
-PS. A sample web application source code and swat tests used at this article could be found here - [https://github.com/melezhik/swat/tree/master/stuff](https://github.com/melezhik/swat/tree/master/stuff)
+PS. A sample web application source code and swat tests used in this article 
+could be found here - [https://github.com/melezhik/swat/tree/master/stuff](https://github.com/melezhik/swat/tree/master/stuff)
