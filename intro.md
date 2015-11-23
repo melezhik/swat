@@ -413,7 +413,7 @@ Let me know if you are interested in web test automation using swat and I will g
 
 project           | description                                       | comment 
 ------------------|---------------------------------------------------|-------------------------------------------------------------
-[swat for metacpan api](https://github.com/CPAN-API/metacpan-monitoring) | Metacpan monitoring with swat | 
+[swat for metacpan api](https://github.com/CPAN-API/metacpan-monitoring) | metacpan monitoring with swat | 
 [swat for yars](https://github.com/melezhik/swat-yars) | swat black box testing for yars restapi - rest archive server | 
 [swat for docsis config file editor](https://github.com/melezhik/swat-app-docsisious) | swat black box tests for docsis config file editor ( App::docsisious ) | 
 [swat for dancer2](https://github.com/melezhik/swat-examples/tree/master/dancer) | swat test suite for Dancer2 framework |
