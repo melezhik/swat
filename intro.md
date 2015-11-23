@@ -1,4 +1,4 @@
-# Doing testing in swat way
+# Doing testing in a swat way
 
 Web application testing might be tedious, but we still need it.
 In this informal article I will try to introduce you a swat - simple web application test framework
