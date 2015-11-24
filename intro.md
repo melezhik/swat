@@ -58,22 +58,15 @@ many benefits.
 However it does not mean swat is not agile, one may extend swat test scenarios with regular perl code
 and start doing things in classic imperative way.
 
-A following example I will try to give you more sense what I am talking about in practical meaning.
+In the following example I will try to discover in more practical details what I am talking about.
 
 So, meet the swat - simple (smart) web application testing framework.
 
 # Hello world example
 
-In a following example I will try to prove that I am talking about. Let's see how easy and fast
-one could bootstrap test harness for a web application using swat.
+Using a simple web application let's see how easy and fast one could bootstrap web test harness for it.
 
-The application I use in this example is quite simple, but  hopefully it will be enough
-to show common tasks need to be solved by every one writing web application test -
-like sending data over various http requests, using cookies and handling http status codes.
-
-A source code of the application could be downloaded here - [https://github.com/melezhik/swat/blob/master/stuff/myapp.pl](https://github.com/melezhik/swat/blob/master/stuff/myapp.pl) .
-
-This is tiny [mojo](https://metacpan.org/pod/Mojo) application with few http routes:
+The application used in this example is a tiny [mojo](https://metacpan.org/pod/Mojo) application with a few http routes:
 
 route             | returned content     | status code   | route description
 ------------------|----------------------|---------------|--------------------
@@ -82,6 +75,11 @@ GET /login      | \<form action="/login" method="POST"\> ...           | 200 OK 
 POST /login     | LOGIN OK \| BAD LOGIN      | 200 OK \| 401 Unauthorized | login action, required a \`login' and \`password' parameters get passed via POST request. Valid credentials are login=admin , password=123456. After successful authentication server return a "session" cookie.
 GET /restricted/zone | welcome to restricted area          | 200 OK  \| 403 Forbidden      | this is restricted resource, only authenticated users have access for it
 
+Having such an appliation should be enough to show some common tasks appearing when writing web application tests:
+
+* sending data over various http requests
+* using cookies 
+* handling http status codes.
 
 Now having our application routes described we could map them into swat test harness.
 
