@@ -62,7 +62,7 @@ sub make_http_request {
 
         $curl_cmd.=' -f'  unless ignore_http_err();
 
-        my $st = execute_with_retry("$curl_cmd -i -o $content_file '$hostname$resource' && test -f $content_file", get_prop('try_num'));
+        my $st = execute_with_retry("$curl_cmd -s -i -o $content_file '$hostname$resource' && test -f $content_file", get_prop('try_num'));
 
         if ($st) {
             ok(1, "$http_method $hostname$resource succeeded");
