@@ -508,7 +508,7 @@ For example:
 
 =item *
 
-C<ignore_http_err> - do not consider curl unsuccessful exit code as error
+C<ignore_http_err> - run curl with or without `-f' flag
 
 =over
 

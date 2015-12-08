@@ -335,7 +335,7 @@ For example:
         skip_story=1 # we don't want this one for production
     fi
 
-* `ignore_http_err` - do not consider curl unsuccessful exit code as error
+* `ignore_http_err` - run curl with or without \`-f' flag
 
     * swat runs curl command and then checks exit code returned
     * if not successful exit code returns a proper swat assert fails
