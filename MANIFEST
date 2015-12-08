@@ -1,3 +1,4 @@
+backlog.md
 bin/swat
 Changes
 examples/anatomy/FOO/BARs/hook.pm
@@ -40,6 +41,7 @@ inc/Module/Install/Metadata.pm
 inc/Module/Install/Scripts.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
+intro.md
 lib/swat.pm
 lib/swat/story.pm
 Makefile.PL

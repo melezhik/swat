@@ -339,12 +339,12 @@ For example:
 
     * swat runs curl command and then checks exit code returned
     * if not successful exit code returns a proper swat assert fails
-    * by default ignore_http_err is set to 0 which make curl run with \`-f' flag, for not successful http responses ( bad http status code )
+    * by default ignore\_http\_err is set to 0 which make curl run with \`-f' flag, for not successful http responses ( bad http status code )
       this means error on swat side ( see previous point )
-    * settings ignore_http_err to \`1' make curl run curl without \`-f' flag which result in even non successful http responses are not treated as errors 
+    * settings ignore\_http\_err to \`1' make curl run curl without \`-f' flag which result in even non successful http responses are not treated as errors 
     ( a proper swat assert does not fail )
 
-* `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings]("#prove-settings") section.
+* `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings](swat#prove-settings) section.
 
 * `debug` - enable swat debugging
 
