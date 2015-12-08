@@ -149,7 +149,7 @@ for f in `$find_cmd`; do
 
     curl_cmd="curl -X $http_method"
 
-    curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -D - -L --stderr -"
+    curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -L"
 
     if [ -n "${curl_params}" ]; then
        curl_cmd="$curl_cmd ${curl_params}"
