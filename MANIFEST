@@ -17,6 +17,9 @@ examples/hooks/lib/Foo.pm
 examples/hooks/posts/hook.pm
 examples/hooks/posts/post.txt
 examples/hooks/posts/swat.ini
+examples/ignore-http-err/foo/get.txt
+examples/ignore-http-err/foo/swat.ini
+examples/ignore-http-err/host
 examples/multilines/host
 examples/multilines/posts/post.txt
 examples/multilines/posts/swat.ini
