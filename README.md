@@ -344,7 +344,7 @@ For example:
     * settings ignore\_http\_err to \`1' make curl run curl without \`-f' flag which result in even non successful http responses are not treated as errors 
     ( a proper swat assert does not fail )
 
-* `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings](swat#prove-settings) section.
+* `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings](#prove-settings) section.
 
 * `debug` - enable swat debugging
 

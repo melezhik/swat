@@ -678,13 +678,13 @@ if not successful exit code returns a proper swat assert fails
 
 =item *
 
-by default ignoreI<http>err is set to 0 which make curl run with `-f' flag, for not successful http responses ( bad http status code )
+by default ignore_http_err is set to 0 which make curl run with `-f' flag, for not successful http responses ( bad http status code )
   this means error on swat side ( see previous point )
 
 
 =item *
 
-settings ignoreI<http>err to `1' make curl run curl without `-f' flag which result in even non successful http responses are not treated as errors 
+settings ignore_http_err to `1' make curl run curl without `-f' flag which result in even non successful http responses are not treated as errors 
 ( a proper swat assert does not fail )
 
 
@@ -694,7 +694,7 @@ settings ignoreI<http>err to `1' make curl run curl without `-f' flag which resu
 
 =item *
 
-C<prove_options> - prove options to be passed to prove runner,  default value is `-v`. See [Prove settings]("#prove-settings") section.
+C<prove_options> - prove options to be passed to prove runner,  default value is `-v`. See [Prove settings](#prove-settings) section.
 
 
 
