@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.69';
+our $VERSION = '0.1.70';
 
 use base 'Exporter'; 
 
@@ -62,18 +62,39 @@ sub make_http_request {
 
         $curl_cmd.=' -f'  unless ignore_http_err();
 
-        my $st = execute_with_retry("$curl_cmd -s -i -o $content_file '$hostname$resource' && test -f $content_file", get_prop('try_num'));
+        my $curl_runner = "$curl_cmd  -i -o $content_file --stderr $content_file.stderr '$hostname$resource'";
+
+        my $st = execute_with_retry("$curl_runner && test -f $content_file", get_prop('try_num'));
 
         if ($st) {
+
             ok(1, "$http_method $hostname$resource succeeded");
+
         }elsif(ignore_http_err()){
+
             ok(1, "$http_method $hostname$resource failed, still continue due to ignore_http_err set to 1");
+
         }else{
+
             ok(0, "$http_method $hostname$resource succeeded");
-            open CNT, $content_file or die $!;
-            my $rdata = join "", <CNT>;
-            close CNT;
-            diag("$curl_cmd $hostname$resource\n===>\n$rdata");
+
+            diag($curl_runner);
+
+            open CURL_ERR, "$content_file.stderr" or die $!;
+            while  ( my $i = <CURL_ERR>){
+                chomp $i;
+                diag($i);
+            }
+            close CURL_ERR;
+
+            open CURL_OUT, "$content_file" or die $!;
+            while  ( my $i = <CURL_OUT>){
+                chomp $i;
+                diag($i);
+            }
+            close CURL_OUT;
+
+
         }
 
         diag "response saved to $content_file";
