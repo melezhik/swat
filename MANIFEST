@@ -55,4 +55,3 @@ run_examples.bash
 t/data/test.db
 t/data/test.sql
 t/swat.t
-todo.list.md

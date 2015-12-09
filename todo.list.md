@@ -1,2 +1,0 @@
-- swat_output_off - disable output, even when run with debug set to 1; f.e. when handle binary responses
-- debug=1 should implicitly adds `-v` to prove options?
