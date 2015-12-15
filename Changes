@@ -1,4 +1,4 @@
-# 0.1.71
+# 0.1.71 2015-12-15
 
 * unsuccessfull http status codes now result in immediate exit(1) and proper diag message.
 * fix pod issue ( added =pod marker in the begining of pod) - thanks to [alaska332](http://habrahabr.ru/users/alaska332/)
