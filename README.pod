@@ -1,6 +1,11 @@
 =encoding utf8
 
 
+=head1 NAME
+
+Swat
+
+
 =head1 SYNOPSIS
 
 Web automated testing framework.

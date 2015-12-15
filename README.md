@@ -1,3 +1,7 @@
+# NAME
+
+Swat
+
 # SYNOPSIS
 
 Web automated testing framework.

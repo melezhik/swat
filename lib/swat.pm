@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.70';
+our $VERSION = '0.1.71';
 
 use base 'Exporter'; 
 
@@ -93,8 +93,8 @@ sub make_http_request {
                 diag($i);
             }
             close CURL_OUT;
-
-
+            diag("can't continue here due to unsuccessfull http status code");
+            exit(1);
         }
 
         diag "response saved to $content_file";
@@ -175,7 +175,15 @@ sub generate_asserts {
 
 __END__
 
+=pod
+
+
 =encoding utf8
+
+
+=head1 NAME
+
+Swat
 
 
 =head1 SYNOPSIS
