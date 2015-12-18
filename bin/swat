@@ -76,8 +76,8 @@ if [ -n "${curl_connect_timeout}" ]; then
 fi
 
 
-if [ -n "${swat_module}" ]; then
-    echo "swat_module=$swat_module" >> $session_file
+if [ -n "${swat_purge_cache}" ]; then
+    echo "swat_purge_cache=$swat_purge_cache" >> $session_file
 fi
 
 
@@ -104,6 +104,7 @@ for f in `$find_cmd`; do
     unset ignore_http_err
     unset match_l
     unset skip_story
+    unset swat_purge_cache
 
     http_method=`perl -e '$p=$ARGV[0]; $p=~/(\w+)\.txt$/ and print uc($1)' $f`;
 
@@ -124,6 +125,7 @@ for f in `$find_cmd`; do
     ignore_http_err=${ignore_http_err:=0}
     match_l=${match_l:=40}
     skip_story=${skip_story:=0}
+    swat_purge_cache=${swat_purge_cache:=0}
 
     if test "$skip_story" -eq 1; then
         continue

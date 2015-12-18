@@ -1,3 +1,8 @@
+# 0.1.72
+
+* swat_purge_cache could be set in different contexts ( env var, swat.ini )
+
+
 # 0.1.71 2015-12-15
 
 * unsuccessfull http status codes now result in immediate exit(1) and proper diag message.
