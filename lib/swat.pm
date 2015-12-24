@@ -62,17 +62,19 @@ sub make_http_request {
 
         $curl_cmd.=' -f'  unless ignore_http_err();
 
-        my $curl_runner = "$curl_cmd  -i -o $content_file --stderr $content_file.stderr '$hostname$resource'";
+        my $curl_runner = "$curl_cmd -i -o $content_file --stderr $content_file.stderr '$hostname$resource'";
 
         my $st = execute_with_retry("$curl_runner && test -f $content_file", get_prop('try_num'));
 
         if ($st) {
 
             ok(1, "$http_method $hostname$resource succeeded");
+            diag($curl_runner) if debug_mod12();
 
         }elsif(ignore_http_err()){
 
             ok(1, "$http_method $hostname$resource failed, still continue due to ignore_http_err set to 1");
+            diag($curl_runner) if debug_mod12();
 
         }else{
 
