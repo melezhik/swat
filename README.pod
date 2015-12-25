@@ -170,7 +170,9 @@ Here is the list of I<predefined> file names for a http methods files:
 
 =head1 Hostname / IP Address
 
-You need to define hostname or ip address to send request to. Just write it up to a special file  called `host' and swat will use it.
+You need to define hostname or ip address to send request to. 
+
+Just write it up to a special file  called `host' and swat will use it.
 
     echo 'app.local' > host
 
@@ -1130,7 +1132,9 @@ Here is example for converting swat tests into JUNIT format:
 
 =head1 Prove settings
 
-Swat utilize L<prove utility|http://search.cpan.org/perldoc?prove> to run tests, all prove related parameters are passed as is to prove.
+Swat utilize L<prove utility|http://search.cpan.org/perldoc?prove> to run tests, 
+all prove related parameters could be passed via `--prove' option to prove runner.
+
 Here are some examples:
 
     swat --prove -Q # don't show anythings unless test summary
@@ -1168,20 +1172,60 @@ Default value is `0' ( do not clear cache ).
 
 Once swat is installed you get swat client at the `PATH':
 
-    swat <project_root_dir> <host:port> <options>
+    swat [project_root_dir] [host:port] [swat_command_line_options]
 
-List of options:
+All command parameters are optional.
 
 =over
 
 =item *
 
-I<--prove|prove-opts> - see L<Prove Settings|prove-settings>
+B<project_root_dir> - swat project root directory
+
+
+=back
+
+In case you don't set one, swat assume it equal to current working directory. Examples:
+
+    # setup project root directory explicitely
+    swat /foo/bar/baz
+    
+    # project root directory is CWD
+    swat 
+
+=over
+
+=item *
+
+B<host> - basic URL of tested application, should be in curl compatible format
+
+
+=back
+
+In case host parameter is missing , swat tries to read it up from `host' file. Examples:
+
+    # setup host explicitely
+    swat /foo/bar/baz 127.0.0.1
+    
+    # host entry gets read from CWD/host file 
+    swat /foo/bar/baz
+     
+    # project root directory is CWD
+    # host entry gets read from CWD/host file 
+    swat
+
+List of swat command line options:
+
+=over
+
+=item *
+
+B<--prove|prove-opts> - see L<prove settings|prove-settings>
 
 
 =item *
 
-I<-t|--test> (could me many) - run subset of swat stories
+B<-t|--test> (could me many) - run subset of swat stories
 
 
 =back

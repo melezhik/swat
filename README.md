@@ -91,7 +91,9 @@ Here is the list of _predefined_ file names for a http methods files:
 
 # Hostname / IP Address
 
-You need to define hostname or ip address to send request to. Just write it up to a special file  called \`host' and swat will use it.
+You need to define hostname or ip address to send request to. 
+
+Just write it up to a special file  called \`host' and swat will use it.
 
     echo 'app.local' > host
 
@@ -687,7 +689,9 @@ Here is example for converting swat tests into JUNIT format:
 
 # Prove settings
 
-Swat utilize [prove utility](http://search.cpan.org/perldoc?prove) to run tests, all prove related parameters are passed as is to prove.
+Swat utilize [prove utility](http://search.cpan.org/perldoc?prove) to run tests, 
+all prove related parameters could be passed via \`--prove' option to prove runner.
+
 Here are some examples:
 
     swat --prove -Q # don't show anythings unless test summary
@@ -704,12 +708,38 @@ Here are some examples:
 
 Once swat is installed you get swat client at the \`PATH':
 
-    swat <project_root_dir> <host:port> <options>
+    swat [project_root_dir] [host:port] [swat_command_line_options]
 
-List of options:
+All command parameters are optional.
 
-* *--prove|prove-opts* - see [Prove Settings](prove-settings)
-* *-t|--test* (could me many) - run subset of swat stories
+* **project\_root\_dir** - swat project root directory
+
+In case you don't set one, swat assume it equal to current working directory. Examples:
+
+    # setup project root directory explicitely
+    swat /foo/bar/baz
+
+    # project root directory is CWD
+    swat 
+
+* **host** - basic URL of tested application, should be in curl compatible format
+
+In case host parameter is missing , swat tries to read it up from \`host' file. Examples:
+
+    # setup host explicitely
+    swat /foo/bar/baz 127.0.0.1
+
+    # host entry gets read from CWD/host file 
+    swat /foo/bar/baz
+ 
+    # project root directory is CWD
+    # host entry gets read from CWD/host file 
+    swat
+
+List of swat command line options:
+
+* **--prove|prove-opts** - see [prove settings](prove-settings)
+* **-t|--test** (could me many) - run subset of swat stories
 
 Use \`-t' options to execute a subset of swat stories:
 
@@ -718,12 +748,11 @@ Use \`-t' options to execute a subset of swat stories:
 
 * \`-t' option should point to a resource(s) path and be relative to the project root directory 
 * \`-t' option should not contain extension part - \`.txt'
-*  it is possible to use more than one \`t' options
+* it is possible to use more than one \`t' options
 
 For example:
 
     -t FOO/BAR -t BAR -t FOO/BAZ  
-
 
 # Examples
 
