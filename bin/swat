@@ -34,6 +34,10 @@ esac
 shift # past argument or value
 done
 
+project=${project:=$PWD}
+project=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project`
+safe_project=project
+
 if [ -n "${host}" ]; then
     :
 elif test -f $project/host; then
@@ -43,9 +47,6 @@ else
     exit 1;
 fi
 
-project=${project:=`cwd`}
-project=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project`
-safe_project=project
 
 session_file=$cache_dir/session.ini
 bash_hook_lock_file=$cache_dir/bash.hook.lock
