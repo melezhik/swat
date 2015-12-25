@@ -2,32 +2,51 @@
 
 swat_ini_file='swat.ini'
 
-if test -n "${1}"  && test -d "${1}" ; then
-    project=$1;
-    shift;
+cache_dir=~/.swat/.cache/$$
+rm -rf $cache_dir
+mkdir -p $cache_dir
+
+test_root_dir=$cache_dir/prove
+rm -rf $test_root_dir
+mkdir -p $test_root_dir
+
+while [[ $# > 0 ]]
+do
+key="$1"
+
+case $key in
+    -t|--test)
+    path="$path $test_root_dir/$2 "
+    shift
+    ;;
+    --prove|--prove-opts)
+    prove_opts="$prove_opts $2"
+    shift
+    ;;
+    *)
+    if test -n "${project}"; then
+        host=$1
+    else
+        project=$1
+    fi
+    ;;
+esac
+shift # past argument or value
+done
+
+if [ -n "${host}" ]; then
+    :
+elif test -f $project/host; then
+    host=`cat $project/host`;
 else
-    project=`pwd`
+    echo "usage: swat project HOST:port options";
+    exit 1;
 fi
 
+project=${project:=`cwd`}
 project=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project`
 safe_project=project
 
-if test -n "${1}"; then
-    host=$1
-    shift;
-elif test -f $project/host; then
-    host=`cat $project/host`
-else
-    echo "usage: swat project HOST:port prove-options"
-    exit 1
-fi
-
-rest_args=$@
-
-cache_dir=~/.swat/.cache/$$
-
-rm -rf $cache_dir
-mkdir -p $cache_dir
 session_file=$cache_dir/session.ini
 bash_hook_lock_file=$cache_dir/bash.hook.lock
 
@@ -81,9 +100,6 @@ if [ -n "${swat_purge_cache}" ]; then
 fi
 
 
-test_root_dir=$cache_dir/prove
-rm -rf $test_root_dir
-mkdir -p $test_root_dir
 
 tt=1
 
@@ -239,23 +255,23 @@ done;
 
 test -f ~/$swat_ini_file && source ~/$swat_ini_file
 test -f 'swat.my' && source 'swat.my'
-
 source $session_file
 
 export port
 
-if [ -z "${rest_args}" ] && [ -n "${prove_options}" ]; then
-    rest_args=("$prove_options")
-    prove -m -r $rest_args  "$test_root_dir/$test_file";
+path=${path:=$test_root_dir}
+
+
+if [ -z "${prove_opts}" ] && [ -n "${prove_options}" ]; then
+    prove -m -r $path $prove_options;
     exit_code=$?
-elif [ -n "${rest_args}"  ]; then
-    prove -m -r  $rest_args "$test_root_dir/$test_file";
+elif [ -n "${prove_opts}"  ]; then
+    prove -m -r $path $prove_opts;
     exit_code=$?
 else
-    prove -m -r -v "$test_root_dir/$test_file";
+    prove -m -r -v $path;
     exit_code=$?
 fi
-
 
 swat_purge_cache=${swat_purge_cache:=0}
 
