@@ -291,16 +291,6 @@ POST FOO/BAR
 
 =back
 
-Use `test_file' variable to execute a subset of swat stories:
-
-    # run a single story
-    test_file=FOO/get swat example/my-app 127.0.0.1
-    
-    # run all `FOO/*' stories:
-    test_file=FOO/ swat example/my-app 127.0.0.1
-
-Test_file variable should point to a resource(s) path and be relative to project root dir, also it should not contain extension part - `.txt'
-
 
 =head1 Swat check lists
 
@@ -1135,7 +1125,7 @@ another test / reporting systems, follow TAP documentation to get more on this.
 
 Here is example for converting swat tests into JUNIT format:
 
-    swat --formatter TAP::Formatter::JUnit
+    swat --prove '--formatter TAP::Formatter::JUnit'
 
 
 =head1 Prove settings
@@ -1143,8 +1133,8 @@ Here is example for converting swat tests into JUNIT format:
 Swat utilize L<prove utility|http://search.cpan.org/perldoc?prove> to run tests, all prove related parameters are passed as is to prove.
 Here are some examples:
 
-    swat -Q # don't show anythings unless test summary
-    swat -q -s # run prove tests in random and quite mode
+    swat --prove -Q # don't show anythings unless test summary
+    swat --prove '-q -s' # run prove tests in random and quite mode
 
 
 =head1 Misc settings
@@ -1178,7 +1168,51 @@ Default value is `0' ( do not clear cache ).
 
 Once swat is installed you get swat client at the `PATH':
 
-    swat <project_root_dir> <host:port> <prove settings>
+    swat <project_root_dir> <host:port> <options>
+
+List of options:
+
+=over
+
+=item *
+
+I<--prove|prove-opts> - see L<Prove Settings|prove-settings>
+
+
+=item *
+
+I<-t|--test> (could me many) - run subset of swat stories
+
+
+=back
+
+Use `-t' options to execute a subset of swat stories:
+
+    # run `FOO/*' stories
+    swat example/my-app 127.0.0.1 -t FOO/
+
+=over
+
+=item *
+
+`-t' option should point to a resource(s) path and be relative to the project root directory 
+
+
+=item *
+
+`-t' option should not contain extension part - `.txt'
+
+
+=item *
+
+it is possible to use more than one `t' options
+
+
+=back
+
+For example:
+
+    -t FOO/BAR -t BAR -t FOO/BAZ  
 
 
 =head1 Examples

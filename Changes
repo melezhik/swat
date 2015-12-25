@@ -1,7 +1,9 @@
 # 0.1.72
 
 * swat_purge_cache could be set in different contexts ( env var, swat.ini )
-
+* *BREAKING CHANGES*:
+    * test_file is depricated - use \`-t' option instead
+    * prove settings should be passed via \`--prove' option now ( old behaviour - "pass as is")
 
 # 0.1.71 2015-12-15
 

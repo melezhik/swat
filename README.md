@@ -173,17 +173,6 @@ Note, that project root directory path will be removed from http resources paths
 * GET FOO
 * POST FOO/BAR
 
-Use \`test_file' variable to execute a subset of swat stories:
-
-    # run a single story
-    test_file=FOO/get swat example/my-app 127.0.0.1
-
-    # run all `FOO/*' stories:
-    test_file=FOO/ swat example/my-app 127.0.0.1
-
-Test\_file variable should point to a resource(s) path and be relative to project root dir, also it should not contain extension part - \`.txt'
-
-
 # Swat check lists
 
 Swat check lists complies [Outthentic DSL](https://github.com/melezhik/outthentic-dsl) format.
@@ -694,15 +683,15 @@ another test / reporting systems, follow TAP documentation to get more on this.
 
 Here is example for converting swat tests into JUNIT format:
 
-    swat --formatter TAP::Formatter::JUnit
+    swat --prove '--formatter TAP::Formatter::JUnit'
 
 # Prove settings
 
 Swat utilize [prove utility](http://search.cpan.org/perldoc?prove) to run tests, all prove related parameters are passed as is to prove.
 Here are some examples:
 
-    swat -Q # don't show anythings unless test summary
-    swat -q -s # run prove tests in random and quite mode
+    swat --prove -Q # don't show anythings unless test summary
+    swat --prove '-q -s' # run prove tests in random and quite mode
 
 # Misc settings
 
@@ -715,7 +704,26 @@ Here are some examples:
 
 Once swat is installed you get swat client at the \`PATH':
 
-    swat <project_root_dir> <host:port> <prove settings>
+    swat <project_root_dir> <host:port> <options>
+
+List of options:
+
+* *--prove|prove-opts* - see [Prove Settings](prove-settings)
+* *-t|--test* (could me many) - run subset of swat stories
+
+Use \`-t' options to execute a subset of swat stories:
+
+    # run `FOO/*' stories
+    swat example/my-app 127.0.0.1 -t FOO/
+
+* \`-t' option should point to a resource(s) path and be relative to the project root directory 
+* \`-t' option should not contain extension part - \`.txt'
+*  it is possible to use more than one \`t' options
+
+For example:
+
+    -t FOO/BAR -t BAR -t FOO/BAZ  
+
 
 # Examples
 
