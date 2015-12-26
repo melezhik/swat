@@ -32,6 +32,13 @@ examples/my-app/swat.ini
 examples/post-request/host
 examples/post-request/posts/post.txt
 examples/post-request/posts/swat.ini
+examples/subtests/baz/get.txt
+examples/subtests/baz/hook.pm
+examples/subtests/foo/bar/get.txt
+examples/subtests/foo/bar/hook.pm
+examples/subtests/foo/get.txt
+examples/subtests/foo/hook.pm
+examples/subtests/host
 examples/within-mode/get.txt
 examples/within-mode/hook.pm
 examples/within-mode/host
