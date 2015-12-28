@@ -174,13 +174,12 @@ ok
 ```
 
 As I already told in the beginning swat - is request oriented tool. The best way to start writing your tests
-is to focus only at one request per time. Let's run a single route using test_file variable. Let's start with
-the POST /login route ( the value of test_file - login/00.POST.t is quite confusing, I am going to change this in next versions )
+is to focus only at one request per time. Let's start with the POST /login route:
 ):
 
 
 ```
-$ test_file=login/00.POST.t swat ./ 127.0.0.1:3000
+$ swat ./ 127.0.0.1:3000 -t login/
 /home/vagrant/.swat/.cache/12437/prove/login/00.POST.t ..
 not ok 1 - POST 127.0.0.1:3000/login succeeded
 
@@ -234,9 +233,7 @@ store a cookie returned by server into a local file in the directory where swat 
 Ok let's re-run our last test:
 
 ```
-$ test_file=login/00.POST.t swat ./ 127.0.0.1:3000
-
-vagrant@Debian-jessie-amd64-netboot:~/projects/myapp2/swat$ test_file=login/00.POST.t swat ./ 127.0.0.1:3000
+$ swat ./ 127.0.0.1:3000 -t login/
 /home/vagrant/.swat/.cache/12669/prove/login/00.POST.t ..
 ok 1 - POST 127.0.0.1:3000/login succeeded
 # response saved to /home/vagrant/.swat/.cache/12669/prove/ap3_lyTGtf
@@ -268,7 +265,7 @@ Let's re-run it to analyze an output:
 
 
 ```
-$ test_file=restricted/zone/00.GET.t swat ./ 127.0.0.1:3000
+$ swat ./ 127.0.0.1:3000 -t restricted/zone
 /home/vagrant/.swat/.cache/12763/prove/restricted/zone/00.GET.t ..
 not ok 1 - GET 127.0.0.1:3000/restricted/zone succeeded
 
@@ -341,7 +338,7 @@ Ok, we are ready to run our test again:
 
 
 ```
-vagrant@Debian-jessie-amd64-netboot:~/projects/myapp2/swat$ test_file=restricted/zone/00.GET.t swat ./ 127.0.0.1:3000
+$ swat ./ 127.0.0.1:3000 -t restricted/zone
 /home/vagrant/.swat/.cache/14509/prove/restricted/zone/00.GET.t ..
 ok 1 - POST 127.0.0.1:3000/login succeeded
 # response saved to /home/vagrant/.swat/.cache/14509/prove/OXQW6x3s3L
