@@ -402,27 +402,11 @@ Of course swat is not fully covered in this article, there more things of intere
 in the [documenation](https://github.com/melezhik/swat/) -
 hooks api, response spoofing, generators, validators, check expressions and other swat features.
 
-# Swat examples list
+# Swat plugins
 
-Here is list of example swat test projects, some of projects are obsolete some are actual.
-Let me know if you are interested in web test automation using swat and I will get back to you kindly!
+* Swat plugins are shareable swat test sutes. 
 
-project           | description                                       | comment
-------------------|---------------------------------------------------|-------------------------------------------------------------
-[swat for metacpan api](https://github.com/CPAN-API/metacpan-monitoring) | metacpan monitoring with swat |
-[swat for yars](https://github.com/melezhik/swat-yars) | swat black box testing for yars restapi - rest archive server |
-[swat for docsis config file editor](https://github.com/melezhik/swat-app-docsisious) | swat black box tests for docsis config file editor ( App::docsisious ) |
-[swat for dancer2](https://github.com/melezhik/swat-examples/tree/master/dancer) | swat test suite for Dancer2 framework |
-[swat for lacuna-api](https://github.com/melezhik/swat-lacuna-api) | swat test suite for lacunaexpanse JSON/RPC API |
-[swat for netstoria](https://github.com/melezhik/WebService-Nestoria-Search/tree/master/swat-test) | swat test suite for Nestoria public API |
-[swat for nginx](https://github.com/melezhik/swat-examples/tree/master/nginx) | swat test suite for nginx web server | obsolete, require old version of swat. won't run on latest swat version |
-[swat for lighttpd](https://github.com/melezhik/swat-examples/tree/master/lighttpd) | swat test suite for lighttpd web server | obsolete, require old version of swat. won't run on latest swat version |
-[swat for mongodb-http](https://github.com/melezhik/swat-examples/tree/master/mongodb-http) | swat test suite for mongodb http interface | obsolete, require old version of swat. won't run on latest swat version |
-[swat for pintod](https://github.com/melezhik/swat-examples/tree/master/pintod) | swat test suite for pintod API| obsolete, require old version of swat. won't run on latest swat version |
-[swat for django](https://github.com/melezhik/swat-examples/tree/master/django) | swat test suite for django web framework| obsolete, require old version of swat. won't run on latest swat version |
-[swat for starman](https://github.com/melezhik/swat-examples/tree/master/starman) | swat test suite for starman web server| obsolete, require old version of swat. won't run on latest swat version |
-[swat for zendesk](https://github.com/melezhik/swat-examples/tree/master/zendesk) | swat test suite for zendesk| obsolete, require old version of swat. won't run on latest swat version |
-
+* Visit [SparrowHub](https://sparrowhub.org/) to search a swat plugins.
 
 I wish you fun and easy testing with swat!
 
