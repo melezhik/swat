@@ -1,6 +1,7 @@
 #!/bin/bash
 
 swat_ini_file='swat.ini'
+swat_my_file=${swat_my:='swat.my'}
 
 cache_dir=~/.swat/.cache/$$
 rm -rf $cache_dir
@@ -127,7 +128,7 @@ for f in `$find_cmd`; do
 
     test -f ~/$swat_ini_file && source ~/$swat_ini_file
     test -f $project/$swat_ini_file && source $project/$swat_ini_file
-    test -f 'swat.my' && source 'swat.my'
+    test -f "${swat_my_file}" && source "${swat_my_file}"
     test -f $resource_dir/$swat_ini_file && source $resource_dir/$swat_ini_file
 
     source $session_file
@@ -255,7 +256,7 @@ for f in `$find_cmd`; do
 done;
 
 test -f ~/$swat_ini_file && source ~/$swat_ini_file
-test -f 'swat.my' && source 'swat.my'
+test -f "${swat_my_file}" && source "${swat_my_file}"
 source $session_file
 
 export port
