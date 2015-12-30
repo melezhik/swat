@@ -355,7 +355,7 @@ For example:
 
 * `swat_purge_cache` - remove swat cache files at the end of test run; default value is `\0' ( do not remove ).
 
-* `swat_my` - sets alternative file path for swat.my configuration file; See [alternative swat ini files locations](#alternative-swat-ini-files-locations) for explanation of what swat.my file what.
+* `swat_my` - sets alternative file path for swat.my configuration file; See [alternative swat ini files locations](#alternative-swat-ini-files-locations) for the explanation of what is swat.my file.
 
 ## curl parameters
 
