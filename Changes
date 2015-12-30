@@ -1,3 +1,7 @@
+# 0.1.75 2015-12-30
+
+* documentation release ( typo fix, thanks to Lance Wicks - pull/15; swat_purge_cache and swat_my variables descibed  )
+
 # 0.1.74 2015-12-30
 
 * hot fix - resource variable calculation in right place, so swat.ini "see" correct value of $resource
