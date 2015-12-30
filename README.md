@@ -97,7 +97,7 @@ Just write it up to a special file  called \`host' and swat will use it.
 
     echo 'app.local' > host
 
-As swat makes http requests with the help of curl, the host name should be complaint with curl requirements, this
+As swat makes http requests with the help of curl, the host name should be compliant with curl requirements, this
 for example means you may define a http schema or port here:
 
     echo 'https://app.local' >> host
