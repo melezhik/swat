@@ -1,3 +1,7 @@
+# 0.1.74 2015-12-30
+
+* hot fix - resource variable calculation in right place, so swat.ini "see" correct value of $resource
+
 # 0.1.73 2015-12-29
 
 * swat now respects swat_my environment to use a swat.my file located not only in CWD. 
