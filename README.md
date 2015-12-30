@@ -353,12 +353,9 @@ For example:
 
 * `match_l` - in TAP output truncate matching strings to {match_l} bytes;  default value is \`40'.
 
-* `swat_purge_cache` - remove swat cache files upon end of test run; default value is `\0' ( do not).
+* `swat_purge_cache` - remove swat cache files at the end of test run; default value is `\0' ( do not remove ).
 
-* `swat_my` - sets alternative file path for swat.my configuration file;
-
-See [Alternative swat ini files locations](#Alternative-swat-ini-files-locations) for explanation of
-what swat.my file what.
+* `swat_my` - sets alternative file path for swat.my configuration file; See [Alternative swat ini files locations](#alternative-swat-ini-files-locations) for explanation of what swat.my file what.
 
 ## curl parameters
 
