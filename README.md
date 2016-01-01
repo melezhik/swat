@@ -472,6 +472,14 @@ This is some _possible_ usage list of processor scripts:
            }
       }
 
+      # processor script :
+      $s.=$_;
+      END { 
+         use JSON;
+         $hash = encode_json($s);
+         print 'Foo.Bar.Baz :', $hash->{Foo}->{Bar}->{Baz},"\n";
+      }
+
 # Hooks
 
 Hooks are extension points to hack into swat runtime phase. It's just files with perl code gets executed in the beginning of swat story.
