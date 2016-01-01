@@ -439,6 +439,11 @@ In case you need provide default value for some variable use name=${name default
     # port will be set 80 unless it's not set somewhere else
     port=${port:=80} # in a ~/swat.ini
 
+# Response processors
+
+Response processors are custom scripts to modify content returned from server _before_ invoking a validation process.
+
+
 # Hooks
 
 Hooks are extension points to hack into swat runtime phase. It's just files with perl code gets executed in the beginning of swat story.
