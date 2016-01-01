@@ -450,13 +450,18 @@ processor script should be named as $http_method.process.pl and placed at $resor
 Recommendation on processor scripts.
 
 * They should simple, recalling a KISS paradigm
+
 * They are not for validating content, use check lists for this
-* Basicly processor scripts _prepare_ to be validated by check lists
-* Remember that if processor script exist the content get passed into validation process will altered as if you use a classic UNIX pipeline :
 
-     curl some-http-URL | perl processor-script 
+* Basicly processor scripts _prepare_ a content to be validated by check lists
 
-This is some _possible_ usage list of processor scripts :
+* Remember that if processor script exist the content get passed into validation process will altered as if you use a classic UNIX pipeline.
+
+This is a rough explanation of the process:
+
+     curl some-http-URL | perl -n processor-script 
+
+This is some _possible_ usage list of processor scripts:
 
 * handling json data:
 
