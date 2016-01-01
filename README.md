@@ -441,15 +441,18 @@ In case you need provide default value for some variable use name=${name default
 
 # Response processors
 
+*** not implemented yet ***
+
+
 Response processors are custom perl scripts to modify content returned from server _before_ invoking a validation process.
-processor script should be named as $http_method.process.pl and placed at $resorce directory. For example :
+processor script should be named as $http_method.process.pl and placed at $resource directory. For example:
 
        foo/bar/post.process.pl # process response processed from POST foo/bar/
        get.process.pl # process response from GET /
 
 Recommendation on processor scripts.
 
-* They should simple, recalling a KISS paradigm
+* They should simple, it is good to follow KISS paradigm
 
 * They are not for validating content, use check lists for this
 
@@ -480,7 +483,7 @@ For example:
            }
       }
 
-      # processor script :
+      # processor script:
       $s.=$_;
       END { 
          use JSON;
