@@ -441,8 +441,11 @@ In case you need provide default value for some variable use name=${name default
 
 # Response processors
 
-Response processors are custom scripts to modify content returned from server _before_ invoking a validation process.
+Response processors are custom perl scripts to modify content returned from server _before_ invoking a validation process.
+Response processor script should be named as $http_method.process.pl and placed at $resorce directory. For example :
 
+       foo/bar/post.process.pl # process response processed from POST foo/bar/
+       get.process.pl # process response from GET /
 
 # Hooks
 
