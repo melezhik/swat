@@ -455,15 +455,23 @@ Recommendation on processor scripts.
 
 * Basicly processor scripts _prepare_ a content to be validated by check lists
 
-* Remember that if processor script exist the content get passed into validation process will altered as if you use a classic UNIX pipeline.
+* Remember that if processor script exist - the content get passed into validation process will altered as if you use a classic UNIX pipeline. Everything that processor script print into STDOUT will send as input for validation process. If no processor script exists a whole http response with headers and body will be sent as input for validation process.
 
 This is a rough explanation of the process:
 
-     curl some-http-URL | perl -n processor-script 
+
+     # without processor script:
+     curl -i some-http-URL | validation-process
+
+     # if processor script exists:
+     curl -i some-http-URL | perl -n processor-script | validation-process
 
 This is some _possible_ usage list of processor scripts:
 
-* handling json data:
+* handling json data
+
+For example:
+     
 
       # server response 
       {
@@ -479,6 +487,7 @@ This is some _possible_ usage list of processor scripts:
          $hash = encode_json($s);
          print 'Foo.Bar.Baz :', $hash->{Foo}->{Bar}->{Baz},"\n";
       }
+      
 
 # Hooks
 
