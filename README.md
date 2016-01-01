@@ -442,10 +442,30 @@ In case you need provide default value for some variable use name=${name default
 # Response processors
 
 Response processors are custom perl scripts to modify content returned from server _before_ invoking a validation process.
-Response processor script should be named as $http_method.process.pl and placed at $resorce directory. For example :
+processor script should be named as $http_method.process.pl and placed at $resorce directory. For example :
 
        foo/bar/post.process.pl # process response processed from POST foo/bar/
        get.process.pl # process response from GET /
+
+Recommendation on processor scripts.
+
+* They should simple, recalling a KISS paradigm
+* They are not for validating content, use check lists for this
+* Basicly processor scripts _prepare_ to be validated by check lists
+* Remember that if processor script exist the content get passed into validation process will altered as if you use a classic UNIX pipeline :
+
+     curl some-http-URL | perl processor-script 
+
+This is some _possible_ usage list of processor scripts :
+
+* handling json data:
+
+      # server response 
+      {
+          "Foo": {
+              "Bar" : "Baz"
+           }
+      }
 
 # Hooks
 
@@ -460,7 +480,7 @@ You should named your hook file as \`hook.pm' and place it into \`resource' dire
 
     # foo/get.txt
     generator: red_green_blue_generator()
- 
+
 
 There are lot of reasons why you might need a hooks. To say a few:
 
