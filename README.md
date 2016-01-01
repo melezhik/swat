@@ -483,11 +483,11 @@ For example:
            }
       }
 
-      # processor script:
+      # processor script
       $s.=$_;
       END { 
          use JSON;
-         $hash = encode_json($s);
+         $hash = decode_json($s);
          print 'Foo.Bar.Baz :', $hash->{Foo}->{Bar}->{Baz},"\n";
       }
       
