@@ -438,58 +438,6 @@ In case you need provide default value for some variable use name=${name default
 
     # port will be set 80 unless it's not set somewhere else
     port=${port:=80} # in a ~/swat.ini
-
-# Response processors
-
-*** not implemented yet ***
-
-
-Response processors are custom perl scripts to modify content returned from server _before_ invoking a validation process.
-Processor script should be named as $http_method.process.pl and placed at $resource directory. For example:
-
-       foo/bar/post.process.pl # process response processed from POST foo/bar/
-       get.process.pl # process response from GET /
-
-Recommendation on processor scripts.
-
-* They should be simple, it is good to follow KISS paradigm
-
-* They are not for validating content, use check lists for this
-
-* Basicly processor scripts _prepare_ a content to be validated by check lists
-
-* Remember that if processor script exist - the content get passed into validation process will altered as if you use a classic UNIX pipeline. Everything that processor script print into STDOUT will send as input for validation process. If no processor script exists a whole http response with headers and body will be sent as input for validation process.
-
-This is a rough explanation of the process:
-
-
-     # without processor script:
-     curl -i some-http-URL | validation-process
-
-     # if processor script exists:
-     curl -i some-http-URL | perl -n processor-script | validation-process
-
-This is some _possible_ usage list of processor scripts:
-
-* handling json data
-
-For example:
-     
-
-      # server response 
-      {
-          "Foo": {
-              "Bar" : "Baz"
-           }
-      }
-
-      # processor script
-      $s.=$_;
-      END { 
-         use JSON;
-         $hash = decode_json($s);
-         print 'Foo.Bar.Baz :', $hash->{Foo}->{Bar}->{Baz},"\n";
-      }
       
 
 # Hooks
@@ -511,6 +459,7 @@ There are lot of reasons why you might need a hooks. To say a few:
 
 * define swat generators
 * redefine http responses
+* process http responses 
 * redefine http resources
 * call downstream stories
 * other custom code
@@ -559,6 +508,61 @@ We could write such a code:
         set_response('I am already logged in');
     }
 
+
+## Process http responses 
+
+*** not implemented yet ***
+
+
+Response processors are custom perl function to modify content returned from server _before_ invoking a validation process.
+Processor code should be _defined_ by calling a process_response function with parameter as reference to processor function:
+
+For example:
+
+       process_response( sub { 
+          my $body = shift;
+          $body=~s/hello/swat/;
+          return $body
+       } );
+
+Recommendation on processor function.
+
+* They should be simple, it is good to follow KISS paradigm
+
+* They are not for validating content, use check lists for this
+
+* Basicly processor code _prepare_ a content to be validated by check lists
+
+* Remember that if processor function gets called - the content get passed into validation process will altered as if you use a classic UNIX pipeline. The returned value from processor function will send as input for validation process. If no processor function gets called exists a whole http response with headers and body will be sent as input for validation process.
+
+This is a rough explanation of the process:
+
+
+     # without processor script:
+     curl -i some-http-URL | validation-process
+
+     # if processor script exists:
+     curl -i some-http-URL | processor-function | validation-process
+
+This is some _possible_ usage list of processor scripts:
+
+* handling json data
+
+For example:
+     
+
+      # server response 
+      {
+          "Foo": {
+              "Bar" : "Baz"
+           }
+      }
+
+      # processor function
+         my $body = shift;
+         $hash = decode_json($body);
+         return 'Foo.Bar.Baz :', $hash->{Foo}->{Bar}->{Baz},"\n";
+      }
 
 
 ## Redefine http resources
