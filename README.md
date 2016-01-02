@@ -536,20 +536,24 @@ What you should know about processor functions:
 
 * When processor function gets called it is supplied with $body parameter which is a http body of original http response relieved from server.
 
-* Remember that if processor function gets called - the content get passed into validation process will be altered as if you use a classic UNIX pipeline. The returned value from processor function will be sent as input for validation process. If no processor function gets called an original http response with http headers and body will be sent as input for validation process.
+* Remember that if processor function gets called - the content get passed into validation process will be altered as if you use a classic UNIX  pipeline, see schema below.
 
-This is a rough schema of what is being told:
+* In case of response processor function gets called, the original http headers and processor function return value be sent as input for validation process. 
+
+* If no processor function gets called an original http response ( http headers and the body ) will be sent as input for validation process.
+
+This is a rough schema of full process:
 
 
-     # without processor script:
+     # without processor function
      curl -i some-http-URL | validation-process
 
-     # if processor script exists:
+     # with processor script exists:
      curl -i some-http-URL | processor-function| validation-process
 
-This is some _possible_ usage list of processor scripts:
+The _possible_ usage of processor functions:
 
-* handling json data
+* handling json, xml, yaml data
 
 For example:
      
@@ -562,10 +566,10 @@ For example:
       }
 
       # processor function
-         my $body = shift;
-         $hash = decode_json($body);
-         return 'Foo.Bar.Baz :', $hash->{Foo}->{Bar}->{Baz},"\n";
-      }
+      my $body = shift;
+      $hash = decode_json($body);
+      return 'Foo.Bar.Baz :', $hash->{Foo}->{Bar}->{Baz},"\n";
+      
 
 
 ## Redefine http resources
