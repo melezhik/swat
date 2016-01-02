@@ -522,27 +522,30 @@ For example:
        process_response( sub { 
           my $body = shift;
           $body=~s/hello/swat/;
-          return $body
-       } );
+          return $s
+        });
+        
 
-Recommendation on processor function.
+What you should know about processor functions:
 
-* They should be simple, it is good to follow KISS paradigm
+* They should be simple, it is good to follow KISS paradigm.
 
-* They are not for validating content, use check lists for this
+* They are not for validating content, use check lists for this.
 
-* Basicly processor code _prepare_ a content to be validated by check lists
+* Basicly processor code _prepare_ a content to be validated by check lists.
 
-* Remember that if processor function gets called - the content get passed into validation process will altered as if you use a classic UNIX pipeline. The returned value from processor function will send as input for validation process. If no processor function gets called exists a whole http response with headers and body will be sent as input for validation process.
+* When processor function gets called it is supplied with $body parameter which is a http body of original http response relieved from server.
 
-This is a rough explanation of the process:
+* Remember that if processor function gets called - the content get passed into validation process will be altered as if you use a classic UNIX pipeline. The returned value from processor function will be sent as input for validation process. If no processor function gets called an original http response with http headers and body will be sent as input for validation process.
+
+This is a rough schema of what is being told:
 
 
      # without processor script:
      curl -i some-http-URL | validation-process
 
      # if processor script exists:
-     curl -i some-http-URL | processor-function | validation-process
+     curl -i some-http-URL | processor-function| validation-process
 
 This is some _possible_ usage list of processor scripts:
 
