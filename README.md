@@ -8,7 +8,7 @@ Web automated testing framework.
 
 # Description
 
-* Swat is a powerful and yet simple and flexible tool for rapid web automated testing development.
+* Swat is a powerful and yet simple and flexible tool for rapid automated web tests development.
 
 * Swat is a web application oriented test framework, this means that it equips you with all you need for a web test development
 and yet it's not burdened by many other "generic" things that you probably won't ever use.
@@ -19,12 +19,14 @@ Swat just passes all curl related parameter as is to curl and let curl do it's j
 
 * Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
 
-* Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories.
+* Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories. Check out swat API fir details. 
 
 * And finally swat relies on prove as internal test runner - this has many, many good results:
 
     * swat transparently passes all it's arguments to prove which makes it simple to adjust swat runner behavior in a prove way
+
     * swat tests might be easily embedded as unit tests into a cpan distributions.
+
     * test reports are emitted in a TAP format which is portable and easy to read.
 
 Ok, now I hope you are ready to dive into swat tutorial! :)
@@ -36,7 +38,8 @@ Ok, now I hope you are ready to dive into swat tutorial! :)
 
 Or install from source:
 
-    # useful for contributors and developers
+    # could be useful for contributors and developers
+
     perl Makefile.PL
     make
     make test
@@ -57,7 +60,7 @@ As swat is a web test oriented tool it deals with some http related stuff as:
 
 Swat leverages unix file system to build an _analogy_ for these things:
 
-## HTTP Resources
+## HTTP resources
 
 _HTTP resource is just a directory_. You have to create a directory to define a http resource:
 
@@ -76,18 +79,18 @@ _HTTP method is just a file_. You have to create a file to define a http method.
 
 Obviously \`http methods' files should be located at \`http resource' directories.
 
-The code above defines a three http methods for two http resources:
+The List below describe two http resources ( /foo, /bar/baz ) and tree http methods for these resources ( GET, PUT, DELETE ):
 
     * GET /foo
     * PUT /foo
-    * POST bar/baz
+    * POST /bar/baz
 
 Here is the list of _predefined_ file names for a http methods files:
 
-    get.txt --> GET method
-    post.txt --> POST method
-    put.txt --> PUT method
-    delete.txt --> DELETE method
+    get.txt      --> GET      method
+    post.txt     --> POST     method
+    put.txt.     --> PUT      method
+    delete.txt.  --> DELETE   method
 
 # Hostname / IP Address
 
@@ -96,6 +99,7 @@ You need to define hostname or ip address to send request to.
 Just write it up to a special file  called \`host' and swat will use it.
 
     echo 'app.local' > host
+    
 
 As swat makes http requests with the help of curl, the host name should be compliant with curl requirements, this
 for example means you may define a http schema or port here:
