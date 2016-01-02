@@ -272,7 +272,7 @@ Follow [https://github.com/melezhik/outthentic-dsl#validators](https://github.co
 
 * text blocks
 
-Need to valiade that some lines goes in response successively ?
+Need to validate that some lines goes in response successively ?
 
         # http response
 
