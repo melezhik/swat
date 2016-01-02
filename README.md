@@ -179,7 +179,7 @@ Note, that project root directory path will be removed from http resources paths
 * GET  /FOO
 * POST /FOO/BAR
 
-Also notice that if you pass first argument ( which is project root directory ) to swat client , then the second argument _could be_a hostname ( in case you don't want to use one defined at host file or you do not have one):
+Also notice that if you pass first argument ( which is project root directory ) to swat client, then the second argument _could be_ a hostname ( in case you don't want to use one defined at host file or you do not have one ):
 
       # inside project root directory 
       swat ./ 127.0.0.1
