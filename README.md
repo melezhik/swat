@@ -293,9 +293,9 @@ Need to valiade that some lines goes in response successively ?
             # plain strings
             this string followed by
             that string followed by
-            another one
+            another one string
             # regexps patterns:
-        regexp: with (this|that)
+        regexp: with (this|that) \S+
             # and the last one in a block
             at the very end
         end:
