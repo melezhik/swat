@@ -67,7 +67,7 @@ _HTTP resource is just a directory_. You have to create a directory to define a 
     mkdir foo/
     mkdir -p bar/baz
 
-This code defines two http resources for your application - 'foo/' and 'bar/baz'
+This code defines two http resources for your application - '/foo/' and '/bar/baz'
 
 ## HTTP methods
 
@@ -110,7 +110,7 @@ for example means you may define a http schema or port here:
 ## HTTP Response
 
 Swat makes request to a given http resources with a given http methods and then validates a response.
-Swat does this with the help so called _check lists_, Check lists are defined at \`http methods' files.
+Swat does this with the help so called _check lists_, check lists are defined at \`http methods' files.
 
 
 Check list is just a list of expressions a response should match. It might be a plain strings or regular expressions:
@@ -130,7 +130,7 @@ You may add some regular expressions checks as well:
 
 # Bringing all together
 
-All these things http method, http resource and check list comprise into essential swat entity called a _swat story_.
+All these things like http method, http resource and check list build up an essential swat entity called a _swat story_.
 
 Swat story is a very simple test plan, which could be expressed in a cucumber language as follows:
 
@@ -150,7 +150,7 @@ From the file system point of view swat story is a:
 ## Swat Project
 
 Swat project is a bunch of a related swat stories kept under a single directory. This directory is called _project root directory_.
-The project root directory name does not that matter, swat just looks up swat story files into it and then "execute" them.
+The project root directory name could be any, swat just searches for swat story files in it and then "execute" found stories.
 See [swat runner workflow](#swat-runner-workflow) section for full explanation of this process.
 
 This is an example swat project layout:
@@ -176,8 +176,18 @@ When you ask swat to execute swat stories you have to point it a project root di
 
 Note, that project root directory path will be removed from http resources paths during execution:
 
-* GET FOO
-* POST FOO/BAR
+* GET  /FOO
+* POST /FOO/BAR
+
+Also notice that if you pass first argument ( which is project root directory ) to swat client , then the second argument _could be_a hostname ( in case you don't want to use one defined at host file or you do not have one):
+
+      # inside project root directory 
+      swat ./ 127.0.0.1
+
+      # outside of project root directory 
+      swat /path/to/project/root/directory/ 127.0.0.1
+
+Follow [swat client](#swat-client) section for full explanation of swat client command line API.
 
 # Swat check lists
 
