@@ -513,7 +513,7 @@ We could write such a code:
 
 *** not implemented yet ***
 
-*process_response(code ref)*
+*process_response(CODEREF)*
 
 
 Response processors are custom perl function to modify content returned from server _before_ invoking a validation process.
@@ -576,7 +576,6 @@ For example:
 Obviously a *set_response* function is a special case of response processor function, which could be expressed in terms of it:
 
        sub set_response {
-
              my $str = shift;
              process_response( sub { 
                 return $str;
