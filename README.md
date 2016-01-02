@@ -4,7 +4,7 @@ Swat
 
 # SYNOPSIS
 
-Web automated testing framework.
+Rapid web tests development.
 
 # Description
 
@@ -81,16 +81,16 @@ Obviously \`http methods' files should be located at \`http resource' directorie
 
 The List below describe two http resources ( /foo, /bar/baz ) and tree http methods for these resources ( GET, PUT, DELETE ):
 
-    * GET /foo
-    * PUT /foo
+    * GET  /foo
+    * PUT  /foo
     * POST /bar/baz
 
 Here is the list of _predefined_ file names for a http methods files:
 
     get.txt      --> GET      method
     post.txt     --> POST     method
-    put.txt.     --> PUT      method
-    delete.txt.  --> DELETE   method
+    put.txt      --> PUT      method
+    delete.txt   --> DELETE   method
 
 # Hostname / IP Address
 
