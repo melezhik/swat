@@ -17,7 +17,7 @@ and yet it's not burdened by many other "generic" things that you probably won't
 swat makes a http requests in a smart way. This means if you know and love curl swat might be easy way to go.
 Swat just passes all curl related parameter as is to curl and let curl do it's job.
 
-* Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking ( but see  [process http responses](#process-http-responses section).  It does not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
+* Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking ( but see  [process http responses](#process-http-responses) section.  It does not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
 
 * Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories. Check out swat API fir details. 
 
