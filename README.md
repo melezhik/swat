@@ -585,7 +585,7 @@ For example:
       my $body = shift;
       use JSON;
       $hash = decode_json($body);
-      return 'Foo.Bar.Baz :', $hash->{Foo}->{Bar}->{Baz},"\n";
+      return 'Foo.Bar.Baz :'.( $hash->{Foo}->{Bar}->{Baz} )."\n";
       
 
       # server response in xml format
@@ -599,7 +599,7 @@ For example:
       my $body = shift;
       use XML:LibXML;
       my $doc = XML::LibXML->parse_string($body);
-      return 'Foo.Bar.Baz :', $doc->find("string(/foo/bar/baz)")->string_value, "\n";
+      return 'Foo.Bar.Baz :'.( $doc->find("string(/foo/bar/baz)")->string_value )."\n";
       
 
 
