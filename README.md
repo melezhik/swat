@@ -574,7 +574,7 @@ The _possible_ usage of processor functions:
 For example:
      
 
-      # server response 
+      # server response in json format
       {
           "Foo": {
               "Bar" : "Baz"
@@ -583,8 +583,24 @@ For example:
 
       # processor function
       my $body = shift;
+      use JSON;
       $hash = decode_json($body);
       return 'Foo.Bar.Baz :', $hash->{Foo}->{Bar}->{Baz},"\n";
+      
+
+      # server response in xml format
+      <?xml version='1.0'?>
+      <foo>
+        <bar>
+          <baz>aaa</baz>
+        </bar>  
+      </foo>
+
+      # processor function
+      my $body = shift;
+      use XML:LibXML;
+      my $doc = XML::LibXML->parse_string($body);
+      return 'Foo.Bar.Baz :', $doc->find("string(/foo/bar/baz)")->string_value, "\n";
       
 
 
