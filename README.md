@@ -807,7 +807,7 @@ Here are some examples:
 
 Once swat is installed you get swat client at the \`PATH':
 
-    swat [project_root_dir] [host:port] [swat_command_line_options]
+    swat [[project_root_dir] [host:port]] [swat_command_line_options]
 
 All command parameters are optional.
 

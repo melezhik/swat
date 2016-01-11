@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.75';
+our $VERSION = '0.1.76';
 
 use base 'Exporter'; 
 
@@ -190,7 +190,7 @@ Swat
 
 =head1 SYNOPSIS
 
-Web automated testing framework.
+Rapid web tests development.
 
 
 =head1 Description
@@ -199,7 +199,7 @@ Web automated testing framework.
 
 =item *
 
-Swat is a powerful and yet simple and flexible tool for rapid web automated testing development.
+Swat is a powerful and yet simple and flexible tool for rapid automated web tests development.
 
 
 
@@ -220,13 +220,13 @@ Swat just passes all curl related parameter as is to curl and let curl do it's j
 
 =item *
 
-Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking, it does not even try to decouple http headers from a body. Actually I<it just returns you a text> where you can find and grep in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
+Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking ( I<but> see  L<process http responses|#process-http-responses> section ). It does not even try to decouple http headers from a body. Actually I<it just returns you a text> where you can find and grep in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
 
 
 
 =item *
 
-Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories.
+Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories. Check out swat API for details. 
 
 
 
@@ -241,14 +241,17 @@ And finally swat relies on prove as internal test runner - this has many, many g
 swat transparently passes all it's arguments to prove which makes it simple to adjust swat runner behavior in a prove way
 
 
+
 =item *
 
 swat tests might be easily embedded as unit tests into a cpan distributions.
 
 
+
 =item *
 
 test reports are emitted in a TAP format which is portable and easy to read.
+
 
 
 =back
@@ -267,7 +270,8 @@ Ok, now I hope you are ready to dive into swat tutorial! :)
 
 Or install from source:
 
-    # useful for contributors and developers
+    # could be useful for contributors and developers
+    
     perl Makefile.PL
     make
     make test
@@ -316,14 +320,14 @@ http responses
 Swat leverages unix file system to build an I<analogy> for these things:
 
 
-=head2 HTTP Resources
+=head2 HTTP resources
 
 I<HTTP resource is just a directory>. You have to create a directory to define a http resource:
 
     mkdir foo/
     mkdir -p bar/baz
 
-This code defines two http resources for your application - 'foo/' and 'bar/baz'
+This code defines two http resources for your application - '/foo/' and '/bar/baz'
 
 
 =head2 HTTP methods
@@ -336,18 +340,18 @@ I<HTTP method is just a file>. You have to create a file to define a http method
 
 Obviously `http methods' files should be located at `http resource' directories.
 
-The code above defines a three http methods for two http resources:
+The List below describe two http resources ( /foo, /bar/baz ) and tree http methods for these resources ( GET, PUT, DELETE ):
 
-    * GET /foo
-    * PUT /foo
-    * POST bar/baz
+    * GET  /foo
+    * PUT  /foo
+    * POST /bar/baz
 
 Here is the list of I<predefined> file names for a http methods files:
 
-    get.txt --> GET method
-    post.txt --> POST method
-    put.txt --> PUT method
-    delete.txt --> DELETE method
+    get.txt      --> GET      method
+    post.txt     --> POST     method
+    put.txt      --> PUT      method
+    delete.txt   --> DELETE   method
 
 
 =head1 Hostname / IP Address
@@ -368,7 +372,7 @@ for example means you may define a http schema or port here:
 =head2 HTTP Response
 
 Swat makes request to a given http resources with a given http methods and then validates a response.
-Swat does this with the help so called I<check lists>, Check lists are defined at `http methods' files.
+Swat does this with the help so called I<check lists>, check lists are defined at `http methods' files.
 
 Check list is just a list of expressions a response should match. It might be a plain strings or regular expressions:
 
@@ -399,7 +403,7 @@ You may add some regular expressions checks as well:
 
 =head1 Bringing all together
 
-All these things http method, http resource and check list comprise into essential swat entity called a I<swat story>.
+All these things like http method, http resource and check list build up an essential swat entity called a I<swat story>.
 
 Swat story is a very simple test plan, which could be expressed in a cucumber language as follows:
 
@@ -435,7 +439,7 @@ check list - the content of a `http method' file
 =head2 Swat Project
 
 Swat project is a bunch of a related swat stories kept under a single directory. This directory is called I<project root directory>.
-The project root directory name does not that matter, swat just looks up swat story files into it and then "execute" them.
+The project root directory name could be any, swat just searches for swat story files in it and then "execute" found stories.
 See L<swat runner workflow|#swat-runner-workflow> section for full explanation of this process.
 
 This is an example swat project layout:
@@ -465,15 +469,25 @@ Note, that project root directory path will be removed from http resources paths
 
 =item *
 
-GET FOO
+GET  /FOO
 
 
 =item *
 
-POST FOO/BAR
+POST /FOO/BAR
 
 
 =back
+
+Also notice that if you pass first argument ( which is project root directory ) to swat client, then the second argument I<could be> a hostname ( in case you don't want to use one defined at host file or you do not have one ):
+
+      # inside project root directory 
+      swat ./ 127.0.0.1
+    
+      # outside of project root directory 
+      swat /path/to/project/root/directory/ 127.0.0.1
+
+Follow L<swat client|#swat-client> section for full explanation of swat client command line API.
 
 
 =head1 Swat check lists
@@ -591,7 +605,7 @@ text blocks
 
 =back
 
-Need to valiade that some lines goes in response successively ?
+Need to validate that some lines goes in response successively ?
 
         # http response
     
@@ -612,9 +626,9 @@ Need to valiade that some lines goes in response successively ?
             # plain strings
             this string followed by
             that string followed by
-            another one
+            another one string
             # regexps patterns:
-        regexp: with (this|that)
+        regexp: with (this|that) \S+
             # and the last one in a block
             at the very end
         end:
@@ -958,6 +972,11 @@ redefine http responses
 
 =item *
 
+process http responses 
+
+
+=item *
+
 redefine http resources
 
 
@@ -1016,6 +1035,120 @@ We could write such a code:
     if ( ... check if user is logged in .... ){
         set_response('I am already logged in');
     }
+
+
+=head2 Process http responses 
+
+B<I< not implemented yet >>
+
+I<process_response(CODEREF)>
+
+Response processors are custom perl function to modify content returned from server I<before> invoking a validation process.
+Processor code should be I<defined> by calling a process_response function with parameter as reference to processor function:
+
+For example:
+
+       process_response( sub { 
+          my $body = shift;
+          $body=~s/hello/swat/;
+          return $s
+        });
+
+What you should know about processor functions:
+
+=over
+
+=item *
+
+They should be simple, it is good to follow KISS paradigm.
+
+
+
+=item *
+
+They are not for validating content, use check lists for this.
+
+
+
+=item *
+
+Basicly processor code I<prepare> a content to be validated by check lists.
+
+
+
+=item *
+
+When processor function gets called it is supplied with $body parameter which is a http body of original http response relieved from server.
+
+
+
+=item *
+
+Remember that if processor function gets called - the content get passed into validation process will be altered as if you use a classic UNIX  pipeline, see schema below.
+
+
+
+=item *
+
+In case of response processor function gets called, the original http headers and processor function return value be sent as input for validation process. 
+
+
+
+=item *
+
+If no processor function gets called an original http response ( http headers and the body ) will be sent as input for validation process.
+
+
+
+=back
+
+This is a rough schema of full process:
+
+     # without processor function
+     curl -i some-http-URL | validation-process
+    
+     # with processor script exists:
+     curl -i some-http-URL | processor-function| validation-process
+
+The I<possible> usage of processor functions:
+
+=over
+
+=item *
+
+handling json, xml, yaml data
+
+
+=back
+
+For example:
+
+      # server response in json format
+      {
+          "Foo": {
+              "Bar" : "Baz"
+           }
+      }
+    
+      # processor function
+      my $body = shift;
+      use JSON;
+      $hash = decode_json($body);
+      return 'Foo.Bar.Baz :'.( $hash->{Foo}->{Bar}->{Baz} )."\n";
+      
+    
+      # server response in xml format
+      <foo>
+        <bar>
+          <baz>aaa</baz>
+        </bar>  
+      </foo>
+    
+      # processor function
+      my $body = shift;
+      use XML:LibXML;
+      my $doc = XML::LibXML->parse_string($body);
+      return 'Foo.Bar.Baz :'.( $doc->find("string(/foo/bar/baz)")->string_value )."\n";
 
 
 =head2 Redefine http resources
@@ -1366,7 +1499,7 @@ Default value is `0' ( do not clear cache ).
 
 Once swat is installed you get swat client at the `PATH':
 
-    swat [project_root_dir] [host:port] [swat_command_line_options]
+    swat [[project_root_dir] [host:port]] [swat_command_line_options]
 
 All command parameters are optional.
 
