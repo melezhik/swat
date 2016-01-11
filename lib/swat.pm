@@ -45,9 +45,9 @@ sub make_http_request {
 
     if (get_prop('response')){
 
-        ok(1,"response is already set");
+        ok(1,'response is already set');
 
-        open F, ">", $content_file or die $!;
+        open F, '>', $content_file or die $!;
         print F get_prop('response');
         close F;
 

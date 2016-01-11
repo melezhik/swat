@@ -47,7 +47,7 @@ sub new_story {
 sub end_of_story {
 
     if (debug_mod12()){
-        Test::More::ok(1,"end of story: ".(get_prop('check_list')));
+        Test::More::ok(1,'end of story: '.(get_prop('check_list')));
     }
     delete $stories[-1];
 
