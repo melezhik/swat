@@ -878,7 +878,7 @@ See [prove settings](prove-settings)
 
 Sets a distinct sub sets of stories to execute, see [Running subset of stories](#Running-subset-of-stories)
 
-* **--ini* - test suite ini file path
+* **--ini** - test suite ini file path
 
 See [test suite ini file](#test-suite-ini-file) section for details.
 
