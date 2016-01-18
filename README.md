@@ -498,6 +498,17 @@ This is an example of setting server response inside swat hook:
     HELLO WORLD
 
 
+You may call \`set_response' more then once:
+
+
+    set_response("HELLO WORLD");
+    set_response("HELLO WORLD2");
+
+A final response will be:
+
+    HELLO WORLD
+    HELLO WORLD2
+
 Another interesting idea about set\_response feature is a _conditional_ http requests.
 
 Let say we have \`POST /login' request for user authentication, this is a simple swat story for it:

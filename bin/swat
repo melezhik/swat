@@ -1,7 +1,6 @@
 #!/bin/bash
 
 swat_ini_file='swat.ini'
-swat_my_file=${swat_my:='swat.my'}
 
 cache_dir=~/.swat/.cache/$$
 rm -rf $cache_dir
@@ -24,6 +23,10 @@ case $key in
     prove_opts="$prove_opts $2"
     shift
     ;;
+    --ini)
+    ini_file_path="$2"
+    shift
+    ;;
     *)
     if test -n "${project}"; then
         host=$1
@@ -34,6 +37,8 @@ case $key in
 esac
 shift # past argument or value
 done
+
+ini_file_path=${ini_file_path:=""}
 
 project=${project:=$PWD}
 project=`perl -MFile::Spec -e '$i=$ARGV[0]; s{\/$}[], chomp for $i; print File::Spec->rel2abs($i)' $project`
@@ -130,7 +135,6 @@ for f in `$find_cmd`; do
 
     test -f ~/$swat_ini_file && source ~/$swat_ini_file
     test -f $project/$swat_ini_file && source $project/$swat_ini_file
-    test -f "${swat_my_file}" && source "${swat_my_file}"
     test -f $resource_dir/$swat_ini_file && source $resource_dir/$swat_ini_file
 
     source $session_file
@@ -209,6 +213,7 @@ for f in `$find_cmd`; do
     echo >> $tfile
 
     echo "set_prop( hostname => q{$real_host} );" >> $tfile
+    echo "set_prop( ini_file_path => q{$ini_file_path} );" >> $tfile
     echo "set_prop( resource => q{$resource} );" >> $tfile
     echo "set_prop( resource_dir => q{$resource_dir} );" >> $tfile
     echo "set_prop( http_method => q{$http_method} );" >> $tfile
@@ -257,7 +262,6 @@ for f in `$find_cmd`; do
 done;
 
 test -f ~/$swat_ini_file && source ~/$swat_ini_file
-test -f "${swat_my_file}" && source "${swat_my_file}"
 source $session_file
 
 export port

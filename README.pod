@@ -601,12 +601,6 @@ C<swat_purge_cache> - remove swat cache files at the end of test run; default va
 
 
 
-=item *
-
-C<swat_my> - sets alternative file path for swat.my configuration file; See L<alternative swat ini files locations|#alternative-swat-ini-files-locations> for the explanation of what is swat.my file.
-
-
-
 =back
 
 
@@ -718,12 +712,6 @@ B<$project_root_directory/swat.ini> -  project root directory
 
 
 
-=item *
-
-B<$cwd/swat.my> - custom settings, swat.my should be located at current working directory
-
-
-
 =back
 
 
@@ -736,8 +724,7 @@ This table describes all possible locations for swat ini files. Swat try to find
     | ~/swat.ini                                | 1           |
     | `project_root_directory'/swat.ini         | 2           |
     | `http resource' directory/swat.ini file   | 3           |
-    | current working directory/swat.my file    | 4           |
-    | environment variables                     | 5           |
+    | environment variables                     | 4           |
 
 In case the same variable is defined more than once at swat ini files with different locations, the file loaded last win:
 
@@ -834,6 +821,16 @@ This is an example of setting server response inside swat hook:
     # get.txt
     THIS IS A FAKE RESPONSE
     HELLO WORLD
+
+You may call `set_response' more then once:
+
+    set_response("HELLO WORLD");
+    set_response("HELLO WORLD2");
+
+A final response will be:
+
+    HELLO WORLD
+    HELLO WORLD2
 
 Another interesting idea about set_response feature is a I<conditional> http requests.
 
@@ -1028,7 +1025,7 @@ call `run_swat_module(method,resource,variables)' function inside upstream story
 
 =item *
 
-you can call as many downstearm stories as you wish.
+you can call as many downstream stories as you wish.
 
 
 
@@ -1113,18 +1110,61 @@ Of course more proper approaches for state sharing could be used as singeltones 
 
 There are some accessors to a common swat variables:
 
-    project_root_dir()
-    test_root_dir()
-    
-    resource()
-    resource_dir()
-    
-    http_method()
-    hostname()
-    
-    ignore_http_err()
+=over
 
-Be aware of that these are readers not setters.
+=item *
+
+projectI<root>dir()
+
+
+
+=item *
+
+testI<root>dir()
+
+
+
+=item *
+
+resource()
+
+
+
+=item *
+
+resource_dir()
+
+
+
+=item *
+
+http_method()
+
+
+
+=item *
+
+hostname()
+
+
+
+=item *
+
+ignoreI<http>err()
+
+
+
+=item *
+
+config() - returns hash of test suite configuration
+
+
+
+=back
+
+SeeL<test suite ini file|#test-suite-ini-file> section for details.
+
+Be aware of that these functions are readers not setters.
 
 
 =head2 PERL5LIB
@@ -1182,7 +1222,7 @@ check list file passed to ODO
 
 =item *
 
-http request is exected and response passed to ODO
+http request is executed and response passed to ODO
 
 
 =item *
@@ -1283,7 +1323,39 @@ all prove related parameters could be passed via `--prove' option to prove runne
 Here are some examples:
 
     swat --prove -Q # don't show anythings unless test summary
+    
     swat --prove '-q -s' # run prove tests in random and quite mode
+
+
+=head1 Test suite ini file
+
+Test suite ini file is a configuration file where you may pass any additional data could be used in your tests:
+
+    cat suite.ini
+    
+    [main]
+    
+    foo = 1
+    bar = 2
+
+There is no special magic behind this ini file, except this should be L<Config Tiny|https://metacpan.org/pod/Config::Tiny> compliant configuration file.
+
+By default swat runner looks for file named suite.ini placed at current working directory.
+
+You my redefine this by using suiteI<ini>file environment variable:
+
+    suite_ini_file=/path/to/your/ini/file
+
+Or by `--ini' parameter of story runner:
+
+    swat --ini /path/to/your/ini/file
+
+Once suite ini file is read up one may use it in hook.pm files via config()
+
+    # cat hook.pm
+    
+    my $foo = config()->{main}{foo};
+    my $bar = config()->{main}{bar};
 
 
 =head1 Misc settings
@@ -1332,7 +1404,7 @@ B<project_root_dir> - swat project root directory
 
 In case you don't set one, swat assume it equal to current working directory. Examples:
 
-    # setup project root directory explicitely
+    # setup project root directory explicitly
     swat /foo/bar/baz
     
     # project root directory is CWD
@@ -1349,7 +1421,7 @@ B<host> - basic URL of tested application, should be in curl compatible format
 
 In case host parameter is missing , swat tries to read it up from `host' file. Examples:
 
-    # setup host explicitely
+    # setup host explicitly
     swat /foo/bar/baz 127.0.0.1
     
     # host entry gets read from CWD/host file 
@@ -1365,15 +1437,37 @@ List of swat command line options:
 
 =item *
 
-B<--prove|prove-opts> - see L<prove settings|prove-settings>
-
-
-=item *
-
-B<-t|--test> (could me many) - run subset of swat stories
+B<--prove|prove-opts> - sets prove parameters
 
 
 =back
+
+See L<prove settings|prove-settings>
+
+=over
+
+=item *
+
+B<-t|--test>
+
+
+=back
+
+Sets a distinct sub sets of stories to execute, see L<Running subset of stories|#Running-subset-of-stories>
+
+=over
+
+=item *
+
+B<--ini> - test suite ini file path
+
+
+=back
+
+See L<test suite ini file|#test-suite-ini-file> section for details.
+
+
+=head1 Running subset of stories
 
 Use `-t' options to execute a subset of swat stories:
 
@@ -1387,14 +1481,17 @@ Use `-t' options to execute a subset of swat stories:
 `-t' option should point to a resource(s) path and be relative to the project root directory 
 
 
+
 =item *
 
 `-t' option should not contain extension part - `.txt'
 
 
+
 =item *
 
 it is possible to use more than one `t' options
+
 
 
 =back

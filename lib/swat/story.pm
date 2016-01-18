@@ -39,7 +39,7 @@ sub new_story {
     
     push @stories, {
         template_variables => {},
-        props => { dsl => Outthentic::DSL->new() },
+        props => { dsl => Outthentic::DSL->new() , response => [] },
     };
 
 }
@@ -124,7 +124,9 @@ sub debug_mod12 {
 }
 
 sub set_response {
-    set_prop('response', shift());
+    my $cv = get_prop('response');
+    push @$cv, shift();
+    set_prop('response', $cv);
 }
 
 sub dsl {

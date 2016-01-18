@@ -20,6 +20,9 @@ examples/hooks/posts/swat.ini
 examples/ignore-http-err/foo/get.txt
 examples/ignore-http-err/foo/swat.ini
 examples/ignore-http-err/host
+examples/ini-file/get.txt
+examples/ini-file/hook.pm
+examples/ini-file/host
 examples/multilines/host
 examples/multilines/posts/post.txt
 examples/multilines/posts/swat.ini
@@ -56,9 +59,9 @@ lib/swat.pm
 lib/swat/story.pm
 Makefile.PL
 MANIFEST			This list of files
-META.yml
 README.md
 run_examples.bash
+suite.ini
 t/data/test.db
 t/data/test.sql
 t/swat.t
