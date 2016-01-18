@@ -1,3 +1,5 @@
+
+
 package swat;
 
 our $VERSION = '0.1.77';
@@ -16,10 +18,13 @@ sub version {
 package main;
 
 use strict;
-use Test::More;
-use Data::Dumper;
+
+use Carp;
 use File::Temp qw/ tempfile /;
+
+use Test::More;
 use swat::story;
+
 use Carp;
 use Config::Tiny;
 
@@ -58,7 +63,7 @@ sub make_http_request {
 
     if (get_prop('response') and @{get_prop('response')} ){
 
-        ok(1,"response is already set");
+        ok(1,'response is already set');
 
         open F, ">", $content_file or die $!;
         print F ( join "\n", @{get_prop('response')});

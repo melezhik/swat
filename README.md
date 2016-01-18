@@ -49,7 +49,7 @@ Or install from source:
 
 Swat test stories always answers on 2 type of questions:
 
-* _What kind of_ http request should be send.
+* _What kind of_ http request should be sent.
 * _What kind of_ http response should be received.
 
 As swat is a web test oriented tool it deals with some http related stuff as:
@@ -58,7 +58,7 @@ As swat is a web test oriented tool it deals with some http related stuff as:
 * http resources
 * http responses
 
-Swat leverages unix file system to build an _analogy_ for these things:
+Swat leverages Unix file system to build an _analogy_ for these things:
 
 ## HTTP resources
 
@@ -79,7 +79,7 @@ _HTTP method is just a file_. You have to create a file to define a http method.
 
 Obviously \`http methods' files should be located at \`http resource' directories.
 
-The List below describe two http resources ( /foo, /bar/baz ) and tree http methods for these resources ( GET, PUT, DELETE ):
+The list below describes two http resources ( /foo, /bar/baz ) and three http methods for these resources ( GET, PUT, DELETE ):
 
     * GET  /foo
     * PUT  /foo
@@ -113,7 +113,7 @@ Swat makes request to a given http resources with a given http methods and then 
 Swat does this with the help so called _check lists_, check lists are defined at \`http methods' files.
 
 
-Check list is just a list of expressions a response should match. It might be a plain strings or regular expressions:
+Check list is just a list of expressions a response should match. It might be a set of plain strings or regular expressions:
 
     echo 200 OK > foo/get.txt
     echo 'Hello I am foo' >> foo/get.txt
@@ -199,7 +199,7 @@ There are lot of possibilities here!
 
 A few examples:
 
-* plain strings checks
+* plain string checks
 
 Often all you need is to ensure that http response has some strings in:
 
