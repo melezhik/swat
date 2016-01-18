@@ -1357,7 +1357,7 @@ config() - returns hash of test suite configuration
 
 =back
 
-SeeL<test suite ini file|#test-suite-ini-file> section for details.
+See L<test suite ini file|#test-suite-ini-file> section for details.
 
 Be aware of that these functions are readers not setters.
 

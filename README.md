@@ -733,7 +733,7 @@ There are some accessors to a common swat variables:
 
 * config() - returns hash of test suite configuration
 
-See[test suite ini file](#test-suite-ini-file) section for details.
+See [test suite ini file](#test-suite-ini-file) section for details.
 
 Be aware of that these functions are readers not setters.
 
