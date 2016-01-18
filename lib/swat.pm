@@ -146,7 +146,7 @@ sub header {
     ok(1, "hostname: $hostname");
     ok(1, "resource: $resource");
     ok(1, "http method: $http_method");
-    if ( get_prop('response' )){
+    if ( @{get_prop('response' )}){
         ok(1, 'response is set, so we do not use curl')
     }
     ok(1,"swat module: $swat_module");
