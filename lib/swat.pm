@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.76';
+our $VERSION = '0.1.77';
 
 use base 'Exporter'; 
 
