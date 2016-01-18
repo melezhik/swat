@@ -19,7 +19,6 @@ package main;
 
 use strict;
 use Carp;
-use Data::Dumper;
 use File::Temp qw/ tempfile /;
 use Test::More;
 use swat::story;
