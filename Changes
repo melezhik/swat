@@ -6,6 +6,8 @@
 
 * Hooks API -  \`set_response' could be called more than once
 
+* https://github.com/melezhik/swat/pull/16 - by [Luca Ferrari](https://github.com/fluca1978) - Thanks alot!
+
 # 0.1.76 2016-01-11
 
 * documentation release ( typos fixes, swat client command line options cleared, response processors feature announced ( not implemented yet  )
