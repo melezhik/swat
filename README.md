@@ -824,7 +824,7 @@ Or by \`--ini' parameter of story runner:
 
 Once suite ini file is read up one may use it in hook.pm files via config()
 
-    # cat story.pm
+    # cat hook.pm
 
     my $foo = config()->{main}{foo};
     my $bar = config()->{main}{bar};
