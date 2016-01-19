@@ -104,7 +104,7 @@ Swat test stories always answers on 2 type of questions:
 
 =item *
 
-I<What kind of> http request should be send.
+I<What kind of> http request should be sent.
 
 
 =item *
@@ -135,7 +135,7 @@ http responses
 
 =back
 
-Swat leverages unix file system to build an I<analogy> for these things:
+Swat leverages Unix file system to build an I<analogy> for these things:
 
 
 =head2 HTTP resources
@@ -158,7 +158,7 @@ I<HTTP method is just a file>. You have to create a file to define a http method
 
 Obviously `http methods' files should be located at `http resource' directories.
 
-The List below describe two http resources ( /foo, /bar/baz ) and tree http methods for these resources ( GET, PUT, DELETE ):
+The list below describes two http resources ( /foo, /bar/baz ) and three http methods for these resources ( GET, PUT, DELETE ):
 
     * GET  /foo
     * PUT  /foo
@@ -192,7 +192,7 @@ for example means you may define a http schema or port here:
 Swat makes request to a given http resources with a given http methods and then validates a response.
 Swat does this with the help so called I<check lists>, check lists are defined at `http methods' files.
 
-Check list is just a list of expressions a response should match. It might be a plain strings or regular expressions:
+Check list is just a list of expressions a response should match. It might be a set of plain strings or regular expressions:
 
     echo 200 OK > foo/get.txt
     echo 'Hello I am foo' >> foo/get.txt
@@ -322,7 +322,7 @@ A few examples:
 
 =item *
 
-plain strings checks
+plain string checks
 
 
 =back
