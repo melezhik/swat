@@ -9,7 +9,7 @@ mkdir -p $cache_dir
 test_root_dir=$cache_dir/prove
 rm -rf $test_root_dir
 mkdir -p $test_root_dir
-in_test=0
+debug_clp=0
 
 while [[ $# > 0 ]]
 do
@@ -23,7 +23,7 @@ case $key in
             if  [[ $1 == "-"* ]] ; then
                 break 1
             fi
-            if  [ $# -eq 0 ] ; then
+            if  [[ $# -eq 0 ]] ; then
                 break 1
             fi
             path="$path $test_root_dir/$1 "
@@ -32,7 +32,12 @@ case $key in
     ;;
     --prove|--prove-opts)
     shift;
-    prove_opts="$prove_opts $1"
+    prove_clp="$prove_clp $1"
+    shift
+    ;;
+    --debug|-d)
+    shift;
+    debug_clp=$1
     shift
     ;;
     --ini)
@@ -155,7 +160,7 @@ for f in `$find_cmd`; do
 
     # set defaults
     try_num=${try_num:=2}
-    debug=${debug:=0}
+    debug=${debug:=$debug_clp}
     debug_bytes=${debug_bytes:=500}
     curl_max_time=${curl_max_time:=20}
     curl_connect_timeout=${curl_connect_timeout:=20}
@@ -283,11 +288,11 @@ export port
 path=${path:=$test_root_dir}
 
 
-if [ -z "${prove_opts}" ] && [ -n "${prove_options}" ]; then
+if [ -z "${prove_clp}" ] && [ -n "${prove_options}" ]; then
     prove -m -r $path $prove_options;
     exit_code=$?
-elif [ -n "${prove_opts}"  ]; then
-    prove -m -r $path $prove_opts;
+elif [ -n "${prove_clp}"  ]; then
+    prove -m -r $path $prove_clp;
     exit_code=$?
 else
     prove -m -r -v $path;
