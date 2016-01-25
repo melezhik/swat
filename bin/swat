@@ -9,33 +9,47 @@ mkdir -p $cache_dir
 test_root_dir=$cache_dir/prove
 rm -rf $test_root_dir
 mkdir -p $test_root_dir
+in_test=0
 
 while [[ $# > 0 ]]
 do
 key="$1"
 
 case $key in
-    -t|--test)
-    path="$path $test_root_dir/$2 "
-    shift
+               # handle -t path1 path2 path3
+    -t|--test) # read until we meet something that is not file or directory
+        shift;
+        while : ; do
+            if  [[ $1 == "-"* ]] ; then
+                break 1
+            fi
+            if  [ $# -eq 0 ] ; then
+                break 1
+            fi
+            path="$path $test_root_dir/$1 "
+            shift;
+        done;
     ;;
     --prove|--prove-opts)
-    prove_opts="$prove_opts $2"
+    shift;
+    prove_opts="$prove_opts $1"
     shift
     ;;
     --ini)
-    ini_file_path="$2"
-    shift
+    shift;
+    ini_file_path="$1"
+    shift;
     ;;
     *)
     if test -n "${project}"; then
         host=$1
+        shift;
     else
         project=$1
+        shift;
     fi
     ;;
 esac
-shift # past argument or value
 done
 
 ini_file_path=${ini_file_path:=""}

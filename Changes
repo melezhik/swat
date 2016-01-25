@@ -1,3 +1,9 @@
+0.1.79 
+
+* ability to pass group of tests as -t path1 path2 path3 ... - https://github.com/melezhik/swat/issues/13
+
+* response processors 
+
 # 0.1.78 2016-01-18
 
 * regenerated build for the sake of meta.yml get lost for last one ( a pesky issue for me )

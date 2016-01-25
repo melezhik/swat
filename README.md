@@ -910,6 +910,12 @@ For example:
 
     -t FOO/BAR -t BAR -t FOO/BAZ  
 
+* Or even path more than one argument for -t parameter:
+
+For example:
+
+    -t FOO/BAR FOO/BAZ BAR
+
 # Examples
 
 There is plenty of examples at ./examples directory
