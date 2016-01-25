@@ -9,7 +9,6 @@ mkdir -p $cache_dir
 test_root_dir=$cache_dir/prove
 rm -rf $test_root_dir
 mkdir -p $test_root_dir
-debug_clp=0
 
 while [[ $# > 0 ]]
 do
@@ -160,7 +159,7 @@ for f in `$find_cmd`; do
 
     # set defaults
     try_num=${try_num:=2}
-    debug=${debug:=$debug_clp}
+    debug=${debug:=0}
     debug_bytes=${debug_bytes:=500}
     curl_max_time=${curl_max_time:=20}
     curl_connect_timeout=${curl_connect_timeout:=20}
@@ -169,6 +168,11 @@ for f in `$find_cmd`; do
     match_l=${match_l:=40}
     skip_story=${skip_story:=0}
     swat_purge_cache=${swat_purge_cache:=0}
+
+    # override parameters via command line args
+    if [ -n "${debug_clp}" ]; then
+        debug=$debug_clp
+    fi
 
     if test "$skip_story" -eq 1; then
         continue
