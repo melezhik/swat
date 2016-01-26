@@ -22,6 +22,9 @@ our @EXPORT = qw{
 
     modify_resource
 
+    set_response_processor
+    run_response_processor
+
     hostname ignore_http_err
 
     project_root_dir
@@ -31,6 +34,11 @@ our @EXPORT = qw{
     resource resource_dir
 
     http_method
+
+    body
+
+    headers
+
 };
 
 our @stories = ();
@@ -100,6 +108,14 @@ sub resource_dir {
 
 sub http_method {
     get_prop('http_method');
+}
+
+sub body {
+    get_prop('body');
+}
+
+sub headers {
+    get_prop('headers');
 }
 
 
@@ -227,6 +243,33 @@ sub modify_resource {
 
     set_prop( resource => $new_resource );
 
+}
+
+sub set_response_processor {
+
+    my $sub = shift;
+
+    Test::More::ok(1,"setting response processor") if debug_mod12();
+
+    set_prop( response_processor => $sub );
+
+}
+
+sub run_response_processor {
+
+    return unless get_prop( 'response_processor' );
+
+    my $body = body();
+
+    my $headers = headers();
+
+    Test::More::ok(1,"running response processor") if debug_mod12();
+
+    my $sub = get_prop( 'response_processor' );
+
+    my $retval = $sub->($headers,$body);
+
+    dsl()->{output} = $retval;
 }
 
 

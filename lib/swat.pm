@@ -55,13 +55,13 @@ sub execute_with_retry {
 
 sub make_http_request {
 
-    return if get_prop('http_response_ok');
+    return if get_prop('response_done');
 
     my ($fh, $content_file) = tempfile( DIR => get_prop('test_root_dir') );
 
     if (get_prop('response') and @{get_prop('response')} ){
 
-        ok(1,'response is already set');
+        ok(1,'server response is spoofed');
 
         open F, ">", $content_file or die $!;
         print F ( join "\n", @{get_prop('response')});
@@ -73,7 +73,7 @@ sub make_http_request {
         open F, ">", "$content_file.hdr" or die $!;
         close F;
 
-        diag "response saved to $content_file";
+        diag "spoofed response saved to $content_file";
 
     }else{
 
@@ -156,7 +156,7 @@ sub make_http_request {
 
     diag `head -c $debug_bytes $content_file` if debug_mod12();
 
-    set_prop( http_response_ok => 1 );
+    set_prop( response_done => 1 );
 
 }
 
@@ -177,9 +177,6 @@ sub header {
     ok(1, "hostname: $hostname");
     ok(1, "resource: $resource");
     ok(1, "http method: $http_method");
-    if ( @{get_prop('response' )}){
-        ok(1, 'response is set, so we do not use curl')
-    }
     ok(1,"swat module: $swat_module");
     ok(1, "debug: $debug");
     ok(1, "try num: $try_num");
@@ -200,7 +197,9 @@ sub generate_asserts {
 
     make_http_request();
 
-    dsl()->{output} = get_prop('headers').get_prop('body');
+    dsl()->{output} = headers().body();
+
+    run_response_processor();
 
     eval {
         dsl()->validate($check_file);
@@ -1082,19 +1081,18 @@ We could write such a code:
 
 =head2 Process http responses 
 
-B<I< not implemented yet >>
-
-I<process_response(CODEREF)>
+I<set_response_processor(CODEREF)>
 
 Response processors are custom perl function to modify content returned from server I<before> invoking a validation process.
 Processor code should be I<defined> by calling a process_response function with parameter as reference to processor function:
 
 For example:
 
-       process_response( sub { 
-          my $body = shift;
+       set_response_processor( sub { 
+          my $headers   = shift;
+          my $body      = shift;
           $body=~s/hello/swat/;
-          return $s
+          return $body;
         });
 
 What you should know about processor functions:
@@ -1174,7 +1172,8 @@ For example:
       }
     
       # processor function
-      my $body = shift;
+      my $headers   = shift;
+      my $body      = shift;
       use JSON;
       $hash = decode_json($body);
       return 'Foo.Bar.Baz :'.( $hash->{Foo}->{Bar}->{Baz} )."\n";
@@ -1188,7 +1187,8 @@ For example:
       </foo>
     
       # processor function
-      my $body = shift;
+      my $headers   = shift;
+      my $body      = shift;
       use XML:LibXML;
       my $doc = XML::LibXML->parse_string($body);
       return 'Foo.Bar.Baz :'.( $doc->find("string(/foo/bar/baz)")->string_value )."\n";

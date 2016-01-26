@@ -531,9 +531,8 @@ We could write such a code:
 
 ## Process http responses 
 
-*** not implemented yet ***
 
-*process_response(CODEREF)*
+*set_response_processor(CODEREF)*
 
 
 Response processors are custom perl function to modify content returned from server _before_ invoking a validation process.
@@ -541,10 +540,11 @@ Processor code should be _defined_ by calling a process_response function with p
 
 For example:
 
-       process_response( sub { 
-          my $body = shift;
+       set_response_processor( sub { 
+          my $headers   = shift;
+          my $body      = shift;
           $body=~s/hello/swat/;
-          return $s
+          return $body;
         });
         
 
@@ -588,7 +588,8 @@ For example:
       }
 
       # processor function
-      my $body = shift;
+      my $headers   = shift;
+      my $body      = shift;
       use JSON;
       $hash = decode_json($body);
       return 'Foo.Bar.Baz :'.( $hash->{Foo}->{Bar}->{Baz} )."\n";
@@ -602,7 +603,8 @@ For example:
       </foo>
 
       # processor function
-      my $body = shift;
+      my $headers   = shift;
+      my $body      = shift;
       use XML:LibXML;
       my $doc = XML::LibXML->parse_string($body);
       return 'Foo.Bar.Baz :'.( $doc->find("string(/foo/bar/baz)")->string_value )."\n";
