@@ -152,9 +152,16 @@ sub make_http_request {
 
     set_prop( headers => $headers_str );
 
-    my $debug_bytes = get_prop('debug_bytes');
+    if (debug_mod12()){
+        my $debug_bytes = get_prop('debug_bytes');
+        my $bshort = substr( $body_str, 0, $debug_bytes );
+        if (length($bshort) < length($body_str)) {
+             diag("$bshort ... ( output truncated to $debug_bytes bytes )"); 
+        } else{
+             diag($body_str);
+        }
+    }
 
-    diag `head -c $debug_bytes $content_file` if debug_mod12();
 
     set_prop( response_done => 1 );
 

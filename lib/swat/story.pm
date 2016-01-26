@@ -269,6 +269,16 @@ sub run_response_processor {
 
     my $retval = $sub->($headers,$body);
 
+    if (debug_mod12()){
+        my $debug_bytes = get_prop('debug_bytes');
+        my $rshort = substr( $retval, 0, $debug_bytes );
+        if (length($rshort) < length($retval)) {
+             Test::More::diag("modified response:\n$rshort ... ( output truncated to $debug_bytes bytes )");
+        } else{
+             Test::More::diag("modified response:\n$retval");
+        }
+    }
+
     dsl()->{output} = $retval;
 }
 

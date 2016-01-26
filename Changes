@@ -1,7 +1,7 @@
 # 0.180
 
 * response processors implementation
-
+* diag response - unix `head` command replaced by perl code
 
 # 0.1.79  2016-01-26
 
