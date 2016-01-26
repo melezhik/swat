@@ -541,10 +541,10 @@ Processor code should be _defined_ by calling a process_response function with p
 For example:
 
        set_response_processor( sub { 
-          my $headers   = shift;
-          my $body      = shift;
+          my $headers   = shift; # original response, http headers, String
+          my $body      = shift; # original response, body, String
           $body=~s/hello/swat/;
-          return $body;
+          return $body;          # modified response will be return value of sub {} 
         });
         
 
