@@ -1,6 +1,7 @@
 0.1.79 
 
 * ability to pass group of tests as -t path1 path2 path3 ... - https://github.com/melezhik/swat/issues/13
+* new command line parameter `--debug`
 
 * response processors 
 
