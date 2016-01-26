@@ -1671,7 +1671,7 @@ B<--debug|d> - sets value for swat debug parameter
 
 =back
 
-This is the same as debug variable , see (#swat-variables) section, but command line parameter takes higher priority:
+Override the value for swat debug variable, see L<swat variables|#swat-variables> section:
 
     debug=1 swat --debug 2 # set debug to 2
 
