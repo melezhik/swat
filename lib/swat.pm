@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.79';
+our $VERSION = '0.1.80';
 
 use base 'Exporter'; 
 
@@ -55,7 +55,7 @@ sub execute_with_retry {
 
 sub make_http_request {
 
-    return get_prop('http_response') if defined get_prop('http_response');
+    return if get_prop('http_response_ok');
 
     my ($fh, $content_file) = tempfile( DIR => get_prop('test_root_dir') );
 
@@ -65,6 +65,12 @@ sub make_http_request {
 
         open F, ">", $content_file or die $!;
         print F ( join "\n", @{get_prop('response')});
+        close F;
+
+        open F, ">", "$content_file.stderr" or die $!;
+        close F;
+
+        open F, ">", "$content_file.hdr" or die $!;
         close F;
 
         diag "response saved to $content_file";
@@ -78,9 +84,9 @@ sub make_http_request {
 
         $curl_cmd.=' -f'  unless ignore_http_err();
 
-        my $curl_runner = "$curl_cmd -i -o $content_file --stderr $content_file.stderr '$hostname$resource'";
+        my $curl_runner = "$curl_cmd -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource'";
 
-        my $st = execute_with_retry("$curl_runner && test -f $content_file", get_prop('try_num'));
+        my $st = execute_with_retry("$curl_runner && test -f $content_file.hdr", get_prop('try_num'));
 
         if ($st) {
 
@@ -98,6 +104,7 @@ sub make_http_request {
 
             diag($curl_runner);
 
+            diag "stderr:";
             open CURL_ERR, "$content_file.stderr" or die $!;
             while  ( my $i = <CURL_ERR>){
                 chomp $i;
@@ -105,31 +112,52 @@ sub make_http_request {
             }
             close CURL_ERR;
 
-            open CURL_OUT, "$content_file" or die $!;
-            while  ( my $i = <CURL_OUT>){
+            diag "http headers:";
+            open CURL_HDR, "$content_file.hdr" or die $!;
+            while  ( my $i = <CURL_HDR>){
                 chomp $i;
                 diag($i);
             }
-            close CURL_OUT;
+            close CURL_HDR;
+
+            diag "http body:";
+            open CURL_RSP, "$content_file" or die $!;
+            while  ( my $i = <CURL_RSP>){
+                chomp $i;
+                diag($i);
+            }
+            close CURL_RSP;
+
             diag("can't continue here due to unsuccessfull http status code");
             exit(1);
         }
 
-        diag "response saved to $content_file";
+        diag "response http headers saved to $content_file.hdr";
+        diag "response body saved to $content_file";
 
     }
 
+
     open F, $content_file or die $!;
-    my $http_response = '';
-    $http_response.= $_ while <F>;
+    my $body_str = '';
+    $body_str.= $_ while <F>;
     close F;
-    set_prop( http_response => $http_response );
+
+    set_prop( body => $body_str );
+
+    open F, "$content_file.hdr" or die $!;
+    my $headers_str = '';
+    $headers_str.= $_ while <F>;
+    close F;
+
+    set_prop( headers => $headers_str );
 
     my $debug_bytes = get_prop('debug_bytes');
 
-    diag `head -c $debug_bytes $content_file` if debug_mod2();
+    diag `head -c $debug_bytes $content_file` if debug_mod12();
 
-    return get_prop('http_response');
+    set_prop( http_response_ok => 1 );
+
 }
 
 sub header {
@@ -170,7 +198,9 @@ sub generate_asserts {
 
     dsl()->{match_l} = get_prop('match_l');
 
-    dsl()->{output} = make_http_request();
+    make_http_request();
+
+    dsl()->{output} = get_prop('headers').get_prop('body');
 
     eval {
         dsl()->validate($check_file);
