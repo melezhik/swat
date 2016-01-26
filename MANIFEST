@@ -35,6 +35,12 @@ examples/my-app/swat.ini
 examples/post-request/host
 examples/post-request/posts/post.txt
 examples/post-request/posts/swat.ini
+examples/response-processor/get.txt
+examples/response-processor/hook.pm
+examples/response-processor/host
+examples/response-processor2/get.txt
+examples/response-processor2/hook.pm
+examples/response-processor2/host
 examples/subtests/baz/get.txt
 examples/subtests/baz/hook.pm
 examples/subtests/foo/bar/get.txt
