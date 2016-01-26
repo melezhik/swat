@@ -851,9 +851,7 @@ Once suite ini file is read up one may use it in hook.pm files via config()
 
 Once swat is installed you get swat client at the \`PATH':
 
-    swat [[project_root_dir] [host:port]] [swat_command_line_options]
-
-All command parameters are optional.
+    swat [[project_root_dir] [host:port]] [swat_command_line_parameters]
 
 * **project\_root\_dir** - swat project root directory
 
@@ -879,7 +877,7 @@ In case host parameter is missing , swat tries to read it up from \`host' file. 
     # host entry gets read from CWD/host file 
     swat
 
-List of swat command line options:
+List of swat command line parameters:
 
 * **--prove|prove-opts** - sets prove parameters
 
@@ -892,6 +890,12 @@ Sets a distinct sub sets of stories to execute, see [Running subset of stories](
 * **--ini** - test suite ini file path
 
 See [test suite ini file](#test-suite-ini-file) section for details.
+
+* **--debug|d** - sets value for swat debug parameter
+
+This is the same as debug variable , see (#swat-variables) section, but command line parameter takes higher priority:
+
+    debug=1 swat --debug 2 # set debug to 2
 
 # Running subset of stories
 

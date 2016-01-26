@@ -1587,9 +1587,7 @@ Default value is `0' ( do not clear cache ).
 
 Once swat is installed you get swat client at the `PATH':
 
-    swat [[project_root_dir] [host:port]] [swat_command_line_options]
-
-All command parameters are optional.
+    swat [[project_root_dir] [host:port]] [swat_command_line_parameters]
 
 =over
 
@@ -1629,7 +1627,7 @@ In case host parameter is missing , swat tries to read it up from `host' file. E
     # host entry gets read from CWD/host file 
     swat
 
-List of swat command line options:
+List of swat command line parameters:
 
 =over
 
@@ -1664,6 +1662,19 @@ B<--ini> - test suite ini file path
 
 See L<test suite ini file|#test-suite-ini-file> section for details.
 
+=over
+
+=item *
+
+B<--debug|d> - sets value for swat debug parameter
+
+
+=back
+
+This is the same as debug variable , see (#swat-variables) section, but command line parameter takes higher priority:
+
+    debug=1 swat --debug 2 # set debug to 2
+
 
 =head1 Running subset of stories
 
@@ -1697,6 +1708,19 @@ it is possible to use more than one `t' options
 For example:
 
     -t FOO/BAR -t BAR -t FOO/BAZ  
+
+=over
+
+=item *
+
+Or even path more than one argument for -t parameter:
+
+
+=back
+
+For example:
+
+    -t FOO/BAR FOO/BAZ BAR
 
 
 =head1 Examples
