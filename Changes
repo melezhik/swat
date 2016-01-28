@@ -1,3 +1,7 @@
+# 0.1.81 2016-01-28
+
+* function run_response_processor now save  modified response into temporary file so it could be viewed latter
+
 # 0.1.80 2016-01-26
 
 * response processors implementation

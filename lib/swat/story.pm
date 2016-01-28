@@ -3,6 +3,7 @@ package swat::story;
 use strict;
 use base 'Exporter';
 use Outthentic::DSL;
+use File::Temp qw/ tempfile /;
 
 our @EXPORT = qw{ 
 
@@ -268,6 +269,13 @@ sub run_response_processor {
     my $sub = get_prop( 'response_processor' );
 
     my $retval = $sub->($headers,$body);
+
+    my ($fh, $content_file) = tempfile( DIR => get_prop('test_root_dir') );
+
+    open F, ">", $content_file or die $!;
+    print F $retval;
+    close F;
+    Test::More::diag("modified response saved to $content_file");
 
     if (debug_mod12()){
         my $debug_bytes = get_prop('debug_bytes');

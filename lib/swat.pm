@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.80';
+our $VERSION = '0.1.81';
 
 use base 'Exporter'; 
 
@@ -73,7 +73,7 @@ sub make_http_request {
         open F, ">", "$content_file.hdr" or die $!;
         close F;
 
-        diag "spoofed response saved to $content_file";
+        diag "response saved to $content_file";
 
     }else{
 
@@ -132,8 +132,8 @@ sub make_http_request {
             exit(1);
         }
 
-        diag "response http headers saved to $content_file.hdr";
-        diag "response body saved to $content_file";
+        diag "http headers saved to $content_file.hdr";
+        diag "body saved to $content_file";
 
     }
 
@@ -156,9 +156,9 @@ sub make_http_request {
         my $debug_bytes = get_prop('debug_bytes');
         my $bshort = substr( $body_str, 0, $debug_bytes );
         if (length($bshort) < length($body_str)) {
-             diag("$bshort ... ( output truncated to $debug_bytes bytes )"); 
+             diag("body:\n$bshort ... ( output truncated to $debug_bytes bytes )"); 
         } else{
-             diag($body_str);
+             diag("body:\n$body_str");
         }
     }
 
