@@ -44,7 +44,7 @@ sub execute_with_retry {
     my $try = shift || 1;
 
     for my $i (1..$try){
-        diag("\nexecute cmd: $cmd\n attempt number: $i") if debug_mod2();
+        note("\nexecute cmd: $cmd\n attempt number: $i") if debug_mod2();
         return $i if system($cmd) == 0;
         sleep $i**2;
     }
@@ -73,7 +73,7 @@ sub make_http_request {
         open F, ">", "$content_file.hdr" or die $!;
         close F;
 
-        diag "response saved to $content_file";
+        note "response saved to $content_file";
 
     }else{
 
@@ -91,49 +91,49 @@ sub make_http_request {
         if ($st) {
 
             ok(1, "$http_method $hostname$resource succeeded");
-            diag($curl_runner) if debug_mod12();
+            note($curl_runner) if debug_mod12();
 
         }elsif(ignore_http_err()){
 
             ok(1, "$http_method $hostname$resource failed, still continue due to ignore_http_err set to 1");
-            diag($curl_runner) if debug_mod12();
+            note($curl_runner) if debug_mod12();
 
         }else{
 
             ok(0, "$http_method $hostname$resource succeeded");
 
-            diag($curl_runner);
+            note($curl_runner);
 
-            diag "stderr:";
+            note "stderr:";
             open CURL_ERR, "$content_file.stderr" or die $!;
             while  ( my $i = <CURL_ERR>){
                 chomp $i;
-                diag($i);
+                note($i);
             }
             close CURL_ERR;
 
-            diag "http headers:";
+            note "http headers:";
             open CURL_HDR, "$content_file.hdr" or die $!;
             while  ( my $i = <CURL_HDR>){
                 chomp $i;
-                diag($i);
+                note($i);
             }
             close CURL_HDR;
 
-            diag "http body:";
+            note "http body:";
             open CURL_RSP, "$content_file" or die $!;
             while  ( my $i = <CURL_RSP>){
                 chomp $i;
-                diag($i);
+                note($i);
             }
             close CURL_RSP;
 
-            diag("can't continue here due to unsuccessfull http status code");
+            note("can't continue here due to unsuccessfull http status code");
             exit(1);
         }
 
-        diag "http headers saved to $content_file.hdr";
-        diag "body saved to $content_file";
+        note "http headers saved to $content_file.hdr";
+        note "body saved to $content_file";
 
     }
 
@@ -156,9 +156,9 @@ sub make_http_request {
         my $debug_bytes = get_prop('debug_bytes');
         my $bshort = substr( $body_str, 0, $debug_bytes );
         if (length($bshort) < length($body_str)) {
-             diag("body:\n$bshort ... ( output truncated to $debug_bytes bytes )"); 
+             note("body:\n$bshort ... ( output truncated to $debug_bytes bytes )"); 
         } else{
-             diag("body:\n$body_str");
+             note("body:\n$body_str");
         }
     }
 
@@ -215,8 +215,8 @@ sub generate_asserts {
     my $err = $@;
 
     for my $r ( @{dsl()->results}){
+        note($r->{message}) if $r->{type} eq 'debug';
         ok($r->{status}, $r->{message}) if $r->{type} eq 'check_expression';
-        diag($r->{message}) if $r->{type} eq 'debug';
 
     }
 
