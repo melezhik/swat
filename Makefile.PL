@@ -10,7 +10,7 @@ all_from       'lib/swat.pm';
 requires    'Test::More';
 requires    'Test::Harness';
 requires    'File::Temp';
-requires    'Outthentic::DSL' => '0.0.3';
+requires    'Outthentic::DSL' => '0.0.6';
 requires    'Config::Tiny';
 
 license     'perl';
