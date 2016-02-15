@@ -1,6 +1,7 @@
 # 0.1.83
 
-* support for streams
+* stream function exported from dsl
+* match_lines function exported from dsl
 * depends on latest version of Outthentic::DSL
 
 # 0.1.82 2016-01-30

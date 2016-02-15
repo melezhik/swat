@@ -22,10 +22,10 @@ no_index:
 requires:
   Config::Tiny: 0
   File::Temp: 0
-  Outthentic::DSL: 0.0.3
+  Outthentic::DSL: 0.0.6
   Test::Harness: 0
   Test::More: 0
 resources:
   license: http://dev.perl.org/licenses/
   repository: https://github.com/melezhik/swat
-version: 0.1.82
+version: 0.1.83

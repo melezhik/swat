@@ -15,7 +15,7 @@ our @EXPORT = qw{
 
     set_response
 
-    dsl captures capture stream
+    dsl captures capture stream match_lines
 
     run_swat_module apply_module_variables module_variable
 
@@ -158,6 +158,11 @@ sub captures {
 sub stream {
 
     dsl()->{stream}
+}
+
+sub match_lines {
+
+    dsl()->{match_lines}
 }
 
 sub capture {
