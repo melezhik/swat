@@ -1,8 +1,12 @@
-# 0.1.83
+# 0.1.83 2016-02-15
 
 * stream function exported from dsl
+
 * match_lines function exported from dsl
+
 * depends on latest version of Outthentic::DSL
+
+* https://github.com/melezhik/swat/issues/17 fixed (broken pod)
 
 # 0.1.82 2016-01-30
 

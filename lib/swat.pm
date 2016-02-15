@@ -1349,13 +1349,13 @@ There are some accessors to a common swat variables:
 
 =item *
 
-projectI<root>dir()
+project_root_dir()
 
 
 
 =item *
 
-testI<root>dir()
+test_root_dir()
 
 
 
@@ -1385,7 +1385,7 @@ hostname()
 
 =item *
 
-ignoreI<http>err()
+ignore_http_err()
 
 
 

@@ -719,19 +719,19 @@ Of course more proper approaches for state sharing could be used as singeltones 
 
 There are some accessors to a common swat variables:
 
-* project_root_dir()
+* project\_root\_dir()
 
-* test_root_dir()
+* test\_root\_dir()
 
 * resource()
 
-* resource_dir()
+* resource\_dir()
 
-* http_method()
+* http\_method()
 
 * hostname()
 
-* ignore_http_err()
+* ignore\_http\_err()
 
 * config() - returns hash of test suite configuration
 
