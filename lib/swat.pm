@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.83';
+our $VERSION = '0.1.84';
 
 use base 'Exporter'; 
 
@@ -85,24 +85,23 @@ sub make_http_request {
         $curl_cmd.=' -f'  unless ignore_http_err();
 
         my $curl_runner = "$curl_cmd -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource'";
+        my $curl_runner_short = "$curl_cmd -D - '$hostname$resource'";
+
+        note('trying ... '.$curl_runner_short) ; # if debug_mod12();
 
         my $st = execute_with_retry("$curl_runner && test -f $content_file.hdr", get_prop('try_num'));
 
         if ($st) {
 
-            ok(1, "$http_method $hostname$resource succeeded");
-            note($curl_runner) if debug_mod12();
+            ok(1, "server returned successful response");
 
         }elsif(ignore_http_err()){
 
-            ok(1, "$http_method $hostname$resource failed, still continue due to ignore_http_err set to 1");
-            note($curl_runner) if debug_mod12();
+            ok(1, "server returned bad response, we still continue due to ignore_http_err set to 1");
 
         }else{
 
-            ok(0, "$http_method $hostname$resource succeeded");
-
-            note($curl_runner);
+            ok(0, "server returned successful response");
 
             note "stderr:";
             open CURL_ERR, "$content_file.stderr" or die $!;
@@ -132,8 +131,8 @@ sub make_http_request {
             exit(1);
         }
 
-        note "http headers saved to $content_file.hdr";
-        note "body saved to $content_file";
+        note "http headers saved to $content_file.hdr" if debug_mod12();
+        note "body saved to $content_file" if debug_mod12();
 
     }
 

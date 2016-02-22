@@ -1,3 +1,7 @@
+# 0.1.84
+
+* swat client - changed default output layout, made it less verbose, more simple and more clear 
+
 # 0.1.83 2016-02-15
 
 * stream function exported from dsl
