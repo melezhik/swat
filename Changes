@@ -1,3 +1,7 @@
+# 0.1.85 2016-02-29
+
+* made debug12 mode less verbose to easier debugging 
+
 # 0.1.84 2016-02-22
 
 * swat client - changed default output layout, made it less verbose, more simple and more clear 
@@ -44,7 +48,7 @@
 
 * Hooks API -  \`set_response' could be called more than once
 
-* https://github.com/melezhik/swat/pull/16 - by [Luca Ferrari](https://github.com/fluca1978) - Thanks alot!
+* https://github.com/melezhik/swat/pull/16 - by [Luca Ferrari](https://github.com/fluca1978) - Thanks a lot!
 
 # 0.1.76 2016-01-11
 
@@ -52,7 +56,7 @@
 
 # 0.1.75 2015-12-30
 
-* documentation release ( typo fix, thanks to Lance Wicks - pull/15; swat_purge_cache and swat_my variables descibed  )
+* documentation release ( typo fix, thanks to Lance Wicks - pull/15; swat_purge_cache and swat_my variables described  )
 
 # 0.1.74 2015-12-30
 
@@ -67,15 +71,15 @@ This feature is required for sparrow integration.
 # 0.1.72 2015-12-26
 
 * *BREAKING CHANGES*:
-    * test_file is depricated - use \`-t' option instead
-    * prove settings should be passed via \`--prove' option now ( old behaviour - "pass as is")
+    * test_file is deprecated - use \`-t' option instead
+    * prove settings should be passed via \`--prove' option now ( old behavior - "pass as is")
 * swat_purge_cache could be set in different contexts ( env var, swat.ini )
 
 
 # 0.1.71 2015-12-15
 
-* unsuccessfull http status codes now result in immediate exit(1) and proper diag message.
-* fix pod issue ( added =pod marker in the begining of pod) - thanks to [alaska332](http://habrahabr.ru/users/alaska332/)
+* unsuccessful http status codes now result in immediate exit(1) and proper diag message.
+* fix pod issue ( added =pod marker in the beginning of pod) - thanks to [alaska332](http://habrahabr.ru/users/alaska332/)
 
 # 0.1.70 2015-12-09
 
@@ -91,11 +95,11 @@ This feature is required for sparrow integration.
 
 # 0.1.67 2015-11-12
 
-* bin/swat - hostfix for host:port issue ( second try )
+* bin/swat - hotfix for host:port issue ( second try )
 
 # 0.1.66 2015-11-12
 
-* bin/swat - hostfix for host:port issue 
+* bin/swat - hotfix for host:port issue 
 
 # 0.1.65 2015-11-08
 
@@ -120,7 +124,7 @@ This feature is required for sparrow integration.
 
 # 0.1.61 2015-10-23
 
-* small chanhes in TAP output
+* small changes in TAP output
 * --match_l variable - in TAP output truncate matching strings to {match_l} bytes
 
 # 0.1.60
@@ -151,7 +155,7 @@ This feature is required for sparrow integration.
 - breaking changes 
   - dynamic routes are deprecated
   - bash hooks are deprecated
-  - project based and cleanup perl hooks are depricated
+  - project based and cleanup perl hooks are deprecated
   - swat packages are deprecated
   
 # 0.1.54
@@ -170,13 +174,13 @@ This feature is required for sparrow integration.
 # 0.1.51
 - new feature - PUT requests
 - dynamic routes could contain digits, '-', and '_' 
-- made filnames for tests and http response much shorter 
+- made filenames for tests and http response much shorter 
 
 # 0.1.50
 - fast fix for context_populate issue
 
 # 0.1.49
-- documentation fixes ( brougth by 0.1.48 version )
+- documentation fixes ( brought by 0.1.48 version )
 
 # 0.1.48
 - new feature - begin: ... end: blocks
@@ -255,7 +259,7 @@ This feature is required for sparrow integration.
 
 # 0.1.28
 - Makefile.PL - use Module::Install instead of ExtUtils::MakeMaker
-- swatman is depricated
+- swatman is deprecated
 - now swat packages as cpan packages
 - apply environment settings with highest priority
 

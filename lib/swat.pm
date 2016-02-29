@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.84';
+our $VERSION = '0.1.85';
 
 use base 'Exporter'; 
 
@@ -87,7 +87,7 @@ sub make_http_request {
         my $curl_runner = "$curl_cmd -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource'";
         my $curl_runner_short = "$curl_cmd -D - '$hostname$resource'";
 
-        note('trying ... '.$curl_runner_short) ; # if debug_mod12();
+        note('trying ... '.$curl_runner_short) ;
 
         my $st = execute_with_retry("$curl_runner && test -f $content_file.hdr", get_prop('try_num'));
 
@@ -195,7 +195,7 @@ sub generate_asserts {
 
     my $check_file = shift;
 
-    header() if debug_mod12();
+    header() if debug_mod2();
 
     dsl()->{debug_mod} = get_prop('debug');
 
