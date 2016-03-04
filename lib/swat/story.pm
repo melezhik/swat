@@ -179,7 +179,8 @@ sub run_swat_module {
 
     my $test_root_dir = get_prop('test_root_dir');
 
-    my $module_file = "$test_root_dir/$resource/00.$http_method.m";
+    my $http_method_path = uc($http_method);
+    my $module_file = "$test_root_dir/$resource/$http_method_path/request.mod";
 
     if (debug_mod12()){
         Test::More::ok(1,"run swat module: $http_method => $resource"); 

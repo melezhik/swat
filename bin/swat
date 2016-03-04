@@ -184,7 +184,6 @@ for f in `$find_cmd`; do
     fi
 
 
-    mkdir -p "${test_root_dir}/${resource}";
 
     if [ -n "${port}" ]; then
         real_host="$host:$port"
@@ -212,11 +211,15 @@ for f in `$find_cmd`; do
        curl_cmd="$curl_cmd -L"
     fi
 
+
     if [ "$swat_module" -eq '0' ]; then
-        tfile="${test_root_dir}/${resource}/00.${http_method}.t"
+        mkdir -p "${test_root_dir}/${resource}/${http_method}"
+        tfile="${test_root_dir}/${resource}/${http_method}/request.t"
     else
-        tfile="${test_root_dir}/${resource}/00.${http_method}.m"
+        mkdir -p "${test_root_dir}/${resource}/${http_method}"
+        tfile="${test_root_dir}/${resource}/${http_method}/request.mod"
     fi
+
 
     tt=$((tt+1))
 

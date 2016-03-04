@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.86';
+our $VERSION = '0.1.87';
 
 use base 'Exporter'; 
 
@@ -131,8 +131,8 @@ sub make_http_request {
             exit(1);
         }
 
-        note "http headers saved to $content_file.hdr" if debug_mod12();
-        note "body saved to $content_file" if debug_mod12();
+        note "http headers saved to $content_file.hdr";
+        note "body saved to $content_file";
 
     }
 
