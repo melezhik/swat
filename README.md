@@ -395,6 +395,8 @@ Follow curl documentation to get more examples.
 
 * `curl_max_time` - maximum time in seconds that you allow the whole operation to take, follow curl documentation for full explanation.
 
+* `curl_follow_redirect` - make curl to respect http redirects. default value is \`1\' ( respect ), set this setting to 0 if you don't want for some reasons follow http redirects
+
 * `port`  - http port of tested host, default value is \`80'.
 
 ## other variables

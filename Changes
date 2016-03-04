@@ -1,3 +1,7 @@
+# 0.1.86 2016-03-04
+
+* curl `-L` now replaced by curl_follow_redirect variable
+
 # 0.1.85 2016-02-29
 
 * made debug12 mode less verbose to easier debugging 

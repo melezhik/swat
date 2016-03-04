@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.85';
+our $VERSION = '0.1.86';
 
 use base 'Exporter'; 
 
@@ -881,6 +881,12 @@ C<curl_connect_timeout> - maximum time in seconds that you allow the connection 
 =item *
 
 C<curl_max_time> - maximum time in seconds that you allow the whole operation to take, follow curl documentation for full explanation.
+
+
+
+=item *
+
+C<curl_follow_redirect> - make curl to respect http redirects. default value is `1\' ( respect ), set this setting to 0 if you don't want for some reasons follow http redirects
 
 
 

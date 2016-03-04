@@ -119,6 +119,9 @@ if [ -n "${curl_connect_timeout}" ]; then
     echo "curl_connect_timeout=$curl_connect_timeout" >> $session_file
 fi
 
+if [ -n "${curl_follow_redirect}" ]; then
+    echo "curl_follow_redirect=$curl_follow_redirect" >> $session_file
+fi
 
 if [ -n "${swat_purge_cache}" ]; then
     echo "swat_purge_cache=$swat_purge_cache" >> $session_file
@@ -139,6 +142,7 @@ for f in `$find_cmd`; do
     unset debug
     unset curl_max_time
     unset curl_connect_timeout
+    unset curl_follow_redirect
     unset curl_params
     unset port
     unset swat_module
@@ -162,6 +166,7 @@ for f in `$find_cmd`; do
     debug=${debug:=0}
     debug_bytes=${debug_bytes:=500}
     curl_max_time=${curl_max_time:=20}
+    curl_follow_redirect=${curl_follow_redirect:=1}
     curl_connect_timeout=${curl_connect_timeout:=20}
     swat_module=${swat_module:=0}
     ignore_http_err=${ignore_http_err:=0}
@@ -197,10 +202,14 @@ for f in `$find_cmd`; do
 
     curl_cmd="curl -X $http_method"
 
-    curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time -L"
+    curl_cmd="${curl_cmd} -k --connect-timeout $curl_connect_timeout -m $curl_max_time"
 
     if [ -n "${curl_params}" ]; then
        curl_cmd="$curl_cmd ${curl_params}"
+    fi
+
+    if [ "$curl_follow_redirect" -ne '0' ]; then
+       curl_cmd="$curl_cmd -L"
     fi
 
     if [ "$swat_module" -eq '0' ]; then
