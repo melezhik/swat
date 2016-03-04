@@ -1,20 +1,20 @@
-# 0.1.87 2016-03-04
+0.1.87 2016-03-04
 
 * internal tests directory structure changed - should not alter public API behavior
 
-# 0.1.86 2016-03-04
+0.1.86 2016-03-04
 
 * curl `-L` now replaced by curl_follow_redirect variable
 
-# 0.1.85 2016-02-29
+0.1.85 2016-02-29
 
 * made debug12 mode less verbose to easier debugging 
 
-# 0.1.84 2016-02-22
+0.1.84 2016-02-22
 
 * swat client - changed default output layout, made it less verbose, more simple and more clear 
 
-# 0.1.83 2016-02-15
+0.1.83 2016-02-15
 
 * stream function exported from dsl
 
@@ -24,31 +24,31 @@
 
 * https://github.com/melezhik/swat/issues/17 fixed (broken pod)
 
-# 0.1.82 2016-01-30
+0.1.82 2016-01-30
 
 * bin/swat - resource name calculation hotfix for paths like  foo.txt/bar.txt/get.txt  
 
-# 0.1.81 2016-01-28
+0.1.81 2016-01-28
 
 * function run_response_processor now save  modified response into temporary file so it could be viewed latter
 
-# 0.1.80 2016-01-26
+0.1.80 2016-01-26
 
 * response processors implementation
 * diag response - unix `head` command replaced by perl code
 
-# 0.1.79  2016-01-26
+0.1.79  2016-01-26
 
 * ability to pass group of tests as -t path1 path2 path3 ... - https://github.com/melezhik/swat/issues/13
 * new command line parameter `--debug`
 
 * response processors 
 
-# 0.1.78 2016-01-18
+0.1.78 2016-01-18
 
 * regenerated build for the sake of meta.yml get lost for last one ( a pesky issue for me )
 
-# 0.1.77 2016-01-18
+0.1.77 2016-01-18
 
 * Breaking changes - swat.my is deprecated ( use test suite ini file instead )
 
@@ -58,25 +58,25 @@
 
 * https://github.com/melezhik/swat/pull/16 - by [Luca Ferrari](https://github.com/fluca1978) - Thanks a lot!
 
-# 0.1.76 2016-01-11
+0.1.76 2016-01-11
 
 * documentation release ( typos fixes, swat client command line options cleared, response processors feature announced ( not implemented yet  )
 
-# 0.1.75 2015-12-30
+0.1.75 2015-12-30
 
 * documentation release ( typo fix, thanks to Lance Wicks - pull/15; swat_purge_cache and swat_my variables described  )
 
-# 0.1.74 2015-12-30
+0.1.74 2015-12-30
 
 * hot fix - resource variable calculation in right place, so swat.ini "see" correct value of $resource
 
-# 0.1.73 2015-12-29
+0.1.73 2015-12-29
 
 * swat now respects swat_my environment to use a swat.my file located not only in CWD. 
 
 This feature is required for sparrow integration.
 
-# 0.1.72 2015-12-26
+0.1.72 2015-12-26
 
 * *BREAKING CHANGES*:
     * test_file is deprecated - use \`-t' option instead
@@ -84,44 +84,44 @@ This feature is required for sparrow integration.
 * swat_purge_cache could be set in different contexts ( env var, swat.ini )
 
 
-# 0.1.71 2015-12-15
+0.1.71 2015-12-15
 
 * unsuccessful http status codes now result in immediate exit(1) and proper diag message.
 * fix pod issue ( added =pod marker in the beginning of pod) - thanks to [alaska332](http://habrahabr.ru/users/alaska332/)
 
-# 0.1.70 2015-12-09
+0.1.70 2015-12-09
 
 * dump curl stderr
 
-# 0.1.69 2015-12-09
+0.1.69 2015-12-09
 
 * now ignore_http_err=1 results in running curl without -f flag to allow see http response body for bad responses - https://github.com/melezhik/swat/issues/5
 * use `curl -o file` instead of redirect to file to save responses 
 
-# 0.1.68 2015-11-16
+0.1.68 2015-11-16
 * swat_purge_cache: ability to remove swat cache directory after tests are done
 
-# 0.1.67 2015-11-12
+0.1.67 2015-11-12
 
 * bin/swat - hotfix for host:port issue ( second try )
 
-# 0.1.66 2015-11-12
+0.1.66 2015-11-12
 
 * bin/swat - hotfix for host:port issue 
 
-# 0.1.65 2015-11-08
+0.1.65 2015-11-08
 
 * this version is fully compatible with the latest version of Outthentic::DSL (0.0.3)
 
-# 0.1.64
+0.1.64
 
 * skip story feature added
 
-# 0.1.63 2015-10-30
+0.1.63 2015-10-30
 
 * minor documentation changes
 
-# 0.1.62 2015-10-30
+0.1.62 2015-10-30
 
 * Outthentic::DSL - now is a distinct module
 * made use of Outthentic::DSL
@@ -130,29 +130,29 @@ This feature is required for sparrow integration.
 * bin/swat minor changes
 
 
-# 0.1.61 2015-10-23
+0.1.61 2015-10-23
 
 * small changes in TAP output
 * --match_l variable - in TAP output truncate matching strings to {match_l} bytes
 
-# 0.1.60
+0.1.60
 - removed old dependencies from Makefile.PL
 - project_root_dir() now return correct value
 - minor issues related TAP output
 
 
-# 0.1.59
+0.1.59
 - documentation improvements
 - curl <host/resource> parameter now is single quoted
 
-# 0.1.57-58
+0.1.57-58
 - add META.yml to cpan distribution
 
-# 0.1.56
+0.1.56
 - handle errors from files loaded by do() function()
 
 
-# 0.1.55
+0.1.55
 - documentation rewritten completely
 - new features: 
   - perl hooks api: modify_resourse, accessors, stories, swat_modules, set_server_response  
@@ -166,200 +166,200 @@ This feature is required for sparrow integration.
   - project based and cleanup perl hooks are deprecated
   - swat packages are deprecated
   
-# 0.1.54
+0.1.54
 - just a documentation release - various fixes at documentation
 
-# 0.1.53
+0.1.53
 - new feature - captures
 - variable names refactoring
 - ability to run a single test
 
 
-# 0.1.52
+0.1.52
 - by bmartins - removed trailing slash that breaks paths on OSX - PR#2
 - block-of-text ok asserts are prefixed by '|' for visability
 
-# 0.1.51
+0.1.51
 - new feature - PUT requests
 - dynamic routes could contain digits, '-', and '_' 
 - made filenames for tests and http response much shorter 
 
-# 0.1.50
+0.1.50
 - fast fix for context_populate issue
 
-# 0.1.49
+0.1.49
 - documentation fixes ( brought by 0.1.48 version )
 
-# 0.1.48
+0.1.48
 - new feature - begin: ... end: blocks
 
-# 0.1.47
+0.1.47
 - MANIFEST.SKIP corrected
 - show matched lines when debug_mod1
 
-# 0.1.46
+0.1.46
 - debug2 now shows swat info
 
-# 0.1.45
+0.1.45
 - minor refactoring - improving some test::more ok() messages from swat
 - fix for debug_mod1 silent behavior 
 
-# 0.1.44
+0.1.44
 - remove some diag messages from output ( show them only when debug is set )
 - debug 1,2,3 - many levels of verbosity
 
-# 0.1.43
+0.1.43
 - hotfix for final exit code
 
-# 0.1.42
+0.1.42
 - use-strict refactoring
 - project is equal safe_project
 
-# 0.1.41
+0.1.41
 - absolute paths for route_dir, project 
 
-# 0.1.40
+0.1.40
 - fix for bash global startup script
 - export port variable
 
-# 0.1.39
+0.1.39
 - swat cleanup/startup hooks
 - route_dir variable in lib/swat.pm
 
-# 0.1.38
+0.1.38
 - small documentation changes
 
-# 0.1.37
+0.1.37
 - bash hooks
 
-# 0.1.36
+0.1.36
 - fix for default host for swat packages
 
 
-# 0.1.35
+0.1.35
 - swat.my settings to override project based swat.ini files
 - all bash variables get unset before a new route is started 
 - added examples to cpan distro
 
-# 0.1.34
+0.1.34
 - removed pwd from require path to hook.pm files
 - fix for regexp checks with quoted patterns
 
-# 0.1.33
+0.1.33
 - documentation typo fixes - thanks to @zoffixznet - pull/1
 - small refactoring ( better names for variables )
 - added abstract and copyright sections
 
 
-# 0.1.32
+0.1.32
 - small documentation fixes
 - does not print result of File::ShareDir::module_dir in conditional statement  
 - respect prove_options set as environment variable
 
-# 0.1.31
+0.1.31
 - correct calculation of swat settings 
 
-# 0.1.30
+0.1.30
 - hotfix for curl_params='' issue 
 
-# 0.1.29
+0.1.29
 - technical release, ./examples directory removed from CPAN archive   
 
-# 0.1.28
+0.1.28
 - Makefile.PL - use Module::Install instead of ExtUtils::MakeMaker
 - swatman is deprecated
 - now swat packages as cpan packages
 - apply environment settings with highest priority
 
 
-# 0.1.27
+0.1.27
 - prove options could be set by prove_options environment variable 
 - typos fixes in documentation
 - default host  feature 
 - host validation
 
-# 0.1.24
+0.1.24
 - fix for running swat ./
 
-# 0.1.23
+0.1.23
 - dynamic routes
 
-# 0.1.22
+0.1.22
 - removed none ASCII symbols from pod
 
-# 0.1.21
+0.1.21
 - swat hooks
 - documentation fixes 
 
-# 0.1.20
+0.1.20
 - a documentation release
 
-# 0.1.18
+0.1.18
 - swat packages support
 - PERL5LIB in swat doc
 
 
-# 0.1.17
+0.1.17
 - update documentation
 - add version() function to get swat package version
 
 
-# 0.1.15
+0.1.15
 - update documentation 
 - noproxy deprecated
 - multiline entities
 
-# 0.1.13
+0.1.13
 - Add swat entities generators 
 - Add noproxy settings
 - Fix pod documentation 
 
 
-# 0.1.12
+0.1.12
 - Add pod documentation to lib/swat.pm
 
-# 0.1.11
+0.1.11
 - Makefile.PL sets swat.pm version in provides hash to make it visible at CPAN
 
-# 0.1.10
+0.1.10
 - CPAN compatible version ( minor fixes in Makefile.PL )
 
-# 0.1.9
+0.1.9
 - Makefile.PL - does not require any specific version of perl 
 
-# 0.1.8
+0.1.8
 - http port variable
 - update documentation 
 - improve examples
 
 
-# 0.1.7
+0.1.7
 - small fixes related swat settings 
 - add some extra info in swat output 
 - a lot of improvements to documentation
 - add todo list
 
-# 0.1.6
+0.1.6
 - does not add http:// for requested url 
 
-# 0.1.5
+0.1.5
 - curl_params variable now is respected 
 - small internal changes ( path to session file )
 
 
-# 0.1.4
+0.1.4
 - fix typos in README
 - notion of prove options in README
 - add some extra info in swat output 
 
 
-# 0.1.3
+0.1.3
 - fix for case when post and get check patterns files exist for the same route
 - typo fixes in lib/swat.pm help info 
 
-# 0.1.1
+0.1.1
 - increase connect-timeout to 20 seconds
 
 
-# 0.1.0
+0.1.0
 - first version
