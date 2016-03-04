@@ -1,4 +1,4 @@
-# 0.1.87 
+# 0.1.87 2016-03-04
 
 * internal tests directory structure changed - should not alter public API behavior
 
