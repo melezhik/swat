@@ -215,7 +215,7 @@ for f in `$find_cmd`; do
     fi
 
 
-    if [ "$swat_module" -eq '0' ]; then
+    if test $swat_module -eq 0 ; then
         mkdir -p "${test_root_dir}/${resource}/${http_method}"
         tfile="${test_root_dir}/${resource}/${http_method}/request.t"
     else
@@ -237,7 +237,7 @@ for f in `$find_cmd`; do
     echo >> $tfile
 
 
-    if [ "$swat_module" -eq '0' ]; then
+    if test $swat_module -eq 0 && test "${http_method}" != "meta" ; then
         echo "use Test::More q{no_plan};"  >> $tfile
     fi
 
@@ -283,10 +283,8 @@ for f in `$find_cmd`; do
 
     echo >> $tfile
 
-    echo "SKIP: {" >> $tfile
-    echo -e "\t eval { generate_asserts(q{$f}) }; die \$@ if \$@;" >> $tfile;
+    echo -e "eval { generate_asserts(q{$f}) }; die \$@ if \$@;" >> $tfile;
     echo >> $tfile
-    echo "}" >> $tfile
 
     echo >> $tfile
     echo >> $tfile
