@@ -92,6 +92,8 @@ Here is the list of _predefined_ file names for a http methods files:
     put.txt      --> PUT      method
     delete.txt   --> DELETE   method
 
+There is also special predifined file name \`meta.txt', see [meta stories](#meta-stories).
+
 # Hostname / IP Address
 
 You need to define hostname or ip address to send request to. 
@@ -739,12 +741,13 @@ There are some accessors to a common swat variables:
 
 See [test suite ini file](#test-suite-ini-file) section for details.
 
-Be aware of that these functions are readers not setters.
+Be aware of that these functions are readers.
 
 ## meta stories
 
-Meta stories res special swat stories. The essential feature of meta story is it does not relate to
-http request:
+Meta stories are special type of swat stories. 
+
+The essential property of meta story is it has no related http request:
 
     # foo/bar story
     mkdir foo/bar
@@ -752,12 +755,21 @@ http request:
     # it's a meta story
     touch foo/bar/meta.txt
 
-As meta story does not have any related http request - it has no \`http method' files either.
+As meta story does not have any related http request, it has no \`http method' file either.
+
+A `meta.txt' file should be treated as meta request file denoted that story is meta.
+
+You may live \`meta.txt' empty file or add some useful description to be printed  when story is executed:
+
+    nano foo/bar/meta.txt
+
+        This is my cool story. 
+        Take a look at this!
 
 How one could use meta stories?
 
 Meta stories are just _containers_ for other downstream stories. Usually one defines some downstream
-stories call inside meta story hook:
+stories call inside meta story's hook file:
 
     nano foo/bar/hook.pm
 
@@ -765,21 +777,17 @@ stories call inside meta story hook:
         run_swat_module( POST => '/baz/bar' );
 
 
-\`meta.txt' file used for:
+\`meta.txt' file is used to:
 
 * denote story as meta story
 
-* adds some useful description to be out during story execution:
+
+Meta stories are very close to upstream stories with spoofed server response, 
+with the only exclusion that as meta story has no real http request related to it, 
+there is no need for spoofing.
 
 
-    nano foo/bar/meta.txt
-
-        This is my cool story. 
-        Take a look at this!
-
-Meta stories are very close to upstream stories with spoofed server response, with exclusion that one don't have to add spoofing for meta story as does not relate to any http request.
-
-
+Meta stories can't be called as downstream stories, in other words they could not be swat modules.
 
 ## PERL5LIB
 

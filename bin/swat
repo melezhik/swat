@@ -131,7 +131,12 @@ fi
 
 tt=1
 
-find_cmd="find $project -type f -name get.txt -o -name post.txt -o -name put.txt -o -name delete.txt"
+find_cmd="find $project -type f \
+-name get.txt \
+-o -name post.txt \
+-o -name put.txt \
+-o -name delete.txt\
+-o -name meta.txt"
 
 for f in `$find_cmd`; do
 
@@ -182,8 +187,6 @@ for f in `$find_cmd`; do
     if test "$skip_story" -eq 1; then
         continue
     fi
-
-
 
     if [ -n "${port}" ]; then
         real_host="$host:$port"

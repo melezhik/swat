@@ -87,7 +87,7 @@ sub make_http_request {
         my $curl_runner = "$curl_cmd -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource'";
         my $curl_runner_short = "$curl_cmd -D - '$hostname$resource'";
 
-        note('trying ... '.$curl_runner_short) ;
+        note('@curl ... '.$curl_runner_short) ;
 
         my $st = execute_with_retry("$curl_runner && test -f $content_file.hdr", get_prop('try_num'));
 
