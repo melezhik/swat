@@ -741,6 +741,46 @@ See [test suite ini file](#test-suite-ini-file) section for details.
 
 Be aware of that these functions are readers not setters.
 
+## meta stories
+
+Meta stories res special swat stories. The essential feature of meta story is it does not relate to
+http request:
+
+    # foo/bar story
+    mkdir foo/bar
+
+    # it's a meta story
+    touch foo/bar/meta.txt
+
+As meta story does not have any related http request - it has no \`http method' files either.
+
+How one could use meta stories?
+
+Meta stories are just _containers_ for other downstream stories. Usually one defines some downstream
+stories call inside meta story hook:
+
+    nano foo/bar/hook.pm
+
+        run_swat_module( POST => '/baz' );
+        run_swat_module( POST => '/baz/bar' );
+
+
+\`meta.txt' file used for:
+
+* denote story as meta story
+
+* adds some useful description to be out during story execution:
+
+
+    nano foo/bar/meta.txt
+
+        This is my cool story. 
+        Take a look at this!
+
+Meta stories are very close to upstream stories with spoofed server response, with exclusion that one don't have to add spoofing for meta story as does not relate to any http request.
+
+
+
 ## PERL5LIB
 
 Swat adds \`project\_root\_directory/lib' path to PERL5LIB path, which make it easy to add some modules and use them:
