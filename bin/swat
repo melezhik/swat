@@ -279,6 +279,10 @@ for f in `$find_cmd`; do
     echo >> $tfile
     echo >> $tfile
 
+    if test $http_method = "meta" ; then
+        echo "print_meta();"  >> $tfile
+    fi
+
     test -f $resource_dir/hook.pm && echo "do_perl_file('${resource_dir}/hook.pm');"  >> $tfile
 
     echo >> $tfile

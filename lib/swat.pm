@@ -38,26 +38,14 @@ sub config {
     return $config;
 }
 
-sub execute_with_retry {
-
-    my $cmd = shift;
-    my $try = shift || 1;
-
-    for my $i (1..$try){
-        note("\nexecute cmd: $cmd\n attempt number: $i") if debug_mod2();
-        return $i if system($cmd) == 0;
-        sleep $i**2;
-    }
-
-    return
-
-}
-
 sub make_http_request {
 
     return if get_prop('response_done');
 
     my ($fh, $content_file) = tempfile( DIR => get_prop('test_root_dir') );
+    
+    my $try_i = 0;
+    my $try = get_prop('try_num');
 
     if (get_prop('response') and @{get_prop('response')} ){
 
@@ -82,29 +70,40 @@ sub make_http_request {
         my $resource = get_prop('resource');
         my $http_method = get_prop('http_method'); 
 
-        $curl_cmd.=' -f'  unless ignore_http_err();
-
-        my $curl_runner = "$curl_cmd -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource'";
+        my $curl_runner = "$curl_cmd -w '%{response_code}' -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource' > $content_file.http_status";
         my $curl_runner_short = "$curl_cmd -D - '$hostname$resource'";
+        my $http_status = '?';
 
-        #note($curl_runner_short);
+        TRY: for $try_i (1..$try){
+            note("try N [$try_i] $curl_runner") if debug_mod12();
+            if(open HTTP_STATUS, "$content_file.http_status"){
+                $http_status = <HTTP_STATUS>;
+                close HTTP_STATUS;
+                last TRY if $http_status == 200;
+            }
+            my $delay = ($try_i)**2;
+            note("sleep for $delay seconds before next try");
+            sleep $delay; 
 
-        my $st = execute_with_retry("$curl_runner && test -f $content_file.hdr", get_prop('try_num'));
+        }
+    
+        #note($curl_runner);
 
-        if ($st) {
+        if ( $http_status == 200 ) {
 
-             ok(1, $curl_runner_short);
+             ok(1, "200 / $try_i of $try ".$curl_runner_short);
 
         }elsif(ignore_http_err()){
 
-            ok(1, $curl_runner_short);
+            ok(1, "$http_status / $try_i of $try ".$curl_runner_short);
             note("server returned bad response, we still continue due to ignore_http_err set to 1");
 
         }else{
 
-            ok(0, $curl_runner_short);
+            ok(1, "$http_status / $try_i of $try ".$curl_runner_short);
 
             note "stderr:";
+
             open CURL_ERR, "$content_file.stderr" or die $!;
             while  ( my $i = <CURL_ERR>){
                 chomp $i;
@@ -198,18 +197,6 @@ sub generate_asserts {
 
     header() if debug_mod2();
 
-    
-    if (http_method() eq 'META'){
-        note('@'.http_method());
-        open META, resource_dir()."/meta.txt" or die $!;
-        while (my $i = <META>){
-            note("\t $i");
-        }
-        close META;
-    }else{
-        # note('@'.http_method())
-    }
-
     dsl()->{debug_mod} = get_prop('debug');
 
     dsl()->{match_l} = get_prop('match_l');
@@ -236,6 +223,17 @@ sub generate_asserts {
 
     confess "parser error: $err" if $err;
 
+}
+
+sub print_meta {
+
+    note('@'.http_method());
+    open META, resource_dir()."/meta.txt" or die $!;
+    while (my $i = <META>){
+        note("\t $i");
+    }
+    close META;
+    
 }
 
 1;
