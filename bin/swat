@@ -279,7 +279,7 @@ for f in `$find_cmd`; do
     echo >> $tfile
     echo >> $tfile
 
-    if test $http_method = "meta" ; then
+    if test $http_method = "META" ; then
         echo "print_meta();"  >> $tfile
     fi
 
