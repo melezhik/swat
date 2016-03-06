@@ -72,26 +72,31 @@ sub make_http_request {
 
         my $curl_runner = "$curl_cmd -w '%{response_code}' -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource' > $content_file.http_status";
         my $curl_runner_short = "$curl_cmd -D - '$hostname$resource'";
-        my $http_status = '?';
+        my $http_status = 0;
 
         TRY: for $try_i (1..$try){
             note("try N [$try_i] $curl_runner") if debug_mod12();
+            system($curl_runner);
             if(open HTTP_STATUS, "$content_file.http_status"){
                 $http_status = <HTTP_STATUS>;
                 close HTTP_STATUS;
-                last TRY if $http_status == 200;
+                chomp $http_status;
+                note("got http status: $http_status") if debug_mod12();
+                last TRY if $http_status <= 400 and $http_status >= 100;
+                last TRY if $http_status > 400 and ignore_http_err();
+
             }
             my $delay = ($try_i)**2;
-            note("sleep for $delay seconds before next try");
+            note("sleep for $delay seconds before next try") if debug_mod12();
             sleep $delay; 
 
         }
     
         #note($curl_runner);
 
-        if ( $http_status == 200 ) {
+        if ( $http_status <= 400 ) {
 
-             ok(1, "200 / $try_i of $try ".$curl_runner_short);
+             ok(1, "$http_status / $try_i of $try ".$curl_runner_short);
 
         }elsif(ignore_http_err()){
 
