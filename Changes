@@ -1,8 +1,10 @@
-0.1.88
+0.1.88 2016-03-06
 
 * new feature - meta stories
 
 * checking http code instead of relying on `curl -f`
+
+* TAP output improved
 
 0.1.87 2016-03-04
 

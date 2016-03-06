@@ -92,7 +92,7 @@ Here is the list of _predefined_ file names for a http methods files:
     put.txt      --> PUT      method
     delete.txt   --> DELETE   method
 
-There is also special predifined file name \`meta.txt', see [meta stories](#meta-stories).
+There is also special predefined file name \`meta.txt', see [meta stories](#meta-stories).
 
 # Hostname / IP Address
 
@@ -777,17 +777,19 @@ stories call inside meta story's hook file:
         run_swat_module( POST => '/baz/bar' );
 
 
-\`meta.txt' file is used to:
-
-* denote story as meta story
-
 
 Meta stories are very close to upstream stories with spoofed server response, 
 with the only exclusion that as meta story has no real http request related to it, 
 there is no need for spoofing.
 
 
-Meta stories can't be called as downstream stories, in other words they could not be swat modules.
+Meta stories can be also called as downstream stories:
+
+    # I am downstream story
+    # you can call me from somewhere esle
+    nano foo/bar/swat.ini
+        swat_module=1
+
 
 ## PERL5LIB
 

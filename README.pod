@@ -171,6 +171,8 @@ Here is the list of I<predefined> file names for a http methods files:
     put.txt      --> PUT      method
     delete.txt   --> DELETE   method
 
+There is also special predefined file name `meta.txt', see L<meta stories|#meta-stories>.
+
 
 =head1 Hostname / IP Address
 
@@ -1171,7 +1173,52 @@ config() - returns hash of test suite configuration
 
 See L<test suite ini file|#test-suite-ini-file> section for details.
 
-Be aware of that these functions are readers not setters.
+Be aware of that these functions are readers.
+
+
+=head2 meta stories
+
+Meta stories are special type of swat stories. 
+
+The essential property of meta story is it has no related http request:
+
+    # foo/bar story
+    mkdir foo/bar
+    
+    # it's a meta story
+    touch foo/bar/meta.txt
+
+As meta story does not have any related http request, it has no `http method' file either.
+
+A `meta.txt' file should be treated as meta request file denoted that story is meta.
+
+You may live `meta.txt' empty file or add some useful description to be printed  when story is executed:
+
+    nano foo/bar/meta.txt
+    
+        This is my cool story. 
+        Take a look at this!
+
+How one could use meta stories?
+
+Meta stories are just I<containers> for other downstream stories. Usually one defines some downstream
+stories call inside meta story's hook file:
+
+    nano foo/bar/hook.pm
+    
+        run_swat_module( POST => '/baz' );
+        run_swat_module( POST => '/baz/bar' );
+
+Meta stories are very close to upstream stories with spoofed server response, 
+with the only exclusion that as meta story has no real http request related to it, 
+there is no need for spoofing.
+
+Meta stories can be also called as downstream stories:
+
+    # I am downstream story
+    # you can call me from somewhere esle
+    nano foo/bar/swat.ini
+        swat_module=1
 
 
 =head2 PERL5LIB
