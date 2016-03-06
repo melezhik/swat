@@ -346,14 +346,11 @@ For example:
         skip_story=1 # we don't want this one for production
     fi
 
-* `ignore_http_err` - run curl with or without \`-f' flag
+* `ignore_http_err` - ignore http related errors; default value is \`1' ( do not ignore ) 
 
-    * swat runs curl command and then checks exit code returned
-    * if not successful exit code returns a proper swat assert fails
-    * by default ignore\_http\_err is set to 0 which make curl run with \`-f' flag, for not successful http responses ( bad http status code )
-      this means error on swat side ( see previous point )
-    * settings ignore\_http\_err to \`1' make curl run curl without \`-f' flag which result in even non successful http responses are not treated as errors 
-    ( a proper swat assert does not fail )
+    * swat runs curl command and then checks http status code
+    * in case of bad http status code returns ( > 100 or >= 400 ) a proper swat assert fails
+    * settings ignore\_http\_err to \`1' only makes a warning in case of bad http status code and does not trigger assert failure 
 
 * `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings](#prove-settings) section.
 
@@ -786,7 +783,7 @@ there is no need for spoofing.
 Meta stories can be also called as downstream stories:
 
     # I am downstream story
-    # you can call me from somewhere esle
+    # you can call me from somewhere else
     nano foo/bar/swat.ini
         swat_module=1
 
