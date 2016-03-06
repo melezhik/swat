@@ -87,21 +87,22 @@ sub make_http_request {
         my $curl_runner = "$curl_cmd -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource'";
         my $curl_runner_short = "$curl_cmd -D - '$hostname$resource'";
 
-        note($curl_runner_short);
+        #note($curl_runner_short);
 
         my $st = execute_with_retry("$curl_runner && test -f $content_file.hdr", get_prop('try_num'));
 
         if ($st) {
 
-            ok(1, "server returned successful response");
+             ok(1, $curl_runner_short);
 
         }elsif(ignore_http_err()){
 
-            ok(1, "server returned bad response, we still continue due to ignore_http_err set to 1");
+            ok(1, $curl_runner_short);
+            note("server returned bad response, we still continue due to ignore_http_err set to 1");
 
         }else{
 
-            ok(0, "server returned successful response");
+            ok(0, $curl_runner_short);
 
             note "stderr:";
             open CURL_ERR, "$content_file.stderr" or die $!;
@@ -206,7 +207,7 @@ sub generate_asserts {
         }
         close META;
     }else{
-        note('@'.http_method())
+        # note('@'.http_method())
     }
 
     dsl()->{debug_mod} = get_prop('debug');
