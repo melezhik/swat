@@ -87,7 +87,7 @@ sub make_http_request {
         my $curl_runner = "$curl_cmd -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource'";
         my $curl_runner_short = "$curl_cmd -D - '$hostname$resource'";
 
-        note('@curl ... '.$curl_runner_short) ;
+        note($curl_runner_short);
 
         my $st = execute_with_retry("$curl_runner && test -f $content_file.hdr", get_prop('try_num'));
 
@@ -197,9 +197,23 @@ sub generate_asserts {
 
     header() if debug_mod2();
 
+    
+    if (http_method() eq 'META'){
+        note('@'.http_method());
+        open META, resource_dir()."/meta.txt" or die $!;
+        while (my $i = <META>){
+            note("\t $i");
+        }
+        close META;
+    }else{
+        note('@'.http_method())
+    }
+
     dsl()->{debug_mod} = get_prop('debug');
 
     dsl()->{match_l} = get_prop('match_l');
+
+    return if http_method() eq 'META';
 
     make_http_request();
 

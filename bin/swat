@@ -135,7 +135,7 @@ find_cmd="find $project -type f \
 -name get.txt \
 -o -name post.txt \
 -o -name put.txt \
--o -name delete.txt\
+-o -name delete.txt \
 -o -name meta.txt"
 
 for f in `$find_cmd`; do
@@ -237,7 +237,7 @@ for f in `$find_cmd`; do
     echo >> $tfile
 
 
-    if test $swat_module -eq 0 && test "${http_method}" != "meta" ; then
+    if test $swat_module -eq 0 ; then
         echo "use Test::More q{no_plan};"  >> $tfile
     fi
 
