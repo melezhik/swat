@@ -532,7 +532,7 @@ swat runs curl command and then checks http status code
 
 =item *
 
-in case of bad http status code returns ( > 100 or >= 400 ) a proper swat assert fails
+in case of bad http status code returns (  0 or >= 400 ) a proper swat assert fails
 
 
 =item *

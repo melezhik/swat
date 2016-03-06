@@ -349,7 +349,7 @@ For example:
 * `ignore_http_err` - ignore http related errors; default value is \`1' ( do not ignore ) 
 
     * swat runs curl command and then checks http status code
-    * in case of bad http status code returns ( > 100 or >= 400 ) a proper swat assert fails
+    * in case of bad http status code returns (  0 or >= 400 ) a proper swat assert fails
     * settings ignore\_http\_err to \`1' only makes a warning in case of bad http status code and does not trigger assert failure 
 
 * `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings](#prove-settings) section.

@@ -84,8 +84,8 @@ sub make_http_request {
                 close HTTP_STATUS;
                 chomp $http_status;
                 note("got http status: $http_status") if debug_mod12();
-                last TRY if $http_status <= 400 and $http_status >= 100;
-                last TRY if $http_status > 400 and ignore_http_err();
+                last TRY if $http_status < 400 and $http_status > 0;
+                last TRY if $http_status >= 400 and ignore_http_err();
 
             }
             my $delay = ($i)**2;
@@ -97,7 +97,7 @@ sub make_http_request {
             
         #note($curl_runner);
 
-        if ( $http_status <= 400 ) {
+        if ( $http_status < 400 and $http_status > 0 ) {
 
              ok(1, "$http_status / $try_i of $try ".$curl_runner_short);
 
@@ -786,7 +786,7 @@ swat runs curl command and then checks http status code
 
 =item *
 
-in case of bad http status code returns ( > 100 or >= 400 ) a proper swat assert fails
+in case of bad http status code returns (  0 or >= 400 ) a proper swat assert fails
 
 
 =item *
