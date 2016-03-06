@@ -44,7 +44,8 @@ sub make_http_request {
 
     my ($fh, $content_file) = tempfile( DIR => get_prop('test_root_dir') );
     
-    my $try_i = 0;
+    my $try_i;
+
     my $try = get_prop('try_num');
 
     if (get_prop('response') and @{get_prop('response')} ){
@@ -74,8 +75,9 @@ sub make_http_request {
         my $curl_runner_short = "$curl_cmd -D - '$hostname$resource'";
         my $http_status = 0;
 
-        TRY: for $try_i (1..$try){
-            note("try N [$try_i] $curl_runner") if debug_mod12();
+        TRY: for my $i (1..$try){
+            note("try N [$i] $curl_runner") if debug_mod12();
+            $try_i = $i;
             system($curl_runner);
             if(open HTTP_STATUS, "$content_file.http_status"){
                 $http_status = <HTTP_STATUS>;
@@ -86,12 +88,13 @@ sub make_http_request {
                 last TRY if $http_status > 400 and ignore_http_err();
 
             }
-            my $delay = ($try_i)**2;
+            my $delay = ($i)**2;
             note("sleep for $delay seconds before next try") if debug_mod12();
             sleep $delay; 
 
         }
-    
+
+            
         #note($curl_runner);
 
         if ( $http_status <= 400 ) {
