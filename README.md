@@ -716,7 +716,7 @@ The straightforward way to share state is to use global variables :
    
 Of course more proper approaches for state sharing could be used as singeltones or something else.
 
-## Swat variables accessors
+## swat variables accessors
 
 There are some accessors to a common swat variables:
 
@@ -897,6 +897,12 @@ Once suite ini file is read up one may use it in hook.pm files via config()
 
     * Set to \`1', in case you need to clear swat cache directory, useful when swat tests get run periodically and a lot of cache files are created.
     * Default value is \`0' ( do not clear cache ).
+
+* swat\_disable\_color - disable color output
+
+    * Set this 1 if you want to disable color output in swat test report. 
+
+    * By default this setting is off.
 
 # Swat client
 

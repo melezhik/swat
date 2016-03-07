@@ -74,7 +74,7 @@ sub make_http_request {
         my $http_method = get_prop('http_method'); 
 
         my $curl_runner = "$curl_cmd -w '%{response_code}' -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource' > $content_file.http_status";
-        my $curl_runner_short = colored( ['blue'], "$curl_cmd -D - '$hostname$resource'");
+        my $curl_runner_short = tapout( "$curl_cmd -D - '$hostname$resource'", ['blue'] );
         my $http_status = 0;
 
         TRY: for my $i (1..$try){
@@ -101,16 +101,22 @@ sub make_http_request {
 
         if ( $http_status < 400 and $http_status > 0 ) {
 
-             ok(1, colored( ['green'],$http_status )." / $try_i of $try ".$curl_runner_short);
+             ok(1, tapout( $http_status, ['green'] )." / $try_i of $try ".$curl_runner_short);
 
         }elsif(ignore_http_err()){
 
-            ok(1, colored( ['yellow'],$http_status )." / $try_i of $try ".$curl_runner_short);
-            note(colored( ['yellow'], "server returned bad response, we still continue due to ignore_http_err set to 1"));
+            ok(1, tapout( $http_status, ['yellow'] )." / $try_i of $try ".$curl_runner_short);
+            note(
+                tapout( 
+                    "server returned bad response, ".
+                    "but we still continue due to ignore_http_err set to 1", 
+                    ['yellow'] 
+                )
+            );
 
         }else{
 
-            ok(1, colored( ['red'],$http_status )." / $try_i of $try ".$curl_runner_short);
+            ok(1, tapout( $http_status, ['red'] )." / $try_i of $try ".$curl_runner_short);
 
             note "stderr:";
 
@@ -141,8 +147,8 @@ sub make_http_request {
             exit(1);
         }
 
-        note colored( ['cyan'], "http headers saved to $content_file.hdr");
-        note colored( ['cyan'], "body saved to $content_file");
+        note tapout( "http headers saved to $content_file.hdr", ['cyan'] );
+        note tapout( "body saved to $content_file", ['cyan'] );
 
     }
 
@@ -235,13 +241,25 @@ sub generate_asserts {
 
 }
 
+sub tapout {
+
+    my $line  = shift;
+    my $color = shift;
+
+    if ($ENV{'swat_disable_color'}){
+        $line;
+    }else{
+        colored($color,$line);
+    }
+}
+
 sub print_meta {
 
     note('@'.http_method());
     open META, resource_dir()."/meta.txt" or die $!;
     while (my $i = <META>){
         chomp $i;
-        note(colored(['bold yellow'],"\t $i"));
+        note( tapout( "\t $i", ['bold yellow'] ));
     }
     close META;
     
@@ -1365,7 +1383,7 @@ The straightforward way to share state is to use global variables :
 Of course more proper approaches for state sharing could be used as singeltones or something else.
 
 
-=head2 Swat variables accessors
+=head2 swat variables accessors
 
 There are some accessors to a common swat variables:
 
@@ -1680,6 +1698,28 @@ Set to `1', in case you need to clear swat cache directory, useful when swat tes
 =item *
 
 Default value is `0' ( do not clear cache ).
+
+
+=back
+
+
+
+=item *
+
+swat_disable_color - disable color output
+
+=over
+
+=item *
+
+Set this 1 if you want to disable color output in swat test report. 
+
+
+
+=item *
+
+By default this setting is off.
+
 
 
 =back
