@@ -240,6 +240,7 @@ sub print_meta {
     note('@'.http_method());
     open META, resource_dir()."/meta.txt" or die $!;
     while (my $i = <META>){
+        chomp $i;
         note(colored(['yellow'],"\t $i"));
     }
     close META;
