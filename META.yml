@@ -23,6 +23,7 @@ requires:
   Config::Tiny: 0
   File::Temp: 0
   Outthentic::DSL: 0.0.6
+  Term::ANSIColor: 0
   Test::Harness: 0
   Test::More: 0
 resources:

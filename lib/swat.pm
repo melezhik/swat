@@ -26,6 +26,8 @@ use swat::story;
 use Carp;
 use Config::Tiny;
 
+use Term::ANSIColor;
+
 my $config;
 
 sub config {
@@ -72,7 +74,7 @@ sub make_http_request {
         my $http_method = get_prop('http_method'); 
 
         my $curl_runner = "$curl_cmd -w '%{response_code}' -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource' > $content_file.http_status";
-        my $curl_runner_short = "$curl_cmd -D - '$hostname$resource'";
+        my $curl_runner_short = colored( ['blue'], "$curl_cmd -D - '$hostname$resource'");
         my $http_status = 0;
 
         TRY: for my $i (1..$try){
@@ -99,12 +101,12 @@ sub make_http_request {
 
         if ( $http_status < 400 and $http_status > 0 ) {
 
-             ok(1, "$http_status / $try_i of $try ".$curl_runner_short);
+             ok(1, colored( ['MAGENTA'],$http_status )." / $try_i of $try ".$curl_runner_short);
 
         }elsif(ignore_http_err()){
 
             ok(1, "$http_status / $try_i of $try ".$curl_runner_short);
-            note("server returned bad response, we still continue due to ignore_http_err set to 1");
+            note(colored( ['red'], "server returned bad response, we still continue due to ignore_http_err set to 1"));
 
         }else{
 
@@ -139,8 +141,8 @@ sub make_http_request {
             exit(1);
         }
 
-        note "http headers saved to $content_file.hdr";
-        note "body saved to $content_file";
+        note colored( ['cyan'], "http headers saved to $content_file.hdr");
+        note colored( ['cyan'], "body saved to $content_file");
 
     }
 
@@ -238,7 +240,7 @@ sub print_meta {
     note('@'.http_method());
     open META, resource_dir()."/meta.txt" or die $!;
     while (my $i = <META>){
-        note("\t $i");
+        note(colored(['yellow'],"\t $i"));
     }
     close META;
     
