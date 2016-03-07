@@ -1,3 +1,8 @@
+0.1.89 
+
+* adding color output - thanks to Term::ANSIColor author
+
+
 0.1.88 2016-03-06
 
 * new feature - meta stories
