@@ -101,16 +101,16 @@ sub make_http_request {
 
         if ( $http_status < 400 and $http_status > 0 ) {
 
-             ok(1, colored( ['MAGENTA'],$http_status )." / $try_i of $try ".$curl_runner_short);
+             ok(1, colored( ['green'],$http_status )." / $try_i of $try ".$curl_runner_short);
 
         }elsif(ignore_http_err()){
 
-            ok(1, "$http_status / $try_i of $try ".$curl_runner_short);
-            note(colored( ['red'], "server returned bad response, we still continue due to ignore_http_err set to 1"));
+            ok(1, colored( ['yellow'],$http_status )." / $try_i of $try ".$curl_runner_short);
+            note(colored( ['yellow'], "server returned bad response, we still continue due to ignore_http_err set to 1"));
 
         }else{
 
-            ok(1, "$http_status / $try_i of $try ".$curl_runner_short);
+            ok(1, colored( ['red'],$http_status )." / $try_i of $try ".$curl_runner_short);
 
             note "stderr:";
 
@@ -241,7 +241,7 @@ sub print_meta {
     open META, resource_dir()."/meta.txt" or die $!;
     while (my $i = <META>){
         chomp $i;
-        note(colored(['yellow'],"\t $i"));
+        note(colored(['bold yellow'],"\t $i"));
     }
     close META;
     
