@@ -904,6 +904,12 @@ Once suite ini file is read up one may use it in hook.pm files via config()
 
     * By default this setting is off.
 
+* output_mod - setting TAP output mode
+
+    * \`cpanparty' - format output for cpanparty service
+
+    * `\default' - this is default value, no formatting at all 
+
 # Swat client
 
 Once swat is installed you get swat client at the \`PATH':

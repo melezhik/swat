@@ -307,6 +307,7 @@ source $session_file
 export port
 
 path=${path:=$test_root_dir}
+output_mod=${output_mod:="default"}
 
 
 if [ -z "${prove_clp}" ] && [ -n "${prove_options}" ]; then

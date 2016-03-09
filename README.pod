@@ -1451,6 +1451,28 @@ By default this setting is off.
 
 
 
+=item *
+
+output_mod - setting TAP output mode
+
+=over
+
+=item *
+
+`cpanparty' - format output for cpanparty service
+
+
+
+=item *
+
+`\default' - this is default value, no formatting at all 
+
+
+
+=back
+
+
+
 =back
 
 

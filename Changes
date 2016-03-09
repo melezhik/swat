@@ -1,3 +1,8 @@
+0.1.90 2016-03-09
+
+* changed output color schema a little bit
+* output_mod variable is respected
+
 0.1.89 2016-03-07
 
 * adding color output - thanks to Term::ANSIColor author

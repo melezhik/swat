@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.89';
+our $VERSION = '0.1.90';
 
 use base 'Exporter'; 
 
@@ -74,7 +74,7 @@ sub make_http_request {
         my $http_method = get_prop('http_method'); 
 
         my $curl_runner = "$curl_cmd -w '%{response_code}' -D $content_file.hdr -o $content_file --stderr $content_file.stderr '$hostname$resource' > $content_file.http_status";
-        my $curl_runner_short = tapout( "$curl_cmd -D - '$hostname$resource'", ['blue'] );
+        my $curl_runner_short = tapout( "$curl_cmd -D - '$hostname$resource'", ['cyan'] );
         my $http_status = 0;
 
         TRY: for my $i (1..$try){
@@ -147,8 +147,10 @@ sub make_http_request {
             exit(1);
         }
 
-        note tapout( "http headers saved to $content_file.hdr", ['cyan'] );
-        note tapout( "body saved to $content_file", ['cyan'] );
+        unless (output_mod() eq 'cpanparty'){
+            note tapout( "http headers saved to $content_file.hdr", ['cyan'] );
+            note tapout( "body saved to $content_file", ['cyan'] );
+        }
 
     }
 
@@ -259,10 +261,15 @@ sub print_meta {
     open META, resource_dir()."/meta.txt" or die $!;
     while (my $i = <META>){
         chomp $i;
-        note( tapout( "\t $i", ['bold yellow'] ));
+        note( tapout( "\t $i", ['yellow'] ));
     }
     close META;
     
+}
+
+sub output_mod {
+
+    return $ENV{output_mod};
 }
 
 1;
@@ -1719,6 +1726,28 @@ Set this 1 if you want to disable color output in swat test report.
 =item *
 
 By default this setting is off.
+
+
+
+=back
+
+
+
+=item *
+
+output_mod - setting TAP output mode
+
+=over
+
+=item *
+
+`cpanparty' - format output for cpanparty service
+
+
+
+=item *
+
+`\default' - this is default value, no formatting at all 
 
 
 
