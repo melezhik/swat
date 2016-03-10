@@ -29,7 +29,7 @@ Well. Yes and No. By default, out of the box swat provides a very simple capabil
 to verify web content. it is very similar one may gain simple "grepping" a text and 
 matching it against some patterns. That is it. No dom, xpath or xml / json parsing.
 The reason for such a naive approach is _initially_ swat was born as smoke testing tool,
-where checking http status codes plus probably some single line text was quite enough 
+where checking http status codes plus probably some single line text matching was quite enough 
 for the scope of tasks were actual for that moment.
 
 Well time passed and it became clear that sometimes checking http codes and grepping 
