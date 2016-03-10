@@ -7,8 +7,8 @@ Swat Advocacy - some thoughts on swat advocacy.
 
 Recently I found some questions and possibly misunderstanding of idea behind a swat.
 
-Not try to tell that I completely understand what people try to find, here in informal
-way I am bringing some ideas behind swat ideology.
+Not trying to tell that I _completely_ understand what people try to find, here in informal
+way I am trying to describe some ideas behind swat ideology.
 
 
 # Does swat instead of a common perl t/* tests ?
@@ -61,6 +61,7 @@ Reading swat test report one always get the answer on following questions:
 * what routes, http verbs are used
 * what named, query parameters, are used
 * what kind of content expected to get in server response
+* a source code of tested application
 
 I don't try to say that we could not get this by writing a conventional tests under t/* , but
 most of such things swat provides out of the box without or with minimal extra code to write.
@@ -76,7 +77,7 @@ you may mock some external dependencies if necessary, you rely on test source co
 describe a testing process, that is fine.
 
 Let me introduce some more possible customers of software you code. What about end users of your API?
-Specially if your proves some external web/REST services or build a web framework.
+Specially if your provides some external web/REST services or build a web framework.
 Well now a content of your t/* becomes not that clear and understandable for such others, the same stuff
 with test output which sometimes are quite obscure. Of course people involved into software have to
 handle with this, as they are developers! but I talk about software customers and end users which
@@ -111,6 +112,29 @@ who this is going to be. But as result we have:
 It's up to you to have full coverage for your code base or not. Swat does not "insist" on it.
 But what is nice - that with swat you may start with any piece of your software API, choose it,
 write up a test and publish test results as specification!
+
+# I am still confused what is the target of swat tests. If this an application or framework that
+swat tests to verify?
+
+In classic unit test approach you tests functions, methods or modules. If we talk about integration
+testing we always have to talk about some application built up from other blocks. It could be
+web framework, some plugins or other primitives with various level of abstraction.
+Anyway when we talk about integration testing for web application we deal with some application.
+
+In swat concept testing an application means send some http request and analyze an output.
+
+Ok, to test a framework I need some ""posterchild"" application built with it. To test a plugin
+used in a web framework I still need to have an application using such a plugin.
+
+So swat tests your software ( plugins, modules, frameworks ) through web application context.
+
+It is somehow close to real life than unit testing. As end users of your software always use
+it in _context_. One use web framework to build up a specific web application, or use some plugin
+to gain some functionality inside again some web application and so on.
+
+So in swat approach application acts like _adapter_ to test some piece of software API.
+
+
 
 
   
