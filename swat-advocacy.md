@@ -122,12 +122,12 @@ Anyway when we talk about integration testing for web application we deal with s
 
 In swat concept testing an application means send some http request and analyze an output.
 
-Ok, to test a framework I need some ""posterchild"" application built with it. To test a plugin
+Ok, to test a framework I need some "posterchild" application built with it. To test a plugin
 used in a web framework I still need to have an application using such a plugin.
 
 So swat tests your software ( plugins, modules, frameworks ) through web application context.
 
-It is somehow close to real life than unit testing. As end users of your software always use
+It is somewhat closer to real life than unit testing. As end users of your software always use
 it in _context_. One use web framework to build up a specific web application, or use some plugin
 to gain some functionality inside again some web application and so on.
 
