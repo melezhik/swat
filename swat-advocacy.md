@@ -113,8 +113,7 @@ It's up to you to have full coverage for your code base or not. Swat does not "i
 But what is nice - that with swat you may start with any piece of your software API, choose it,
 write up a test and publish test results as specification!
 
-# I am still confused what is the target of swat tests. If this an application or framework that
-swat tests to verify?
+# I am still confused what is the target of swat tests. If this an application or framework that swat tests to verify?
 
 In classic unit test approach you tests functions, methods or modules. If we talk about integration
 testing we always have to talk about some application built up from other blocks. It could be
