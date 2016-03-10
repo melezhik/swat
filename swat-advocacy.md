@@ -1,6 +1,6 @@
 # SYNOPSIS
 
-Swat Advocacy - some thoughts on swat advocacy.
+[Swat](https://github.com/melezhik/swat) Advocacy - some thoughts on swat advocacy.
 
 # Swat demystified 
 
