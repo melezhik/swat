@@ -168,7 +168,7 @@ So in swat approach application acts like _adapter_ to test some piece of softwa
 
 * [Sparrow](https://github.com/melezhik/sparrow) - easy way to manage shareable swat test suites
 
-* [SparrowHub])(https://sparrowhub.org) - central repository of swat test suites
+* [SparrowHub](https://sparrowhub.org) - central repository of swat test suites
 
 * [CPANParty](http://swatpm.org/cpanparty) - examples of swat test suites for existed CPAN modules  
 
