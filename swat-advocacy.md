@@ -71,9 +71,13 @@ See my thoughts in next question.
 Thus, swat test reports output "tries to be":
 
 * self explanatory
+
 * simple
+
 * close to client/server application software model ( we always have client request and server response shown at test output )
+
 * http oriented ( swat tests always expressed in term s of http requests )
+
 * (^) being a good base for software trobleshooting - as swat "generates" a stearm of http requests
 in curl utility format, every single step could be reproduced manually _somewhere else_ 
 not having test suite by hand all, provided that you have:
@@ -84,49 +88,54 @@ not having test suite by hand all, provided that you have:
 *(^)* last point have some limitation though not covered in this post
 
 
-A summary for this point swat by design provides all the necessary data 
-which is essential in testing workflow.
+As summary for this point swat by design provides all the necessary data  which is essential in web application testing workflow.
 
 # Swat tests a kind of third party testing , if so _who_ is going to write them ?
 
 This is good question to ask. I believe that t/* approach is proven way to get things tested
-from the _developers point of view_. I mean if you are software developer , probably all you need
+from the _developers point of view_. I mean if you are software developer, probably all you need
 to ensure that next changes don't break your regression. You don't care much about test report output
 readabilty, you may mock some external dependencies if necessary, you rely on test source code to
-describe a testing process, and so on that is fine.
+_understand_ a testing logic in case of issues, and so on ... that is fine.
 
-But let me introduce you some more possible customers of software you code. What about end users of your API?
-Specially if your provides some external web/REST services or build a web framework.
-Well now a content of your t/* becomes not that clear and understandable for such others, the same stuff
-with test output which sometimes are quite obscure. Of course people involved into software have to
-handle with this, as they are developers! but I talk about software customers and end users which
-are quite a lot. So the answer the documentation. Good. But I still need a realistic examples
-of who this works. Documentation often provides a code snippets, that is fine but what if I need
-more on this or I have no time read, I need a simple working example to work with, and that is
-where swat test suites may rule. As they are:
+But let me introduce you some more possible customers of your software. What about end users consuming software API?
+Say if you provides some external web/REST services or build a web framework to used by others?
 
-* complete, realistic examples
+Well now a content of your t/* becomes not that clear and understandable for such a users, the same stuff
+with test output which sometimes are specific and tends to express internal "guts" of your software not public API.
+Again privite/public methods tests could be mixed together. Unit tests and integration tests comes at one test sute. And so on. All this make your  tests are not friendly for end customer, not deeply ( or not at all ) envolved in software development process.
+
+Of course people involved into software development *have to* cope with this, as they are developers! But I talk about software customers and end users which is quite different story. 
+
+So the answer is obviously is the documentation. Good. But users still need a *realistic examples* of _how_ this works. Documentation often provides a code snippets, that is fine but often you can't use code snippets to get it run, and even author provides some, it's:
+
+* hard to mainatin to accept all new features
+* documenation code snippets could be buggy ( missing "use module" statements, so on )
+
+This is where swat test suites may be rescue, as they:
+
+* are complete, realistic examples
 
 * could be runnable on local environment ( this one is optional and often not necessary )
 
-* provides structured and unified output ( as swat has strict structure )
+* provide structured and unified output - as swat test harness has *strict and simple structure*
 
 * always answer on question essential for end user context:
 
-    * what kind of code I need to write to get this feature implemented
+    * what kind of code I need to write to get this API feature on my code
 
-    * what kind of input data I need to verify this code ( client part )
+    * what kind of input data I need to verify this code is working ( client part )
 
-    * what kind of output I need to get to verify this code ( server part )
+    * what kind of output data I need to verify this code is working ( server part )
 
 
-Of course the backside of this that _someone_ need to write a swat tests. It could be any.
-Original software engineer or developer relations engineer or even manager. Not that mater
-who this is going to be. But as result we have:
+Of course the backside of such approach is that _someone_ need to write a swat tests. Ok, it could be any.
+Original software engineer or developer relations engineer or even manager. Not that mater who this is going to be. 
+Not taking too much time finnaly we have:
 
-* specifications though the testing
-* more objective tests are they don't heavily rely on internal application structure
-* "true" testing as it again relies on documentation or sometimes being a documentation itself
+* specifications through the testing
+* more objective tests are they don't heavily rely ( or don't rely at all ) on internal application structure
+* "true" testing as it again relies only on public API ( no backdoors and "hidden" workarounds inside your tests )
 
 It's up to you to have full coverage for your code base or not. Swat does not "insist" on it.
 But what is nice - that with swat you may start with any piece of your software API, choose it,
