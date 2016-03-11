@@ -29,12 +29,12 @@ Well. Yes and No. By default, out of the box swat provides a very simple capabil
 to verify web content. It is very similar to that when one just "grep" a text and 
 match it against some patterns. That is it. No dom, xpath or xml/json parsing.
 The reason for such a naive approach is that _initially_ swat was born as smoke testing tool,
-where checking http status codes and probably some single line text matching was enough for the scope of tes tasks 
+where checking http status codes and probably some single line text matching was enough for the scope of the tasks 
 were actual for that moment.
 
 Well time passed and it became clear that sometimes checking http codes and grepping 
 web pages content is not enough. Consider REST/JSON application as very common situation.
-That is why I decided to add possibility to extend swat parser possibilites and called it [response processors](https://github.com/melezhik/swat#process-http-responses) - a custom perl code 
+That is why I decided to add possibility to extend swat parser possibilities and called it [response processors](https://github.com/melezhik/swat#process-http-responses) - a custom perl code 
 to add some intermediate parsing logic, for example to parse JSON/XML data and convert it into something else
 proper for further testing. Details could be found at swat documentation.
 
@@ -43,7 +43,7 @@ proper for further testing. Details could be found at swat documentation.
 
 As my initial intention when I started cpanparty was to _show_ a people a swat way of testing,
 not to provide cpan authors with full test coverage of theirs modules - so most of test suites on cpanparty
-should be considered as _simple_, way explanatory examples to help people understand swat. This is what I wrote about in my  [post](http://blogs.perl.org/users/melezhik/2016/02/inroducing-cpanparty.html) at blogs.perl.org
+should be considered as _simple_, way explanatory examples to help people understand swat. This is what I wrote about in my  [post](http://blogs.perl.org/users/melezhik/2016/02/introducing-cpanparty.html) at blogs.perl.org
 
 But this does not mean that swat can't handle complicated things. In my production environment I run a sophisticated swat test suites for complex functional testing of quite large code base. 
 
@@ -60,12 +60,12 @@ Reading swat test report one always get the answer on the following questions:
 * what routes, http verbs are used
 * what named, query parameters, are used
 * what kind of content expected to get in server response
-* a source code of tested application ( optionally, only we "embed" tested appliaction in swat test suite )
+* a source code of tested application ( optionally, only we "embed" tested application in swat test suite )
 
 I don't try to say that we could not get this by writing a conventional tests under t/* , but
 most of such things swat provides out of the box without or with minimal extra code to write.
 
-Another backside of many tests in t/* format is sometimes theirs ouput hard to read and accept for unprepared reader.
+Another backside of many tests in t/* format is sometimes theirs output hard to read and accept for unprepared reader.
 See my thoughts in next question.
 
 Thus, swat test reports output "tries to be":
@@ -78,7 +78,7 @@ Thus, swat test reports output "tries to be":
 
 * http oriented ( swat tests always expressed in term s of http requests )
 
-* (^) being a good base for software trobleshooting - as swat "generates" a stearm of http requests
+* (^) being a good base for software troubleshooting - as swat "generates" a stream of http requests
 in curl utility format, every single step could be reproduced manually _somewhere else_ 
 not having test suite by hand all, provided that you have:
 
@@ -95,7 +95,7 @@ As summary for this point swat by design provides all the necessary data  which 
 This is good question to ask. I believe that t/* approach is proven way to get things tested
 from the _developers point of view_. I mean if you are software developer, probably all you need
 to ensure that next changes don't break your regression. You don't care much about test report output
-readabilty, you may mock some external dependencies if necessary, you rely on test source code to
+readability, you may mock some external dependencies if necessary, you rely on test source code to
 _understand_ a testing logic in case of issues, and so on ... that is fine.
 
 But let me introduce you some more possible customers of your software. What about end users consuming software API?
@@ -103,14 +103,14 @@ Say if you provides some external web/REST services or build a web framework to 
 
 Well now a content of your t/* becomes not that clear and understandable for such a users, the same stuff
 with test output which sometimes are specific and tends to express internal "guts" of your software not public API.
-Again privite/public methods tests could be mixed together. Unit tests and integration tests comes at one test sute. And so on. All this make your  tests are not friendly for end customer, not deeply ( or not at all ) envolved in software development process.
+Again private/public methods tests could be mixed together. Unit tests and integration tests comes at one test suite. And so on. All this make your  tests are not friendly for end customer, not deeply ( or not at all ) involved in software development process.
 
 Of course people involved into software development *have to* cope with this, as they are developers! But I talk about software customers and end users which is quite different story. 
 
 So the answer is obviously is the documentation. Good. But users still need a *realistic examples* of _how_ this works. Documentation often provides a code snippets, that is fine but often you can't use code snippets to get it run, and even author provides some, it's:
 
-* hard to mainatin to accept all new features
-* documenation code snippets could be buggy ( missing "use module" statements, so on )
+* hard to maintain to accept all new features
+* documentaion code snippets could be buggy ( missing "use module" statements, so on )
 
 This is where swat test suites may be rescue, as they:
 
@@ -135,7 +135,7 @@ Not taking too much time finally we have:
 
 * specifications through the testing
 * more objective tests are they don't heavily rely ( or don't rely at all ) on internal software structure
-* "true" testing as it again relies only on public API ( no backdoors and "hidden" workarounds inside your tests )
+* "true" testing as it again relies only on public API ( no back doors and "hidden" workarounds inside your tests )
 
 It's up to you to have full coverage for your code base or not. Swat does not "insist" on it.
 But what is nice - that with swat you may start with any piece of your software API, choose it,
@@ -164,7 +164,7 @@ So in swat approach application acts like _adapter_ to test some piece of softwa
 
 #  Links for further reading on swat and related software
 
-* [Doing testing in a swat way](https://github.com/melezhik/swat/blob/master/intro.md) - Some explabation in swat driven aproach in web application development and testing 
+* [Doing testing in a swat way](https://github.com/melezhik/swat/blob/master/intro.md) - Some explanation in swat driven approach in web application development and testing 
 
 * [Sparrow](https://github.com/melezhik/sparrow) - easy way to manage shareable swat test suites
 
