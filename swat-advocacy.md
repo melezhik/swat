@@ -110,7 +110,7 @@ Of course people involved into software development *have to* cope with this, as
 So the answer is obviously is the documentation. Good. But users still need a *realistic examples* of _how_ this works. Documentation often provides a code snippets, that is fine but often you can't use code snippets to get it run, and even author provides some, it's:
 
 * hard to maintain to accept all new features
-* documentaion code snippets could be buggy ( missing "use module" statements, so on )
+* documentation code snippets could be buggy ( missing "use module" statements, so on )
 
 This is where swat test suites may be rescue, as they:
 
@@ -150,17 +150,24 @@ Anyway when we talk about integration testing for web application we deal with s
 
 In swat concept testing an application means send some http request and analyze an output.
 
-Ok, to test a framework I need some "posterchild" application built with it. To test a plugin
+Ok, to test a framework I need some "posterchild" application (^) built with it. To test a plugin
 used in a web framework I still need to have an application using such a plugin.
 
 So swat tests your software ( plugins, modules, frameworks ) through the web application context.
 
-It is somewhat closer to real life than unit testing. As end users of your software always use
-it in _context_. One use web framework to build up a specific web application, or use some plugin
+(^) Of course I am talking about testing web frameworks or plugins , if we have _already existed_
+web application running ( for example public web service ) - we do not need to create a posterchild
+for it as in this case we test an application not software components this application is built from.
+Such a case is another type of testing where swat could be good fit, but here I talk about CPAN
+modules testing ...
+
+
+Ok, in other words testing components or web framework at all through the posterchild application is somewhat closer to real 
+life. As end users of your software always use it in _context_. For example - 
+one use web framework to build up a specific web application or use some plugin 
 to gain some functionality inside some web application and so on.
 
-So in swat approach application acts like _adapter_ to test some piece of software API.
-
+So in swat approach an application acts like _adapter_ to test some piece of software API.
 
 #  Links for further reading on swat and related software
 
