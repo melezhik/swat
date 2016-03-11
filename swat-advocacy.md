@@ -67,7 +67,7 @@ Reading swat test report one always get the answer on the following questions:
 I don't try to say that we could not get this by writing a conventional tests under t/* , but
 most of such things swat provides out of the box without or with minimal extra code to write.
 
-Another backside of many tests in t/* format is theirs ouput hard to read and accept for unprepared reader.
+Another backside of many tests in t/* format is sometimes theirs ouput hard to read and accept for unprepared reader.
 See further consideration on next question.
 
 Swat test reports output in contrast with "tries to be":
@@ -86,17 +86,18 @@ not having test suite by hand all, provided that you have:
 \* last point have some limitation though not covered in this post
 
 
-A summary for this point - swat by design provides all the necessary data which is essential in testing workflow.
+A summary for this point swat by design provides all the necessary data 
+which is essential in testing workflow.
 
 # Swat tests a kind of third party testing , if so _who_ is going to write them ?
 
-This is good question to ask. I believe that t/* approach are proven way to get things tested
-from the developers point of view. I mean if you are software developer , probably all you need
-to ensure that next changes don't break your regression. You don't are about test report output,
-you may mock some external dependencies if necessary, you rely on test source code to
-describe a testing process, that is fine.
+This is good question to ask. I believe that t/* approach is proven way to get things tested
+from the _developers point of view_. I mean if you are software developer , probably all you need
+to ensure that next changes don't break your regression. You don't care much about test report output
+readabilty, you may mock some external dependencies if necessary, you rely on test source code to
+describe a testing process, and so on that is fine.
 
-Let me introduce some more possible customers of software you code. What about end users of your API?
+But let me introduce you some more possible customers of software you code. What about end users of your API?
 Specially if your provides some external web/REST services or build a web framework.
 Well now a content of your t/* becomes not that clear and understandable for such others, the same stuff
 with test output which sometimes are quite obscure. Of course people involved into software have to
