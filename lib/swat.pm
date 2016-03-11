@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.90';
+our $VERSION = '0.1.91';
 
 use base 'Exporter'; 
 
@@ -105,12 +105,12 @@ sub make_http_request {
 
         }elsif(ignore_http_err()){
 
-            ok(1, tapout( $http_status, ['yellow'] )." / $try_i of $try ".$curl_runner_short);
+            ok(1, tapout( $http_status, ['red'] )." / $try_i of $try ".$curl_runner_short);
             note(
                 tapout( 
                     "server returned bad response, ".
                     "but we still continue due to ignore_http_err set to 1", 
-                    ['yellow'] 
+                    ['red'] 
                 )
             );
 
@@ -148,8 +148,8 @@ sub make_http_request {
         }
 
         unless (output_mod() eq 'cpanparty'){
-            note tapout( "http headers saved to $content_file.hdr", ['cyan'] );
-            note tapout( "body saved to $content_file", ['cyan'] );
+            note tapout( "http headers saved to $content_file.hdr", ['bright_blue'] );
+            note tapout( "body saved to $content_file", ['bright_blue'] );
         }
 
     }
