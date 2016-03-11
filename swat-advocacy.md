@@ -15,7 +15,7 @@ way I am trying to describe some ideas behind swat ideology.
 
 No it does not. As already told cpan distribution tests are fine and do it's job
 and I think developers usually try to "equip" theirs modules with proper test suites
-to cover regression ( at least ) and sometimes if they are diligent enough even to try to
+to cover regression at least.  And sometimes if they are diligent enough even to try to
 catch up with brand new features of their shiny applications and modules ;)
 
 But what I try to say here that swat is _another_ point of view on testing process.
@@ -26,56 +26,54 @@ benefits it offers while respecting some limitations or conventions it implies.
 # Does swat neglect web pages structure and always verify things as plain text?
 
 Well. Yes and No. By default, out of the box swat provides a very simple capabilities
-to verify web content. It is very similar to that one may gain simple "grepping" a text and 
-matching it against some patterns. That is it. No dom, xpath or xml/json parsing.
+to verify web content. It is very similar to that when one just "grep" a text and 
+match it against some patterns. That is it. No dom, xpath or xml/json parsing.
 The reason for such a naive approach is that _initially_ swat was born as smoke testing tool,
-where checking http status codes plus probably some single line text matching was quite enough 
-for the scope of tasks were actual for that moment.
+where checking http status codes and probably some single line text matching was enough for the scope of tes tasks 
+were actual for that moment.
 
 Well time passed and it became clear that sometimes checking http codes and grepping 
-web pages content is not enough. Consider REST/JSON application as common example.
-That is why I decided to add possibility to cope with such a cases and this one is 
-called [response processors](https://github.com/melezhik/swat#process-http-responses) - a custom perl code 
-to add some intermediate parsing logic, for example to parse JSON data and convert it into something else
-proper for further testing.
+web pages content is not enough. Consider REST/JSON application as very common situation.
+That is why I decided to add possibility to extend swat parser possibilites and called it [response processors](https://github.com/melezhik/swat#process-http-responses) - a custom perl code 
+to add some intermediate parsing logic, for example to parse JSON/XML data and convert it into something else
+proper for further testing. Details could be found at swat documentation.
 
 
 # Swat test suites on cpanparty looks quite trivial and simple, so does it worth to use swat?
 
 As my initial intention when I started cpanparty was to _show_ a people a swat way of testing,
-not to provide cpan author with full test coverage of theirs modules - so most of test suites on cpanparty
-should be considered as _simple_ examples. But this does not mean that swat can't handle complicated
-things. In my production environment I run a sophisticated swat test suites for complex functional testing
-of quite large code base. 
+not to provide cpan authors with full test coverage of theirs modules - so most of test suites on cpanparty
+should be considered as _simple_, way explanatory examples to help people understand swat. This is what I wrote about in my  [post](http://blogs.perl.org/users/melezhik/2016/02/inroducing-cpanparty.html) at blogs.perl.org
 
-Another idea behind cpanparty examples simplicity is swat test suites are not only tests but
-API _specification_ for tested modules. Well swat way to do the things is to "localize" tested API
-and provides a simple and laconic test suite for it called swat (sparrow) plugin. Consider a sophisticated
-web frameworks. We could split it's API to many parts like "routing", "handling quire parameters", "data base models", etc. Every each of part could be covered by it's documentation section, but if we 
-do things in swat way - it is easy to write a dedicated test suites for every section to express every API part in
-a realistic but still laconic and self explanatory test suite code. We could call it TDD or whatever but what I try to say here
-that using swat brings you interesting benefits that hard to gain by using classical t/* approach.
+But this does not mean that swat can't handle complicated things. In my production environment I run a sophisticated swat test suites for complex functional testing of quite large code base. 
 
+Another idea behind cpanparty examples  is swat test suites are not tests only but API _specification_ for tested modules. Well, swat way to do the things is to "localize" tested API and provides a simple and laconic test suite for it called swat (sparrow) plugin. 
+
+Consider a sophisticated web frameworks. We could split it's API to many parts like "routing", "handling quire parameters", "data base models", etc. Every each of part could be covered by it's documentation section, but if we 
+do things in swat way it is easy to write a dedicated test suites for every section to express every API part in
+a realistic but still laconic and self explanatory test suite code. 
+
+We could call it TDD or whatever but what I try to say here that using swat brings you interesting benefits that hard to gain by using classical t/* approach.
 
 Reading swat test report one always get the answer on the following questions:
 
 * what routes, http verbs are used
 * what named, query parameters, are used
 * what kind of content expected to get in server response
-* a source code of tested application ( optionaly )
+* a source code of tested application ( optionally, only we "embed" tested appliaction in swat test suite )
 
 I don't try to say that we could not get this by writing a conventional tests under t/* , but
 most of such things swat provides out of the box without or with minimal extra code to write.
 
 Another backside of many tests in t/* format is sometimes theirs ouput hard to read and accept for unprepared reader.
-See further consideration on next question.
+See my thoughts in next question.
 
-Swat test reports output in contrast with "tries to be":
+Thus, swat test reports output "tries to be":
 
 * self explanatory
 * simple
-* close to client/server application software model
-* http oriented
+* close to client/server application software model ( we always have client request and server response shown at test output )
+* http oriented ( swat tests always expressed in term s of http requests )
 * (*) being a good base for software trobleshooting - as swat "generates" a stearm of http requests
 in curl utility format, every single step could be reproduced manually _somewhere else_ 
 not having test suite by hand all, provided that you have:
@@ -83,7 +81,7 @@ not having test suite by hand all, provided that you have:
 * curl 
 * swat test report output
 
-\* last point have some limitation though not covered in this post
+*\** last point have some limitation though not covered in this post
 
 
 A summary for this point swat by design provides all the necessary data 
