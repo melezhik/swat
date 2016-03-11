@@ -74,14 +74,14 @@ Thus, swat test reports output "tries to be":
 * simple
 * close to client/server application software model ( we always have client request and server response shown at test output )
 * http oriented ( swat tests always expressed in term s of http requests )
-* (*) being a good base for software trobleshooting - as swat "generates" a stearm of http requests
+* (^) being a good base for software trobleshooting - as swat "generates" a stearm of http requests
 in curl utility format, every single step could be reproduced manually _somewhere else_ 
 not having test suite by hand all, provided that you have:
 
-* curl 
-* swat test report output
+  * curl 
+  * swat test report output
 
-*\** last point have some limitation though not covered in this post
+*(^)* last point have some limitation though not covered in this post
 
 
 A summary for this point swat by design provides all the necessary data 
