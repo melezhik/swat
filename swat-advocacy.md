@@ -131,10 +131,10 @@ This is where swat test suites may be rescue, as they:
 
 Of course the backside of such approach is that _someone_ need to write a swat tests. Ok, it could be any.
 Original software engineer or developer relations engineer or even manager. Not that mater who this is going to be. 
-Not taking too much time finnaly we have:
+Not taking too much time finally we have:
 
 * specifications through the testing
-* more objective tests are they don't heavily rely ( or don't rely at all ) on internal application structure
+* more objective tests are they don't heavily rely ( or don't rely at all ) on internal software structure
 * "true" testing as it again relies only on public API ( no backdoors and "hidden" workarounds inside your tests )
 
 It's up to you to have full coverage for your code base or not. Swat does not "insist" on it.
@@ -153,18 +153,28 @@ In swat concept testing an application means send some http request and analyze 
 Ok, to test a framework I need some "posterchild" application built with it. To test a plugin
 used in a web framework I still need to have an application using such a plugin.
 
-So swat tests your software ( plugins, modules, frameworks ) through web application context.
+So swat tests your software ( plugins, modules, frameworks ) through the web application context.
 
 It is somewhat closer to real life than unit testing. As end users of your software always use
 it in _context_. One use web framework to build up a specific web application, or use some plugin
-to gain some functionality inside again some web application and so on.
+to gain some functionality inside some web application and so on.
 
 So in swat approach application acts like _adapter_ to test some piece of software API.
 
 
+#  Links for further reading on swat and related software
+
+* [Doing testing in a swat way](https://github.com/melezhik/swat/blob/master/intro.md) - Some explabation in swat driven aproach in web application development and testing 
+
+* [Sparrow](https://github.com/melezhik/sparrow) - easy way to manage shareable swat test suites
+
+* [SparrowHub])(https://sparrowhub.org) - central repository of swat test suites
+
+* [CPANParty](http://swatpm.org/cpanparty) - examples of swat test suites for existed CPAN modules  
+
+* [continuous integration using sparrow tool chain](http://blogs.perl.org/users/melezhik/2016/03/continuous-integration-using-sparrow-tool-chain.html) - described how to use swat in QA automation and CI pipeline.
 
 
-  
 # Conclusion
 
 There more things related to swat echo system left uncovered in this post. 
@@ -173,7 +183,7 @@ Here I tried to only highlights some essential parts of swat, at least at my poi
 Feel free to ask me or create your ideas, proposals and feature requests ( or bugs -;) on swat github project
 or related project (cpanparty, sparrow, outthentic ) pages. 
 
-I am open for users input.
+I am open for users feedback.
 
 Regards
 
