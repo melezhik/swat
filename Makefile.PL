@@ -12,7 +12,7 @@ requires    'Test::Harness';
 requires    'File::Temp';
 requires    'Outthentic::DSL' => '0.0.6';
 requires    'Config::Tiny';
-requires    'Term::ANSIColor';
+requires    'Term::ANSIColor' => '>= 4.02';
 
 license     'perl';
 repository  'https://github.com/melezhik/swat';

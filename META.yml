@@ -23,10 +23,10 @@ requires:
   Config::Tiny: 0
   File::Temp: 0
   Outthentic::DSL: 0.0.6
-  Term::ANSIColor: 0
+  Term::ANSIColor: '>= 4.02'
   Test::Harness: 0
   Test::More: 0
 resources:
   license: http://dev.perl.org/licenses/
   repository: https://github.com/melezhik/swat
-version: 0.1.91
+version: 0.1.92

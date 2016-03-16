@@ -1,3 +1,7 @@
+0.1.92 2016-03-16
+
+* Required at least >= 4.02 version of Term::ANSIColor
+
 0.1.91 2016-03-11
 
 * experimenting with color schema in TAP
