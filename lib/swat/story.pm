@@ -55,7 +55,7 @@ sub new_story {
 
 sub end_of_story {
 
-    if (debug_mod12()){
+    if (debug_mod2()){
         Test::More::ok(1,'end of story: '.(get_prop('check_list')));
     }
     delete $stories[-1];
@@ -182,7 +182,7 @@ sub run_swat_module {
     my $http_method_path = uc($http_method);
     my $module_file = "$test_root_dir/$resource/$http_method_path/request.mod";
 
-    if (debug_mod12()){
+    if (debug_mod2()){
         Test::More::ok(1,"run swat module: $http_method => $resource"); 
         Test::More::ok(1,"load module file: $module_file");
     }
@@ -286,7 +286,8 @@ sub run_response_processor {
     open F, ">", $content_file or die $!;
     print F $retval;
     close F;
-    Test::More::diag("modified response saved to $content_file");
+
+    Test::More::diag("modified response saved to $content_file") if  debug_mod12();
 
     if (debug_mod12()){
         my $debug_bytes = get_prop('debug_bytes');

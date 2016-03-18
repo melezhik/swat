@@ -10,9 +10,9 @@ all_from       'lib/swat.pm';
 requires    'Test::More';
 requires    'Test::Harness';
 requires    'File::Temp';
-requires    'Outthentic::DSL' => '0.0.6';
+requires    'Outthentic::DSL' => '0.0.10';
 requires    'Config::Tiny';
-requires    'Term::ANSIColor' => '>= 4.02';
+requires    'Term::ANSIColor' => '4.02';
 
 license     'perl';
 repository  'https://github.com/melezhik/swat';

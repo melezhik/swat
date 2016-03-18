@@ -1,3 +1,11 @@
+0.1.93 2016-03-18
+
+* require latest version of outthentic dsl
+
+* some debug messages are only shown at higher level of debug variable
+
+* Makefile.PL - fix for Unparsable version for prerequisite Term::ANSIColor
+
 0.1.92 2016-03-16
 
 * Required at least >= 4.02 version of Term::ANSIColor

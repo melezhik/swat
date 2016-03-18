@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.92';
+our $VERSION = '0.1.93';
 
 use base 'Exporter'; 
 
@@ -147,7 +147,7 @@ sub make_http_request {
             exit(1);
         }
 
-        unless (output_mod() eq 'cpanparty'){
+        if (debug_mod12()) {
             note tapout( "http headers saved to $content_file.hdr", ['bright_blue'] );
             note tapout( "body saved to $content_file", ['bright_blue'] );
         }
