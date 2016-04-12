@@ -65,10 +65,10 @@ lib/swat.pm
 lib/swat/story.pm
 Makefile.PL
 MANIFEST			This list of files
-META.yml
 README.md
 run_examples.bash
 suite.ini
+suite.yaml
 t/data/test.db
 t/data/test.sql
 t/swat.t

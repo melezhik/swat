@@ -1,6 +1,6 @@
 package swat;
 
-our $VERSION = '0.1.93';
+our $VERSION = '0.1.94';
 
 use base 'Exporter'; 
 
@@ -25,6 +25,7 @@ use swat::story;
 
 use Carp;
 use Config::Tiny;
+use YAML qw{LoadFile};
 
 use Term::ANSIColor;
 
@@ -33,10 +34,23 @@ my $config;
 sub config {
 
     unless ($config){
-        $config = Config::Tiny->read(
-            get_prop('ini_file_path') || $ENV{'suite_ini_file'} || 'suite.ini'
-            ) or confess "can't read ini file: $!";
+        if (get_prop('suite_ini_file_path') and -f get_prop('suite_ini_file_path') ){
+          my $path = get_prop('suite_ini_file_path');
+          $config = $config = Config::Tiny->read($path) or confess "file $path is not valid .ini file";
+        }elsif(get_prop('suite_yaml_file_path') and -f get_prop('suite_yaml_file_path')){
+          my $path = get_prop('suite_yaml_file_path');
+          ($config) = LoadFile($path);
+        }elsif ( -f 'suite.ini' ){
+          my $path = 'suite.ini';
+          $config = $config = Config::Tiny->read($path) or confess "file $path is not valid .ini file";
+        }elsif ( -f 'suite.yaml'){
+          my $path = 'suite.yaml';
+          ($config) = LoadFile($path);
+        }else{
+          confess "configuration file is not found"
+        }
     }
+
     return $config;
 }
 
@@ -1656,32 +1670,55 @@ Here are some examples:
     swat --prove '-q -s' # run prove tests in random and quite mode
 
 
-=head1 Test suite ini file
+=head1 Suite configuration
 
-Test suite ini file is a configuration file where you may pass any additional data could be used in your tests:
+Swat test suites could be configurable. Configuration files contain a supplemental data to adjust suite behavior
 
-    cat suite.ini
+There are two type of configuration files are supported:
+
+=over
+
+=item *
+
+.Ini style format
+
+
+=item *
+
+YAML format
+
+
+=back
+
+.Ini  style configuration files are passed by `--ini' parameter
+
+    $ swat --ini /etc/suites/foo.ini
+    
+    $ cat /etc/suites/foo.ini
     
     [main]
     
     foo = 1
     bar = 2
 
-There is no special magic behind this ini file, except this should be L<Config Tiny|https://metacpan.org/pod/Config::Tiny> compliant configuration file.
+There is no special magic behind ini files, except this should be L<Config Tiny|https://metacpan.org/pod/Config::Tiny> compliant configuration file.
 
-By default swat runner looks for file named suite.ini placed at current working directory.
+Or you can choose YAML format for suite configuration by using `--yaml' parameter:
 
-You my redefine this by using suiteI<ini>file environment variable:
+    $ swat --ini /etc/suites/foo.yaml
+    
+    $ cat /etc/suites/foo.yaml
+    
+    main:
+      foo : 1
+      bar : 2
 
-    suite_ini_file=/path/to/your/ini/file
+Unless user sets path to configuration file explicitly by `--ini' or \'--yaml' swat runner looks for the 
+files named suite.ini and I<then> ( if suite.ini is not found ) for suite.yaml at the current working directory.
 
-Or by `--ini' parameter of story runner:
+If configuration file is passed and read a related configuration data is accessible via config() function, for example in story.pm file:
 
-    swat --ini /path/to/your/ini/file
-
-Once suite ini file is read up one may use it in hook.pm files via config()
-
-    # cat hook.pm
+    # cat story.pm
     
     my $foo = config()->{main}{foo};
     my $bar = config()->{main}{bar};
@@ -1830,12 +1867,19 @@ Sets a distinct sub sets of stories to execute, see L<Running subset of stories|
 
 =item *
 
-B<--ini> - test suite ini file path
+B<--ini> - suite configuration ini file path
+
+
+
+=item *
+
+B<--yaml> - suite configuration yaml file path
+
 
 
 =back
 
-See L<test suite ini file|#test-suite-ini-file> section for details.
+See L<suite configuration|#suite-configuration> section for details.
 
 =over
 
