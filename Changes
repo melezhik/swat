@@ -1,3 +1,7 @@
+0.1.95 2016-04-12
+
+* META.yml generated
+
 0.1.94 2016-04-12
 
 * now swat consumes yaml configuration files as well
