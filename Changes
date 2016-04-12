@@ -1,3 +1,7 @@
+0.1.94 2016-04-12
+
+* now swat consumes yaml configuration files as well
+
 0.1.93 2016-03-18
 
 * require latest version of outthentic dsl
