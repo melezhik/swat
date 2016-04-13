@@ -153,7 +153,7 @@ From the file system point of view swat story is a:
 
 Swat project is a bunch of a related swat stories kept under a single directory. This directory is called _project root directory_.
 The project root directory name could be any, swat just searches for swat story files in it and then "execute" found stories.
-See [swat runner workflow](#swat-runner-workflow) section for full explanation of this process.
+See [swat runner](#swat-runner) section for full explanation of this process.
 
 This is an example swat project layout:
 
@@ -801,44 +801,25 @@ Swat adds \`project\_root\_directory/lib' path to PERL5LIB path, which make it e
     ...
    
 
-# Swat runner workflow
+# Swat runner
 
-This is detailed explanation of swat runner life cycle.
+Swat runner - is a script to run swat stories. It is called `swat`.
 
-Swat runner script consequentially hits two phases:
+Runner consequentially goes several phases:
 
-* swat stories are converted into perl test files ( compilation phase )
-* perl test files are recursively executed by prove ( execution phase )
+## A compilation phase.
 
-Generating Test::More asserts sequence
+Stories are converted into perl test files \*.t ( compilation phase ) and saved into temporary directory.
 
-* for every swat story found:
+## An execution phase.
 
-    * new instance of Outthentic::DSL object (ODO) is created 
-    * check list file passed to ODO
-    * http request is executed and response passed to ODO
-    * ODO makes validation of given stdout against given check list
-    * validation results are turned into a _sequence_ of Test::More ok() asserts
+[Prove](https://metacpan.org/pod/distribution/Test-Harness/bin/prove) utility recursively executes
+test files under temporary directory and thus gives a final suite execution status.
 
-## Time diagram
+So after all swat project is just perl test project with \*.t files inside, the difference is that
+while with common test project \*.t files _are created by user_, in outthentic project \*.t files _are generated_
+by story files.
 
-This is a time diagram for swat runner life cycle:
-
-* Hits compilation phase
-
-* For every swat story found:
-
-    * Creates a perl test file
-
-* The end of compilation phase
-
-* Hits execution phase - runs \`prove' recursively on a directory with a perl test files
-
-* For every perl test file gets executed:
-
-    * Test::More asserts sequence is generated
-
-* The end of execution phase
 
 # TAP
 
