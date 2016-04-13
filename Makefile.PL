@@ -2,7 +2,8 @@ use inc::Module::Install;
 
 # Define metadata
 name           'swat';
-abstract       'simple web application tests';
+
+abstract       'Web testinfg framework consuming Outthentic::DSL';
 
 all_from       'lib/swat.pm';
 
@@ -12,6 +13,7 @@ requires    'Test::Harness';
 requires    'File::Temp';
 requires    'Outthentic::DSL' => '0.0.10';
 requires    'Config::Tiny';
+requires    'YAML';
 requires    'Term::ANSIColor' => '4.02';
 
 license     'perl';

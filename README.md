@@ -4,8 +4,15 @@ Swat
 
 # SYNOPSIS
 
-Rapid web tests development.
+Web testinfg framework consuming [Outthentic::DSL](https://github.com/melezhik/outthentic-dsl).
 
+# What does swat stands for?
+
+    [S]imple
+    [W]eb
+    [A]application
+    [T]est
+    
 # Description
 
 * Swat is a powerful and yet simple and flexible tool for rapid automated web tests development.
@@ -40,10 +47,10 @@ Or install from source:
 
     # could be useful for contributors and developers
 
-    perl Makefile.PL
-    make
-    make test
-    make install
+    $ perl Makefile.PL
+    $ make
+    $ make test
+    $ make install
 
 # Write your swat story
 
@@ -842,32 +849,45 @@ Here are some examples:
     swat --prove '-q -s' # run prove tests in random and quite mode
 
 
-# Test suite ini file
+# Suite configuration
 
-Test suite ini file is a configuration file where you may pass any additional data could be used in your tests:
+Swat test suites could be configurable. Configuration files contain a supplemental data to adjust suite behavior
 
-    cat suite.ini
+There are two type of configuration files are supported:
+
+* .Ini style format
+* YAML format
+
+.Ini  style configuration files are passed by \`--ini' parameter
+
+    $ swat --ini /etc/suites/foo.ini
+
+    $ cat /etc/suites/foo.ini
 
     [main]
 
     foo = 1
     bar = 2
 
-There is no special magic behind this ini file, except this should be [Config Tiny](https://metacpan.org/pod/Config::Tiny) compliant configuration file.
+There is no special magic behind ini files, except this should be [Config Tiny](https://metacpan.org/pod/Config::Tiny) compliant configuration file.
 
-By default swat runner looks for file named suite.ini placed at current working directory.
+Or you can choose YAML format for suite configuration by using \`--yaml' parameter:
 
-You my redefine this by using suite_ini_file environment variable:
+    $ swat --ini /etc/suites/foo.yaml
 
-    suite_ini_file=/path/to/your/ini/file
+    $ cat /etc/suites/foo.yaml
 
-Or by \`--ini' parameter of story runner:
+    main:
+      foo : 1
+      bar : 2
 
-    swat --ini /path/to/your/ini/file
 
-Once suite ini file is read up one may use it in hook.pm files via config()
+Unless user sets path to configuration file explicitly by \`--ini' or \'--yaml' swat runner looks for the 
+files named suite.ini and _then_ ( if suite.ini is not found ) for suite.yaml at the current working directory.
 
-    # cat hook.pm
+If configuration file is passed and read a related configuration data is accessible via config() function, for example in story.pm file:
+
+    # cat story.pm
 
     my $foo = config()->{main}{foo};
     my $bar = config()->{main}{bar};
@@ -931,9 +951,11 @@ See [prove settings](prove-settings)
 
 Sets a distinct sub sets of stories to execute, see [Running subset of stories](#Running-subset-of-stories)
 
-* **--ini** - test suite ini file path
+* **--ini** - suite configuration ini file path
 
-See [test suite ini file](#test-suite-ini-file) section for details.
+* **--yaml** - suite configuration yaml file path
+
+See [suite configuration](#suite-configuration) section for details.
 
 * **--debug|d** - sets value for swat debug parameter
 
