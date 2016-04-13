@@ -307,7 +307,7 @@ Swat
 Web testinfg framework consuming L<Outthentic::DSL|https://github.com/melezhik/outthentic-dsl>.
 
 
-=head1 What does swat stands for?
+=head1 What does swat stand for?
 
     [S]imple
     [W]eb

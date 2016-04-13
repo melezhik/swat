@@ -6,7 +6,7 @@ Swat
 
 Web testinfg framework consuming [Outthentic::DSL](https://github.com/melezhik/outthentic-dsl).
 
-# What does swat stands for?
+# What does swat stand for?
 
     [S]imple
     [W]eb
