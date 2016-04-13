@@ -1859,59 +1859,40 @@ L<Aleksei Melezhik|mailto:melezhik@gmail.com>
 
 =head1 Home Page
 
-https://github.com/melezhik/swat
+http://swatpm.org
+
+
+=head1 See also
+
+=over
+
+=item *
+
+L<Sparrow|https://github.com/melezhik/sparrow> - outthentic suites manager.
+
+
+
+=item *
+
+L<Outthentic|https://github.com/melezhik/outthentic> - generic testing, reporting, monitoring framework consuming Outthentic::DSL.
+
+
+
+=item *
+
+L<Outthentic::DSL|https://github.com/melezhik/outthentic-dsl> - Outthentic::DSL specification.
+
+
+
+=item *
+
+Perl prove, TAP, Test::More
+
+
+
+=back
 
 
 =head1 Thanks
 
-=over
-
-=item *
-
-to God as - I<For the LORD giveth wisdom: out of his mouth cometh knowledge and understanding. (Proverbs 2:6)>
-
-
-=back
-
-All the stuff that swat relies upon, thanks to those authors:
-
-=over
-
-=item *
-
-linux
-
-
-=item *
-
-perl
-
-
-=item *
-
-curl
-
-
-=item *
-
-TAP
-
-
-=item *
-
-Test::More
-
-
-=item *
-
-Test::Harness
-
-
-=back
-
-
-=head1 COPYRIGHT
-
-Copyright 2015 Alexey Melezhik.
-
-This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+To God as the One Who inspires me to do my job!

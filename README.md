@@ -996,23 +996,20 @@ There is plenty of examples at ./examples directory
 
 # Home Page
 
-https://github.com/melezhik/swat
+http://swatpm.org
+
+# See also
+
+* [Sparrow](https://github.com/melezhik/sparrow) - outthentic suites manager.
+
+* [Outthentic](https://github.com/melezhik/outthentic) - generic testing, reporting, monitoring framework consuming Outthentic::DSL.
+
+* [Outthentic::DSL](https://github.com/melezhik/outthentic-dsl) - Outthentic::DSL specification.
+
+
+* Perl prove, TAP, Test::More
 
 # Thanks
 
-* to God as - *For the LORD giveth wisdom: out of his mouth cometh knowledge and understanding. (Proverbs 2:6)*
+To God as the One Who inspires me to do my job!
 
-All the stuff that swat relies upon, thanks to those authors:
-
-* linux
-* perl
-* curl
-* TAP
-* Test::More
-* Test::Harness
-
-# COPYRIGHT
-
-Copyright 2015 Alexey Melezhik.
-
-This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
