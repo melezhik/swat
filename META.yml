@@ -1,5 +1,5 @@
 ---
-abstract: 'simple web application tests'
+abstract: 'Web testinfg framework consuming Outthentic::DSL'
 author:
   - 'L<Aleksei Melezhik|mailto:melezhik@gmail.com>'
 build_requires:
@@ -23,11 +23,11 @@ requires:
   Config::Tiny: 0
   File::Temp: 0
   Outthentic::DSL: 0.0.10
-  Term::ANSIColor: 4.02
+  Term::ANSIColor: '4.02'
   Test::Harness: 0
   Test::More: 0
   YAML: 0
 resources:
   license: http://dev.perl.org/licenses/
   repository: https://github.com/melezhik/swat
-version: 0.1.95
+version: 0.1.96

@@ -304,7 +304,15 @@ Swat
 
 =head1 SYNOPSIS
 
-Rapid web tests development.
+Web testinfg framework consuming L<Outthentic::DSL|https://github.com/melezhik/outthentic-dsl>.
+
+
+=head1 What does swat stands for?
+
+    [S]imple
+    [W]eb
+    [A]application
+    [T]est
 
 
 =head1 Description
@@ -386,10 +394,10 @@ Or install from source:
 
     # could be useful for contributors and developers
     
-    perl Makefile.PL
-    make
-    make test
-    make install
+    $ perl Makefile.PL
+    $ make
+    $ make test
+    $ make install
 
 
 =head1 Write your swat story
@@ -556,7 +564,7 @@ check list - the content of a `http method' file
 
 Swat project is a bunch of a related swat stories kept under a single directory. This directory is called I<project root directory>.
 The project root directory name could be any, swat just searches for swat story files in it and then "execute" found stories.
-See L<swat runner workflow|#swat-runner-workflow> section for full explanation of this process.
+See L<swat runner|#swat-runner> section for full explanation of this process.
 
 This is an example swat project layout:
 
@@ -1523,129 +1531,26 @@ Swat adds `project_root_directory/lib' path to PERL5LIB path, which make it easy
     ...
 
 
-=head1 Swat runner workflow
+=head1 Swat runner
 
-This is detailed explanation of swat runner life cycle.
+Swat runner - is a script to run swat stories. It is called C<swat>.
 
-Swat runner script consequentially hits two phases:
+Runner consequentially goes several phases:
 
-=over
 
-=item *
+=head2 A compilation phase.
 
-swat stories are converted into perl test files ( compilation phase )
+Stories are converted into perl test files *.t ( compilation phase ) and saved into temporary directory.
 
 
-=item *
+=head2 An execution phase.
 
-perl test files are recursively executed by prove ( execution phase )
+L<Prove|https://metacpan.org/pod/distribution/Test-Harness/bin/prove> utility recursively executes
+test files under temporary directory and thus gives a final suite execution status.
 
-
-=back
-
-Generating Test::More asserts sequence
-
-=over
-
-=item *
-
-for every swat story found:
-
-=over
-
-=item *
-
-new instance of Outthentic::DSL object (ODO) is created 
-
-
-=item *
-
-check list file passed to ODO
-
-
-=item *
-
-http request is executed and response passed to ODO
-
-
-=item *
-
-ODO makes validation of given stdout against given check list
-
-
-=item *
-
-validation results are turned into a I<sequence> of Test::More ok() asserts
-
-
-=back
-
-
-
-=back
-
-
-=head2 Time diagram
-
-This is a time diagram for swat runner life cycle:
-
-=over
-
-=item *
-
-Hits compilation phase
-
-
-
-=item *
-
-For every swat story found:
-
-=over
-
-=item *
-
-Creates a perl test file
-
-
-=back
-
-
-
-=item *
-
-The end of compilation phase
-
-
-
-=item *
-
-Hits execution phase - runs `prove' recursively on a directory with a perl test files
-
-
-
-=item *
-
-For every perl test file gets executed:
-
-=over
-
-=item *
-
-Test::More asserts sequence is generated
-
-
-=back
-
-
-
-=item *
-
-The end of execution phase
-
-
-
-=back
+So after all swat project is just perl test project with *.t files inside, the difference is that
+while with common test project *.t files I<are created by user>, in outthentic project *.t files I<are generated>
+by story files.
 
 
 =head1 TAP
