@@ -871,9 +871,9 @@ There are two type of configuration files are supported:
 
 There is no special magic behind ini files, except this should be [Config Tiny](https://metacpan.org/pod/Config::Tiny) compliant configuration file.
 
-Or you can choose YAML format for suite configuration by using \`--yaml' parameter:
+Or you can choose YAML format for suite configuration by using `--yaml` parameter:
 
-    $ swat --ini /etc/suites/foo.yaml
+    $ swat --yaml /etc/suites/foo.yaml
 
     $ cat /etc/suites/foo.yaml
 
@@ -882,8 +882,8 @@ Or you can choose YAML format for suite configuration by using \`--yaml' paramet
       bar : 2
 
 
-Unless user sets path to configuration file explicitly by \`--ini' or \'--yaml' swat runner looks for the 
-files named suite.ini and _then_ ( if suite.ini is not found ) for suite.yaml at the current working directory.
+Unless user sets path to configuration file explicitly by `--ini` or `--yaml` swat runner looks for the 
+files named suite.ini and _then_ ( if not found ) looks for the file named suite.yaml at the current working directory.
 
 If configuration file is passed and read a related configuration data is accessible via config() function, for example in story.pm file:
 
