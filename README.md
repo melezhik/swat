@@ -20,9 +20,9 @@ Web testinfg framework consuming [Outthentic::DSL](https://github.com/melezhik/o
 * Swat is a web application oriented test framework, this means that it equips you with all you need for a web test development
 and yet it's not burdened by many other "generic" things that you probably won't ever use.
 
-* Swat does not carry all heavy load on it's shoulders, with the help of it's "elder brother" - curl
+* Swat does not carry all heavy load on its shoulders, with the help of its "elder brother" - curl
 swat makes a http requests in a smart way. This means if you know and love curl swat might be easy way to go.
-Swat just passes all curl related parameter as is to curl and let curl do it's job.
+Swat just passes all curl related parameter as is to curl and let curl do its job.
 
 * Swat is a text oriented tool, for good or for bad it does not provide any level of http DOM or xpath hacking ( _but_ see  [process http responses](#process-http-responses) section ). It does not even try to decouple http headers from a body. Actually _it just returns you a text_ where you can find and grep in old good unix way. Does this sound suspiciously simple? I believe that most of things could be tested in a simple way.
 
