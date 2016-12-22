@@ -1,4 +1,7 @@
-0.1.97 2016-04-13
+0.1.97 
+
+* requires latest version of Outthentic::DSL
+* fix some tests to make them pass against latest version of Outthentic::DSL
 
 0.1.96 2016-04-13
 
