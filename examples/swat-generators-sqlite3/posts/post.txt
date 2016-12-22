@@ -6,5 +6,5 @@ my $sth = $dbh->prepare("SELECT name from users"); \
 $sth->execute(); \
 my $results = $sth->fetchall_arrayref; \
 
-[ map { $_->[0] } @${results} ]
+[ map { $_->[0] } @${results} ]        \
 
