@@ -6,6 +6,6 @@ generator:              \
         body            \
         userId          \
      )                  \
-    ];
+    ];                  \
 
 

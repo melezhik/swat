@@ -19,7 +19,7 @@ regexp: (a(\d+))
 code:                                   \
      my $c = captures()->[0];           \
      cmp_ok($c->[1],'==',1,"a(1)");     \     
-     cmp_ok($c->[0],'eq','a1',"(a1)");       
+     cmp_ok($c->[0],'eq','a1',"(a1)");  \     
 regexp: (b(\d+))
 end:
 
