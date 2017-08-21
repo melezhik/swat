@@ -1,5 +1,6 @@
 0.1.97 
 
+* documentation improvements - https://github.com/melezhik/swat/issues/27
 * requires latest version of Outthentic::DSL
 * fix some tests to make them pass against latest version of Outthentic::DSL
 

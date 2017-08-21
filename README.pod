@@ -38,9 +38,9 @@ and yet it's not burdened by many other "generic" things that you probably won't
 
 =item *
 
-Swat does not carry all heavy load on it's shoulders, with the help of it's "elder brother" - curl
+Swat does not carry all heavy load on its shoulders, with the help of its "elder brother" - curl
 swat makes a http requests in a smart way. This means if you know and love curl swat might be easy way to go.
-Swat just passes all curl related parameter as is to curl and let curl do it's job.
+Swat just passes all curl related parameter as is to curl and let curl do its job.
 
 
 
@@ -1269,12 +1269,33 @@ Here is example for converting swat tests into JUNIT format:
 
 =head1 Prove settings
 
-Swat utilize L<prove utility|http://search.cpan.org/perldoc?prove> to run tests, 
-all prove related parameters could be passed via `--prove' option to prove runner.
+=over
+
+=item *
+
+Swat uses L<prove utility|https://metacpan.org/pod/distribution/Test-Harness/bin/prove> to run tests.
+
+
+
+=item *
+
+If C<--prove> parameter is not set swat runs C<prove> with C<-r --verbose> options. 
+
+
+
+=item *
+
+If user redefines the options via C<--prove> parameter, swat runs prove with options comes from C<--prove>.
+
+
+
+=back
 
 Here are some examples:
 
-    swat --prove -Q # don't show anythings unless test summary
+    swat # run prove with `--verbose`, default behavior
+    
+    swat --prove -Q # run prove with -Q, don't show anythings unless test summary
     
     swat --prove '-q -s' # run prove tests in random and quite mode
 

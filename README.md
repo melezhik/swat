@@ -839,15 +839,19 @@ Here is example for converting swat tests into JUNIT format:
 
 # Prove settings
 
-Swat utilize [prove utility](http://search.cpan.org/perldoc?prove) to run tests, 
-all prove related parameters could be passed via \`--prove' option to prove runner.
+* Swat uses [prove utility](https://metacpan.org/pod/distribution/Test-Harness/bin/prove) to run tests.
+
+* If `--prove` parameter is not set swat runs `prove` with `-r --verbose` options. 
+
+* If user redefines the options via `--prove` parameter, swat runs prove with options comes from `--prove`.
 
 Here are some examples:
 
-    swat --prove -Q # don't show anythings unless test summary
+    swat # run prove with `--verbose`, default behavior
+
+    swat --prove -Q # run prove with -Q, don't show anythings unless test summary
 
     swat --prove '-q -s' # run prove tests in random and quite mode
-
 
 # Suite configuration
 
