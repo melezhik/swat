@@ -432,7 +432,7 @@ This is the list of helpful variables  you may use in swat ini files:
 
 Swat try to find swat ini files at these locations ( listed in order )
 
-* **~/swat.ini** * home directory
+* **~/swat.ini** - home directory
 
 * **$project\_root\_directory/swat.ini** -  project root directory
 
