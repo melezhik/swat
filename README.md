@@ -939,7 +939,7 @@ List of swat command line parameters:
 
 * **-t|--test**
 
-Sets a certain swat story to executed, see [Running none default swat story](#Running-none-default-swat-story)
+Sets a certain swat story to executed, see [Running none default swat story](#running-none-default-swat-story)
 
 * **--ini** - suite configuration ini file path
 
