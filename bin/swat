@@ -305,7 +305,7 @@ output_mod=${output_mod:="default"}
 
 echo "run swat for project: $project ..."
 
-perl $test_root_dir/$path/request.t
+perl $test_root_dir/$path/request.swat
 exit_code=$?
 
 swat_purge_cache=${swat_purge_cache:=0}
