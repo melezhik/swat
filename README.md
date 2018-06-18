@@ -978,6 +978,19 @@ http://swatpm.org
 
 * [Outthentic::DSL](https://github.com/melezhik/outthentic-dsl) - Outthentic::DSL specification.
 
+# Swat version 0.2.0 BREAKING CHANGES
+
+As with version 0.2.0 swat removes the usage of prove ( Test::More, Test::Harness modules ), there
+are consequences of that:
+
+* swat reports is no longer a TAP
+
+* tests do not get run recursively, rewrite your tests scenarios to use modules to run your test sets
+
+* `-t` command line parameter now defines a single swat story rather than a subset of stories, it should follow 
+`$http_resource/$http_method` notation
+
+* to run meta story, you should use path=http_resource/META or -t http_resource/META options.
 
 # Thanks
 
