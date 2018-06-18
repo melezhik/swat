@@ -1,8 +1,10 @@
-0.1.97 
+0.2.0
 
-* documentation improvements - https://github.com/melezhik/swat/issues/27
-* requires latest version of Outthentic::DSL
-* fix some tests to make them pass against latest version of Outthentic::DSL
+# BREAKING CHANGES!!!
+
+* remove usage of prove, Test::More, Test::Harness
+* `-t` now defined a single swat story rather than a subset of stories, it should follow `$http_resource/$http_method` notation
+* test output changes and no longer is TAP
 
 0.1.96 2016-04-13
 

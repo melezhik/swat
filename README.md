@@ -101,12 +101,12 @@ Just write it up to a special file  called \`host' and swat will use it.
 
     echo 'app.local' > host
     
-
 As swat makes http requests with the help of curl, the host name should be compliant with curl requirements, this
 for example means you may define a http schema or port here:
 
-    echo 'https://app.local' >> host
-    echo 'app.local:8080' >> host
+    echo 'https://app.local' > host
+
+    echo 'app.local:8080' > host
 
 ## HTTP Response
 
@@ -151,42 +151,57 @@ From the file system point of view swat story is a:
 ## Swat Project
 
 Swat project is a bunch of a related swat stories kept under a single directory. This directory is called _project root directory_.
-The project root directory name could be any, swat just searches for swat story files in it and then "execute" found stories.
-See [swat runner](#swat-runner) section for full explanation of this process.
+The project root contains swat scenarios or stories to be parsed and executed by swat utility. See [swat runner](#swat-runner) section 
+for full explanation of this process.
 
 This is an example swat project layout:
 
     $ tree my/swat/project
       my/swat/project
       |--- host
-      |----FOO
-      |-----|----BAR
+      |--- get.txt
+      |----foo
+      |-----|----bar
       |           |---- post.txt
-      |--- FOO
+      |--- baz
             |--- get.txt
 
     3 directories, 3 files
 
-When you ask swat to execute swat stories you have to point it a project root directory or \`cd' to it and run swat without arguments:
 
-    swat my/swat/project
+This project contains 3 swat stories:
 
-    # or
+- GET /
+- POST foo/bar
+- POST baz
 
-    cd my/swat/project && swat
+Default swat story is story executed swat by default, this is `$project_root/GET`:
 
-Note, that project root directory path will be removed from http resources paths during execution:
+    $ swat # will execute GET / story
 
-* GET  /FOO
-* POST /FOO/BAR
+You may set default story using `-t` option:
 
-Also notice that if you pass first argument ( which is project root directory ) to swat client, then the second argument _could be_ a hostname ( in case you don't want to use one defined at host file or you do not have one ):
+    $ swat -t foo/bar/POST
 
-      # inside project root directory 
-      swat ./ 127.0.0.1
+Or by setting `path` inside swat.ini file:
 
-      # outside of project root directory 
-      swat /path/to/project/root/directory/ 127.0.0.1
+    $ echo path=POST/baz >> swat.ini
+
+You define hostname to run request against by command line argument:
+
+    $ swat $project_root $hostname
+
+For example:
+
+    $ swat . 127.0.0.1
+
+Or by setting via host file:
+
+   $ echo 'app.local:8080' > host
+
+If you don't defined project root explicitly, swat assume this as current working directory.
+
+  $ swat # run GET / story inside current working directory
 
 Follow [swat client](#swat-client) section for full explanation of swat client command line API.
 
@@ -331,7 +346,13 @@ Following is the list of swat variables you may define at swat ini files, it cou
 
 ## swat variables
 
-Swat variables define swat  basic configuration, like logging mode, etc. Here is the list:
+Swat variables define swat  basic configuration, like default story, debug mode, etc. Here is the list:
+
+* `path` - defines default story, examples:
+
+    # define deafult story as GET => foo/
+    path=foo/GET    
+
 
 * `skip_story` - skip story, default value is \`0'. Set to \`1' if you want skip store for some reasons.
 
@@ -760,6 +781,14 @@ You may live \`meta.txt' empty file or add some useful description to be printed
         This is my cool story. 
         Take a look at this!
 
+To run meta story you define story as `path/META`, for example:
+
+    swat -t META # run meta story defined in the project root directory
+
+    swat -t foo/META # run meta story defined in the foo/ folder
+
+    echo META > swat.ini # the same as the first but via swat.ini file
+
 How one could use meta stories?
 
 Meta stories are just _containers_ for other downstream stories. Usually one defines some downstream
@@ -908,7 +937,7 @@ List of swat command line parameters:
 
 * **-t|--test**
 
-Sets a distinct sub sets of stories to execute, see [Running subset of stories](#Running-subset-of-stories)
+Sets a certain swat story to executed, see [Running none default swat story](#Running-none-default-swat-story)
 
 * **--ini** - suite configuration ini file path
 
@@ -920,30 +949,14 @@ See [suite configuration](#suite-configuration) section for details.
 
 Override the value for swat debug variable, see [swat variables](#swat-variables) section:
 
-    debug=1 swat --debug 2 # set debug to 2
+    swat --debug 2 # set debug to 2
 
-# Running subset of stories
+# Running none default swat story
 
-Use \`-t' options to execute a subset of swat stories:
+Use \`-t' options to execute specific swat story:
 
-    # run `FOO/*' stories
-    swat example/my-app 127.0.0.1 -t FOO/
-
-* \`-t' option should point to a resource(s) path and be relative to the project root directory 
-
-* \`-t' option should not contain extension part - \`.txt'
-
-* it is possible to use more than one \`t' options
-
-For example:
-
-    -t FOO/BAR -t BAR -t FOO/BAZ  
-
-* Or even path more than one argument for -t parameter:
-
-For example:
-
-    -t FOO/BAR FOO/BAZ BAR
+    # run POST foo story
+    swat example/my-app 127.0.0.1 -t foo/POST
 
 # Examples
 
