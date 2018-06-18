@@ -183,9 +183,9 @@ You may set default story using `-t` option:
 
     $ swat -t foo/bar/POST
 
-Or by setting `path` inside swat.ini file:
+Or by setting `path` variable inside swat.ini file:
 
-    $ echo path=POST/baz >> swat.ini
+    $ echo path=baz/POST >> swat.ini
 
 You define hostname to run request against by command line argument:
 
@@ -201,7 +201,7 @@ Or by setting via host file:
 
 If you don't defined project root explicitly, swat assume this as current working directory.
 
-    $ swat # run GET / story inside current working directory
+    $ swat # run `GET /' story inside current working directory
 
 Follow [swat client](#swat-client) section for full explanation of swat client command line API.
 
@@ -955,10 +955,14 @@ Override the value for swat debug variable, see [swat variables](#swat-variables
 
 # Running none default swat story
 
-Use \`-t' options to execute specific swat story:
+Use \`-t' options to execute specific swat story, you should use `$http_resource/$http_method`
+syntax, for example:
 
-    # run POST foo story
-    swat example/my-app 127.0.0.1 -t foo/POST
+    # run `POST foo/bar' story
+    swat example/my-app 127.0.0.1 -t foo/bar/POST
+
+    # run `META /' story
+    swat example/my-app 127.0.0.1 -t META
 
 # Examples
 
