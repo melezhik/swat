@@ -348,9 +348,11 @@ Following is the list of swat variables you may define at swat ini files, it cou
 
 Swat variables define swat  basic configuration, like default story, debug mode, etc. Here is the list:
 
-* `path` - defines default story, examples:
+* `path` - defines default story
 
-    # define deafult story as GET => foo/
+Example:
+
+    # define default story as GET => foo/
     path=foo/GET    
 
 
