@@ -301,7 +301,6 @@ source $session_file
 export port
 
 path=${path:=GET}
-output_mod=${output_mod:="default"}
 
 echo "run swat for project: $project ..."
 

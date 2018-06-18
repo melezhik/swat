@@ -384,7 +384,7 @@ For example:
 
 * `debug_bytes` - number of bytes of http response to be dumped out when debug is on. default value is \`500'.
 
-* `match_l` - in TAP output truncate matching strings to {match_l} bytes;  default value is \`40'.
+* `match_l` - in report output truncate matching strings to {match_l} bytes;  default value is \`40'.
 
 * `swat_purge_cache` - remove swat cache files at the end of test run; default value is `\0' ( do not remove ).
 
@@ -898,12 +898,6 @@ If configuration file is passed and read a related configuration data is accessi
     * Set this 1 if you want to disable color output in swat test report. 
 
     * By default this setting is off.
-
-* output_mod - setting TAP output mode
-
-    * \`cpanparty' - format output for cpanparty service
-
-    * `\default' - this is default value, no formatting at all 
 
 # Swat client
 

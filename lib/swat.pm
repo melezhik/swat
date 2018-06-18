@@ -285,11 +285,6 @@ sub print_meta {
     
 }
 
-sub output_mod {
-
-    return $ENV{output_mod};
-}
-
 sub swat_ok {
 
     my $status    = shift;
