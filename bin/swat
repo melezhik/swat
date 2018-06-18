@@ -182,9 +182,6 @@ for f in `$find_cmd`; do
         debug=$debug_clp
     fi
 
-    if test "$skip_story" -eq 1; then
-        continue
-    fi
 
     if [ -n "${port}" ]; then
         real_host="$host:$port"
@@ -225,6 +222,7 @@ for f in `$find_cmd`; do
     tt=$((tt+1))
 
     echo > $tfile
+
     echo "package main;"  >> $tfile
     echo >> $tfile
 
@@ -236,6 +234,11 @@ for f in `$find_cmd`; do
 
 
     echo "use swat;"  >> $tfile
+
+    if test "$skip_story" -eq 1; then
+        echo 'swat_note("story is skipped");' >> $tfile
+        continue
+    fi
 
     echo >> $tfile
     echo >> $tfile
