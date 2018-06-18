@@ -63,8 +63,8 @@ Swat leverages Unix file system to build an _analogy_ for these things:
 
 _HTTP resource is just a directory_. You have to create a directory to define a http resource:
 
-    mkdir foo/
-    mkdir -p bar/baz
+    $ mkdir foo/
+    $ mkdir -p bar/baz
 
 This code defines two http resources for your application - '/foo/' and '/bar/baz'
 
@@ -72,9 +72,9 @@ This code defines two http resources for your application - '/foo/' and '/bar/ba
 
 _HTTP method is just a file_. You have to create a file to define a http method.
 
-    touch foo/get.txt
-    touch foo/put.txt
-    touch bar/baz/post.txt
+    $ touch foo/get.txt
+    $ touch foo/put.txt
+    $ touch bar/baz/post.txt
 
 Obviously \`http methods' files should be located at \`http resource' directories.
 
@@ -99,14 +99,14 @@ You need to define hostname or ip address to send request to.
 
 Just write it up to a special file  called \`host' and swat will use it.
 
-    echo 'app.local' > host
+    $ echo 'app.local' > host
     
 As swat makes http requests with the help of curl, the host name should be compliant with curl requirements, this
 for example means you may define a http schema or port here:
 
-    echo 'https://app.local' > host
+    $ echo 'https://app.local' > host
 
-    echo 'app.local:8080' > host
+    $ echo 'app.local:8080' > host
 
 ## HTTP Response
 
@@ -116,8 +116,8 @@ Swat does this with the help so called _check lists_, check lists are defined at
 
 Check list is just a list of expressions a response should match. It might be a set of plain strings or regular expressions:
 
-    echo 200 OK > foo/get.txt
-    echo 'Hello I am foo' >> foo/get.txt
+    $ echo 200 OK > foo/get.txt
+    $ echo 'Hello I am foo' >> foo/get.txt
 
 The code above defines two checks for response from \`GET /foo':
 
@@ -127,7 +127,7 @@ The code above defines two checks for response from \`GET /foo':
 You may add some regular expressions checks as well:
 
     # for example check if we got something like 'date':
-    echo 'regexp: \d\d\d\d-\d\d-\d\d' >> foo/get.txt
+    $ echo 'regexp: \d\d\d\d-\d\d-\d\d' >> foo/get.txt
 
 # Bringing all together
 
@@ -201,7 +201,7 @@ Or by setting via host file:
 
 If you don't defined project root explicitly, swat assume this as current working directory.
 
-  $ swat # run GET / story inside current working directory
+   $ swat # run GET / story inside current working directory
 
 Follow [swat client](#swat-client) section for full explanation of swat client command line API.
 
