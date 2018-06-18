@@ -197,11 +197,11 @@ For example:
 
 Or by setting via host file:
 
-   $ echo 'app.local:8080' > host
+    $ echo 'app.local:8080' > host
 
 If you don't defined project root explicitly, swat assume this as current working directory.
 
-   $ swat # run GET / story inside current working directory
+    $ swat # run GET / story inside current working directory
 
 Follow [swat client](#swat-client) section for full explanation of swat client command line API.
 
