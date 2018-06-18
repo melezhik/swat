@@ -5,7 +5,7 @@ run_swat_module( GET => 'foo' );
 
 use Data::Dumper;
 
-diag Dumper(\@foo);
+print Dumper(\@foo);
 
 1;
 

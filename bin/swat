@@ -6,7 +6,7 @@ cache_dir=~/.swat/.cache/$$
 rm -rf $cache_dir
 mkdir -p $cache_dir
 
-test_root_dir=$cache_dir/prove
+test_root_dir=$cache_dir/swat
 rm -rf $test_root_dir
 mkdir -p $test_root_dir
 
@@ -25,14 +25,9 @@ case $key in
             if  [[ $# -eq 0 ]] ; then
                 break 1
             fi
-            path="$path $test_root_dir/$1 "
+            path="$1"
             shift;
         done;
-    ;;
-    --prove|--prove-opts)
-    shift;
-    prove_clp="$prove_clp $1"
-    shift
     ;;
     --debug|-d)
     shift;
@@ -101,9 +96,6 @@ if [ -n "${try_num}" ]; then
     echo "try_num=$try_num" >> $session_file
 fi
 
-if [ -n "${prove_options}" ]; then
-    echo "prove_options=$prove_options" >> $session_file
-fi
 
 if [ -n "${debug}" ]; then
     echo "debug=$debug" >> $session_file
@@ -243,11 +235,6 @@ for f in `$find_cmd`; do
     echo >> $tfile
 
 
-    if test $swat_module -eq 0 ; then
-        echo "use Test::More q{no_plan};"  >> $tfile
-    fi
-
-
     echo "use swat;"  >> $tfile
 
     echo >> $tfile
@@ -313,20 +300,13 @@ source $session_file
 
 export port
 
-path=${path:=$test_root_dir}
+path=${path:=GET}
 output_mod=${output_mod:="default"}
 
+echo "run swat for project: $project ..."
 
-if [ -z "${prove_clp}" ] && [ -n "${prove_options}" ]; then
-    prove -m -r $path $prove_options;
-    exit_code=$?
-elif [ -n "${prove_clp}"  ]; then
-    prove -m -r $path $prove_clp;
-    exit_code=$?
-else
-    prove -m -r -v $path;
-    exit_code=$?
-fi
+perl $test_root_dir/$path/request.t
+exit_code=$?
 
 swat_purge_cache=${swat_purge_cache:=0}
 

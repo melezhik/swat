@@ -1,3 +1,7 @@
-export prove_options=-q
-find examples/  -maxdepth 1 -mindepth 1 -type d -exec swat {} \;
+set -e;
+
+for p in $( ls -1d examples/* ); do
+    swat $p
+done
+
 

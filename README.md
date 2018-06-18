@@ -28,14 +28,6 @@ Swat just passes all curl related parameter as is to curl and let curl do its jo
 
 * Swat is extendable by writing custom perl code, this is where you may add desired complexity to your test stories. Check out swat API for details. 
 
-* And finally swat relies on prove as internal test runner - this has many, many good results:
-
-    * swat transparently passes all it's arguments to prove which makes it simple to adjust swat runner behavior in a prove way
-
-    * swat tests might be easily embedded as unit tests into a cpan distributions.
-
-    * test reports are emitted in a TAP format which is portable and easy to read.
-
 Ok, now I hope you are ready to dive into swat tutorial! :)
 
 # Install
@@ -339,7 +331,7 @@ Following is the list of swat variables you may define at swat ini files, it cou
 
 ## swat variables
 
-Swat variables define swat  basic configuration, like logging mode, prove runner settings, etc. Here is the list:
+Swat variables define swat  basic configuration, like logging mode, etc. Here is the list:
 
 * `skip_story` - skip story, default value is \`0'. Set to \`1' if you want skip store for some reasons.
 
@@ -358,8 +350,6 @@ For example:
     * swat runs curl command and then checks http status code
     * in case of bad http status code returns (  0 or >= 400 ) a proper swat assert fails
     * settings ignore\_http\_err to \`1' only makes a warning in case of bad http status code and does not trigger assert failure 
-
-* `prove_options` - prove options to be passed to prove runner,  default value is \`-v`. See [Prove settings](#prove-settings) section.
 
 * `debug` - enable swat debugging
 
@@ -816,42 +806,11 @@ Runner consequentially goes several phases:
 
 ## A compilation phase.
 
-Stories are converted into perl test files \*.t ( compilation phase ) and saved into temporary directory.
+Stories are converted into perl test files \*.swat ( compilation phase ) and saved into temporary directory.
 
 ## An execution phase.
 
-[Prove](https://metacpan.org/pod/distribution/Test-Harness/bin/prove) utility recursively executes
-test files under temporary directory and thus gives a final suite execution status.
-
-So after all swat project is just perl test project with \*.t files inside, the difference is that
-while with common test project \*.t files _are created by user_, in outthentic project \*.t files _are generated_
-by story files.
-
-
-# TAP
-
-Swat produces output in [TAP](https://testanything.org/) format, that means you may use your favorite tap parsers to bring result to
-another test / reporting systems, follow TAP documentation to get more on this.
-
-Here is example for converting swat tests into JUNIT format:
-
-    swat --prove '--formatter TAP::Formatter::JUnit'
-
-# Prove settings
-
-* Swat uses [prove utility](https://metacpan.org/pod/distribution/Test-Harness/bin/prove) to run tests.
-
-* If `--prove` parameter is not set swat runs `prove` with `-r --verbose` options. 
-
-* If user redefines the options via `--prove` parameter, swat runs prove with options comes from `--prove`.
-
-Here are some examples:
-
-    swat # run prove with `--verbose`, default behavior
-
-    swat --prove -Q # run prove with -Q, don't show anythings unless test summary
-
-    swat --prove '-q -s' # run prove tests in random and quite mode
+TODO:
 
 # Suite configuration
 
@@ -947,10 +906,6 @@ In case host parameter is missing , swat tries to read it up from \`host' file. 
 
 List of swat command line parameters:
 
-* **--prove|prove-opts** - sets prove parameters
-
-See [prove settings](prove-settings)
-
 * **-t|--test**
 
 Sets a distinct sub sets of stories to execute, see [Running subset of stories](#Running-subset-of-stories)
@@ -1010,8 +965,6 @@ http://swatpm.org
 
 * [Outthentic::DSL](https://github.com/melezhik/outthentic-dsl) - Outthentic::DSL specification.
 
-
-* Perl prove, TAP, Test::More
 
 # Thanks
 
