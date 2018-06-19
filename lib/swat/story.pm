@@ -200,8 +200,8 @@ sub do_perl_file {
     {
         package main;
         do $file;
-        die "couldn't parse $file: $@" if $@;
-    }
+        our $STATUS = -1 and die "couldn't parse $file: $@" if $@;
+    };
 
     return 1;
 }

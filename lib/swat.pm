@@ -236,13 +236,14 @@ sub generate_asserts {
 
     return if http_method() eq 'META';
 
-    make_http_request();
-
-    dsl()->{output} = headers().body();
-
-    run_response_processor();
-
     eval {
+
+        make_http_request();
+
+        dsl()->{output} = headers().body();
+
+        run_response_processor();
+
         dsl()->validate($check_file);
     };
 
@@ -255,7 +256,7 @@ sub generate_asserts {
     }
 
     if ($err){
-      $STATUS = 0;
+      $STATUS = -1;
       confess "parser error: $err" ;
     }
 
@@ -279,7 +280,7 @@ sub print_meta {
     open META, resource_dir()."/meta.txt" or die $!;
     while (my $i = <META>){
         chomp $i;
-        swat_note( tapout( "\t $i", ['yellow'] ));
+        swat_note( tapout( "$i", ['yellow'] ));
     }
     close META;
     
