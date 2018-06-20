@@ -305,7 +305,7 @@ export port
 
 path=${path:=GET}
 
-echo "run swat for project: $project ..."
+echo "run swat for project: $project ; host: $real_host"
 
 perl $test_root_dir/$path/request.swat
 exit_code=$?
