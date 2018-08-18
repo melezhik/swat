@@ -966,17 +966,11 @@ There is plenty of examples at ./examples directory
 
 [Aleksei Melezhik](mailto:melezhik@gmail.com)
 
-# Home Page
-
-http://swatpm.org
-
 # See also
 
-* [Sparrow](https://github.com/melezhik/sparrow) - outthentic suites manager.
+* [Sparrow](https://github.com/melezhik/sparrow) - Swat and Outthentic plugins manager.
 
-* [Outthentic](https://github.com/melezhik/outthentic) - generic testing, reporting, monitoring framework consuming Outthentic::DSL.
-
-* [Outthentic::DSL](https://github.com/melezhik/outthentic-dsl) - Outthentic::DSL specification.
+* [Outthentic](https://github.com/melezhik/outthentic) - Multipurpose scenarios framework.
 
 # Swat version 0.2.0 BREAKING CHANGES
 

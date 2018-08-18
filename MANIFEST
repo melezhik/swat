@@ -6,6 +6,7 @@ examples/anatomy/FOO/BARs/post.txt
 examples/anatomy/FOOs/get.txt
 examples/anatomy/FOOs/hook.pm
 examples/anatomy/host
+examples/anatomy/swat.ini
 examples/block-of-text/get.txt
 examples/block-of-text/hook.pm
 examples/block-of-text/host
@@ -17,15 +18,18 @@ examples/hooks/lib/Foo.pm
 examples/hooks/posts/hook.pm
 examples/hooks/posts/post.txt
 examples/hooks/posts/swat.ini
+examples/hooks/swat.ini
 examples/ignore-http-err/foo/get.txt
 examples/ignore-http-err/foo/swat.ini
 examples/ignore-http-err/host
+examples/ignore-http-err/swat.ini
 examples/ini-file/get.txt
 examples/ini-file/hook.pm
 examples/ini-file/host
 examples/multilines/host
 examples/multilines/posts/post.txt
 examples/multilines/posts/swat.ini
+examples/multilines/swat.ini
 examples/my-app/hello/get.txt
 examples/my-app/hello/hook.pm
 examples/my-app/hello/world/get.txt
@@ -35,6 +39,7 @@ examples/my-app/swat.ini
 examples/post-request/host
 examples/post-request/posts/post.txt
 examples/post-request/posts/swat.ini
+examples/post-request/swat.ini
 examples/response-processor/get.txt
 examples/response-processor/hook.pm
 examples/response-processor/host
@@ -48,6 +53,7 @@ examples/subtests/foo/bar/hook.pm
 examples/subtests/foo/get.txt
 examples/subtests/foo/hook.pm
 examples/subtests/host
+examples/subtests/swat.ini
 examples/within-mode/get.txt
 examples/within-mode/hook.pm
 examples/within-mode/host
@@ -68,6 +74,7 @@ MANIFEST			This list of files
 META.yml
 README.md
 run_examples.bash
+sparrowfile
 suite.ini
 suite.yaml
 t/data/test.db
