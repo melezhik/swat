@@ -335,7 +335,7 @@ Swat
 
 =head1 SYNOPSIS
 
-Web testinfg framework consuming L<Outthentic::DSL|https://github.com/melezhik/outthentic-dsl>.
+[S]imple [W]eb [A]pplication [T]esting Framework.
 
 
 =head1 Documentation
@@ -365,6 +365,8 @@ L<Outthentic|https://github.com/melezhik/outthentic> - Multipurpose scenarios fr
 =item *
 
 L<Outthentic::DSL|https://github.com/melezhik/outthentic-dsl> - Outthentic::DSL specification.
+
+=back
 
 
 =head1 Thanks
